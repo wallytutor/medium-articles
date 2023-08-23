@@ -217,6 +217,9 @@ end
 # ╔═╡ 815edb5c-007b-400c-8c9b-43ebad59cd3a
 mean(porosities), std(porosities)
 
+# ╔═╡ 3a7dbce5-c2d7-4de2-99c0-a9c4cf93150f
+scanner(6.0)
+
 # ╔═╡ 8729b4fe-f00a-4b64-b10d-595b0615f50c
 # ((porosity.pore - porosity.orig).^2)
 
@@ -1950,6 +1953,7 @@ version = "1.4.1+0"
 # ╠═594c41e5-e7f4-4af0-90b8-3a4043d0590e
 # ╠═4d6976dd-ab58-40e6-96bd-be4b904f094a
 # ╠═815edb5c-007b-400c-8c9b-43ebad59cd3a
+# ╠═3a7dbce5-c2d7-4de2-99c0-a9c4cf93150f
 # ╠═8729b4fe-f00a-4b64-b10d-595b0615f50c
 # ╠═ad9e03d3-d792-43de-903b-47529a34b5f8
 # ╠═858d6f5a-059e-487f-8fb2-773571a56afd
