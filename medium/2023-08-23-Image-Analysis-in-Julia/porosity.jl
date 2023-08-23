@@ -20,6 +20,7 @@ begin
 	using Images
 	using ImageSegmentation
 	using Plots
+	using Statistics
 end
 
 # ╔═╡ 40f95098-d436-4e56-be9c-3f61647014ed
@@ -149,58 +150,72 @@ md"""
 struct PorositySegmenter
 	orig::Matrix{Gray{N0f8}}
 	pore::Matrix{Gray{N0f8}}
-	segm::SegmentedImage{Matrix{Int64}, Gray{Float64}}
 	fraction::Float64
+	segm::Any
+	
+	# TODO keep parameters as attributes.
 
 	function PorositySegmenter(
 		orig::Matrix{Gray{N0f8}};
-		cropt::Int64 = 1,
-		cropb::Int64 = 0,
-		cropl::Int64 = 1,
-		cropr::Int64 = 0,
 		sigma::Float64 = 0.0,
+		method::Symbol = :porequantification,
 		poreclass::Int64 = 1,
 		binalg::Any = Balanced()
 	)::PorosityResults
-		# Validate inputs.
-		(h, w) = size(orig)
-		@assert cropt < h && cropb < h
-		@assert cropl < w && cropr < w
 		@assert sigma >= 0.0
+		imgg = imfilter(orig, Kernel.gaussian(sigma))
+		pore = binarize(imgg, binalg)
+		npix = length(pore)
 		
-		# Crop image at provided positions.
-		crop = orig[cropt:end-cropb, cropl:end-cropr]
-	
-		# Apply Gaussian filter.
-		img = imfilter(crop, Kernel.gaussian(sigma))
-	
-		# Create a B&W image using provided algorithm.
-		pore = binarize(img, binalg)
-	
-		# Segment image for quantification.
-		seg = unseeded_region_growing(pore, 0.5)
-		
-		# Ensure poreclass is zero (should be true...)
-		@assert segment_mean(seg, poreclass) ≈ 0.0
-	
-		# Quantify porosity.
-		fraction = segment_pixel_count(seg, 1) / length(pore)
-		return new(crop, pore, seg, fraction)
+		if method == :porequantification
+			# Fast but no segmentation!
+			segm = nothing
+			fraction = convert(Float64, 1.0 - sum(pore) / npix)
+		elseif method == :poresegmentation
+			# MUCH slower but gets the image.
+			segm = unseeded_region_growing(pore, 1//2)
+			fraction = segment_pixel_count(segm, 1) / npix
+			@assert segment_mean(segm, poreclass) ≈ 0.0
+		else
+			error("Unknown method: $(method)")
+		end
+
+		return new(orig, pore, fraction, segm)
 	end
 end
 
 # ╔═╡ f5b672c2-1135-4a9b-9a21-c615265204bd
-orig = Gray.(load(filepath));
+md"""
+Below we test our structure against the previous sample case.
+"""
 
 # ╔═╡ 7a48f78f-ea9b-4c29-87b9-fed81e462d15
-porosity = PorositySegmenter(orig; cropb = 80, sigma = 5.0);
-porosity.fraction
+begin
+	orig = Gray.(load(filepath))[1:end-80, 1:end];
+	porosity = PorositySegmenter(orig; sigma = 5.0);
+	porosity.fraction
+end
 
-# ╔═╡ 35f8e152-4847-4ba5-aa5f-dc014bdff916
-scanner(σ) = PorositySegmenter(orig; cropb = 80, sigma = σ)
+# ╔═╡ 66d0ae55-fe71-4bdf-9826-61ebc20c6262
+let
+	@time imgg_ = imfilter(orig, Kernel.gaussian(5));
+	@time pore_ = binarize(imgg_, Balanced());
+	@time segm_ = unseeded_region_growing(pore_[:, :], 1//2);
+end;
+
+# ╔═╡ 594c41e5-e7f4-4af0-90b8-3a4043d0590e
+scanner(σ) = PorositySegmenter(orig; sigma = σ)
 
 # ╔═╡ 4d6976dd-ab58-40e6-96bd-be4b904f094a
-porosities = map(scanner, 0.0:0.5:10.0)
+begin
+	σ̂ = 0.0:0.25:15.0
+	porescan = map(scanner, σ̂)
+	porosities = [p.fraction for p in porescan]
+	plot(σ̂, porosities)
+end
+
+# ╔═╡ 815edb5c-007b-400c-8c9b-43ebad59cd3a
+mean(porosities), std(porosities)
 
 # ╔═╡ 8729b4fe-f00a-4b64-b10d-595b0615f50c
 # ((porosity.pore - porosity.orig).^2)
@@ -255,6 +270,7 @@ ImageSegmentation = "80713f31-8817-5129-9cf8-209ff8fb23e1"
 Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
 ImageSegmentation = "~1.8.2"
@@ -269,7 +285,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.8.1"
 manifest_format = "2.0"
-project_hash = "d05377a24887d80a80b7cfa54baa39e086f8e61c"
+project_hash = "438186252ef1ee91254bdba17d0db2397be894e3"
 
 [[deps.AbstractFFTs]]
 deps = ["ChainRulesCore", "LinearAlgebra", "Test"]
@@ -1928,10 +1944,12 @@ version = "1.4.1+0"
 # ╠═791b40b8-55c0-4651-800c-7417497cb15d
 # ╟─2934ebef-f1b2-465d-b924-f5edac5c0d6d
 # ╠═31e1bd8a-d4c8-47a1-8630-22688e512f6a
-# ╠═f5b672c2-1135-4a9b-9a21-c615265204bd
+# ╟─f5b672c2-1135-4a9b-9a21-c615265204bd
 # ╠═7a48f78f-ea9b-4c29-87b9-fed81e462d15
-# ╠═35f8e152-4847-4ba5-aa5f-dc014bdff916
+# ╠═66d0ae55-fe71-4bdf-9826-61ebc20c6262
+# ╠═594c41e5-e7f4-4af0-90b8-3a4043d0590e
 # ╠═4d6976dd-ab58-40e6-96bd-be4b904f094a
+# ╠═815edb5c-007b-400c-8c9b-43ebad59cd3a
 # ╠═8729b4fe-f00a-4b64-b10d-595b0615f50c
 # ╠═ad9e03d3-d792-43de-903b-47529a34b5f8
 # ╠═858d6f5a-059e-487f-8fb2-773571a56afd
