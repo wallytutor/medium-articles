@@ -1,0 +1,18 @@
+---
+title  : Transient heat transfer
+author : Walter Dal'Maz Silva
+date   : `j import Dates; Dates.Date(Dates.now())`
+weave_options:
+  error: false
+  term: false
+  wrap: true
+  line_width: 100
+---
+
+```julia; echo = false; results = "hidden"
+include(joinpath(@__DIR__(), "shared.jl"))
+```
+
+# Linear problem
+
+Implementation of setion 2.3 of Nithiarasu *et al.* (2016) of 

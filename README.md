@@ -1,2 +1,3 @@
-# medium-articles
-Content from my articles published on Medium
+# Medium Articles
+
+Supporting materials and content from my Medium writings.
