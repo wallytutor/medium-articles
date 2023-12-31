@@ -21,7 +21,8 @@ jobs:
       - name: Install dependencies
         run: julia --project=. -e '
             using Pkg;
-            Pkg.activate();
+            Pkg.activate(pwd());
+            Pkg.resolve();
             Pkg.instantiate();'
       - name: Build and deploy
         env:
