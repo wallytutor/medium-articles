@@ -19,12 +19,11 @@ jobs:
         with:
           version: '1.9.3'
       - name: Install dependencies
-        run: julia --project=src -e '
+        run: julia --project=. -e '
             using Pkg;
-            Pkg.activate(pwd());
-            Pkg.resolve();
+            Pkg.develop(PackageSpec(path=pwd()));
             Pkg.instantiate();'
       - name: Build and deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: julia --project=src generate.jl
+        run: julia --project=. generate.jl
