@@ -1,12 +1,12 @@
 name = "MediumArticles"
 uuid = "b59e1b90-a7ae-11ee-1a7e-43a2532b2fa8"
 authors = ["Walter Dal'Maz Silva <walter.dalmazsilva.manager@gmail.com>"]
-version = "0.0.1"
+version = "0.1.0"
 
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
-# Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 Weave = "44d3d7a6-8a23-5bf8-98c5-b353f8df5ec9"
