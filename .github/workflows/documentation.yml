@@ -19,7 +19,7 @@ jobs:
         with:
           version: '1.9'
       - name: Install dependencies
-        run: julia --project=. -e '
+        run: julia -e '
             using Pkg;
             Pkg.activate(pwd());
             Pkg.resolve();
@@ -27,4 +27,4 @@ jobs:
       - name: Build and deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: julia --project=. generate.jl
+        run: julia generate.jl
