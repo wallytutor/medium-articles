@@ -162,7 +162,7 @@ The radiation terms introduce the need to provide the surface emissivity ``ε``:
 ε = 0.9
 ```
 
-An one-liner `globalhtc` is provide to evaluate ``U`` at each iteration.
+An one-liner `globalhtc` is provided to evaluate ``U`` at each iteration.
 
 ```julia; results = "hidden"
 globalhtc(τ, Ta, h, ε) = h + ε * σ * (τ + Ta) * (τ^2 + Ta^2)
