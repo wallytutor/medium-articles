@@ -57,7 +57,7 @@ function stiffness(h, k1, k2, L1, L2; A=1)
     b0 = 0u"W/(m^2*K)"
 
     return [ a1  -a1      b0
-            -a1   a1+a2  -a2    
+            -a1   a1+a2  -a2
              b0  -a2   a2+h*A ];
 end
 ```
@@ -148,7 +148,7 @@ term. A common approach is the factorization of ``T_3^4-T_a^4`` and
 reformulation of the boundary condition in terms of a *global* heat transfer
 coefficient ``U``. Because ``U`` depends on the *last known* temperature ``τ_3``
 the problem needs to be solved iterativelly. The choice of ``τ_3`` notation is
-to distinguish it from the value ``T_3`` found by the linear problem solution. 
+to distinguish it from the value ``T_3`` found by the linear problem solution.
 
 ```math
 q_2 = U (T_3 - T_a)
@@ -207,7 +207,7 @@ function solveproblem(T, step; maxiter = 20, rtol = 1.0e-15, β = 1.0)
         τ[:] = β * step(T[3]) + (1 - β) * T
         Δ = maximum(abs.(τ .- T) ./ T)
         T[:] = τ
-        
+
         println("Residual on iteration $(i) ..... $(@sprintf("%.6e", Δ))")
 
         if Δ < rtol

@@ -15,4 +15,4 @@ include(joinpath(@__DIR__(), "shared.jl"))
 
 # Linear problem
 
-Implementation of setion 2.3 of Nithiarasu *et al.* (2016) of 
+Implementation of setion 2.3 of Nithiarasu *et al.* (2016) of
