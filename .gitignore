@@ -5,8 +5,8 @@
 .vscode/
 
 # Locally generated HTML/content
-src/**/*.html
-src/**/jl_*/
+src/_build/**/*.html
+src/_build/**/jl_*/
 
 ################################################################################
 # PYTHON
