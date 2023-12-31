@@ -24,9 +24,9 @@
 </HEAD>
 
 <BODY>
-  <div class ="container">
-    <div class = "row">
-      <div class = "col-md-12 twelve columns">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 twelve columns">
         <div class="title">
           {{#:title}}<h1 class="title">{{:title}}</h1>{{/:title}}
           {{#:author}}<h5>{{{:author}}}</h5>{{/:author}}
@@ -35,12 +35,19 @@
 
         {{{ :body }}}
 
-        <HR/>
+        <hr/>
+        <!-- START FOOTER -->
         <div class="footer">
-          <p>
-            Published using <a href="http://github.com/JunoLab/Weave.jl">Weave.jl</a> {{:weave_version}} on {{:weave_date}}.
-          </p>
+            <div class="col-md-9 nine columns">
+              Published using <a href="http://github.com/JunoLab/Weave.jl">Weave.jl {{:weave_version}}</a>
+            </div>
+            <div>
+              <a href="https://wallytutor.github.io/medium-articles/">Back to contents</a>
+            </div>
         </div>
+        <br/>
+        <!-- END FOOTER -->
+
       </div>
     </div>
   </div>
