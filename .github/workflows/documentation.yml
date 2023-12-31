@@ -6,14 +6,13 @@ on:
       - main
     tags: '*'
 
-permissions:
-  statuses: write
-  contents: write
-  pages: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+      contents: write
+      pages: write
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v1
@@ -24,7 +23,8 @@ jobs:
             using Pkg;
             Pkg.develop(PackageSpec(path=pwd()));
             Pkg.instantiate();'
-      - name: Build and deploy
+      - uses: julia-actions/julia-docdeploy@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and deploy
         run: julia --project=src generate.jl
