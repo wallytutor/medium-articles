@@ -18,7 +18,7 @@ include(joinpath(@__DIR__(), "shared.jl"))
 Implementation of section 2.2.1 of Nithiarasu *et al.* (2016) of steady state
 heat transfer across a composite slab of materials with different thermal
 conductivities. In one side the slab is irradiated with a heat flux density
-``q_1`` while the opposite face is subjected to a convective heat tranfer with
+``q_1`` while the opposite face is subjected to a convective heat transfer with
 coefficient ``h`` and ambient temperature ``T_a``. The model to be solved can be
 stated as
 
