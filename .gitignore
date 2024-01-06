@@ -3,6 +3,7 @@
 ################################################################################
 
 .vscode/
+.obsidian/
 
 # Locally generated HTML/content
 src/_build/**/*.html

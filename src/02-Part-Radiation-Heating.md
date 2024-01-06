@@ -15,22 +15,38 @@ include(joinpath(@__DIR__(), "shared.jl"))
 
 # First problem
 
-Implementation of setion 2.3 of Nithiarasu *et al.* (2016)...
+Implementation of setion 2.3 of Nithiarasu *et al.* (2016) of a transient heat transfer problem. This is the logical extension of what has been explored in a previous [study](./01-Composite-Conduction.md). The overall problem is stated in terms of the inertia matrix $\mathbf{C}$, the stiffness $\mathbf{K}$ and the forcing function $\mathbf{f}$. The following first order differential equation of temperature $\mathcal{T}$ is to be solved:
 
-```julia
-V = (4/3)*π * ([0.05, 0.20, 0.30]).^3
-V = [V[1], (V[2:3] .- V[1:2])...]
-m = 1u"kg" * ([7890, 1.0, 3000] .* V)
+$$
+\mathbf{C}\dot{\mathcal{T}}+\mathbf{K}\mathcal{T}=\mathbf{f}
+$$
 
-println(m)
-# Note since the system is lumped the following units apply:
+Notice here that the temperature $\mathcal{T}$ here is a vector corresponding to the three problem components, the steel part, the furnace gas, and the outer refractory walls.
+
+Because the model is stated in lumped form, *i.e.* simplified to a zero-dimensional space, we add a phase of calculation of the *heat capacities* of materials in compatible units to remain within the formulation proposed in the reference. In this lumped format, the elements of matrix $\mathbf{C}$ are given in units of energy per unit temperature because they already incorporate the effect bodies masses through $C_{i,i}=m_i{}c_{P,i}$ where $i$ indicates de component index.
+
+To get a dynamics that is interpretable in the real world we will start by computing reasonable orders of magnitude of the $C_{i,i}$ by providing the masses of the bodies and typical values of specific heats for the involved materials. Considering a steel sphere of 10 cm placed **floating** in a 40 cm air environment limited by a spherical refractory with outer shell of 60 cm we can estimate these masses, in the same order, as:
+
+```julia; results = "hidden"
+m = 1u"kg" * [4.2, 0.033, 240.0]
+```
+
+Next we provide the specific heats of the materials already multiplied by the above masses:
+
+```julia; results = "hidden"
 cp(T) = m[1] * 6.00e+03u"J/(kg*K)"
 cg(T) = m[2] * 1.00e+03u"J/(kg*K)"
 cw(T) = m[3] * 9.00e+02u"J/(kg*K)"
+```
 
+Since our goal is to make the problem fully treated in matrix form, we stack the specific heats together.
+
+```julia; results = "hidden"
 specificheat(T) = [cp(T[1]); cg(T[2]); cw(T[3])]
 inertiainv(T) = diagm(1 ./ specificheat(T))
+```
 
+```julia
 function stiffness(h, A)
     p = @. h * A
     q = -1 * p[1:end-1]
