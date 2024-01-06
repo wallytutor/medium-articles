@@ -15,7 +15,7 @@ include(joinpath(@__DIR__(), "shared.jl"))
 
 # First problem
 
-Implementation of setion 2.3 of Nithiarasu *et al.* (2016) of a transient heat transfer problem. This is the logical extension of what has been explored in a previous [study](./01-Composite-Conduction.md). The overall problem is stated in terms of the inertia matrix $\mathbf{C}$, the stiffness $\mathbf{K}$ and the forcing function $\mathbf{f}$. The following first order differential equation of temperature $\mathcal{T}$ is to be solved:
+Implementation of section 2.3 of Nithiarasu *et al.* (2016) of a transient heat transfer problem. This is the logical extension of what has been explored in a previous [study](./01-Composite-Conduction.md). The overall problem is stated in terms of the inertia matrix $\mathbf{C}$, the stiffness $\mathbf{K}$ and the forcing function $\mathbf{f}$. The following first order differential equation of temperature $\mathcal{T}$ is to be solved:
 
 $$
 \mathbf{C}\dot{\mathcal{T}}+\mathbf{K}\mathcal{T}=\mathbf{f}
@@ -39,54 +39,94 @@ cg(T) = m[2] * 1.00e+03u"J/(kg*K)"
 cw(T) = m[3] * 9.00e+02u"J/(kg*K)"
 ```
 
-Since our goal is to make the problem fully treated in matrix form, we stack the specific heats together.
+Since our goal is to make the problem fully treated in matrix form, we stack the specific heats together. Since matrix $\mathrm{C}$ is diagonal and composed by these specific heats, its inverse is simply the reciprocal of its diagonal elements, what is trivial to prove. This allows the problem to be reworked as
+
+$$
+\dot{\mathcal{T}}+\mathbf{C}^{-1}\mathbf{K}\mathcal{T}=\mathbf{C}^{-1}\mathbf{f}
+$$
+Setting the derivative term to be alone could be interesting for testing different time-stepping strategies, for instance. Matrix $\mathrm{C}^{-1}$ is provided by `inertiainv` below:
 
 ```julia; results = "hidden"
 specificheat(T) = [cp(T[1]); cg(T[2]); cw(T[3])]
+
 inertiainv(T) = diagm(1 ./ specificheat(T))
 ```
 
+We inspect the inverse inertia matrix:
+
 ```julia
+inertiainv([300.0, 300.0, 300.0])
+```
+
+Stiffness matrix $\mathrm{K}$ in this problem provides the convective heat transfer terms. It is given by
+
+$$
+\mathbf{K} = \begin{bmatrix}
+h_pA_p  & -h_pA_p         & 0\\
+-h_pA_p & h_pA_p + h_gA_g & -h_gA_g\\
+0       & -h_gA_g         & h_gA_g + h_wA_w
+\end{bmatrix}
+$$
+
+Since this matrix does not contain any element that depends on temperature it needs to be computed only once and we will not seek an optimized way to evaluate it. The code below is generic for any *layered* structure as the one being modelled here. Notice that the pairwise interactions lead to a tridiagonal structure.
+
+```julia; results = "hidden"
 function stiffness(h, A)
     p = @. h * A
     q = -1 * p[1:end-1]
     p[2:end] -= q
     return diagm(0=>p, -1=>q, 1=>q)
 end
+```
 
+For testing its implementation and later simulating the system we provide already the set of convective heat transfer coefficients on `h` and heat transfer areas in `A`. The order of magnitude of areas was kept compatible with the geometrical description provided before.
+
+```julia
+h = [100.0, 100.0, 10.0] * 1u"W/(m^2*K)"
+A = [0.032, 0.500, 1.15] * 1u"m^2"
+
+stiffness(h, A)
+```
+
+
+```julia; results = "hidden"
 function forcing(T, h, A, Ta, ϵp, ϵw)
     f1 = -ϵp*σ*A[1]*(T[1]^4-T[3]^4)
     f3 = h[3]*A[3]*Ta - f1 - ϵw*σ*A[3]*(T[3]^4 - Ta^4)
     return [ f1; 0u"W"; f3 ]
 end
+```
 
+```julia; results = "hidden"
 function buildlhsmatrix(τ, h, A)
     K = stiffness(h, A)
-    I = diagm([1, 1, 1] * 1u"1") # kg in fact!
-
-    function getlhsmatrix(Tₖ)
-        return I + τ * inertiainv(Tₖ) * K
-    end
+    I = diagm([1, 1, 1] * 1u"1")
+    return (Tₖ) -> I + τ * inertiainv(Tₖ) * K
 end
+```
 
+```julia; results = "hidden"
 function buildrhsvector(τ, h, A, Ta, ϵp, ϵw)
     F(T) = τ * forcing(T, h, A, Ta, ϵp, ϵw)
-
-    function getrhsvector(Tₖ)
-        return inertiainv(Tₖ) * F(Tₖ)
-    end
+    return (Tₖ) -> inertiainv(Tₖ) * F(Tₖ)
 end
+```
 
+```julia; results = "hidden"
 function relaxation(Tᵢ, Tⱼ, β)
     return @. β * Tⱼ + (1-β) * Tᵢ
 end
+```
 
+```julia; results = "hidden"
 function residual(Tᵢ, Tⱼ)
     # TODO instead return all to allow better debugging
     # It should be the test that verify that all < tol!
     return maximum(abs.(Tⱼ .- Tᵢ) ./ Tᵢ)
 end
+```
 
+```julia; results = "hidden"
 function steptime(T₀, K, B; maxiter = 50, rtol = 1.0e-12, β = 1.0)
     Tᵢ = copy(T₀)
     Tⱼ = copy(T₀)
@@ -110,7 +150,9 @@ function steptime(T₀, K, B; maxiter = 50, rtol = 1.0e-12, β = 1.0)
     @warn("No convergence during step @ $(@sprintf("%.6e", Δ))")
     return Tᵢ, maxiter, Δ
 end
+```
 
+```julia; results = "hidden"
 function integrate(t, T, K, B; maxiter, rtol, β)
     U = copy(T)
     nvars = length(T)
@@ -126,17 +168,20 @@ function integrate(t, T, K, B; maxiter, rtol, β)
 
     return solution
 end
+```
 
-h = [10.0, 10.0, 10.0] * 1u"W/(m^2*K)"
-A = [1.0, 2.0, 4.0] * 1u"m^2"
 
+```julia; results = "hidden"
+```
+
+```julia
 ϵp = 0.8
 ϵw = 0.3
 Ta = 313.15u"K"
 
 tend =  7200
 
-T = [1273.0, 298.15, 298.15] * 1u"K"
+T = [1273.0u"K", Ta, Ta]
 t = range(0, tend, convert(Int64, tend / 2))
 τ = step(t) * 1u"s"
 
@@ -148,7 +193,9 @@ rtol = 1.0e-12
 β = 0.85
 
 @time solution = integrate(t, T, K, B; maxiter, rtol, β);
+```
 
+```julia; echo = false
 fig = let
     fig = Figure(size = (700, 500))
     ax = Axis(fig[1, 1])
@@ -169,11 +216,6 @@ fig = let
 
     fig
 end
-
-# C = specificheat(T)
-# K = stiffness(h, A)
-# f = forcing(T, h, A, Ta, ϵp, ϵw)
-
-# TODO make the same thing with ModelingToolkit!
-
 ```
+
+## Using `ModelingToolkit`

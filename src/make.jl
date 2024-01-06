@@ -26,3 +26,10 @@ end
 
 weaveall()
 cleanall()
+
+# Keep a snippet to compile while writting:
+# weave(".md";
+#       doctype  = "md2html",
+#       informat = "markdown",
+#       out_path = "_build",
+#       template = "template.html")

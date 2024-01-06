@@ -18,17 +18,17 @@ include(joinpath(@__DIR__(), "shared.jl"))
 Implementation of section 2.2.1 of Nithiarasu *et al.* (2016) of steady state
 heat transfer across a composite slab of materials with different thermal
 conductivities. In one side the slab is irradiated with a heat flux density
-``q_1`` while the opposite face is subjected to a convective heat transfer with
-coefficient ``h`` and ambient temperature ``T_a``. The model to be solved can be
+$q_1$ while the opposite face is subjected to a convective heat transfer with
+coefficient ``h`` and ambient temperature $T_a$. The model to be solved can be
 stated as
 
-```math
+$$
 \frac{d^2T}{dx^2}=0
 \qquad
 q_1 = -k_1\frac{dT}{dx}
 \qquad
 q_2 = h (T_3 - T_a)
-```
+$$
 
 Our goal in what follows is to implement equation (2.12) of the reference to be
 able to solve for nodal temperatures. To this end we need both the stiffness
@@ -38,7 +38,7 @@ programming approach given the introductory level of this example.
 
 Since each component of the composite slab is characterized by a conductivity
 across the *element* we provide a function `conductivity` for computing
-``K=kAL^{-1}``. This is more expressive than simply hard-coding its definition
+$K=kAL^{-1}$. This is more expressive than simply hard-coding its definition
 directly in the stiffness matrix.
 
 ```julia; results = "hidden"
@@ -70,9 +70,9 @@ function forcing(q, h, Ta; A=1)
 end
 ```
 
-As model parameters one needs to specity the thermal conductivities ``k`` and
-associated thicknesses ``L`` of plates and the *known* heat transfer coefficient
-``h`` on the side the slab is exposed to convective heat transfer. All these
+As model parameters one needs to specity the thermal conductivities $k$ and
+associated thicknesses $L$ of plates and the *known* heat transfer coefficient
+$h$ on the side the slab is exposed to convective heat transfer. All these
 values are provided below with respective physical units.
 
 ```julia; results = "hidden"
@@ -83,8 +83,8 @@ L1 = 1.0u"m"
 L2 = 1.0u"m"
 ```
 
-To complete the boundary conditions, the heat flux ``q_1`` and environment
-temperature ``T_a`` are given below.
+To complete the boundary conditions, the heat flux $q_1$ and environment
+temperature $T_a$ are given below.
 
 ```julia; results = "hidden"
 q1 = 20.0u"W/m^2"
@@ -129,19 +129,19 @@ f
 Solving the linear problem of steady heat conduction was trivial, but for
 practical cases (even at low temperatures in many situations) radiation losses
 should also be taken into account in the currently *convective* side of the
-plate. Here we introduce a modification to the boundary condition ``q_2``
+plate. Here we introduce a modification to the boundary condition $q_2$
 accounting for this heat transfer mode. Notice that another source of
 nonlinearity could be introduced through non-constant thermal conductivities of
 the media, but we let the reader implement this as an excercise since it is a
 trivial exntesion to what is provided in what follows.
 
-```math
+$$
 \frac{d^2T}{dx^2}=0
 \qquad
 q_1 = -k_1\frac{dT}{dx}
 \qquad
 q_2 = h (T_3 - T_a) + εσ(T_3^4-T_a^4)
-```
+$$
 
 There are many ways of handling the nonlinearity introduced by the radiation
 term. A common approach is the factorization of ``T_3^4-T_a^4`` and
@@ -150,11 +150,11 @@ coefficient ``U``. Because ``U`` depends on the *last known* temperature ``τ_3`
 the problem needs to be solved iterativelly. The choice of ``τ_3`` notation is
 to distinguish it from the value ``T_3`` found by the linear problem solution.
 
-```math
+$$
 q_2 = U (T_3 - T_a)
 \qquad\text{where}\qquad
 U = h + εσ(\tau_3+T_a)(\tau_3^2+T_a^2)
-```
+$$
 
 The radiation terms introduce the need to provide the surface emissivity ``ε``:
 
@@ -162,7 +162,7 @@ The radiation terms introduce the need to provide the surface emissivity ``ε``:
 ε = 0.9
 ```
 
-An one-liner `globalhtc` is provided to evaluate ``U`` at each iteration.
+An one-liner `globalhtc` is provided to evaluate $U$ at each iteration.
 
 ```julia; results = "hidden"
 globalhtc(τ, Ta, h, ε) = h + ε * σ * (τ + Ta) * (τ^2 + Ta^2)
@@ -193,7 +193,7 @@ The solution of the problem now is rather simple. One provides an initial guess
 which is used to compute a new solution estimate. Because under some
 circumstances the estimate could start wiggling and diverge, it is worth
 implementing a relaxation step interpolating the new and previous approximations
-as ``T_{n}=βT_{n}+(1-β)T_{n-1}``. In case ``β<1`` solution is slowly updated by
+as $T_{n}=βT_{n}+(1-β)T_{n-1}$. In case $\beta<1$ solution is slowly updated by
 giving a higher weigth to the previous estimate and the problem is said to be
 underrelaxed. Overelaxation is the opposite scenario but can be problematic in
 some cases. Some metric, here the maximum relative change in absolute value,
