@@ -832,7 +832,7 @@ U = h + εσ(\tau_3+T_a)(\tau_3^2+T_a^2)
 
 
 
-<p>The solution of the problem now is rather simple. One provides an initial guess which is used to compute a new solution estimate. Because under some circumstances the estimate could start wiggling and diverge, it is worth implementing a relaxation step interpolating the new and previous approximations as <span class="math">$T_{n}=βT_{n}+(1-β)T_{n-1}$</span>. In case <span class="math">$β<1$</span> solution is slowly updated by giving a higher weigth to the previous estimate and the problem is said to be underrelaxed. Overelaxation is the opposite scenario but can be problematic in some cases. Some metric, here the maximum relative change in absolute value, must be used to determine solution convergence.</p>
+<p>The solution of the problem now is rather simple. One provides an initial guess which is used to compute a new solution estimate. Because under some circumstances the estimate could start wiggling and diverge, it is worth implementing a relaxation step interpolating the new and previous approximations as <span class="math">$T_{n}=βT_{n}+(1-β)T_{n-1}$</span>. In case <span class="math">$\beta<1$</span> solution is slowly updated by giving a higher weigth to the previous estimate and the problem is said to be underrelaxed. Overelaxation is the opposite scenario but can be problematic in some cases. Some metric, here the maximum relative change in absolute value, must be used to determine solution convergence.</p>
 
 
 <pre class='hljl'>
