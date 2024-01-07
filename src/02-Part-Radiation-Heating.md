@@ -15,7 +15,7 @@ include(joinpath(@__DIR__(), "shared.jl"))
 
 # First problem
 
-Implementation of section 2.3 of Nithiarasu *et al.* (2016) of a transient heat transfer problem. This is the logical extension of what has been explored in a previous [study](./01-Composite-Conduction.md). The overall problem is stated in terms of the inertia matrix $\mathbf{C}$, the stiffness $\mathbf{K}$ and the forcing function $\mathbf{f}$. The following first order differential equation of temperature $\mathcal{T}$ is to be solved:
+Implementation of section 2.3 of Nithiarasu *et al.* (2016) of a transient heat transfer problem. This is the logical extension of what has been explored in a previous [study](./01-Composite-Conduction.html). The overall problem is stated in terms of the inertia matrix $\mathbf{C}$, the stiffness $\mathbf{K}$ and the forcing function $\mathbf{f}$. The following first order differential equation of temperature $\mathcal{T}$ is to be solved:
 
 $$
 \mathbf{C}\dot{\mathcal{T}}+\mathbf{K}\mathcal{T}=\mathbf{f}
@@ -44,6 +44,7 @@ Since our goal is to make the problem fully treated in matrix form, we stack the
 $$
 \dot{\mathcal{T}}+\mathbf{C}^{-1}\mathbf{K}\mathcal{T}=\mathbf{C}^{-1}\mathbf{f}
 $$
+
 Setting the derivative term to be alone could be interesting for testing different time-stepping strategies, for instance. Matrix $\mathrm{C}^{-1}$ is provided by `inertiainv` below:
 
 ```julia; results = "hidden"
