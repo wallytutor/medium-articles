@@ -88,6 +88,15 @@ A = [0.032, 0.500, 1.15] * 1u"m^2"
 stiffness(h, A)
 ```
 
+To conclude problem specification, a function `forcing` for evaluation of $\mathbf{f}$ is provided below.  Vector $\mathbf{f}$ is mainly where the description of radiative heat transfer is represented and is given as:
+
+$$
+\mathbf{f} = \begin{bmatrix}
+-\epsilon_{p}\sigma{}A_p(\mathcal{T}_p^4-\mathcal{T}_w^4) \\
+0 \\
+h_wA_wT_a + \epsilon_{p}\sigma{}A_p(\mathcal{T}_p^4-\mathcal{T}_w^4) - \epsilon_{w}\sigma{}A_w(\mathcal{T}_w^4-T_a^4)
+\end{bmatrix}
+$$
 
 ```julia; results = "hidden"
 function forcing(T, h, A, Ta, ϵp, ϵw)
@@ -96,6 +105,43 @@ function forcing(T, h, A, Ta, ϵp, ϵw)
     return [ f1; 0u"W"; f3 ]
 end
 ```
+
+The remaining parameters to close the problem are the emissivity of the materials and external temperature, all provided below.
+
+```julia
+ϵp = 0.8
+ϵw = 0.3
+Ta = 313.15u"K"
+
+forcing([Ta, Ta, Ta], h, A, Ta, ϵp, ϵw)
+```
+
+With that last element of the base equation in hands we can derive the time-stepping approach to be used. The derivative term is expanded as a forward finite difference as
+
+$$
+\frac{\mathcal{T}_{n+1}-\mathcal{T}_n}{\tau} + \mathbf{L}^\prime\mathcal{T}=\mathbf{R}^\prime\mathbf{f}
+$$
+
+If you go back to the inspection of the inverse inertia matrix above, you will observe that the term corresponding to the gas is about 3 orders of magnitude above the others. That means that the dynamics of that component of the system is much slower than the others and the problem is somewhat stiff. To introduce a first layer of robustness in the integration we can try an implicit scheme by evaluating all terms in the above equation at instant $n+1$:
+
+$$
+\mathcal{T}_{n+1}-\mathcal{T}_n + \tau\mathbf{L}^\prime_{n+1}\mathcal{T}_{n+1}=\tau\mathbf{R}^\prime_{n+1}\mathbf{f}_{n+1}
+$$
+
+This equation can be rearranged by splitting linear terms in $\mathcal{T}_{n+1}$ on the left-hand side as:
+
+$$
+\left(\mathbf{I}+\tau\mathbf{L}^\prime_{n+1}\right)\mathcal{T}_{n+1}=
+\tau\mathbf{R}^\prime_{n+1}\mathbf{f}_{n+1}+\mathcal{T}_n
+$$
+
+this can be further simplified with the notation:
+
+$$
+\mathbf{L}_{n+1}\mathcal{T}_{n+1}=\mathbf{R}_{n+1}+\mathcal{T}_n
+$$
+
+It is useful to simplify thing until last step because it tells us what functionalities we need in a computer implementation. The problem of finding $\mathcal{T}_{n+1}$ can be seem as a nonlinear iteration $\mathcal{T}_{n+1}=L^{-1}_{n+1}(R_{n+1}+\mathcal{T}_{n})$ followed by update of both $\mathbf{L}_{n+1}$ and $\mathbf{R}_{n+1}$ with the new estimate of temperatures. Thus, we  need functions to update both these matrices during the solution. Since these rely on several parameters we can encapsulate then in a higher order function with all fixed parameters and return a function that performs the update for the new temperature estimate, as implemented below.
 
 ```julia; results = "hidden"
 function buildlhsmatrix(τ, h, A)
@@ -112,19 +158,23 @@ function buildrhsvector(τ, h, A, Ta, ϵp, ϵw)
 end
 ```
 
-```julia; results = "hidden"
-function relaxation(Tᵢ, Tⱼ, β)
-    return @. β * Tⱼ + (1-β) * Tᵢ
-end
+As per the previous discussion, the following snipped emulates one time-step iteration:
+
+```julia
+T = [1273.0u"K", Ta, Ta]
+τ = 1.0u"s"
+
+K = buildlhsmatrix(τ, h, A)
+B = buildrhsvector(τ, h, A, Ta, ϵp, ϵw)
+
+# Because of factorization this does not works with Unitful.
+# Units are stripped and system becomes inconsistent.
+# Tnew = K(T) \ (B(T) .+ T)
+
+Tnew = inv(K(T)) * (B(T) .+ T)
 ```
 
-```julia; results = "hidden"
-function residual(Tᵢ, Tⱼ)
-    # TODO instead return all to allow better debugging
-    # It should be the test that verify that all < tol!
-    return maximum(abs.(Tⱼ .- Tᵢ) ./ Tᵢ)
-end
-```
+Function `steptime` below  performs up to a maximum number of iterations as illustrated above and checks for convergence of the time-step.
 
 ```julia; results = "hidden"
 function steptime(T₀, K, B; maxiter = 50, rtol = 1.0e-12, β = 1.0)
@@ -133,16 +183,12 @@ function steptime(T₀, K, B; maxiter = 50, rtol = 1.0e-12, β = 1.0)
     Δ = 9.0e+100
 
     for j in range(1, maxiter)
-        # TODO with units this does not work!
-        # Tⱼ[:] = K(Tⱼ) \ (B(Tⱼ) .+ T₀)
         Tⱼ[:] = inv(K(Tⱼ)) * (B(Tⱼ) .+ T₀)
-
         Tⱼ[:] = relaxation(Tᵢ, Tⱼ, β)
         Δ = residual(Tᵢ, Tⱼ)
         Tᵢ[:] = Tⱼ[:]
 
         if Δ < rtol
-            # @info("Converged on iteration $(j) @ $(@sprintf("%.6e", Δ))")
             return Tᵢ, j, Δ
         end
     end
@@ -151,6 +197,20 @@ function steptime(T₀, K, B; maxiter = 50, rtol = 1.0e-12, β = 1.0)
     return Tᵢ, maxiter, Δ
 end
 ```
+
+A relaxation step for eventually helping convergence was introduced above as:
+
+```julia; results = "hidden"
+relaxation(Tᵢ, Tⱼ, β) = @. β * Tⱼ + (1-β) * Tᵢ
+```
+
+A common choice of residual in this sort of problem is the maximum relative absolute change:
+
+```julia; results = "hidden"
+residual(Tᵢ, Tⱼ) = maximum(abs.(Tⱼ .- Tᵢ) ./ Tᵢ)
+```
+
+Time integration is now just a matter of repeating time-stepping and storing solution:
 
 ```julia; results = "hidden"
 function integrate(t, T, K, B; maxiter, rtol, β)
@@ -170,19 +230,13 @@ function integrate(t, T, K, B; maxiter, rtol, β)
 end
 ```
 
-
-```julia; results = "hidden"
-```
+This completes the tooling for simulation of the process. Below we simulate 24 hours of the dynamics starting with a hot metallic sphere and the furnace equilibrated with the external environment. 
 
 ```julia
-ϵp = 0.8
-ϵw = 0.3
-Ta = 313.15u"K"
-
-tend =  7200
+tend = 24*3600
 
 T = [1273.0u"K", Ta, Ta]
-t = range(0, tend, convert(Int64, tend / 2))
+t = range(0, tend, convert(Int64, tend / 8))
 τ = step(t) * 1u"s"
 
 K = buildlhsmatrix(τ, h, A)
@@ -190,32 +244,56 @@ B = buildrhsvector(τ, h, A, Ta, ϵp, ϵw)
 
 maxiter = 80
 rtol = 1.0e-12
-β = 0.85
+β = 0.99
 
 @time solution = integrate(t, T, K, B; maxiter, rtol, β);
 ```
 
+Below we can inspect the solution and the residuals at the end of each time-step. For the solution to make sense it is important that every single step must converge during time advancement. Note the leap in gas temperature during the first time steps resulting from the problem stiffness. As a matter of fact, a smaller time-step should have been used for properly resolving its dynamics in the early stages or even better, an adaptative time-stepping approach should have been adopted.
+
 ```julia; echo = false
 fig = let
-    fig = Figure(size = (700, 500))
-    ax = Axis(fig[1, 1])
-    lines!(ax, t, solution[:, 1]; color = :black, label = "Metal")
-    lines!(ax, t, solution[:, 2]; color = :green, label = "Gas")
-    lines!(ax, t, solution[:, 3]; color = :red,   label = "Wall")
-    hlines!(ax, ustrip(Ta); color = :blue, label = "Environment")
-    axislegend(ax; position = :rt)
-    ax.xlabel = "Time [s]"
-    ax.ylabel = "Temperature [K]"
-    ax.xticks = 0:600:tend
-    ax.yticks = 300:200:1300
-    xlims!(ax, extrema(ax.xticks.val))
-    ylims!(ax, extrema(ax.yticks.val))
+	tk = t / 3600
 
-    ax = Axis(fig[2, 1])
-    lines!(ax, t, solution[:, 5]; color = :black)
+    fig = Figure(size = (700, 700))
+    
+    ax1 = Axis(fig[1, 1])
+    lines!(ax1, tk, solution[:, 1]; color = :black, label = "Metal")
+    hlines!(ax1, ustrip(Ta); color = :blue, label = "Environment")
+    axislegend(ax1; position = :rt)
+	
+    ax2 = Axis(fig[2, 1])
+    lines!(ax2, tk, solution[:, 2]; color = :green, label = "Gas")
+    lines!(ax2, tk, solution[:, 3]; color = :red,   label = "Wall")
+    hlines!(ax2, ustrip(Ta); color = :blue, label = "Environment")
+    axislegend(ax2; position = :rt)
+    
+    ax3 = Axis(fig[3, 1])
+    lines!(ax3, tk, solution[:, 5]; color = :black)
 
+    ax3.xlabel = "Time [h]"
+    ax1.ylabel = "Temperature [K]"
+    ax2.ylabel = "Temperature [K]"
+    ax3.ylabel = "Residual"
+    
+    ax1.xticks = 0:2:tk[end]
+    ax2.xticks = 0:2:tk[end]
+    ax3.xticks = 0:2:tk[end]
+    
+    ax1.yticks = 300:200:1300
+    ax2.yticks = 300:20:400
+    
+    xlims!(ax1, extrema(ax1.xticks.val))
+    xlims!(ax2, extrema(ax2.xticks.val))
+    xlims!(ax3, extrema(ax3.xticks.val))
+    
+    ylims!(ax1, extrema(ax1.yticks.val))
+    ylims!(ax2, extrema(ax2.yticks.val))
+    
     fig
 end
 ```
 
 ## Using `ModelingToolkit`
+
+In the future...
