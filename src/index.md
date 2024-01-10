@@ -17,3 +17,7 @@ If you prefer to go straight to the code it is in this [repository](https://gith
 
 1. [Composite plate heat conduction](01-Composite-Conduction.html)
 1. [Transient heat transfer model](02-Part-Radiation-Heating.html)
+
+# Other stuff
+
+1. [Julia para Cientistas](julia-para-cientistas/index.html)

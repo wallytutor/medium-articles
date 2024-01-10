@@ -4,15 +4,25 @@ using Weave
 const BUILDDIR = joinpath(@__DIR__(), "_build")
 
 function weaveall()
-    source = filter(s->endswith(s, ".md"), readdir(@__DIR__()))
-    target = joinpath.(@__DIR__(), source)
-    
     @info "Weaving all documents..."
-    weave.(target;
-        doctype  = "md2html",
-        informat = "markdown",
-        out_path = BUILDDIR,
-        template = joinpath(@__DIR__(), "template.html"))
+    for (root, _, files) in walkdir(@__DIR__())
+        for file in files
+            if endswith(file, ".md")
+                target = joinpath(root, file)
+                output = joinpath(BUILDDIR, relpath(root))
+
+                @info "Weaving  : $(target)"
+                @info "Generate : $(output)"
+
+                weave(target;
+                      doctype  = "md2html",
+                      informat = "markdown",
+                      out_path = output,
+                      template = joinpath(@__DIR__(), "template.html"))
+            end
+        end
+    end
+
     return nothing;
 end
 

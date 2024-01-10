@@ -1,0 +1,226 @@
+---
+title  : Funções e despacho
+author : Walter Dal'Maz Silva
+date   : `j import Dates; Dates.Date(Dates.now())`
+weave_options:
+  error: false
+  term: false
+  wrap: true
+  line_width: 100
+---
+
+# Parte 6 - Funções e despacho
+
+
+
+## Capturando de excessões
+
+
+
+try
+    unsignedx::UInt8 = 13;
+    unsignedx = 256;
+catch err
+    println("Error: $(err)")
+end
+
+
+try
+    var = "bolo";
+    throw(DomainError(var, "Não quero $(var)!"))
+catch err
+    println("Error: $(err)")
+end
+
+
+try
+    error("Pare já!")
+catch err
+    println("Error: $(err)")
+end
+
+
+
+## O básico de funções
+
+
+
+function sayhi(name)
+    println("Hi $name, it's great to see you!")
+end
+
+
+function f(x)
+    x^2
+end
+
+
+sayhi("C-3PO")
+
+
+f(42)
+
+
+
+## Funções *inline*
+
+
+
+sayhi2(name) = println("Hi $name, it's great to see you!")
+
+
+f2(x) = x^2
+
+
+sayhi2("R2D2")
+
+
+f2(42)
+
+
+
+## Funções anônimas
+
+
+
+sayhi3 = name -> println("Hi $name, it's great to see you!")
+
+
+f3 = x -> x^2
+
+
+sayhi3("Chewbacca")
+
+
+f3(42)
+
+
+
+## *Duck-typing*
+
+
+
+sayhi(55595472)
+
+
+f(rand(3, 3))
+
+
+f("hi")
+
+
+try
+    f(rand(3))
+catch err
+    println("Erro: $(err)")
+end
+
+
+
+## Funções mutantes
+
+
+
+v = [3, 5, 2]
+
+
+sort(v), v
+
+
+sort!(v), v
+
+
+
+## Funções de ordem superior
+
+
+
+map(f, [1, 2, 3])
+
+
+map(x -> x^3, [1, 2, 3])
+
+
+broadcast(f, [1, 2, 3])
+
+
+
+Some syntactic sugar for calling broadcast is to place a . between the name of the function you want to broadcast and its input arguments. For example,
+
+```julia
+broadcast(f, [1, 2, 3])
+```
+is the same as
+
+```julia
+f.([1, 2, 3])
+```
+
+
+
+f.([1, 2, 3])
+
+
+M = [i + 3*j for j in 0:2, i in 1:3]
+
+
+f(M)
+
+
+f.(M)
+
+
+M .+ 2 .* f.(M) ./ M
+
+
+broadcast(x -> x + 2 * f(x) / x, M)
+
+
+@. M + 2 * f(M) / M
+
+
+
+## Despacho múltiplo
+
+
+
+foo(x::String, y::String) = println("My inputs x and y are both strings!")
+
+
+foo(x::Int, y::Int) = println("My inputs x and y are both integers!")
+
+
+methods(cd)
+
+
+@which 3.0 + 3.0
+
+
+foo(x::Number, y::Number) = println("My inputs x and y are both numbers!")
+
+
+foo(x, y) = println("I accept inputs of any type!")
+
+
+foo("hello", "hi!")
+
+
+foo(3, 4)
+
+
+methods(foo)
+
+
+@which foo(3, 4)
+
+
+@which foo(3, 4)
+
+
+@which foo(3.0, 4)
+
+
+foo(rand(3), "who are you")
+
+
+Isso é tudo para esta sessão de estudo! Até a próxima!
