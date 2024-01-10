@@ -21,6 +21,11 @@
   <style type="text/css">
   {{{ :stylesheet }}}
 
+  /* Override code blocks background */
+  pre.hljl {
+    background: #000000;
+  }
+
   /* Add a black background color to the top navigation */
   .topnav {
     background-color: #333;
@@ -48,6 +53,87 @@
     background-color: #0468aa;
     color: white;
   }
+
+  /* ADMONITIONS 
+  
+  Inspired on themes used here:
+  https://docs.julialang.org/en/v1/assets/themes/documenter-light.css
+  */
+  .admonition {
+    background-color: #b5b5b5;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #363636;
+    border-radius: 4px;
+    font-size: 1.25rem; 
+    margin-bottom: 4px;
+  }
+
+  .admonition p {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .admonition strong {
+      color: currentColor;
+  }
+
+  .admonition-title {
+    color: #fff;
+    background-color: #363636;
+    align-items: center;
+    font-weight: 700;
+    justify-content: space-between;
+    line-height: 1.25;
+    padding: 0.5rem 0.75rem;
+    position: relative; 
+  }
+
+  .admonition-title:before {
+    font-weight: 900;
+    margin-right: 0.75rem;
+    /* content: "\f06a"; */
+  }
+
+  /* ADMONITION NOTE */
+  .admonition.note {
+    background-color: #def0fc;
+    border-color: #209cee;
+  }
+  .admonition.note > .admonition-title {
+    background-color: #209cee;
+    color: rgba(0, 0, 0, 0.7);
+  }
+  
+  /* ADMONITION TIP */
+  .admonition.tip {
+    background-color: #bdf4d1;
+    border-color: #22c35b;
+  }
+  .admonition.tip > .admonition-title {
+    background-color: #22c35b;
+    color: rgba(0, 0, 0, 0.7);
+  }
+  
+  /* ADMONITION WARNING */
+  .admonition.warning {
+    background-color: #fff3c5;
+    border-color: #ffdd57;
+  }
+  .admonition.warning > .admonition-title {
+    background-color: #ffdd57;
+    color: rgba(0, 0, 0, 0.7);
+  }
+  
+  /* ADMONITION DANGER */
+  .admonition.danger {
+    background-color: #ffaba7;
+    border-color: #da0b00;
+  }
+  .admonition.danger > .admonition-title {
+    background-color: #da0b00;
+    color: #fff;
+  }
+
   </style>
 </HEAD>
 
