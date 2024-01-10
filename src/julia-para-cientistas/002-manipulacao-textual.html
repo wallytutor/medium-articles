@@ -3,7 +3,7 @@
 <HEAD>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Index of published articles</title>
+  <title>Manipulação Textual</title>
   
 
   <script type="text/x-mathjax-config">
@@ -653,20 +653,234 @@ div.title {text-align: center;}
     <div class="row">
       <div class="col-md-12 twelve columns">
         <div class="title">
-          <h1 class="title">Index of published articles</h1>
+          <h1 class="title">Manipulação Textual</h1>
           <h5>Walter Dal'Maz Silva</h5>
-          <h5>2024-01-07</h5>
+          <h5>2024-01-10</h5>
         </div>
 
-        <p>Home page for supporting materials of my Medium <a href="https://medium.com/@waltermateriais">articles</a>.</p>
-<p>If you prefer to go straight to the code it is in this <a href="https://github.com/wallytutor/medium-articles">repository</a>.</p>
-<h1>Contents</h1>
-<ol>
-<li><p><a href="01-Composite-Conduction.html">Composite plate heat conduction</a></p>
-</li>
-<li><p><a href="02-Part-Radiation-Heating.html">Transient heat transfer model</a></p>
-</li>
-</ol>
+        <h1>Parte 2 - Manipulação textual</h1>
+<p>Uma habilidade frequentemente negligenciada pelo grande público de computação científica nos seus primeiros passos é a capacidade de manipulação textual. Não podemos esquecer que programas necessitam interfaces pelas quais alimentamos as condições do problema a ser solucionado e resultados são esperados ao fim da computação. Para problemas que tomam um tempo computacional importante, é extremamente útil ter mensagens de estado de progresso. Nessa seção introduzimos os primeiros elementos necessários para a manipulação textual em Julia.</p>
+<p>Uma variável do tipo <code>String</code> declara-se com aspas duplas, como vimos inicialmente no programa <code>Hello, World&#33;</code>. Deve-se tomar cuidado em Julia pois caracteres individuais &#40;tipo <code>Char</code>&#41; tem um significado distinto de uma coleção de caracteres <code>String</code>.</p>
+<p>Por exemplo, avaliando o tipo de <code>&#39;a&#39;</code> obtemos:</p>
+
+
+<pre class='hljl'>
+<span class='hljl-nf'>typeof</span><span class='hljl-p'>(</span><span class='hljl-sc'>&#39;a&#39;</span><span class='hljl-p'>)</span>
+</pre>
+
+
+<pre class="output">
+Char
+</pre>
+
+
+<h2>Declaração de Strings</h2>
+<p>Estudaremos caracteres mais tarde. Por enquanto nos interessamos por expressões como:</p>
+
+
+<pre class='hljl'>
+<span class='hljl-n'>text1</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;Olá, eu sou uma String&quot;</span><span class='hljl-t'>
+
+</span><span class='hljl-nf'>typeof</span><span class='hljl-p'>(</span><span class='hljl-n'>text1</span><span class='hljl-p'>)</span>
+</pre>
+
+
+<pre class="output">
+String
+</pre>
+
+
+<p>Eventualmente necessitamos utilizar aspas duplas no interior do texto. Neste caso, a primeira solução provida por Julia é utilizar três aspas duplas para a abertura e fechamento do texto. Observamos abaixo que o texto é transformado para adicionar uma barra invertida antes das aspas que estão no corpo do texto.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-n'>text2</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;&quot;&quot;Eu sou uma String que pode incluir &quot;aspas duplas&quot;.&quot;&quot;&quot;</span>
+</pre>
+
+
+<pre class="output">
+&quot;Eu sou uma String que pode incluir \&quot;aspas duplas\&quot;.&quot;
+</pre>
+
+
+<p>Neste caso, Julia aplicou automaticamente um <em>caractere de escape</em> no símbolo a ser interpretado de maneira especial. Existem diversos casos aonde a aplicação manual pode ser útil, por exemplo quando entrando texto em UNICODE por códigos. No exemplo abaixo utilizamos a técnica manual com o texto precedente.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-n'>text3</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;Eu sou uma String que pode incluir </span><span class='hljl-se'>\&quot;</span><span class='hljl-s'>aspas duplas</span><span class='hljl-se'>\&quot;</span><span class='hljl-s'>.&quot;</span>
+</pre>
+
+
+<pre class="output">
+&quot;Eu sou uma String que pode incluir \&quot;aspas duplas\&quot;.&quot;
+</pre>
+
+
+<p>Para averiguar o funcionamento correto, testamos de imprimir <code>text3</code> no terminal.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-nf'>println</span><span class='hljl-p'>(</span><span class='hljl-n'>text3</span><span class='hljl-p'>)</span>
+</pre>
+
+
+<pre class="output">
+Eu sou uma String que pode incluir &quot;aspas duplas&quot;.
+</pre>
+
+
+<p>O exemplo a seguir ilustra o uso do caracter de escape para representar UNICODE.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-n'>pounds</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;</span><span class='hljl-se'>\U000A3</span><span class='hljl-s'>&quot;</span>
+</pre>
+
+
+<pre class="output">
+&quot;£&quot;
+</pre>
+
+
+<h2>Interpolação de Strings</h2>
+<p>Para gerar mensagens automáticas frequentemente dispomos de um texto que deve ter partes substituidas. Ilustramos abaixo o uso de um símbolo de dólar &#36; seguido de parêntesis com a variável de substituição para realizar o que chamamos de <em>interpolação textual</em>.</p>
+<div class="admonition tip"><p class="admonition-title">Múltiplas variáveis em uma linha</p><p>Observe aqui a introdução da declaração de múltiplas variáveis em uma linha.</p>
+</div>
+
+
+<pre class='hljl'>
+<span class='hljl-n'>name</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>age</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;Walter&quot;</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>34</span><span class='hljl-t'>
+</span><span class='hljl-nf'>println</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;Olá, </span><span class='hljl-si'>$</span><span class='hljl-p'>(</span><span class='hljl-n'>name</span><span class='hljl-p'>)</span><span class='hljl-s'>, você tem </span><span class='hljl-si'>$</span><span class='hljl-p'>(</span><span class='hljl-n'>age</span><span class='hljl-p'>)</span><span class='hljl-s'> anos!&quot;</span><span class='hljl-p'>)</span>
+</pre>
+
+
+<pre class="output">
+Olá, Walter, você tem 34 anos&#33;
+</pre>
+
+
+<div class="admonition warning"><p class="admonition-title">Prática não recomendada</p><p>Para nomes simples de variáveis e sem formatação explícita, o código a seguir também é valido, mas é pode ser considerado uma má prática de programação.</p>
+</div>
+
+
+<pre class='hljl'>
+<span class='hljl-nf'>println</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;Olá, </span><span class='hljl-si'>$name</span><span class='hljl-s'>, você tem </span><span class='hljl-si'>$age</span><span class='hljl-s'> anos!&quot;</span><span class='hljl-p'>)</span>
+</pre>
+
+
+<pre class="output">
+Olá, Walter, você tem 34 anos&#33;
+</pre>
+
+
+<p>Em alguns casos, como na contagem de operações em um laço, podemos também realizar operações e avaliação de funções diretamente na <code>String</code> sendo interpolada.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-nf'>println</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;Também é possível realizar operações, e.g 2³ = </span><span class='hljl-si'>$</span><span class='hljl-p'>(</span><span class='hljl-ni'>2</span><span class='hljl-oB'>^</span><span class='hljl-ni'>3</span><span class='hljl-p'>)</span><span class='hljl-s'>.&quot;</span><span class='hljl-p'>)</span>
+</pre>
+
+
+<pre class="output">
+Também é possível realizar operações, e.g 2³ &#61; 8.
+</pre>
+
+
+<h2>Formatação de números</h2>
+
+
+<pre class='hljl'>
+<span class='hljl-k'>using</span><span class='hljl-t'> </span><span class='hljl-n'>Printf</span><span class='hljl-t'>
+
+</span><span class='hljl-nd'>@sprintf</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;%g&quot;</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-nfB'>12.0</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+</span><span class='hljl-nd'>@sprintf</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;%.6f&quot;</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-nfB'>12.0</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+</span><span class='hljl-nd'>@sprintf</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;%.6e&quot;</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-nfB'>12.0</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+</span><span class='hljl-nd'>@sprintf</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;%15.8e %15.8E&quot;</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-nfB'>12.0</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>13</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+</span><span class='hljl-nd'>@sprintf</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;%6d&quot;</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-nfB'>12.0</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+</span><span class='hljl-nd'>@sprintf</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;%06d&quot;</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>12</span><span class='hljl-p'>)</span>
+</pre>
+
+
+<pre class="output">
+&quot;000012&quot;
+</pre>
+
+
+<h2>Concatenação de Strings</h2>
+<p>Na maioria das linguagens de programação a concatenação textual se faz com o símbolo de adição <code>&#43;</code>. Data suas origens já voltadas para a computação numérica, Julia adota para esta finalidade o asterísco <code>*</code> utilizado para multiplicação, o que se deve à sua utilização em álgebra abstrata para indicar operações não-comutativas, como clarificado no <a href="https://docs.julialang.org/en/v1/manual/strings/#man-concatenation">manual</a>.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-n'>bark</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;Au!&quot;</span><span class='hljl-t'>
+
+</span><span class='hljl-n'>bark</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>bark</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>bark</span>
+</pre>
+
+
+<pre class="output">
+&quot;Au&#33;Au&#33;Au&#33;&quot;
+</pre>
+
+
+<p>O circunflexo <code>^</code> utilizado para a exponenciação também pode ser utilizado para uma repetição múltipla de uma data <code>String</code>.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-n'>bark</span><span class='hljl-oB'>^</span><span class='hljl-ni'>10</span>
+</pre>
+
+
+<pre class="output">
+&quot;Au&#33;Au&#33;Au&#33;Au&#33;Au&#33;Au&#33;Au&#33;Au&#33;Au&#33;Au&#33;&quot;
+</pre>
+
+
+<p>Finalmente o construtor <code>string&#40;&#41;</code> permite de contactenar não somente <code>Strings</code>, mas simultanêamente <code>Strings</code> e objetos que suportam conversão textual.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-nf'>string</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;Unido um número &quot;</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>10</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-s'>&quot; ou &quot;</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-nfB'>12.0</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-s'>&quot; a outro &quot;</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;texto!&quot;</span><span class='hljl-p'>)</span>
+</pre>
+
+
+<pre class="output">
+&quot;Unido um número 10 ou 12.0 a outro texto&#33;&quot;
+</pre>
+
+
+<h2>Funções básicas</h2>
+<p>Diversos outros <a href="https://docs.julialang.org/en/v1/base/strings/">métodos</a> são disponíveis para Strings. Dado o suporte UNICODE de Julia, devemos enfatizar com o uso de <code>length&#40;&#41;</code> e <code>sizeof&#40;&#41;</code> que o comprimento textual de uma <code>String</code> pode não corresponder ao seu tamanho em <em>bytes</em>, o que pode levar ao usuário desavisado a erros numa tentativa de acesso à caracteres por índices.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-nf'>length</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;∀&quot;</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-nf'>sizeof</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;∀&quot;</span><span class='hljl-p'>)</span>
+</pre>
+
+
+<pre class="output">
+&#40;1, 3&#41;
+</pre>
+
+
+<p>Uma função que é bastante útil é <code>startswith&#40;&#41;</code> que permite verificar se uma <code>String</code> inicia por um outro bloco de caracteres visado. Testes mais complexos podem ser feitos com <a href="https://docs.julialang.org/en/v1/base/strings/#Base.Regex">expressões regulares</a>, como veremos mais tarde.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-nf'>startswith</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;align&quot;</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;al&quot;</span><span class='hljl-p'>)</span>
+</pre>
+
+
+<pre class="output">
+true
+</pre>
+
+
+<p>Isso é tudo para esta sessão de estudo&#33; Até a próxima&#33;</p>
 
 
         <hr/>
