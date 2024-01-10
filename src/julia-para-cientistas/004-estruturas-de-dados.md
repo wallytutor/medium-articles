@@ -236,7 +236,6 @@ with_conversion = let
         mean((@benchmark a::Vector{Float64} = collect(1:10^1)).times)
         mean((@benchmark a::Vector{Float64} = collect(1:10^2)).times)
         mean((@benchmark a::Vector{Float64} = collect(1:10^3)).times)
-        mean((@benchmark a::Vector{Float64} = collect(1:10^4)).times)
     ]
     scalability
 end
@@ -249,7 +248,6 @@ without_conversion = let
         mean((@benchmark a::Vector{Float64} = collect(1.0:10.0^1)).times)
         mean((@benchmark a::Vector{Float64} = collect(1.0:10.0^2)).times)
         mean((@benchmark a::Vector{Float64} = collect(1.0:10.0^3)).times)
-        mean((@benchmark a::Vector{Float64} = collect(1.0:10.0^4)).times)
     ]
     scalability
 end
@@ -261,7 +259,7 @@ Abaixo calculamos a diferença de tempo entre os dois processos e nos deparamos 
 
 ```julia
 time_diff = (without_conversion - with_conversion)
-time_diff_per_element = time_diff ./ [10^k for k = 0:4]
+time_diff_per_element = time_diff ./ [10^k for k = 0:3]
 ```
 
 Espero que a decisão de incluir essas divagações um pouco cedo no aprendizado não sejam deletérias para a motivação do estudante, mas que criem curiosidade quanto aos tópicos mais avançados que veremos mais tarde.

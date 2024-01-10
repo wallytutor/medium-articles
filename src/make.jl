@@ -28,9 +28,22 @@ end
 
 function cleanall()
     @info "Removing cache directories..."
-    source = filter(s->startswith(s, "jl_"), readdir(BUILDDIR))
-    target = joinpath.(BUILDDIR, source)
-    rm.(target; recursive=true, force=true)
+    removes = []
+
+    for (root, dirs, _) in walkdir(BUILDDIR)
+        for file in dirs
+            if startswith(file, "jl_")
+                target = joinpath(root, file)
+                push!(removes, target)
+                @info "Cleaning : $(target)"
+            end
+        end
+    end
+
+    # source = filter(s->startswith(s, "jl_"), readdir(BUILDDIR))
+    # target = joinpath.(BUILDDIR, source)
+    rm.(removes; recursive=true, force=true)
+
     return nothing;
 end
 
