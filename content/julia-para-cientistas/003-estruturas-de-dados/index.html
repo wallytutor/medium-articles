@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+   <link rel="stylesheet" href="/libs/highlight/styles/github.min.css">
+   
+  <link rel="stylesheet" href="/css/franklin.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/celeste.min.css">
+<link rel="stylesheet" href="/css/custom.css">
+
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon.png">
+<link rel="shortcut icon" href="/assets/favicon.ico">
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="/assets/apple-touch-icon.png">
+
+   <title>Parte 3 - Estruturas de dados I</title>  
+</head>
+<body>
+  <header>
+<nav class="nav-main">
+  <ul>
+    <li class="logo"><a class="hvr-ripple-out" href="/">W</a></li>
+    <li class="hvr-underline-reveal"><a href="/content/julia-para-cientistas/">Julia para Cientistas</a></li>
+  </ul>
+</nav>
+</header>
+
+
+<!-- Content appended here -->
+<div class="franklin-content">
+<h1 id="parte_3_-_estruturas_de_dados_i"><a href="#parte_3_-_estruturas_de_dados_i" class="header-anchor">Parte 3 - Estruturas de dados I</a></h1>
+<p>Nesta seção vamos estudar alguns tipos de estruturas de dados. Essas formas <em>compostas</em> são construídas sobre elementos que já vimos mas podem também ir além destes. Abordaremos apenas as características básicas de cada uma das estruturas apresentadas e os casos de aplicação se tornarão evidentes. Os diversos métodos comuns à essas coleções é descrito <a href="https://docs.julialang.org/en/v1/base/collections/">nesta página</a>.</p>
+<h2 id="tuples"><a href="#tuples" class="header-anchor"><em>Tuples</em></a></h2>
+<p>Uma <em>tuple</em> é constituída de uma sequência de elementos, que podem ser de tipos diferentes, declarada entre parêntesis. A característica de base de uma <em>tuple</em> é sua imutabilidade: uma vez declarada, seus elementos não podem ser alterados.</p>
+<div class="note"><div class="title">⚠  Já vimos isso antes</div>
+<div class="content">Voltando a seção aonde realizamos a conversão explícita de tipos acima, você pode verificar que na realidade já utilizamos uma tuple de números indicando as intensidades RGB de uma cor.</div></div>
+<p>Declaremos uma sequência fixa de linguagens de programação dadas por seus nomes como <code>Strings</code>:</p>
+<pre><code class="language-julia">languages &#61; &#40;&quot;Julia&quot;, &quot;Python&quot;, &quot;Octave&quot;&#41;</code></pre><pre><code class="plaintext code-output">("Julia", "Python", "Octave")</code></pre>
+<p>Inspecionando o tipo desta variável aprendemos mais uma característica importante inerente a definição de <code>Tuple</code> feita acima quanto ao seu caráter imutável: o tipo de uma <code>Tuple</code> inclui individualmente o tipo de cada um de seus elementos. Dito de outra maneira, uma sequência composta de um número definido de objetos de dados tipos caracteriza por ela mesmo um novo tipo de dados.</p>
+<pre><code class="language-julia">typeof&#40;languages&#41;</code></pre><pre><code class="plaintext code-output">Tuple{String, String, String}</code></pre>
+<p>Os elementos de uma <code>Tuple</code> podem ser acessados por seus índices.</p>
+<div class="warning"><div class="title">⚠  Indices em Julia</div>
+<div class="content">É o momento de mencionar que em Julia a indexação inicia com <code>1</code>.</div></div>
+<pre><code class="language-julia">@show languages&#91;1&#93;</code></pre><pre><code class="plaintext code-output">languages[1] = "Julia"
+</code></pre>
+<p>Vamos tentar modificar o segundo elemento da <code>Tuple</code>.</p>
+<div class="note"><div class="title">⚠  Sintaxe de controle de erros</div>
+<div class="content">Ainda é cedo para entrar nos detalhes, mas aproveite o bloco abaixo para ter um primeiro contato com a gestão de erros em Julia.</div></div>
+<pre><code class="language-julia">try
+    languages&#91;2&#93; &#61; &quot;C&#43;&#43;&quot;
+catch err
+    println&#40;&quot;Erro: &#36;&#40;err&#41;&quot;&#41;
+end</code></pre><pre><code class="plaintext code-output">Erro: MethodError(setindex!, (("Julia", "Python", "Octave"), "C++", 2), 0x0000000000007bfd)
+</code></pre>
+<p>Existem certas subtilidades que você precisa saber sobre a imutabilidade. Observe o exemplo abaixo, aonde declaramos duas variáveis que são utilizadas para construir uma <code>Tuple</code> e então modificamos uma das variáveis: a <code>Tuple</code> continua com os valores originais do momento da sua construção.</p>
+<pre><code class="language-julia">let
+    a &#61; 1
+    b &#61; 2
+
+    test_tuple &#61; &#40;a, b&#41;
+
+    a &#61; 5
+    test_tuple
+end</code></pre><pre><code class="plaintext code-output">(1, 2)</code></pre>
+<div class="warning"><div class="title">⚠  Isso nem sempre é verdade&#33;</div>
+<div class="content">Se o elemento compondo a <code>Tuple</code> for de um tipo mutável, como é o caso de <code>Array</code>&#39;s, como veremos no que se segue, os elementos desta variável podem ser modificados e impactam a <code>Tuple</code> diretamente. Isso se dá porque neste caso a <code>Tuple</code> conserva a referência ao objeto em questão, e não uma cópia dos valores, como é o caso para tipos de base.</div></div>
+<pre><code class="language-julia">let
+    a &#61; 1
+    b &#61; &#91;1, 2&#93;
+
+    test_tuple &#61; &#40;a, b&#41;
+
+    b&#91;1&#93; &#61; 999
+    test_tuple
+end</code></pre><pre><code class="plaintext code-output">(1, [999, 2])</code></pre>
+<h2 id="named_tuples"><a href="#named_tuples" class="header-anchor"><em>Named tuples</em></a></h2>
+<p>Esta extensão à <code>Tuples</code> adiciona a possibilidade de acesso aos componentes por um <em>nome</em> no lugar de um simples índice – que continua funcional como veremos abaixo. Esse tipo de estrutura é bastante útil quando necessitamos criar abstrações de coisas bastante simples para as quais a criação de um novo tipo não se justifica. Discutiremos mais tarde quando vamos estudar a criação de <em>novos tipos</em>.</p>
+<pre><code class="language-julia">named_languages &#61; &#40;julia &#61; &quot;Julia&quot;, python &#61; &quot;Python&quot;&#41;</code></pre><pre><code class="plaintext code-output">(julia = "Julia", python = "Python")</code></pre>
+<p>Observe o fato de que agora os nomes utilizados no índex fazem parte do tipo.</p>
+<pre><code class="language-julia">typeof&#40;named_languages&#41;</code></pre><pre><code class="plaintext code-output">@NamedTuple{julia::String, python::String}</code></pre>
+<p>Abaixo verificamos que além do acesso por nomes, <code>NamedTuples</code> também respeitam a ordem de declaração dos elementos: <code>:julia</code> é o primeiro índice. A sintaxe de acesso aos elementos neste caso é com a notação típica utilizando um ponto, comum a diversas linguages de programação.</p>
+<pre><code class="language-julia">named_languages&#91;1&#93; &#61;&#61; named_languages.julia</code></pre><pre><code class="plaintext code-output">true</code></pre>
+<h2 id="dicionários"><a href="#dicionários" class="header-anchor">Dicionários</a></h2>
+<p>Objetos do tipo <code>Dict</code> possuem a similaridade com <code>NamedTuples</code> em que seus elementos podem ser acessados por nome. No entanto a sintaxe é diferente e os valores desta estrutura são mutáveis.</p>
+<pre><code class="language-julia">organs &#61; Dict&#40;&quot;brain&quot; &#61;&gt; &quot;🧠&quot;, &quot;heart&quot; &#61;&gt; &quot;❤&quot;&#41;</code></pre><pre><code class="plaintext code-output">Dict{String, String} with 2 entries:
+  "brain" => "🧠"
+  "heart" => "❤"</code></pre>
+<p>O acesso a elementos se faz com colchetes contendo o índex como se segue:</p>
+<pre><code class="language-julia">organs&#91;&quot;brain&quot;&#93;</code></pre><pre><code class="plaintext code-output">"🧠"</code></pre>
+<p>E como dissemos, os elementos são mutáveis: vamos atribuir um burrito ao cérebro.</p>
+<pre><code class="language-julia">organs&#91;&quot;brain&quot;&#93; &#61; &quot;🌯&quot;</code></pre><pre><code class="plaintext code-output">"🌯"</code></pre>
+<p>Não só os elementos, mas o dicionário como um todo, pode ser alterado. Para adicionar novos elementos simplesmente <em>acessamos</em> a palavra-chave e atribuímos um valor:</p>
+<pre><code class="language-julia">organs&#91;&quot;eyes&quot;&#93; &#61; &quot;👀&quot;</code></pre><pre><code class="plaintext code-output">"👀"</code></pre>
+<p>Internamente para evitar nova alocação de memória a cada tentativa de se adicionar um novo elemento, um dicionário realiza a alocação de <code>slots</code> que são renovados cada vez que sua capacidade é ultrapassada. Observe que a lista retornada abaixo é composta majoritariamente de <code>0x00</code>, que é o endereço de memória nulo, enquanto 3 elementos indicam um valor não-nulo, correspondendo aos elementos já adicionados ao dicionário. Disto vemos que adicionalmente um dicionário não preserva necessariamente uma sequência ordenada. Esses detalhes ultrapassam o presente escopo mas vão abrindo as portas para assuntos mais complexos.</p>
+<pre><code class="language-julia">organs.slots
+organs</code></pre><pre><code class="plaintext code-output">Dict{String, String} with 3 entries:
+  "brain" => "🌯"
+  "heart" => "❤"
+  "eyes" => "👀"</code></pre>
+<p>Para remover elementos utilizamos a função <code>pop&#33;</code>. Por convenção em Julia, funções que terminam por um ponto de exclamação modificam os argumentos que são passados. No caso de <code>pop&#33;</code> o dicionário é modificado e o valor de retorno é aquele do elemento removido.</p>
+<pre><code class="language-julia">pop&#33;&#40;organs, &quot;brain&quot;&#41;</code></pre><pre><code class="plaintext code-output">"🌯"</code></pre>
+<p>A tentativa de remover um elemento inexistente obviamente conduz à um erro:</p>
+<pre><code class="language-julia">try
+    pop&#33;&#40;organs, &quot;leg&quot;&#41;
+catch err
+    println&#40;&quot;Erro: &#36;&#40;err&#41;&quot;&#41;
+end
+organs</code></pre><pre><code class="plaintext code-output">Erro: KeyError("leg")
+Dict{String, String} with 2 entries:
+  "heart" => "❤"
+  "eyes" => "👀"</code></pre>
+<p>Para evitar essa possibilidade podemos usar a função <code>haskey&#40;&#41;</code>.</p>
+<pre><code class="language-julia">haskey&#40;organs, &quot;liver&quot;&#41;</code></pre><pre><code class="plaintext code-output">false</code></pre>
+<p>Uma última coisa a notar é que <em>praticamente</em> qualquer tipo básico pode ser empregado como a chave de um dicionário em Julia. Veja o exemplo à seguir:</p>
+<pre><code class="language-julia">music &#61; Dict&#40;:violin &#61;&gt; &quot;🎻&quot;, 1 &#61;&gt; 2&#41;</code></pre><pre><code class="plaintext code-output">Dict{Any, Any} with 2 entries:
+  :violin => "🎻"
+  1 => 2</code></pre>
+<p>Como as chaves são de tipos diferentes &#40;um <code>Symbol</code> e um <code>Int64</code>&#41;, assim como os valores &#40;uma <code>String</code> e um <code>Int64</code>&#41;, a função <code>typeof&#40;&#41;</code> nos retorna tipos <code>Any</code>.</p>
+<pre><code class="language-julia">typeof&#40;music&#41;</code></pre><pre><code class="plaintext code-output">Dict{Any, Any}</code></pre>
+<p>Ainda nos restam alguns detalhes e tipos de dados, mas o tutorial começa a ficar longo... e não queremos te perder por aqui&#33;</p>
+<p>Isso é tudo para esta sessão de estudo&#33; Até a próxima&#33;</p>
+<div class="page-foot">
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
+    Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    
+    
+        <script src="/libs/highlight/highlight.min.js"></script>
+<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
+
+    
+  </body>
+</html>
