@@ -27,6 +27,7 @@ jobs:
             using Pkg;
             Pkg.activate("src/");
             Pkg.instantiate();
+            cd("src/")
             using Franklin;
             serve(clear=true, single=true)'
 
