@@ -43,7 +43,6 @@ contato.
 de funcionalidades. Para conhecer mais não deixe de visitar [Julia
 Packages](https://juliapackages.com/).}
 
-
 ## Conteúdos
 
 1. [Primeiros Passos](001-primeiros-passos)
