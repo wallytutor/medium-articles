@@ -29,7 +29,7 @@ jobs:
             Pkg.instantiate();
             cd("src/");
             using Franklin;
-            optimize(prepath="medium-articles", prerender=false, minify=false)'
+            optimize(prepath="medium-articles", clear=true, prerender=false, minify=false)'
 
     - name: Build and Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
