@@ -40,8 +40,3 @@ If you have any questions or suggestions, you can reach me by [mail](mailto:walt
 <div style="clear: both"></div>
 ~~~
 @@
-
-## Medium contents
-
-1. [Composite plate heat conduction](content/medium/01-Composite-Conduction)
-1. [Transient heat transfer model](content/medium/02-Part-Radiation-Heating)
