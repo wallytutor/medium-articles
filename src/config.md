@@ -2,7 +2,7 @@
 author        = "Walter Dal'Maz Silva"
 mintoclevel   = 2
 maxtoclevel   = 3
-prepath       = "https://wallytutor.github.io/medium-articles/"
+prepath       = "medium-articles"
 ignore        = ["node_modules/"]
 generate_rss  = false
 hasplotly     = false
