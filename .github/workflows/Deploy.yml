@@ -25,7 +25,7 @@ jobs:
   
     - run: julia --project=src/ -e '
             using Pkg;
-            Pkg.activate(".");
+            Pkg.activate("src/");
             Pkg.instantiate();
             using Franklin;
             serve(clear=true, single=true)'
