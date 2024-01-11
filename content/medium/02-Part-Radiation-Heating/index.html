@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <link rel="stylesheet" href="/libs/katex/katex.min.css">
+   <link rel="stylesheet" href="/medium-articles/libs/katex/katex.min.css">
      
-   <link rel="stylesheet" href="/libs/highlight/styles/github.min.css">
+   <link rel="stylesheet" href="/medium-articles/libs/highlight/styles/github.min.css">
    
-  <link rel="stylesheet" href="/css/franklin.css">
+  <link rel="stylesheet" href="/medium-articles/css/franklin.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
-<link rel="stylesheet" href="/css/font-awesome.min.css">
-<link rel="stylesheet" href="/css/celeste.min.css">
-<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
+<link rel="stylesheet" href="/medium-articles/css/celeste.min.css">
+<link rel="stylesheet" href="/medium-articles/css/custom.css">
 
-<link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon.png">
-<link rel="shortcut icon" href="/assets/favicon.ico">
-<link rel="apple-touch-icon-precomposed" sizes="152x152" href="/assets/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/medium-articles/assets/favicon.png">
+<link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="/medium-articles/assets/apple-touch-icon.png">
 
    <title>Transient heat transfer</title>  
 </head>
@@ -23,8 +23,8 @@
   <header>
 <nav class="nav-main">
   <ul>
-    <li class="logo"><a class="hvr-ripple-out" href="/">W</a></li>
-    <li class="hvr-underline-reveal"><a href="/content/julia-para-cientistas/">Julia para Cientistas</a></li>
+    <li class="logo"><a class="hvr-ripple-out" href="/medium-articles/">W</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/julia-para-cientistas/">Julia para Cientistas</a></li>
   </ul>
 </nav>
 </header>
@@ -204,13 +204,13 @@ maxiter &#61; 80
 rtol &#61; 1.0e-12
 β &#61; 0.99
 
-@time solution &#61; integrate&#40;t, T, K, B; maxiter, rtol, β&#41;;</code></pre><pre><code class="plaintext code-output">  0.539224 seconds (2.80 M allocations: 237.721 MiB, 8.73% gc time, 66.24% compilation time)
+@time solution &#61; integrate&#40;t, T, K, B; maxiter, rtol, β&#41;;</code></pre><pre><code class="plaintext code-output">  0.557406 seconds (2.80 M allocations: 237.721 MiB, 7.50% gc time, 68.84% compilation time)
 </code></pre>
 <p>Below we can inspect the solution and the residuals at the end of each time-step. For the solution to make sense it is important that every single step must converge during time advancement. Note the leap in gas temperature during the first time steps resulting from the problem stiffness. As a matter of fact, a smaller time-step should have been used for properly resolving its dynamics in the early stages or even better, an adaptative time-stepping approach should have been adopted.</p>
 
 
     <figure style="text-align:center;">
-      <img src="/assets/content/medium/02-Part-Radiation-Heating/code/output/plot-1.png" style="padding:0; width:100%;" alt=" Problem solution."/>
+      <img src="/medium-articles/assets/content/medium/02-Part-Radiation-Heating/code/output/plot-1.png" style="padding:0; width:100%;" alt=" Problem solution."/>
       <figcaption> Problem solution.</figcaption>
     </figure>
     
@@ -222,13 +222,13 @@ rtol &#61; 1.0e-12
 </div>
 </div><!-- CONTENT ENDS HERE -->
     
-        <script src="/libs/katex/katex.min.js"></script>
-<script src="/libs/katex/contrib/auto-render.min.js"></script>
+        <script src="/medium-articles/libs/katex/katex.min.js"></script>
+<script src="/medium-articles/libs/katex/contrib/auto-render.min.js"></script>
 <script>renderMathInElement(document.body)</script>
 
     
     
-        <script src="/libs/highlight/highlight.min.js"></script>
+        <script src="/medium-articles/libs/highlight/highlight.min.js"></script>
 <script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
 
     
