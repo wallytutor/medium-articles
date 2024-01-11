@@ -56,6 +56,18 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>https://wallytutor.github.io/medium-articles/content/transport-phenomena/index.html</loc>
+    <lastmod>2024-01-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://wallytutor.github.io/medium-articles/content/transport-phenomena/001-advection-1d/index.html</loc>
+    <lastmod>2024-01-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>https://wallytutor.github.io/medium-articles/content/medium/02-Part-Radiation-Heating/index.html</loc>
     <lastmod>2024-01-11</lastmod>
     <changefreq>monthly</changefreq>
