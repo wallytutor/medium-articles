@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+   <link rel="stylesheet" href="/medium-articles/libs/highlight/styles/github.min.css">
+   
+  <link rel="stylesheet" href="/medium-articles/css/franklin.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
+<link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
+<link rel="stylesheet" href="/medium-articles/css/celeste.min.css">
+<link rel="stylesheet" href="/medium-articles/css/custom.css">
+
+<link rel="icon" type="image/png" sizes="192x192" href="/medium-articles/assets/favicon.png">
+<link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
+
+
+   <title>Root-finding in Python</title>  
+</head>
+<body>
+  <header>
+<nav class="nav-main">
+  <ul>
+    <li class="logo"><a class="hvr-ripple-out" href="/medium-articles/">W</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/medium/">Medium Articles</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/transport-phenomena/">Transport Phenomena</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/julia-para-cientistas/">Julia para Cientistas</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/engenharia-de-reatores/">Engenharia de Reatores</a></li>
+  </ul>
+</nav>
+</header>
+
+
+<!-- Content appended here -->
+<div class="franklin-content">
+<h1 id="root-finding_in_python"><a href="#root-finding_in_python" class="header-anchor">Root-finding in Python</a></h1>
+<p>It can be simple and performant, trust me.</p>
+<p>Whether you are a scientist or engineer, or anything else, root-finding is a problem you will find along the way when doing numerical stuff. It doesn&#39;t matter whether you are trying to solve a physical model, doing some operational research to allocate resources, planning a route, or doing some data fitting, root-finding will be there in some way.</p>
+<p>Python itself is slow, but who does really solve problems in <em>pure</em> Python anyway? If you are here, you are certainly aware that Python is simply an interface to lower-level compiled code that executes fast enough to handle CPU intense algorithms. Otherwise, there is some homework you forgot to do&#33;</p>
+<p>In what follows we will see how to solve a simple root-finding problem with different packages from Python <em>jungle</em>. Advantages and inconveniences of each of the approaches are discussed along the way. The idea is to keep the problem simple but representative enough of a generic non-linear root-finding application.</p>
+<p>For reproducible results, copy the following to a <code>requirements.txt</code> file and run <code>pip install -r requirements.txt</code> in a new Python environment. Because Pyomo is not shipped with Ipopt, you can download the executable for Windows <a href="https://github.com/coin-or/Ipopt/releases/tag/releases&#37;2F3.14.13">here</a>. For other platforms you must install it from the package manager or compile it, but that is outside our scope.</p>
+<pre><code class="language-plaintext">casadi&#61;&#61;3.5.6rc2
+Pyomo&#61;&#61;6.4.1
+scipy&#61;&#61;1.9.0</code></pre>
+<h2 id="problem_statement"><a href="#problem_statement" class="header-anchor">Problem statement</a></h2>
+<p>In the present study we will implement a solution for the steady state of the <a href="https://en.wikipedia.org/wiki/Brusselator">Brusselator</a> at a known stable set of parameters. If after reading you want other similar problems to practice, you can check the <a href="https://en.wikipedia.org/wiki/Lotka&#37;E2&#37;80&#37;93Volterra_equations">Lotka-Volterra</a> equations or the <a href="https://en.wikipedia.org/wiki/Oregonator">Oregonator</a>. I let you check the Wikipedia link for the mathematical formulation of the equations.</p>
+<p><strong>Note:</strong> in a future post we will use the same set of tools for dynamic simulation of the Brusselator, so hold on because our goal today is to understand the root-finding implementations only.</p>
+<p>Because we want to share some parameters across the different implementations that will be tested without bothering with changing values accross all files or reading some text/JSON file, we dump the class <code>Params</code> below into a <code>params.py</code> file. This way we can profit from the Python import system to easily load these values.</p>
+<pre><code class="language-python"># -*- coding: utf-8 -*-
+
+class Params:
+    &quot;&quot;&quot; Standard problem parameters. &quot;&quot;&quot;
+    # Initial guess for problem.
+    x0 &#61; &#91;1.0, 1.0&#93;
+
+    # Brusselator coefficients
+    A &#61; 1.0
+    B &#61; 1.7</code></pre>
+<h2 id="solution_approaches"><a href="#solution_approaches" class="header-anchor">Solution approaches</a></h2>
+<p>It is time to put our hands to work&#33; Today we will explore three ways of <em>finding the roots</em> of the Brusselator. Before we enter the code, here are a few words about the packages we will use.</p>
+<ul>
+<li><p>We start with <a href="https://scipy.org/">SciPy</a>. If you have already done some numerical methods in Python, you certainly know this package. It is one of the main players in the Python ecosystem and it is broad in the scope of covered algorithms. There you find optimization, interpolation, integration, signal processing, and much more. Although it provides <a href="https://docs.scipy.org/doc/scipy/tutorial/optimize.html#constrained-minimization-of-multivariate-scalar-functions-minimize">some constrained optimization</a> possibilities, it is a quite cumbersome interface, and I would stick to it only in simple cases. Here we use version 1.10.1.</p>
+</li>
+<li><p>The second package we will explore is <a href="https://web.casadi.org/">CasADi</a>. If you are not in the field of model predictive controls, you have never heard of it. This package does the job of computing the <a href="https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant">jacobian matrix</a> of your problem for you. Why is that great? Nonlinear root-finding is based on some sort of gradient descent, and routines need to compute finite difference derivatives to find the progress direction. This is <em>VERY</em> error-prone, and following the gradient computed from an analytical Jacobian introduces great robustness. Yes, you could provide SciPy with the problem Jacobian, but good luck deriving and implementing it for complex cases. Version 3.5.6 was employed here.</p>
+</li>
+<li><p>To wrap-up we introduce <a href="http://www.pyomo.org/">Pyomo</a>. This package has a broader audience than CasADi but also a steeper learning curve. Pyomo makes things formal from a mathematical standpoint. Let me elaborate. Pyomo allows you to declare variables and parameters with given domains, boundaries, initialization, etc., using a proper terminology. Also, it supports inequality constraints, what is harder to do with CasADi. If you are into Operational Research, this is the tool to go. We ran the script with version 6.4.1.</p>
+</li>
+</ul>
+<p>As an alternative to these, you could also use <a href="https://gekko.readthedocs.io/en/latest/">Gekko</a>, but I will refrain myself from exploring it because the APM executable distributed with it is not open source.</p>
+<h3 id="the_well-known_scipy_way"><a href="#the_well-known_scipy_way" class="header-anchor">The well-known SciPy way</a></h3>
+<p>SciPy implementation is the simplest one. You need to formulate the problem residual equation and return an array whose elements all evaluate to <em>zero</em> when the solution is found. Routine <code>root</code> from <code>scipy.optimize</code> is used to solve the problem. An initial guess as well as other function parameters are supplied through its interface. A full set of parameters is provided in its <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.root.html">documentation</a>. I have already used this function to solve problems with a few thousands of equations, with best execution wall times using <code>krylov</code> and <code>df-sane</code> methods. By default, it will use the <code>hybr</code> solver.</p>
+<pre><code class="language-python"># -*- coding: utf-8 -*-
+from scipy.optimize import root
+from params import Params
+
+
+def brusselator&#40;x, a, b&#41;:
+    &quot;&quot;&quot; Steady-state Brusselator residual equation. &quot;&quot;&quot;
+    eq1 &#61; x&#91;0&#93; * &#40;b - x&#91;0&#93; * x&#91;1&#93;&#41;
+    eq0 &#61; a - x&#91;0&#93; - eq1
+    return &#91;eq0, eq1&#93;
+
+
+def solve&#40;brusselator, x0&#61;Params.x0, a&#61;Params.A, b&#61;Params.B&#41;:
+    &quot;&quot;&quot; Solve problem with given coefficients and guess. &quot;&quot;&quot;
+    return root&#40;brusselator, x0, args&#61;&#40;a, b&#41;&#41;
+
+
+sol &#61; solve&#40;brusselator&#41;
+print&#40;sol&#41;</code></pre>
+<p>The object returned by the method contains a flag indicating its success, some relevant values, and the solution <code>x</code> to the problem.</p>
+<pre><code class="language-plaintext">In &#91;1&#93;: &#37;run gist-scipy.py
+ message: The solution converged.
+ success: True
+  status: 1
+     fun: &#91; 4.441e-16 -4.441e-16&#93;
+       x: &#91; 1.000e&#43;00  1.700e&#43;00&#93;
+    nfev: 5
+    fjac: &#91;&#91;-9.191e-01 -3.939e-01&#93;
+           &#91; 3.939e-01 -9.191e-01&#93;&#93;
+       r: &#91; 7.616e-01 -5.252e-01  1.313e&#43;00&#93;
+     qtf: &#91;-8.019e-13  2.004e-12&#93;</code></pre>
+<h3 id="versatile_casadi"><a href="#versatile_casadi" class="header-anchor">Versatile CasADi</a></h3>
+<p>CasADi provides a framework <code>SX</code> of symbolic operations graph construction. This allows the package to perform its main goal: automatic differentiation. This is how it manages to provide the solver with an <em>analytical Jacobian</em>. An interesting feature of CasADi is that you can formulate the problem and provide it to different nonlinear solvers, even commercial ones, using the same interface. It is shipped with the great open-source solver <a href="https://github.com/coin-or/Ipopt">Ipopt</a>. Since our problem is composed only of <em>constraint</em> equations, we set the objective <code>f</code> to unity and provide the constraint array <code>g</code>. Notice that the operations graph accepts free parameters through <code>p</code> array in nonlinear problem formulation, which can be provided only at solution time. Finally, when calling the solver, we can provide violation tolerances to the constraints through <code>lbg</code> and <code>ubg</code>, which could be an array of same size as <code>g</code> or simply a scalar. Setting both values to zero here enforces the goal of root-finding.</p>
+<pre><code class="language-python"># -*- coding: utf-8 -*-
+from pprint import pprint
+from casadi import SX
+from casadi import nlpsol
+from casadi import vertcat
+from params import Params
+
+
+def create_solver&#40;&#41;:
+    &quot;&quot;&quot; Create steady-state Brusselator solver. &quot;&quot;&quot;
+    p &#61; SX.sym&#40;&quot;p&quot;, 2&#41;
+    x &#61; SX.sym&#40;&quot;x&quot;, 2&#41;
+    a, b &#61; p&#91;0&#93;, p&#91;1&#93;
+
+    eq1 &#61; x&#91;0&#93; * &#40;b - x&#91;0&#93; * x&#91;1&#93;&#41;
+    eq0 &#61; a - x&#91;0&#93; - eq1
+    g &#61; vertcat&#40;eq0, eq1&#41;
+
+    nlp &#61; &#123;&quot;x&quot;: x, &quot;p&quot;: p, &quot;f&quot;: 1.0, &quot;g&quot;: g&#125;
+    opts &#61; &#123;&quot;ipopt.print_level&quot;: 5&#125;
+    return nlpsol&#40;&quot;brusselator&quot;, &quot;ipopt&quot;, nlp, opts&#41;
+
+
+def solve&#40;brusselator, x0&#61;Params.x0, a&#61;Params.A, b&#61;Params.B&#41;:
+    &quot;&quot;&quot; Solve problem with given coefficients and guess. &quot;&quot;&quot;
+    return brusselator&#40;x0&#61;x0, p&#61;&#91;a, b&#93;, lbg&#61;0.0, ubg&#61;0.0&#41;
+
+
+brusselator &#61; create_solver&#40;&#41;
+sol &#61; solve&#40;brusselator&#41;
+pprint&#40;sol&#41;</code></pre>
+<p>When solving the problem with Ipopt, the solver will display a problem summary, follow the solution process, and summarize the solution. The level of verbosity can be controlled when creating the solver, see variable <code>opts</code> above in <code>create_solver</code>. To get the solver status you could use <code>brusselator.stats&#40;&#41;&#91;&quot;return_status&quot;&#93;</code> what is not done in sample code. Personally, I have used this package in situations when the purely numerical approach of SciPy failed and it is my choice when conceiving model-predictive controls &#40;MPC&#41; or any other constrained optimization. Under certain circumstances you can also generate C code for deployment of solver.</p>
+<pre><code class="language-plaintext">In &#91;1&#93;: &#37;run gist-casadi.py
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License &#40;EPL&#41;.
+         For more information visit https://github.com/coin-or/Ipopt
+******************************************************************************
+
+This is Ipopt version 3.14.4, running with linear solver MUMPS 5.4.1.
+
+Number of nonzeros in equality constraint Jacobian...:        4
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:        2
+
+Total number of variables............................:        2
+                     variables with only lower bounds:        0
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        2
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg&#40;mu&#41;  ||d||  lg&#40;rg&#41; alpha_du alpha_pr  ls
+   0  1.0000000e&#43;00 7.00e-01 0.00e&#43;00  -1.0 0.00e&#43;00    -  0.00e&#43;00 0.00e&#43;00   0
+   1  1.0000000e&#43;00 0.00e&#43;00 0.00e&#43;00  -1.7 7.00e-01    -  1.00e&#43;00 1.00e&#43;00h  1
+
+Number of Iterations....: 1
+
+                                   &#40;scaled&#41;                 &#40;unscaled&#41;
+Objective...............:   1.0000000000000000e&#43;00    1.0000000000000000e&#43;00
+Dual infeasibility......:   0.0000000000000000e&#43;00    0.0000000000000000e&#43;00
+Constraint violation....:   0.0000000000000000e&#43;00    0.0000000000000000e&#43;00
+Variable bound violation:   0.0000000000000000e&#43;00    0.0000000000000000e&#43;00
+Complementarity.........:   0.0000000000000000e&#43;00    0.0000000000000000e&#43;00
+Overall NLP error.......:   0.0000000000000000e&#43;00    0.0000000000000000e&#43;00
+
+
+Number of objective function evaluations             &#61; 2
+Number of objective gradient evaluations             &#61; 2
+Number of equality constraint evaluations            &#61; 2
+Number of inequality constraint evaluations          &#61; 0
+Number of equality constraint Jacobian evaluations   &#61; 2
+Number of inequality constraint Jacobian evaluations &#61; 0
+Number of Lagrangian Hessian evaluations             &#61; 1
+Total seconds in IPOPT                               &#61; 0.019
+
+EXIT: Optimal Solution Found.
+ brusselator  :   t_proc      &#40;avg&#41;   t_wall      &#40;avg&#41;    n_eval
+       nlp_f  |        0 &#40;       0&#41;   3.00us &#40;  1.50us&#41;         2
+       nlp_g  |        0 &#40;       0&#41;   8.00us &#40;  4.00us&#41;         2
+    nlp_grad  |        0 &#40;       0&#41;   4.00us &#40;  4.00us&#41;         1
+  nlp_grad_f  |        0 &#40;       0&#41;  12.00us &#40;  4.00us&#41;         3
+  nlp_hess_l  |        0 &#40;       0&#41;   1.00us &#40;  1.00us&#41;         1
+   nlp_jac_g  |        0 &#40;       0&#41;   4.00us &#40;  1.33us&#41;         3
+       total  |  34.00ms &#40; 34.00ms&#41;  30.02ms &#40; 30.02ms&#41;         1
+
+&#123;&#39;f&#39;: DM&#40;1&#41;,
+ &#39;g&#39;: DM&#40;&#91;0, 0&#93;&#41;,
+ &#39;lam_g&#39;: DM&#40;&#91;0, -0&#93;&#41;,
+ &#39;lam_p&#39;: DM&#40;&#91;-0, 0&#93;&#41;,
+ &#39;lam_x&#39;: DM&#40;&#91;0, 0&#93;&#41;,
+ &#39;x&#39;: DM&#40;&#91;1, 1.7&#93;&#41;&#125;</code></pre>
+<p>The dense matrix object <code>DM</code> provided in the solution above can be converted to a NumPy array for further processing in Python.</p>
+<h3 id="going_formal_with_pyomo"><a href="#going_formal_with_pyomo" class="header-anchor">Going formal with Pyomo</a></h3>
+<p>I told you that the learning path of Pyomo was long, but that pays back. As for CasADi, Pyomo also accepts several solvers, including proprietary ones. Given its more format character, it is at declaration time that we tell the model whether something is a parameter or variable, its mathematical domain, and so on. When creating a <code>Constraint</code> you provide a <code>rule</code>, which can be an inequality, what is not promptly supported by CasADi. The amount of coding is larger than the previous packages for the same problem, but the goals of everything are clearer. Pyomo is my package of choice when solving problems that do not involve step functions &#40;I am still looking for a reliable way of using a Heaviside function in Pyomo&#41; or for mixed-integer modelling, a feature that is not supported by the other discussed alternatives. It is also great for handling DAE problems, but that is a subject for another post.</p>
+<pre><code class="language-python"># -*- coding: utf-8 -*-
+from pathlib import Path
+from pprint import pprint
+import pyomo.environ as pe
+import pyomo.opt as po
+from params import Params
+
+# XXX: Update this or add Ipopt to the path&#33;
+apps &#61; Path.home&#40;&#41; / &quot;Applications&quot;
+ipopt &#61; apps / &quot;Ipopt-3.14.13-win64-msvs2019-md/bin/ipopt.exe&quot;
+
+
+def create_solver&#40;&#41;:
+    &quot;&quot;&quot; Create steady-state Brusselator solver. &quot;&quot;&quot;
+    model &#61; pe.ConcreteModel&#40;name&#61;&quot;brusselator&quot;&#41;
+    model.i &#61; pe.Set&#40;initialize&#61;&#91;0, 1&#93;, dimen&#61;1&#41;
+    model.a &#61; pe.Param&#40;mutable&#61;True&#41;
+    model.b &#61; pe.Param&#40;mutable&#61;True&#41;
+    model.x &#61; pe.Var&#40;model.i&#41;
+
+    eq1 &#61; model.x&#91;0&#93; * &#40;model.b - model.x&#91;0&#93; * model.x&#91;1&#93;&#41;
+    eq0 &#61; model.a - model.x&#91;0&#93; - eq1
+
+    model.eq0 &#61; pe.Constraint&#40;rule&#61;&#40;0.0 &#61;&#61; eq0&#41;&#41;
+    model.eq1 &#61; pe.Constraint&#40;rule&#61;&#40;0.0 &#61;&#61; eq1&#41;&#41;
+    return model
+
+
+def solve&#40;brusselator, x0&#61;Params.x0, a&#61;Params.A, b&#61;Params.B&#41;:
+    &quot;&quot;&quot; Solve problem with given coefficients and guess. &quot;&quot;&quot;
+    brusselator.a.set_value&#40;a&#41;
+    brusselator.b.set_value&#40;b&#41;
+
+    for k, xk in enumerate&#40;x0&#41;:
+        brusselator.x&#91;k&#93; &#61; xk
+
+    solver &#61; po.SolverFactory&#40;&quot;ipopt&quot;, executable&#61;ipopt&#41;
+    return solver.solve&#40;brusselator&#41;
+
+
+brusselator &#61; create_solver&#40;&#41;
+sol &#61; solve&#40;brusselator&#41;
+sol.write&#40;&#41;
+
+x &#61; &#91;xk.value for xk in brusselator.x.values&#40;&#41;&#93;
+pprint&#40;x&#41;</code></pre>
+<p>Solver statistics are printed afterwards, that is an advantage over CasADi because it saves a lot of time communicating with the standard output.</p>
+<pre><code class="language-plaintext">In &#91;1&#93;: &#37;run gist-pyomo.py
+# &#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;
+# &#61; Solver Results                                         &#61;
+# &#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;
+# ----------------------------------------------------------
+#   Problem Information
+# ----------------------------------------------------------
+Problem:
+- Lower bound: -inf
+  Upper bound: inf
+  Number of objectives: 1
+  Number of constraints: 2
+  Number of variables: 2
+  Sense: unknown
+# ----------------------------------------------------------
+#   Solver Information
+# ----------------------------------------------------------
+Solver:
+- Status: ok
+  Message: Ipopt 3.14.13\x3a Optimal Solution Found
+  Termination condition: optimal
+  Id: 0
+  Error rc: 0
+  Time: 0.1560361385345459
+# ----------------------------------------------------------
+#   Solution Information
+# ----------------------------------------------------------
+Solution:
+- number of solutions: 0
+  number of solutions displayed: 0
+&#91;1.0, 1.7&#93;</code></pre>
+<h2 id="concluding_thoughts"><a href="#concluding_thoughts" class="header-anchor">Concluding thoughts</a></h2>
+<p>I hope this post helped you make an informed choice of implementation for your nonlinear root-finding problems.</p>
+<p>As we have shown, none of the explored packages handles all the features that might be required, and this must be considered when starting a new project. Another important feature is community size and package development team. Both CasADi and Pyomo are niche applications and finding examples on Stack Overflow might be a problem.</p>
+<div class="note"><div class="title">⚠  Liked my content?</div>
+<div class="content">Please help me be able to produce more by subscribing     to my <a href="https://patreon.com/WallyTutor">Patreon</a>&#33;</div></div>
+<div class="page-foot">
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
+    Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    
+    
+        <script src="/medium-articles/libs/highlight/highlight.min.js"></script>
+<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
+
+    
+  </body>
+</html>
