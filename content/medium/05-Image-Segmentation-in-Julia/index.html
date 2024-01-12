@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="/medium-articles/libs/katex/katex.min.css">
+     
+   <link rel="stylesheet" href="/medium-articles/libs/highlight/styles/github.min.css">
+   
+  <link rel="stylesheet" href="/medium-articles/css/franklin.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
+<link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
+<link rel="stylesheet" href="/medium-articles/css/celeste.min.css">
+<link rel="stylesheet" href="/medium-articles/css/custom.css">
+
+<link rel="icon" type="image/png" sizes="192x192" href="/medium-articles/assets/favicon.png">
+<link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
+
+
+   <title>Image Segmentation in Julia</title>  
+</head>
+<body>
+  <header>
+<nav class="nav-main">
+  <ul>
+    <li class="logo"><a class="hvr-ripple-out" href="/medium-articles/">W</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/medium/">Medium Articles</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/transport-phenomena/">Transport Phenomena</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/julia-para-cientistas/">Julia para Cientistas</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/engenharia-de-reatores/">Engenharia de Reatores</a></li>
+  </ul>
+</nav>
+</header>
+
+
+<!-- Content appended here -->
+<div class="franklin-content">
+<h1 id="image_segmentation_in_julia"><a href="#image_segmentation_in_julia" class="header-anchor">Image Segmentation in Julia</a></h1>
+<div class="warning"><div class="title">⚠  DANGER&#33;</div>
+<div class="content">This is a work in progress&#33;</div></div>
+<p>In this article we will see how to implement a custom workflow for porosity quantification in materials. The selected tools are those from the <a href="https://juliaimages.org/latest/">JuliaImages</a> suite. We start below by importing all required packages.</p>
+<pre><code class="language-julia">using Images
+using ImageSegmentation
+using Plots
+using Statistics</code></pre>
+<pre><code class="language-julia">filepath &#61; &quot;samples/Ti_pure_1-50.1-50x.jpg&quot;
+img &#61; Gray.&#40;load&#40;filepath&#41;&#41;
+
+&#40;h, w&#41; &#61; size&#40;img&#41;
+println&#40;&quot;&#36;&#40;typeof&#40;img&#41;&#41; : size &#36;&#40;h&#41;x&#36;&#40;w&#41;&quot;&#41;
+img</code></pre>
+<p>Notice in the image above that it contains the scale bar placed at the right-bottom corner of the image. A first step towards porosity quantification is to remove this area. There are many ways of doing this: performing <a href="https://github.com/JuliaImages/ImageInpainting.jl">image inpainting</a>, setting values in the zone to a level that the quantification will always capture as matrix material, ..., or simply cropping the area. As the bar is small and placed near the corner, we don&#39;t loose much sampling space by going forward with the last option.</p>
+<p>The next slider controls the cropping of the bottom of the image.</p>
+<pre><code class="language-julia">crop &#61; 80
+imgc &#61; img&#91;1:end-crop, 1:end&#93;</code></pre>
+<p>Because of sample preparation and other inherent material characteristics, the matrix <em>color</em> is not homogeneous. We have drying effects, contaminations, micropores, etc. Thresholding algorithms used for simple background extractions work better if we <em>dilute</em> these disturbances by some means. A basic and effective way is to use a Gaussian filter to blur the image.</p>
+<p>You can test the impact of blurring variance using the following slider.</p>
+<pre><code class="language-julia">σ &#61; 5.0
+imgg &#61; imfilter&#40;imgc, Kernel.gaussian&#40;σ&#41;&#41;</code></pre>
+<p>The package <code>ImageBinarization</code> provides several binarization algorithms. A full list of algorithms provided by the package is found <a href="https://juliaimages.org/ImageBinarization.jl/stable/">here</a>. Below we provide a drop-down menu for testing which algorithm works better with the sample image. Notice that the quality of this binarization will depend on how much blurring was applied above and that algorithms behave differently depending on the level of the variance.</p>
+<pre><code class="language-julia"># algos &#61; &#91;
+#     Balanced      &#61;&gt; &quot;Balanced&quot;,
+#     Entropy       &#61;&gt; &quot;Entropy&quot;,
+#     MinimumError  &#61;&gt; &quot;MinimumError&quot;,
+#     Moments       &#61;&gt; &quot;Moments&quot;,
+#     Otsu          &#61;&gt; &quot;Otsu&quot;,
+#     UnimodalRosin &#61;&gt; &quot;UnimodalRosin&quot;,
+#     Yen           &#61;&gt; &quot;Yen&quot;
+# &#93;;
+
+imgb &#61; binarize&#40;imgg, Balanced&#40;&#41;&#41;</code></pre>
+<p>In the binarized image above, the pores are set to black with a value of zero, and the material background to white, with a value of one. Since a gray-scale image as such is <em>no more than a matrix</em> <sup id="fnref:1"><a href="#fndef:1" class="fnref">[1]</a></sup>, adding up all values and dividing by the number of elements in the matrix gives the fraction of white &#40;one-valued&#41; pixels. The next cell uses this logic for a first quantification of black &#40;zero-valued&#41; pixels, the quantity we are seeking here for porosity estimation.</p>
+<p><table class="fndef" id="fndef:1">
+    <tr>
+        <td class="fndef-backref"><a href="#fnref:1">[1]</a></td>
+        <td class="fndef-content">the actual implementation is more complex than stated here, but for our</td>
+    </tr>
+</table>
+    ends here, the representation of the data storage is an actual matrix and     this terminology can be applied.</p>
+<pre><code class="language-julia">convert&#40;Float64, 1 - sum&#40;imgb&#41; / length&#40;imgb&#41;&#41;</code></pre>
+<p>As you will see in what comes next, the value above is <em>correct</em> <sup id="fnref:1"><a href="#fndef:1" class="fnref">[1]</a></sup> and could be used for its end scientific purposes. In practical terms, although its correctness, it is not enough to get the simple pore fraction. This is because most applications requiring pore quantification also <em>ask</em> other questions, such as mean size, morphological characteristics, etc. Below we use an unseeded region segmenter to labelize the image for further processing. This will enable to complete the workflow with the additional characterization that could be required. Since we are dealing with a binary image with intensity \(I\in\{0,1\}\), providing a threshold of one-half allows for a two-class labelization as desired</p>
+<ul>
+<li><p>actually any value \(0 < x < 1\) would work, but for some reason we decide not</p>
+</li>
+</ul>
+<p>to binarize the image or adapt to other applications, that could break the workflow.</p>
+<p>The following snippet allows checking that labelization can be reconstructed into a binarized image. Since There are two labels &#40;numbered as 1 and 2&#41; we subtract 1 from the map.</p>
+<pre><code class="language-julia">Gray.&#40;labels_map&#40;seg&#41; .- 1&#41;</code></pre>
+<p><table class="fndef" id="fndef:1">
+    <tr>
+        <td class="fndef-backref"><a href="#fnref:1">[1]</a></td>
+        <td class="fndef-content">an actual sensitivity analysis with regards to filtering parameters should</td>
+    </tr>
+</table>
+    be performed in order to quantify the uncertainty of this estimation, what     is left as a task for the reader.</p>
+<pre><code class="language-julia">seg &#61; unseeded_region_growing&#40;imgb, 1//2&#41;</code></pre>
+<pre><code class="language-julia">@assert segment_mean&#40;seg, 1&#41; ≈ 0.0</code></pre>
+<pre><code class="language-julia">segment_pixel_count&#40;seg, 1&#41; / length&#40;imgb&#41;</code></pre>
+<h2 id="preparing_automation"><a href="#preparing_automation" class="header-anchor">Preparing automation</a></h2>
+<pre><code class="language-julia">struct PorositySegmenter
+	orig::Matrix&#123;Gray&#123;N0f8&#125;&#125;
+	pore::Matrix&#123;Gray&#123;N0f8&#125;&#125;
+	fraction::Float64
+	segm::Any
+	
+	# TODO keep parameters as attributes.
+
+	function PorositySegmenter&#40;
+		orig::Matrix&#123;Gray&#123;N0f8&#125;&#125;;
+		sigma::Float64 &#61; 0.0,
+		method::Symbol &#61; :porequantification,
+		poreclass::Int64 &#61; 1,
+		binalg::Any &#61; Balanced&#40;&#41;
+	&#41;::PorositySegmenter
+		@assert sigma &gt;&#61; 0.0
+		imgg &#61; imfilter&#40;orig, Kernel.gaussian&#40;sigma&#41;&#41;
+		pore &#61; binarize&#40;imgg, binalg&#41;
+		npix &#61; length&#40;pore&#41;
+		
+		if method &#61;&#61; :porequantification
+			# Fast but no segmentation&#33;
+			segm &#61; nothing
+			fraction &#61; convert&#40;Float64, 1.0 - sum&#40;pore&#41; / npix&#41;
+		elseif method &#61;&#61; :poresegmentation
+			# MUCH slower but gets the image.
+			segm &#61; unseeded_region_growing&#40;pore, 1//2&#41;
+			fraction &#61; segment_pixel_count&#40;segm, 1&#41; / npix
+			@assert segment_mean&#40;segm, poreclass&#41; ≈ 0.0
+		else
+			error&#40;&quot;Unknown method: &#36;&#40;method&#41;&quot;&#41;
+		end
+
+		return new&#40;orig, pore, fraction, segm&#41;
+	end
+end</code></pre>
+<pre><code class="language-julia">orig &#61; Gray.&#40;load&#40;filepath&#41;&#41;&#91;1:end-80, 1:end&#93;;
+porosity &#61; PorositySegmenter&#40;orig; sigma &#61; 5.0&#41;;
+porosity.fraction</code></pre>
+<pre><code class="language-julia">@time imgg_ &#61; imfilter&#40;orig, Kernel.gaussian&#40;5&#41;&#41;;
+@time pore_ &#61; binarize&#40;imgg_, Balanced&#40;&#41;&#41;;
+@time segm_ &#61; unseeded_region_growing&#40;pore_&#91;:, :&#93;, 1//2&#41;;</code></pre>
+<pre><code class="language-julia">scanner&#40;σ&#41; &#61; PorositySegmenter&#40;orig; sigma &#61; σ&#41;</code></pre>
+<pre><code class="language-julia">σ̂ &#61; 0.0:0.25:15.0
+porescan &#61; map&#40;scanner, σ̂&#41;
+porosities &#61; &#91;p.fraction for p in porescan&#93;
+plot&#40;σ̂, porosities&#41;</code></pre>
+<pre><code class="language-julia">mean&#40;porosities&#41;, std&#40;porosities&#41;</code></pre>
+<pre><code class="language-julia">scanner&#40;6.0&#41;</code></pre>
+<pre><code class="language-julia"># &#40;&#40;porosity.pore - porosity.orig&#41;.^2&#41;
+
+# using Random
+
+# begin
+# 	dist &#61; 1.0 .- distance_transform&#40;feature_transform&#40;imgb .&gt; 0.5&#41;&#41;;
+# 	Gray.&#40;dist&#41;
+# end
+
+# begin
+# 	markers &#61; label_components&#40;dist .&lt; 1&#41;;
+# 	# Gray.&#40;markers/255&#41;
+# end
+
+# segments &#61; watershed&#40;dist, markers&#41;
+
+# function get_random_color&#40;seed&#41;
+#     Random.seed&#33;&#40;seed&#41;
+#    &#40;rand&#40;N0f8&#41;&#41;
+# end
+
+# for mm in labels_map&#40;segments&#41;
+# 	println&#40;length&#40;mm&#41;&#41;
+# end
+
+# Gray.&#40;map&#40;i -&gt; get_random_color&#40;i&#41;, labels_map&#40;segments&#41;&#41;&#41;# .* &#40;1 .- imgb&#41;
+
+# &#40;h, w&#41; &#61; size&#40;img&#41;
+# µm &#61; 1.0u&quot;µm&quot;
+
+# axy &#61; Axis&#123;:y&#125;&#40;1*µm:1*µm:w*µm&#41;
+# axx &#61; Axis&#123;:x&#125;&#40;1*µm:1*µm:h*µm&#41;
+
+# img₀ &#61; AxisArray&#40;img, axx, axy&#41;
+# img₀ &#61; Gray.&#40;img₀&#41;
+
+# p &#61; plot&#40;axis &#61; nothing, layout &#61; @layout&#40;&#91;a b c&#93;&#41;, size &#61; &#40;950, 440&#41;, &#41;
+
+# p0 &#61; plot&#33;&#40;p&#91;1&#93;, img₀&#39;, ratio&#61;1&#41;
+# p1 &#61; plot&#33;&#40;p&#91;2&#93;, binarize&#40;img₁, alg&#41;&#39;, ratio&#61;1&#41;
+# p2 &#61; plot&#33;&#40;p&#91;3&#93;, binarize&#40;img₁, MinimumError&#40;&#41;&#41;&#39;, ratio&#61;1&#41;</code></pre>
+<div class="note"><div class="title">⚠  Liked my content?</div>
+<div class="content">Please help me be able to produce more by subscribing     to my <a href="https://patreon.com/WallyTutor">Patreon</a>&#33;</div></div>
+<div class="page-foot">
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
+    Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    
+        <script src="/medium-articles/libs/katex/katex.min.js"></script>
+<script src="/medium-articles/libs/katex/contrib/auto-render.min.js"></script>
+<script>renderMathInElement(document.body)</script>
+
+    
+    
+        <script src="/medium-articles/libs/highlight/highlight.min.js"></script>
+<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
+
+    
+  </body>
+</html>
