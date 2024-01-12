@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+  <link rel="stylesheet" href="/medium-articles/css/franklin.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
+<link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
+<link rel="stylesheet" href="/medium-articles/css/celeste.min.css">
+<link rel="stylesheet" href="/medium-articles/css/custom.css">
+
+<link rel="icon" type="image/png" sizes="192x192" href="/medium-articles/assets/favicon.png">
+<link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
+
+
+   <title>Calling Fortran from C/C++</title>  
+</head>
+<body>
+  <header>
+<nav class="nav-main">
+  <ul>
+    <li class="logo"><a class="hvr-ripple-out" href="/medium-articles/">W</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/medium/">Medium Articles</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/transport-phenomena/">Transport Phenomena</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/julia-para-cientistas/">Julia para Cientistas</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/engenharia-de-reatores/">Engenharia de Reatores</a></li>
+  </ul>
+</nav>
+</header>
+
+
+<!-- Content appended here -->
+<div class="franklin-content">
+<h1 id="calling_fortran_from_cc"><a href="#calling_fortran_from_cc" class="header-anchor">Calling Fortran from C/C&#43;&#43;</a></h1>
+<p>Simple example of Fortran usage from C/C&#43;&#43; programs.</p>
+<p>This example is not yet exhaustive and will eventually be updated.</p>
+<p>Recommended reading <a href="https://stackoverflow.com/tags/fortran-iso-c-binding/info">here</a>.</p>
+<h2 id="sequence_of_development"><a href="#sequence_of_development" class="header-anchor">Sequence of development</a></h2>
+<ol>
+<li><p>Fortran development:</p>
+<ul>
+<li><p>Write Fortran <a href="src/module_f_example.F95">module</a></p>
+</li>
+<li><p>Write Fortran ISO-C binding <a href="src/module_c_example.F95">module</a></p>
+</li>
+</ul>
+</li>
+<li><p>Libraries generation &#40;in this order&#41;:</p>
+<ul>
+<li><p>Compile Fortran modules as object files</p>
+</li>
+<li><p>Archive Fortran objects as a library</p>
+</li>
+<li><p>Compile Fortran ISO-C binding modules as object files</p>
+</li>
+<li><p>Archive Fortran ISO-C binding objects as a library</p>
+</li>
+</ul>
+</li>
+<li><p>Fortran testing:</p>
+<ul>
+<li><p>Write Fortran <a href="src/f_example.F95">program</a> for testing the library</p>
+</li>
+<li><p>Compile Fortran executable and link to the Fortran library</p>
+</li>
+</ul>
+</li>
+<li><p>C/C&#43;&#43; testing:</p>
+<ul>
+<li><p>Write C/C&#43;&#43; <a href="include/c_example.hpp">header</a> with interfaces from Fortran ISO-C binding</p>
+</li>
+<li><p>Write C/C&#43;&#43; <a href="src/c_example.cpp">program</a> for testing the library</p>
+</li>
+<li><p>Compile C/C&#43;&#43; executable and link to Fortran ISO-C binding library</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="compiling"><a href="#compiling" class="header-anchor">Compiling</a></h2>
+<h3 id="fortran_code"><a href="#fortran_code" class="header-anchor">Fortran code</a></h3>
+<p>Compile Fortran code using standard <code>-std&#61;f2008ts</code>, allowing Technical Specification &#40;TS&#41; 29113 on Further Interoperability of Fortran with C. For details please check <a href="https://gcc.gnu.org/onlinedocs/gcc-4.8.0/gfortran/Fortran-Dialect-Options.html">here</a>.</p>
+<h3 id="cc_code"><a href="#cc_code" class="header-anchor">C/C&#43;&#43; code</a></h3>
+<p>Nothing unusual is required for pre-processor flags. For compatibility with Fortran calls, it is necessary to add <code>-lgfortran</code> to the linker.</p>
+<h3 id="build"><a href="#build" class="header-anchor">Build</a></h3>
+<p>Just run <code>make</code> and it should compile out-of-the box under Nix systems provided a C&#43;&#43; &#40;C&#43;&#43;11 compatible&#41; and a Fortran &#40;f2008ts compatible&#41; compilers are available and <code>make</code> is installed.</p>
+<div class="page-foot">
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
+    Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    
+    
+  </body>
+</html>

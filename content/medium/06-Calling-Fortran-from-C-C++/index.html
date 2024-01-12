@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+   <link rel="stylesheet" href="/medium-articles/libs/highlight/styles/github.min.css">
+   
+  <link rel="stylesheet" href="/medium-articles/css/franklin.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
+<link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
+<link rel="stylesheet" href="/medium-articles/css/celeste.min.css">
+<link rel="stylesheet" href="/medium-articles/css/custom.css">
+
+<link rel="icon" type="image/png" sizes="192x192" href="/medium-articles/assets/favicon.png">
+<link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
+
+
+   <title>Calling Fortran from C/C++</title>  
+</head>
+<body>
+  <header>
+<nav class="nav-main">
+  <ul>
+    <li class="logo"><a class="hvr-ripple-out" href="/medium-articles/">W</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/medium/">Medium Articles</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/transport-phenomena/">Transport Phenomena</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/julia-para-cientistas/">Julia para Cientistas</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/engenharia-de-reatores/">Engenharia de Reatores</a></li>
+  </ul>
+</nav>
+</header>
+
+
+<!-- Content appended here -->
+<div class="franklin-content">
+<h1 id="calling_fortran_from_cc"><a href="#calling_fortran_from_cc" class="header-anchor">Calling Fortran from C/C&#43;&#43;</a></h1>
+<p>I often find myself with the task of mixing several programming languages in a single scientific computing project. That sounds a bit crazy but is quite usual because sometimes legacy code is too long to translate within the deadline or even political reasons &#40;yes, the guy who wrote the code during his thesis in 1983 might get offended if you update his code&#41;. Today I will talk a bit about exposing Fortran interfaces to be used in C/C&#43;&#43; code. I haven&#39;t mastered the subject yet, although I possess some experience doing so. If you are in a hurry and don&#39;t bother for details, you can go directly <a href="https://github.com/wallytutor/medium-articles/tree/main/src/content/medium/examples/06-Calling-Fortran-from-C-C&#43;&#43;">here</a> and download the example project.</p>
+<h2 id="required_knowledge"><a href="#required_knowledge" class="header-anchor">Required knowledge</a></h2>
+<p>Once given the task to expose a Fortran API to a C program &#40;from now on I will let C&#43;&#43; implicit because formally we are exposing the interface to C&#41;, a set of prior knowledge is required. First, a minimum knowledge of Fortran is required to write the Fortran ISO-C bindings to the interface. These are the files that mimic &#40;but could also modify&#41; the functions from the original library that are desired to be available in C. This is Fortran code using the standard library iso<em>c</em>binding as we will see next. It should be obvious by know that you must know how to compile some code and create application libraries. If you don&#39;t, keep reading and we are going to get there.</p>
+<h2 id="workflow_of_interfacing"><a href="#workflow_of_interfacing" class="header-anchor">Workflow of interfacing</a></h2>
+<p>Let&#39;s get practical. Assume you have some old &#40;or not so old&#41; Fortran code, and your manager or thesis advisor asked you to develop further the existing model. You are in 2023 &#40;as I write&#41; and know that Fortran is a decaying language, as you might check in the link. As of today, if you search tags in Stack Overflow, you get 12759 questions with Fortran, 396490 results with C, and surprisingly 794158 results under C&#43;&#43;. You can have a similar experience in your search engine. By now you argue with your manager/adviser, and both agree that new developments should be made in a language that provides more online support.</p>
+<p>With your copy of the Fortran library to provide a C-interface in hand, you decide to make a draft of a Gant chart for the tasks to accomplish. Starting with a simple list, you should write something close to:</p>
+<ol>
+<li><p>Fortran interface development: provide a C-binding for each Fortran function/module that will be used in C project. Notice that you don&#39;t need to provide an interface for all library functions, but only those you will use &#40;similarly to providing an interface to a C&#43;&#43; class in Cython, if you have ever done that&#41;.</p>
+</li>
+</ol>
+<ol>
+<li><p>Generate the interface library: here I assume you have already compiled your Fortran library to be linked to the original Fortran project. Now you need to compile the object code of each of the Fortran ISO-C binding files and the original library and then archive them as a shared library &#40;I haven&#39;t tried doing a shared library yet, in my TODO list&#33;&#41;.</p>
+</li>
+</ol>
+<ol>
+<li><p>Provide C headers: to call the Fortran functions from C, the signature of each function must be exposed, preferably in a header file. This file shall also redefine all Fortran types as C struct.</p>
+</li>
+</ol>
+<ol>
+<li><p>Include the header in main C program: have fun&#33; You can compile your C program calling Fortran functions. Don&#39;t forget to link the ISO-C binding library previously created to the executable, otherwise you will get a segmentation fault.</p>
+</li>
+</ol>
+<h2 id="getting_to_the_details"><a href="#getting_to_the_details" class="header-anchor">Getting to the details</a></h2>
+<p>In what follows all comments, and some spaces were stripped from the files to get a more compact code. You can find the sources and compilations instructions here.</p>
+<p>The next code block defines a module called module<em>f</em>example, which is the library your boss provided to you for using from C code. Notice that we have the type of example<em>type that is passed as argument mstruc to subroutine example, the one we will interface here. This subroutine computes the hypotenuse of a triangle whose sides are provided by properties of example</em>type and then it sets both sides of the triangle to zero &#40;why? I have no idea why I did that&#41;. So, we need to bind to C a Fortran type and a function that receives as arguments the interfaced type and a double number which returns the result of the calculation. Quite boring. Just to show from C when we are inside Fortran code, some values before and after the calculation are printed to the screen.</p>
+<pre><code class="language-plaintext">&#33; module_f_example.F95
+&#33; Module intended to be called from C/C&#43;&#43;.
+&#33;
+&#33; Author: Walter Dal&#39;Maz Silva
+&#33; Date  : Jan 6 2019
+
+module module_f_example
+    implicit none
+
+    &#33; Declare a type to illustrate how to use from C/C&#43;&#43;.
+    type example_type
+        double precision :: x
+        double precision :: y
+    end type example_type
+
+contains
+
+    &#33; Function to be called from C/C&#43;&#43;.
+    subroutine example&#40;mstruc,val&#41;
+        implicit none
+
+        type&#40;example_type&#41;, pointer, intent&#40;inout&#41; :: mstruc
+        double precision, intent&#40;inout&#41; :: val
+
+        &#33; Be verbose to check from C/C&#43;&#43;.
+        write&#40;*,*&#41;&#39;Point 0 at &#96;module_f_example:example&#96;: val &#61;&#39;,val
+        &#33; Modify all quantities.
+        val &#61; sqrt&#40;mstruc&#37;x * mstruc&#37;x &#43; mstruc&#37;y * mstruc&#37;y&#41;
+        mstruc&#37;x &#61; 0
+        mstruc&#37;y &#61; 0
+        write&#40;*,*&#41;&#39;Point 1 at &#96;module_f_example:example&#96;: val &#61;&#39;,val
+    end subroutine example
+
+endmodule module_f_example</code></pre>
+<p>Now it is time to provide the interface. The code here is some sort of weird Fortran actually. First, we need to use the compiler&#39;s default iso<em>c</em>binding. It is recommended to import it as use, intrinsic because otherwise the compiler may have its specific implementation that may not respect the standards, what may result that your code may not be compiled with a different compiler. Next, as &#40;maybe&#41; expected, we import the Fortran module to provide the interface. The type is redefined and renamed. Notice the use of bind&#40;c&#41; after all declarations we wish to be able to call from C &#40;type and subroutine&#41;.</p>
+<p>In the subroutine some particularities are observed in the types. First, this function will receive C types, thus the values of mstruc and val must comply with these and use the equivalent types as the Fortran ones. Since the struct is not a C equivalent of Fortran type, parameter mstruc is provided as a c<em>ptr. For obvious reasons this object cannot be used by the Fortran routine. Hopefully iso</em>c<em>binding provides a pointer translator c</em>f<em>pointer to retrieve the equivalent Fortran pointer that will be set to f</em>mstruc, the variable that finally can be used the the call to example&#33; What confusion&#33; And there is more: once the Fortran call is over, you need to retrieve the address of its pointer through c_loc so that you can return your object properly modified to C. Yes, I know this paragraph is quite dense. You should get back to the beginning or just look at this file with the proper comments <a href="https://github.com/wallytutor/medium-articles/tree/main/src/content/medium/examples/06-Calling-Fortran-from-C-C&#43;&#43;">here</a>. It&#39;s done, time to C&#33;</p>
+<pre><code class="language-plaintext">&#33; module_c_example.F95
+&#33; ISO-C Binding to module_f_example
+&#33;
+&#33; Author: Walter Dal&#39;Maz Silva
+&#33; Date  : Jan 6 2019
+
+module module_c_example
+    &#33; Use ISO-C Bindings default
+    use, intrinsic :: iso_c_binding
+    &#33;, only : c_f_pointer, c_loc, c_double, c_ptr
+
+    &#33; The module we are interfacing.
+    use module_f_example
+
+    implicit none
+
+    &#33; XXX this seems actually not to be necessary once example_type is
+    &#33; defined as a struct in c_example.hpp. The only important factor is
+    &#33; that the order of parameters and their names must respect the original
+    &#33; interface from module_f_example. This is weird because the code works
+    &#33; fine, against what has been stated in the following link:
+    &#33; https://stackoverflow.com/tags/fortran-iso-c-binding/info
+    &#33; Maybe it is linked to the fact we use 2008ts, not 2003 here&#33;
+    &#33; type, bind&#40;c&#41; :: c_example_type
+    &#33;     real&#40;c_double&#41; :: x
+    &#33;     real&#40;c_double&#41; :: y
+    &#33; end type c_example_type
+
+contains
+
+    &#33; Declaration of C-callable interface for &#96;example&#96; function. The main
+    &#33; feature in this interface is the &#96;bind&#96; method providing the C-name.
+    subroutine c_example&#40;mstruc,val&#41; bind&#40;c,name&#61;&#39;c_example&#39;&#41;
+        implicit none
+
+        &#33; Provide argument types. Notice here that declarations are not as
+        &#33; usual in Fortran, but must respect the style of iso_c_binding.
+        &#33; Another import point is about the typo of &#96;mstruc&#96;. Although in
+        &#33; the headings of this module c_example_type was declared, that
+        &#33; interface was only intended for the C-header file and here one
+        &#33; must use the &#96;c_ptr&#96; type. See C interface with a &#96;void*&#96; in its
+        &#33; place for compatibility. The type of &#96;val&#96; is now given by the
+        &#33; C-binding &#96;real&#40;c_double&#41;&#96;.
+        type&#40;c_ptr&#41;, intent&#40;inout&#41; :: mstruc
+        real&#40;c_double&#41;, intent&#40;inout&#41; :: val
+
+        &#33; Declare internal object of Fortran type for conversion and actual
+        &#33; communication with underlining library.
+        type&#40;example_type&#41;, pointer :: f_mstruc
+
+        &#33; Convert C to Fortran pointer.
+        &#33; https://gcc.gnu.org/onlinedocs/gfortran/C_005fF_005fPOINTER.html
+        call c_f_pointer&#40;mstruc, f_mstruc&#41;
+
+        &#33; Call of Fortran function.
+        call example&#40;f_mstruc,val&#41;
+
+        &#33; Gets the address of Fortran pointer.
+        &#33; https://gcc.gnu.org/onlinedocs/gfortran/C_005fLOC.html
+        mstruc &#61; c_loc&#40;f_mstruc&#41;
+    end subroutine c_example
+
+endmodule module_c_example</code></pre>
+<p>Things get much simpler in C header file. Just provide a struct with the same face as its Fortran equivalent type and an interface to the function as named in ISO-C binding interface: c_example. But wait&#33; There is a particularity here. Notice that the first argument of this function is now a void*, this cryptic type&#33; This is required because Fortran cannot know about the struct type, and thus we need to apply a raw pointer &#40;or it is my limited knowledge of the subject&#41;.</p>
+<p><strong>PS:</strong> after checking some more examples I finally understood the limitation. Actually, you can use c<em>example</em>type inside the ISO-C interface, if the type is defined to be interoperable, but this type cannot be passed to the raw Fortran function. That&#39;s the reason we need the void*. Check this and this.</p>
+<pre><code class="language-c">// c_example.hpp
+//
+// Author: Walter Dal&#39;Maz Silva
+// Date  : Jan 6 2019
+
+#ifndef __C_EXAMPLE_HPP__
+#define __C_EXAMPLE_HPP__
+
+// Consider compatibility with plain C.
+#ifdef __cplusplus
+extern &quot;C&quot; &#123;
+#endif
+
+// This has the same face as the example_type in module_f_example.95 but
+// it was nowhere declared in &#40;see the file for more&#41; module_c_example.F95.
+typedef struct &#123;
+    double x;
+    double y;
+&#125; example_type;
+
+// Function interfaced at module_c_example.F95
+void c_example&#40;void* mstruc, double* val&#41;;
+
+#ifdef __cplusplus
+&#125;
+#endif
+
+#endif // &#40;__C_EXAMPLE_HPP__&#41;</code></pre>
+<p>Just to conclude, we apply the interface. Again, the only particularity is that we need to convert a reference to our ptr to a void* for compatibility with the interface.</p>
+<pre><code class="language-c">// c_example.cpp
+// 
+// Author: Walter Dal&#39;Maz Silva
+// Date  : Jan 6 2019
+
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &quot;c_example.hpp&quot;
+
+int main&#40;&#41;
+&#123;
+    double val &#61; 0.0;
+    example_type *ptr &#61; new example_type &#123;3.0, 4.0&#125;;
+
+    std::cout &lt;&lt; std::fixed &lt;&lt; std::setprecision&#40;2&#41;
+              &lt;&lt; &quot;\n Before Fortran call&quot;
+              &lt;&lt; &quot;\n x &#61; &quot; &lt;&lt; ptr-&gt;x
+              &lt;&lt; &quot;\n y &#61; &quot; &lt;&lt; ptr-&gt;y
+              &lt;&lt; &quot;\n v &#61; &quot; &lt;&lt; val
+              &lt;&lt; &quot;\n&quot; &lt;&lt; std::endl;
+
+    c_example&#40;&#40;void*&#41;&amp;ptr, &amp;val&#41;;
+
+    std::cout &lt;&lt; std::fixed &lt;&lt; std::setprecision&#40;2&#41;
+              &lt;&lt; &quot;\n After Fortran call&quot;
+              &lt;&lt; &quot;\n x &#61; &quot; &lt;&lt; ptr-&gt;x
+              &lt;&lt; &quot;\n y &#61; &quot; &lt;&lt; ptr-&gt;y
+              &lt;&lt; &quot;\n v &#61; &quot; &lt;&lt; val
+              &lt;&lt; &quot;\n&quot; &lt;&lt; std::endl;
+    return 0;
+&#125;</code></pre>
+<p>Hope you have enjoyed it and find this code useful. I will eventually update the GitHub sources with more specific cases as I need them in my personal projects. If you have any questions don&#39;t hesitate to contact me.</p>
+<div class="note"><div class="title">⚠  Liked my content?</div>
+<div class="content">Please help me be able to produce more by subscribing     to my <a href="https://patreon.com/WallyTutor">Patreon</a>&#33;</div></div>
+<div class="page-foot">
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
+    Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    
+    
+        <script src="/medium-articles/libs/highlight/highlight.min.js"></script>
+<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
+
+    
+  </body>
+</html>
