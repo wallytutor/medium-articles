@@ -1,4 +1,9 @@
-# Using Fortran from C/C++
++++
+title   = "Calling Fortran from C/C++"
+tags    = ["programming", "fortran", "c++"]
++++
+
+# Calling Fortran from C/C++
 
 Simple example of Fortran usage from C/C++ programs.
 
