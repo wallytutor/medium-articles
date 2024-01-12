@@ -40,3 +40,5 @@ If you have any questions or suggestions, you can reach me by [mail](mailto:walt
 <div style="clear: both"></div>
 ~~~
 @@
+
+\patreon

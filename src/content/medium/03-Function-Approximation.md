@@ -12,3 +12,5 @@ arbitrary function fitting in Julia. The approach implemented here follows the
 works of [Professor Dr. Hans Peter Langtangen
 (deceased)](https://hplgit.github.io/fem-book/doc/web/index.html) who have
 written probably the best introductory texts on finite element methods to date.
+
+\patreon

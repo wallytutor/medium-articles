@@ -22,3 +22,9 @@ website_url   = "https://wallytutor.github.io/medium-articles/"
     </figure>
     ~~~
 }
+
+\newcommand{\patreon}{
+  \note{Liked my content? }{
+    Please help me be able to produce more by subscribing
+    to my [Patreon](https://patreon.com/WallyTutor)!}
+}

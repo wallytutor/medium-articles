@@ -386,3 +386,5 @@ nothing; # hide
 ## Using `ModelingToolkit`
 
 In the future...
+
+\patreon
