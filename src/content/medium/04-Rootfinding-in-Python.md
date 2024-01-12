@@ -2,7 +2,7 @@
 title   = "Root-finding in Python"
 tags    = ["optimization", "mathematics", "programming", "python"]
 showall = true
-outpath = "/assets/content/medium/03-Function-Approximation/code/output"
+outpath = "/assets/content/medium/04-Rootfinding-in-Python/code/output"
 publish = "2023-05-24-Rootfinding-in-Python"
 +++
 
