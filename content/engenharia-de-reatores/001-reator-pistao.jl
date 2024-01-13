@@ -6,6 +6,8 @@ using InteractiveUtils
 
 # ╔═╡ 07bf0333-ff7a-444b-a8d6-cc2398e211a0
 begin
+	@info "Importando ferramentas..."
+	
 	using CairoMakie
 	using DelimitedFiles
 	using DifferentialEquations: solve
@@ -41,18 +43,150 @@ conservação de energia.
 md"""
 ## Modelo da temperatura
 
-No que se segue vamos implementar a forma mais simples de um reator pistão. Para
-este primeiro estudo o foco será dado apenas na solução da equação da energia.
-As etapas globais implementadas aqui seguem o livro de [Kee *et al.*
-(2017)](https://www.wiley.com/en-ie/Chemically+Reacting+Flow%3A+Theory%2C+Modeling%2C+and+Simulation%2C+2nd+Edition-p-9781119184874),
-seção 9.2.
+No que se segue vamos implementar a forma mais simples de um reator pistão. Para este primeiro estudo o foco será dado apenas na solução da equação da energia. As etapas globais implementadas aqui seguem o livro de [Kee *et al.* (2017)](https://www.wiley.com/en-ie/Chemically+Reacting+Flow%3A+Theory%2C+Modeling%2C+and+Simulation%2C+2nd+Edition-p-9781119184874), seção 9.2.
 
-Da forma simplificada como tratado, o problema oferece uma solução analítica
-análoga à [lei do resfriamento de
-Newton](https://pt.wikipedia.org/wiki/Lei_do_resfriamento_de_Newton), o que é
-útil para a verificação do problema. Os cálculos do número de Nusselt para
-avaliação do coeficiente de transferência de calor são providos nos anexos com
-expressões discutidas [aqui](https://en.wikipedia.org/wiki/Nusselt_number).
+### Etapas preliminares
+
+Da forma simplificada como tratado, o problema oferece uma solução analítica análoga à [lei do resfriamento de Newton](https://pt.wikipedia.org/wiki/Lei_do_resfriamento_de_Newton), o que é útil para a verificação do problema. Antes de partir a derivação do modelo, os cálculos do número de Nusselt para avaliação do coeficiente de transferência de calor são providos no que se segue com expressões de Gnielinski e Dittus-Boelter discutidas [aqui](https://en.wikipedia.org/wiki/Nusselt_number).
+"""
+
+# ╔═╡ b1e1ee97-d066-4be6-b1a5-0fda4a3db4c9
+"Função auxiliar para avaliação exaustiva de critérios de validação."
+function testall(tests)
+	shouldthrow = false
+	for (evaluation, message) in tests
+		if !evaluation
+			@error message
+			shouldthrow = true
+		end
+	end
+	shouldthrow && throw(ArgumentError("Check previous warnings"))
+	return
+end
+
+# ╔═╡ 8a7dbcc9-b722-4eb7-a7d4-f2a98cdfe497
+"Equação de Gnielinski para número de Nusselt."
+function Nu_gnielinski(Re, Pr)
+	testall([
+		(3000.0 <= Re <= 5.0e+06, "Re=$(Re) ∉ [3000, 5×10⁶]"),
+		(0.5 <= Pr <= 2000.0,     "Pr=$(Pr) ∉ [0.5, 2000]")
+	])
+
+    f = (0.79 * log(Re) - 1.64)^(-2)
+    g = f / 8
+
+    num = g * (Re - 1000) * Pr
+    den = 1.0 + 12.7 * (Pr^(2 / 3) - 1) * g^(1 / 2)
+	
+    return num / den
+end
+
+# ╔═╡ 9e338998-8836-4883-8c88-9bc40540e29b
+"Equação de Dittus-Boelter para número de Nusselt."
+function Nu_dittusboelter(Re, Pr, L, D; what = :heating)
+	testall([
+		(Re >= 10000.0,       "Re=$(Re) < 10000"),
+		(0.6 <= Pr <= 160.0,  "Pr=$(Pr) ∉ [0.6, 160]"),
+		(L / D > 10.0,        "L/D=$(L/D) < 10.0")
+	])
+
+    n = (what == :heating) ? 0.4 : 0.3
+
+    return 0.023 * Re^(4//5) * Pr^n
+end
+
+# ╔═╡ dce9a032-8851-4245-80db-9abb5dfe7626
+"Avalia número de Nusselt com correlação escolhida."
+function Nu(Re, Pr; method = :gnielinski, kw...)
+	# Valor para escoamento interno laminar.
+	Nu = 3.66
+
+	# Modifica valor com método se turbulento.
+    if Re > 3000.0
+		if method == :gnielinski
+        	Nu = Nu_gnielinski(Re, Pr)
+		elseif method == :dittusboelter
+			what = get(kw, :what, :heating)
+			Nu = Nu_dittusboelter(Re, Pr, kw[:L], kw[:D]; what)
+		else
+			throw(ArgumentError("Unknown method $(method)"))
+		end
+    end
+
+	return Nu
+end
+
+# ╔═╡ 7de15896-350b-4e77-bcbe-06bf0550a3bf
+md"""
+Abaixo realizamos uma série de testes para verificação dos cálculos do número de Nusselt dadas as múltiplas configurações de parâmetros (complexidade ciclomática) possívels.
+"""
+
+# ╔═╡ 8882997e-a1d8-4d59-a635-288ce2dbfe38
+let
+	disp(x) = round(x, digits = 1)
+
+	L = 100.0
+	D = 1.0
+
+	# Avaliação sem erros.
+	@show Nu(1.0e+03, 0.7) |> disp
+	@show Nu(5.0e+03, 0.7; method = :gnielinski) |> disp
+	@show Nu(1.5e+04, 0.7; method = :dittusboelter, L, D) |> disp
+	@show Nu(1.5e+04, 0.7; method = :dittusboelter, L, D , what = :heating) |> disp
+	@show Nu(1.5e+04, 0.7; method = :dittusboelter, L, D, what = :cooling) |> disp
+
+	# Falhas forçadas.
+	try Nu(5.0e+07, 0.7; method = :gnielinski)            catch end
+	try Nu(5.0e+03, 0.4; method = :gnielinski)            catch end
+	try Nu(5.0e+07, 0.4; method = :gnielinski)            catch end
+	try Nu(5.0e+03, 0.7; method = :dittusboelter, L, D)   catch end
+	try Nu(5.0e+04, 0.5; method = :dittusboelter, L, D)   catch end
+	try Nu(5.0e+04, 0.7; method = :dittusboelter, L=D, D) catch end
+end;
+
+# ╔═╡ d9792197-8383-4312-8a06-fe76d9ea4022
+md"""
+Para cobrir toda uma gama de números de Reynolds, a função `heattransfercoef` abaixo usa a função `Nu` com seletor segundo valor de `Re` para o cálculo do número de Nusselt e uma funcionalidade para reportar os resultados, o que pode ser útil na pré-análise do problema.
+"""
+
+# ╔═╡ 138c20be-6a9d-4f2b-9673-ff5614631c92
+"Estima coeficiente de troca convectiva do escoamento."
+function heattransfercoef(L, D, u, ρ, μ, cₚ, Pr; kw...)
+    Re_val = ρ * u * D / μ
+	Nu_val = Nu(Re_val, Pr; kw...)
+	
+    k = cₚ * μ / Pr
+    h = Nu_val * k / D
+
+    if get(kw, :verbose, false)
+        @info("""\
+            Reynolds ................... $(Re_val)
+            Nusselt .................... $(Nu_val)
+            k .......................... $(k) W/(m.K)
+            h .......................... $(h) W/(m².K)\
+            """)
+    end
+
+    return h
+end
+
+# ╔═╡ 53de560a-fc88-49e9-b22c-c370a305b857
+let
+	L = 100.0
+	D = 1.0
+	u = 1.0
+	ρ = 1000.0
+	μ = 0.01
+	cₚ = 4200.0
+	Pr = 0.7
+	kw = (verbose = true, )
+	
+	heattransfercoef(L, D, u, ρ, μ, cₚ, Pr; kw...)
+end;
+
+# ╔═╡ 427d5757-a021-47f1-81d9-4e1efed83751
+md"""
+### Derivação do modelo
 
 A primeira etapa no estabelecimento do modelo concerne as equações de
 conservação necessárias. No presente caso, com a ausência de reações químicas e
@@ -61,7 +195,9 @@ estabelecer a conservação de massa e energia apenas. Como dito, o reator em
 questão conserva a massa transportada, o que é matematicamente expresso pela
 ausência de variação axial do fluxo de matéria, ou seja
 
-$$ \frac{d(\rho{}u)}{dz}=0 $$
+```math
+\frac{d(\rho{}u)}{dz}=0
+```
 
 Mesmo que trivial, esse resultado é frequentemente útil na simplificação das
 outras equações de conservação para um reator pistão, como veremos (com
@@ -70,11 +206,160 @@ frequência) mais tarde.
 Embora não trocando matéria com o ambiente a través das paredes, vamos
 considerar aqui trocas térmicas. Afinal não parece muito útil um modelo de
 reator sem trocas de nenhum tipo nem reações. Da primeira lei da Termodinâmica
-temos que a taxa de variação da energia interna $E$ é igual a soma das taxas de
-trocas de energia $Q$ e do trabalho realizado $W$.
+temos que a taxa de variação da energia interna ``E`` é igual a soma das taxas de
+trocas de energia ``Q`` e do trabalho realizado ``W``.
 
-$$ \frac{dE}{dt}= \frac{dQ}{dt}+ \frac{dW}{dt} $$
+```math
+\frac{dE}{dt}= \frac{dQ}{dt}+ \frac{dW}{dt}
+```
 """
+
+# ╔═╡ f9a2cb48-cf3b-4308-941d-d1050d55dc28
+md"""
+Podemos reescrever essa equação para uma seção transversal do reator de área
+``A_{c}`` em termos das grandezas específicas e densidade ``\rho`` com as
+integrais
+
+```math
+\int_{\Omega}\rho{}e\mathbf{V}\cdotp\mathbf{n}dA_{c}=
+\dot{Q}-
+\int_{\Omega}p\mathbf{V}\cdotp\mathbf{n}dA_{c}
+```
+
+Com a definição de entalpia ``h`` podemos simplificar essa equação e obter
+
+```math
+\int_{\Omega}\rho{}h\mathbf{V}\cdotp\mathbf{n}dA_{c}=
+\dot{Q}\qquad{}\text{aonde}\qquad{}h = e+\frac{p}{\rho}
+```
+
+Usando o teorema de Gauss transformamos essa integral sobre a superfície num
+integral de divergência sobre o volume diferencial ``dV``, o que é útil na
+manipulação de equações de conservação
+
+```math
+\int_{\Omega}\rho{}h\mathbf{V}\cdotp\mathbf{n}dA_{c}=
+\int_{V}\nabla\cdotp(\rho{}h\mathbf{V})dV
+```
+"""
+
+# ╔═╡ c7d443a5-8004-4db9-a938-b0ec23dadce0
+md"""
+Nos resta ainda determinar ``\dot{Q}``. O tipo de interação com ambiente, numa
+escala macroscópica, não pode ser representado por leis físicas fundamentais.
+Para essa representação necessitamos de uma *lei constitutiva* que modela o
+fenômeno em questão. Para fluxos térmicos convectivos à partir de uma parede com
+temperatura fixa ``T_{s}`` a forma análoga a uma condição limite de Robin
+expressa o ``\dot{Q}`` como
+
+```math
+\dot{Q}=\hat{h}A_{s}(T_{s}-T)=\hat{h}(Pdz)(T_{s}-T)
+```
+
+O coeficiente de troca térmica convectiva ``\hat{h}`` é frequentemente
+determinado à partir do tipo de escoamento usando fórmulas empíricas sobre o
+número de Nusselt. A abordagem desse tópico vai além do nosso escopo e assume-se
+que seu valor seja conhecido. Nessa expressão já transformamos a área
+superficial do reator ``A_{s}=Pdz`` o que nos permite agrupar os resultados em
+
+```math
+\int_{V}\nabla\cdotp(\rho{}h\mathbf{V})dV=
+\hat{h}(Pdz)(T_{w}-T)
+```
+"""
+
+# ╔═╡ 720650fb-cd31-434f-ab16-49253c3e0289
+md"""
+Em uma dimensão ``z`` o divergente é simplemente a derivada nessa coordenada.
+Usando a relação diverencial ``\delta{}V=A_{c}dz`` podemos simplificar a equação
+para a forma diferencial como se segue
+
+```math
+\frac{d(\rho{}u{}h)}{dz}=
+\frac{\hat{h}Pdz}{\delta{}V}(T_{w}-T)
+\implies
+\frac{d(\rho{}u{}h)}{dz}=
+\frac{\hat{h}P}{A_{c}}(T_{w}-T)
+```
+
+A expressão acima já consitui um modelo para o reator pistão, mas sua forma não
+é facilmente tratável analiticamente. Empregando a propriedade multiplicativa da
+diferenciaÇão podemos expandir o lado esquedo da equação como
+
+```math
+\rho{}u{}\frac{dh}{dz}+h\frac{d(\rho{}u)}{dz}=
+\frac{\hat{h}P}{A_{c}}(T_{w}-T)
+```
+
+O segundo termo acima é nulo em razão da conservação da matéria, como discutimos
+anteriormente. Da definição diferencial de entalpia ``dh=c_{p}dT`` chegamos a
+formulação do modelo na temperatura como dado no título dessa seção.
+
+```math
+\rho{}u{}c_{p}A_{c}\frac{dT}{dz}=
+\hat{h}P(T_{w}-T)
+```
+
+Vamos agora empregar esse modelo para o cálculo da distribuição axial de
+temperatura ao longo do reator. No que se segue assume-se um reator tubular de
+seção circular de raio $R$ e todos os parâmetros do modelo são constantes.
+"""
+
+# ╔═╡ 0db7ded1-24f3-4f20-ad13-30a1f1019a88
+md"""
+### Solução analítica da EDO
+
+O problema tratado aqui permite uma solução analítica simples que desenvolvemos
+de maneira um pouco abrupta no que se segue. Separando os termos em ``T``
+(variável dependente) e $z$ (variável independente) e integrando sobre os
+limites adequados obtemos
+
+```math
+\int_{T_{0}}^{T}\frac{dT}{T_{w}-T}=
+\frac{\hat{h}P}{\rho{}u{}c_{p}A_{c}}\int_{0}^{z}dz=
+\mathcal{C}_{0}z
+```
+
+Na expressão acima ``\mathcal{C}_{0}`` não é uma constante de integração mas
+apenas regrupa os parâmetros do modelo. O termo em ``T`` pode ser integrado por
+uma substituição trivial
+
+```math
+u=T_{w}-T \implies -\int\frac{du}{u}=\log(u)\biggr\vert_{u_0}^{u}+\mathcal{C}_{1}
+```
+
+Realizando a integração definida e resolvendo para ``T`` chegamos a
+
+```math
+T=T_{w}-(T_{w}-T_{0})\exp\left(-\mathcal{C}_{0}z+\mathcal{C}_{1}\right)
+```
+
+É trivial verificar com ``T(z=0)=T_{0}`` que ``\mathcal{C}_{1}=0`` o que conduz à
+solução analítica que é implementada no que se segue em `analyticalthermalpfr`.
+
+```math
+T=T_{w}-(T_{w}-T_{0})\exp\left(-\frac{\hat{h}P}{\rho{}u{}c_{p}A_{c}}z\right)
+```
+"""
+
+# ╔═╡ 96d6b7df-7e78-407e-8a0d-e1af5a90f651
+"Solução analítica do modelo de reator pistão."
+function analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+    return @. Tₛ - (Tₛ - Tₚ) * exp(-z * (ĥ * P) / (ρ * u * cₚ * A))
+end
+
+# ╔═╡ a38a1093-2f8a-4084-aa01-8cbd6d2c2fb5
+md"""
+O bloco abaixo resolve o problema para um conjunto de condições que você pode
+consultar nos anexos e expandindo o seu código. Observe abaixo da célula um
+*log* do cálculo dos números adimensionais relevantes ao problema e do
+coeficiente de transferência de calor convectivo associado. Esses elementos são
+tratados por funções externas que se encontram em um arquivo de suporte a esta
+série e são tidos como conhecimentos *a priori* para as discussões.
+"""
+
+# ╔═╡ f2105003-4563-4449-a4ec-8ba49a9b4ccf
+
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -2557,7 +2842,24 @@ version = "3.5.0+0"
 
 # ╔═╡ Cell order:
 # ╟─05b06ee0-b1e5-11ee-018d-73ad26daf458
-# ╠═07bf0333-ff7a-444b-a8d6-cc2398e211a0
-# ╠═44f09a40-8cca-48bd-9b6d-a5b551f76549
+# ╟─07bf0333-ff7a-444b-a8d6-cc2398e211a0
+# ╟─44f09a40-8cca-48bd-9b6d-a5b551f76549
+# ╟─8a7dbcc9-b722-4eb7-a7d4-f2a98cdfe497
+# ╟─9e338998-8836-4883-8c88-9bc40540e29b
+# ╟─b1e1ee97-d066-4be6-b1a5-0fda4a3db4c9
+# ╟─dce9a032-8851-4245-80db-9abb5dfe7626
+# ╟─7de15896-350b-4e77-bcbe-06bf0550a3bf
+# ╟─8882997e-a1d8-4d59-a635-288ce2dbfe38
+# ╟─d9792197-8383-4312-8a06-fe76d9ea4022
+# ╟─138c20be-6a9d-4f2b-9673-ff5614631c92
+# ╟─53de560a-fc88-49e9-b22c-c370a305b857
+# ╟─427d5757-a021-47f1-81d9-4e1efed83751
+# ╟─f9a2cb48-cf3b-4308-941d-d1050d55dc28
+# ╟─c7d443a5-8004-4db9-a938-b0ec23dadce0
+# ╟─720650fb-cd31-434f-ab16-49253c3e0289
+# ╟─0db7ded1-24f3-4f20-ad13-30a1f1019a88
+# ╟─96d6b7df-7e78-407e-8a0d-e1af5a90f651
+# ╟─a38a1093-2f8a-4084-aa01-8cbd6d2c2fb5
+# ╠═f2105003-4563-4449-a4ec-8ba49a9b4ccf
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

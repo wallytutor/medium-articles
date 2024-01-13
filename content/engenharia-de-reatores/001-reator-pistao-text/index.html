@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="/medium-articles/libs/katex/katex.min.css">
      
-   <link rel="stylesheet" href="/medium-articles/libs/highlight/styles/github.min.css">
-   
+  
   <link rel="stylesheet" href="/medium-articles/css/franklin.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
 <link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
@@ -36,73 +35,6 @@
 <!-- Content appended here -->
 <div class="franklin-content">
 <h1 id="reator_pistão_-_introdução"><a href="#reator_pistão_-_introdução" class="header-anchor">Reator pistão - introdução</a></h1>
-<p>Podemos reescrever essa equação para uma seção transversal do reator de área \(A_{c}\) em termos das grandezas específicas e densidade \(\rho\) com as integrais</p>
-\[
-\int_{\Omega}\rho{}e\mathbf{V}\cdotp\mathbf{n}dA_{c}=
-\dot{Q}-
-\int_{\Omega}p\mathbf{V}\cdotp\mathbf{n}dA_{c}
-\]
-<p>Com a definição de entalpia \(h\) podemos simplificar essa equação e obter</p>
-\[
-\int_{\Omega}\rho{}h\mathbf{V}\cdotp\mathbf{n}dA_{c}=
-\dot{Q}\qquad{}\text{aonde}\qquad{}h = e+\frac{p}{\rho}
-\]
-<p>Usando o teorema de Gauss transformamos essa integral sobre a superfície num integral de divergência sobre o volume diferencial \(dV\), o que é útil na manipulação de equações de conservação</p>
-\[
-\int_{\Omega}\rho{}h\mathbf{V}\cdotp\mathbf{n}dA_{c}=
-\int_{V}\nabla\cdotp(\rho{}h\mathbf{V})dV
-\]
-<p>Nos resta ainda determinar \(\dot{Q}\). O tipo de interação com ambiente, numa escala macroscópica, não pode ser representado por leis físicas fundamentais. Para essa representação necessitamos de uma <em>lei constitutiva</em> que modela o fenômeno em questão. Para fluxos térmicos convectivos à partir de uma parede com temperatura fixa \(T_{s}\) a forma análoga a uma condição limite de Robin expressa o \(\dot{Q}\) como</p>
-\[
-\dot{Q}=\hat{h}A_{s}(T_{s}-T)=\hat{h}(Pdz)(T_{s}-T)
-\]
-<p>O coeficiente de troca térmica convectiva \(\hat{h}\) é frequentemente determinado à partir do tipo de escoamento usando fórmulas empíricas sobre o número de Nusselt. A abordagem desse tópico vai além do nosso escopo e assume-se que seu valor seja conhecido. Nessa expressão já transformamos a área superficial do reator \(A_{s}=Pdz\) o que nos permite agrupar os resultados em</p>
-\[
-\int_{V}\nabla\cdotp(\rho{}h\mathbf{V})dV=
-\hat{h}(Pdz)(T_{w}-T)
-\]
-<p>Em uma dimensão \(z\) o divergente é simplemente a derivada nessa coordenada. Usando a relação diverencial \(\delta{}V=A_{c}dz\) podemos simplificar a equação para a forma diferencial como se segue</p>
-\[
-\frac{d(\rho{}u{}h)}{dz}=
-\frac{\hat{h}Pdz}{\delta{}V}(T_{w}-T)
-\implies
-\frac{d(\rho{}u{}h)}{dz}=
-\frac{\hat{h}P}{A_{c}}(T_{w}-T)
-\]
-<p>A expressão acima já consitui um modelo para o reator pistão, mas sua forma não é facilmente tratável analiticamente. Empregando a propriedade multiplicativa da diferenciaÇão podemos expandir o lado esquedo da equação como</p>
-\[
-\rho{}u{}\frac{dh}{dz}+h\frac{d(\rho{}u)}{dz}=
-\frac{\hat{h}P}{A_{c}}(T_{w}-T)
-\]
-<p>O segundo termo acima é nulo em razão da conservação da matéria, como discutimos anteriormente. Da definição diferencial de entalpia \(dh=c_{p}dT\) chegamos a formulação do modelo na temperatura como dado no título dessa seção.</p>
-\[
-\rho{}u{}c_{p}A_{c}\frac{dT}{dz}=
-\hat{h}P(T_{w}-T)
-\]
-<p>Vamos agora empregar esse modelo para o cálculo da distribuição axial de temperatura ao longo do reator. No que se segue assume-se um reator tubular de seção circular de raio \(R\) e todos os parâmetros do modelo são constantes.</p>
-<h3 id="solução_analítica_da_edo"><a href="#solução_analítica_da_edo" class="header-anchor">Solução analítica da EDO</a></h3>
-<p>O problema tratado aqui permite uma solução analítica simples que desenvolvemos de maneira um pouco abrupta no que se segue. Separando os termos em \(T\) &#40;variável dependente&#41; e \(z\) &#40;variável independente&#41; e integrando sobre os limites adequados obtemos</p>
-\[
-\int_{T_{0}}^{T}\frac{dT}{T_{w}-T}=
-\frac{\hat{h}P}{\rho{}u{}c_{p}A_{c}}\int_{0}^{z}dz=
-\mathcal{C}_{0}z
-\]
-<p>Na expressão acima \(\mathcal{C}_{0}\) não é uma constante de integração mas apenas regrupa os parâmetros do modelo. O termo em \(T\) pode ser integrado por uma substituição trivial</p>
-\[
-u=T_{w}-T \implies -\int\frac{du}{u}=\log(u)\biggr\vert_{u_0}^{u}+\mathcal{C}_{1}
-\]
-<p>Realizando a integração definida e resolvendo para \(T\) chegamos a</p>
-\[
-T=T_{w}-(T_{w}-T_{0})\exp\left(-\mathcal{C}_{0}z+\mathcal{C}_{1}\right)
-\]
-<p>É trivial verificar com \(T(z=0)=T_{0}\) que \(\mathcal{C}_{1}=0\) o que conduz à solução analítica que é implementada no que se segue em <code>analyticalthermalpfr</code>.</p>
-\[
-T=T_{w}-(T_{w}-T_{0})\exp\left(-\frac{\hat{h}P}{\rho{}u{}c_{p}A_{c}}z\right)
-\]
-<pre><code class="language-julia">function analyticalthermalpfr&#40;; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z&#41;
-    return @. Tₛ - &#40;Tₛ - Tₚ&#41; * exp&#40;-z * &#40;ĥ * P&#41; / &#40;ρ * u * cₚ * A&#41;&#41;
-end</code></pre>
-<p>O bloco abaixo resolve o problema para um conjunto de condições que você pode consultar nos anexos e expandindo o seu código. Observe abaixo da célula um <em>log</em> do cálculo dos números adimensionais relevantes ao problema e do coeficiente de transferência de calor convectivo associado. Esses elementos são tratados por funções externas que se encontram em um arquivo de suporte a esta série e são tidos como conhecimentos <em>a priori</em> para as discussões.</p>
 <h3 id="integração_numérica_da_edo"><a href="#integração_numérica_da_edo" class="header-anchor">Integração numérica da EDO</a></h3>
 <p>Neste exemplo tivemos <em>sorte</em> de dispor de uma solução analítica. Esse problema pode facilmente tornar-se intratável se considerarmos uma dependência arbitrária do calor específico com a temperatura ou se a parede do reator tem uma dependência na coordenada axial. É importante dispor de meios numéricos para o tratamento deste tipo de problema.</p>
 <p>No caso de uma equação diferencial ordinária &#40;EDO&#41; como no presente caso, a abordagem mais simples é a de se empregar um integrador numérico. Para tanto é prática comum estabelecer uma função que representa o <em>lado direito</em> do problema isolando a&#40;s&#41; derivada&#40;s&#41; no lado esquerdo. Em Julia dispomos do <em>framework</em> de <code>ModelingToolkit</code> que provê uma forma simbólica de representação de problemas e interfaces com diversos integradores. A estrutura <code>DifferentialEquationPFR</code> abaixo implementa o problema diferencial desta forma.</p>
@@ -218,10 +150,6 @@ T_{N}    \\
 <script>renderMathInElement(document.body)</script>
 
     
-    
-        <script src="/medium-articles/libs/highlight/highlight.min.js"></script>
-<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
-
     
   </body>
 </html>
