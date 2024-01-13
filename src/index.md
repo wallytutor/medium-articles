@@ -3,9 +3,13 @@
 
 # Welcome to WallyTutor!
 
-My name is Walter and I like writing about science and engineering topics.
+My name is [Walter](content/curriculum-vitae/curriculum.pdf) and I like writing
+about science and engineering topics.
 
-In this page you will find the supporting materials of my Medium [articles](https://medium.com/@waltermateriais) and some additional content. If you prefer to go straight to the code, please find the sources in this [repository](https://github.com/wallytutor/medium-articles).
+In this page you will find the supporting materials of my Medium
+[articles](https://medium.com/@waltermateriais) and some additional content. If
+you prefer to go straight to the code, please find the sources in this
+[repository](https://github.com/wallytutor/medium-articles).
 
 @@row
 @@container
@@ -35,7 +39,9 @@ In this page you will find the supporting materials of my Medium [articles](http
 ~~~
 @@ 
 @@
-If you have any questions or suggestions, you can reach me by [mail](mailto:walter.dalmazsilva.manager@gmail.com) or join me at LinkedIn using the link to the right. I will answer as soon as possible.
+If you have any questions or suggestions, you can reach me by
+[mail](mailto:walter.dalmazsilva.manager@gmail.com) or join me at LinkedIn using
+the link to the right. I will answer as soon as possible.
 ~~~
 <div style="clear: both"></div>
 ~~~
