@@ -3,8 +3,6 @@ using DocStringExtensions
 using Polynomials
 using SparseArrays: SparseMatrixCSC
 
-include("util-residuos.jl")
-
 "Constante dos gases ideais [J/(mol.K)]."
 const GAS_CONSTANT = 8.314_462_618_153_24
 
@@ -132,78 +130,8 @@ struct CounterFlowPFRModel
     that::IncompressibleEnthalpyPFRModel
 end
 
-"Macro para capturar erro dada uma condição invalida."
-macro warnonly(ex)
-    quote
-        try
-            $(esc(ex))
-        catch e
-            @warn e
-        end
-    end
-end
 
-"Estima coeficiente de troca convectiva do escoamento."
-function computehtc(; L, D, u, ρ, μ, cₚ, Pr,
-                      method = :g, verbose = false)
-    Re = ρ * u * D / μ
 
-    Nug = gnielinski_Nu(Re, Pr)
-    Nud = dittusboelter_Nu(Re, Pr, L, D)
-
-    if Re > 3000
-        Nu = (method == :g) ? Nug : Nub
-    else
-        Nu = 3.66
-    end
-
-    k = cₚ * μ / Pr
-    h = Nu * k / D
-
-    if verbose
-        println("""\
-            Reynolds ................... $(Re)
-            Nusselt (Gnielinsk) ........ $(Nug)
-            Nusselt (Dittus-Boelter) ... $(Nud)
-            Nusselt (usado aqui) ....... $(Nu)
-            k .......................... $(k) W/(m.K)
-            h .......................... $(h) W/(m².K)\
-            """)
-    end
-
-    return h
-end
-
-"Equação de Gnielinski para número de Nusselt."
-function gnielinski_Nu(Re, Pr)
-    function validate(Re, Pr)
-        @assert 3000.0 <= Re <= 5.0e+06 "Re=$(Re) ∉ [3.0e+03, 5.0e+06]"
-        @assert 0.5 <= Pr <= 2000.0     "Pr=$(Pr) ∉ [5.0e-01, 2.0e+03]"
-    end
-
-    @warnonly validate(Re, Pr)
-
-    f = (0.79 * log(Re) - 1.64)^(-2)
-    g = f / 8
-
-    num = g * (Re - 1000) * Pr
-    den = 1.0 + 12.7 * (Pr^(2 / 3) - 1) * g^(1 / 2)
-    return num / den
-end
-
-"Equação de Dittus-Boelter para número de Nusselt."
-function dittusboelter_Nu(Re, Pr, L, D; what = :heating)
-    function validate(Re, Pr, L, D)
-        @assert 10000.0 <= Re       "Re=$(Re) ∉ [0.0e+00, 1.0e+04]"
-        @assert 0.6 <= Pr <= 160.0  "Pr=$(Pr) ∉ [6.0e-01, 1.6e+02]"
-        @assert 10.0 <= L / D       "L/D=$(L/D) < 10.0"
-    end
-
-    @warnonly validate(Re, Pr, L, D)
-
-    n = (what == :heating) ? 0.4 : 0.4
-    return 0.023 * Re^(4 / 5) * Pr^n
-end
 
 "Cria o par inverso de reatores em contra-fluxo."
 function swap(cf::CounterFlowPFRModel)
@@ -423,5 +351,52 @@ const notedata = (
         )
     ),
 )
+
+"Calcula a potência de `x` mais próxima de `v`."
+function closestpowerofx(v::Number; x::Number = 10)::Number
+    rounder = x^floor(log(x, v))
+    return convert(Int64, rounder * ceil(v/rounder))
+end
+
+"Gestor de resíduos durante uma simulação."
+mutable struct ResidualsRaw
+    inner::Int64
+    outer::Int64
+    counter::Int64
+    innersteps::Vector{Int64}
+    residuals::Vector{Float64}
+    function ResidualsRaw(inner::Int64, outer::Int64)
+        innersteps = -ones(Int64, outer)
+        residuals = -ones(Float64, outer * inner)
+        return new(inner, outer, 0, innersteps, residuals)
+    end
+end
+
+"Resíduos de uma simulação processados."
+struct ResidualsProcessed
+    counter::Int64
+    innersteps::Vector{Int64}
+    residuals::Vector{Float64}
+    finalsteps::Vector{Int64}
+    finalresiduals::Vector{Float64}
+
+    function ResidualsProcessed(r::ResidualsRaw)
+        innersteps = r.innersteps[r.innersteps .> 0.0]
+        residuals = r.residuals[r.residuals .> 0.0]
+
+        finalsteps = cumsum(innersteps)
+        finalresiduals = residuals[finalsteps]
+
+        return new(r.counter, innersteps, residuals,
+                   finalsteps, finalresiduals)
+    end
+end
+
+"Alimenta resíduos da simulação no laço interno."
+function feedinnerresidual(r::ResidualsRaw, ε::Float64)
+    # TODO: add resizing test here!
+    r.counter += 1
+    r.residuals[r.counter] = ε
+end
 
 @info("Verifique `util-reator-pistao.jl` para mais detalhes...")
