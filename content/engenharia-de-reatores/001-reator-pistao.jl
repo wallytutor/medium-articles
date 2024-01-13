@@ -1,21 +1,21 @@
 ### A Pluto.jl notebook ###
-# v0.19.30
+# v0.19.36
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ 07bf0333-ff7a-444b-a8d6-cc2398e211a0
 begin
-	@info "Importando ferramentas..."
-	
-	using CairoMakie
-	using DelimitedFiles
-	using DifferentialEquations: solve
-	using ModelingToolkit
-	using PlutoUI
-	using Printf
-	using Roots
-	using SparseArrays
+    @info "Importando ferramentas..."
+
+    using CairoMakie
+    using DelimitedFiles
+    using DifferentialEquations: solve
+    using ModelingToolkit
+    using PlutoUI
+    using Printf
+    using Roots
+    using SparseArrays
 end
 
 # ╔═╡ 05b06ee0-b1e5-11ee-018d-73ad26daf458
@@ -55,68 +55,68 @@ Da forma simplificada como tratado, o problema oferece uma solução analítica 
 # ╔═╡ b1e1ee97-d066-4be6-b1a5-0fda4a3db4c9
 "Função auxiliar para avaliação exaustiva de critérios de validação."
 function testall(tests)
-	messages = []
+    messages = []
 
-	for (evaluation, message) in tests
-		!evaluation && push!(messages, message)
-	end
-	
-	if !isempty(messages)
-		@error join(messages, "\n")
-		throw(ArgumentError("Check previous warnings"))
-	end
+    for (evaluation, message) in tests
+        !evaluation && push!(messages, message)
+    end
+
+    if !isempty(messages)
+        @error join(messages, "\n")
+        throw(ArgumentError("Check previous warnings"))
+    end
 end
 
 # ╔═╡ 8a7dbcc9-b722-4eb7-a7d4-f2a98cdfe497
 "Equação de Gnielinski para número de Nusselt."
 function Nu_gnielinski(Re, Pr)
-	testall([
-		(3000.0 <= Re <= 5.0e+06, "* Re = $(Re) ∉ [3000, 5×10⁶]"),
-		(0.5 <= Pr <= 2000.0,     "* Pr = $(Pr) ∉ [0.5, 2000]")
-	])
+    testall([
+        (3000.0 <= Re <= 5.0e+06, "* Re = $(Re) ∉ [3000, 5×10⁶]"),
+        (0.5 <= Pr <= 2000.0, "* Pr = $(Pr) ∉ [0.5, 2000]"),
+    ])
 
     f = (0.79 * log(Re) - 1.64)^(-2)
     g = f / 8
 
     num = g * (Re - 1000) * Pr
     den = 1.0 + 12.7 * (Pr^(2 / 3) - 1) * g^(1 / 2)
-	
+
     return num / den
 end
 
 # ╔═╡ 9e338998-8836-4883-8c88-9bc40540e29b
 "Equação de Dittus-Boelter para número de Nusselt."
 function Nu_dittusboelter(Re, Pr, L, D; what = :heating)
-	testall([
-		(Re >= 10000.0,       "* Re = $(Re) < 10000"),
-		(0.6 <= Pr <= 160.0,  "* Pr = $(Pr) ∉ [0.6, 160]"),
-		(L / D > 10.0,        "* L/D = $(L/D) < 10.0")
-	])
+    testall([
+        (Re >= 10000.0, "* Re = $(Re) < 10000"),
+        (0.6 <= Pr <= 160.0, "* Pr = $(Pr) ∉ [0.6, 160]"),
+        (L / D > 10.0, "* L/D = $(L/D) < 10.0"),
+    ])
 
     n = (what == :heating) ? 0.4 : 0.3
 
-    return 0.023 * Re^(4//5) * Pr^n
+    return 0.023 * Re^(4 // 5) * Pr^n
 end
 
 # ╔═╡ dce9a032-8851-4245-80db-9abb5dfe7626
 "Avalia número de Nusselt com correlação escolhida."
 function Nu(Re, Pr; method = :gnielinski, kw...)
-	# Valor para escoamento interno laminar.
-	Nu = 3.66
+    # Valor para escoamento interno laminar.
+    Nu = 3.66
 
-	# Modifica valor com método se turbulento.
+    # Modifica valor com método se turbulento.
     if Re > 3000.0
-		if method == :gnielinski
-        	Nu = Nu_gnielinski(Re, Pr)
-		elseif method == :dittusboelter
-			what = get(kw, :what, :heating)
-			Nu = Nu_dittusboelter(Re, Pr, kw[:L], kw[:D]; what)
-		else
-			throw(ArgumentError("Unknown method $(method)"))
-		end
+        if method == :gnielinski
+            Nu = Nu_gnielinski(Re, Pr)
+        elseif method == :dittusboelter
+            what = get(kw, :what, :heating)
+            Nu = Nu_dittusboelter(Re, Pr, kw[:L], kw[:D]; what)
+        else
+            throw(ArgumentError("Unknown method $(method)"))
+        end
     end
 
-	return Nu
+    return Nu
 end
 
 # ╔═╡ 7de15896-350b-4e77-bcbe-06bf0550a3bf
@@ -126,30 +126,48 @@ Abaixo realizamos uma série de testes para verificação dos cálculos do núme
 
 # ╔═╡ 8b302c93-5cc6-441e-830c-65d388a820f8
 let
-	disp(x) = round(x, digits = 1)
+    disp(x) = round(x, digits = 1)
 
-	L = 100.0
-	D = 1.0
+    L = 100.0
+    D = 1.0
 
-	# Avaliação sem erros.
-	@show Nu(1.0e+03, 0.7) |> disp
-	@show Nu(5.0e+03, 0.7; method = :gnielinski) |> disp
-	@show Nu(1.5e+04, 0.7; method = :dittusboelter, L, D) |> disp
-	@show Nu(1.5e+04, 0.7; method = :dittusboelter, L, D , what = :heating) |> disp
-	@show Nu(1.5e+04, 0.7; method = :dittusboelter, L, D, what = :cooling) |> disp
+    # Avaliação sem erros.
+    @show Nu(1.0e+03, 0.7) |> disp
+    @show Nu(5.0e+03, 0.7; method = :gnielinski) |> disp
+    @show Nu(1.5e+04, 0.7; method = :dittusboelter, L, D) |> disp
+    @show Nu(1.5e+04, 0.7; method = :dittusboelter, L, D, what = :heating) |> disp
+    @show Nu(1.5e+04, 0.7; method = :dittusboelter, L, D, what = :cooling) |> disp
 end;
 
 # ╔═╡ 8882997e-a1d8-4d59-a635-288ce2dbfe38
 let
-	L = 100.0
-	D = 1.0
+    L = 100.0
+    D = 1.0
 
-	try Nu(5.0e+07, 0.7; method = :gnielinski)            catch end
-	try Nu(5.0e+03, 0.4; method = :gnielinski)            catch end
-	try Nu(5.0e+07, 0.4; method = :gnielinski)            catch end
-	try Nu(5.0e+03, 0.7; method = :dittusboelter, L, D)   catch end
-	try Nu(5.0e+04, 0.5; method = :dittusboelter, L, D)   catch end
-	try Nu(5.0e+04, 0.7; method = :dittusboelter, L=D, D) catch end
+    try
+        Nu(5.0e+07, 0.7; method = :gnielinski)
+    catch
+    end
+    try
+        Nu(5.0e+03, 0.4; method = :gnielinski)
+    catch
+    end
+    try
+        Nu(5.0e+07, 0.4; method = :gnielinski)
+    catch
+    end
+    try
+        Nu(5.0e+03, 0.7; method = :dittusboelter, L, D)
+    catch
+    end
+    try
+        Nu(5.0e+04, 0.5; method = :dittusboelter, L, D)
+    catch
+    end
+    try
+        Nu(5.0e+04, 0.7; method = :dittusboelter, L = D, D)
+    catch
+    end
 end;
 
 # ╔═╡ d9792197-8383-4312-8a06-fe76d9ea4022
@@ -161,8 +179,8 @@ Para cobrir toda uma gama de números de Reynolds, a função `heattransfercoef`
 "Estima coeficiente de troca convectiva do escoamento."
 function heattransfercoef(L, D, u, ρ, μ, cₚ, Pr; kw...)
     Re_val = ρ * u * D / μ
-	Nu_val = Nu(Re_val, Pr; kw...)
-	
+    Nu_val = Nu(Re_val, Pr; kw...)
+
     k = cₚ * μ / Pr
     h = Nu_val * k / D
 
@@ -180,16 +198,16 @@ end
 
 # ╔═╡ 53de560a-fc88-49e9-b22c-c370a305b857
 let
-	L = 100.0
-	D = 1.0
-	u = 1.0
-	ρ = 1000.0
-	μ = 0.01
-	cₚ = 4200.0
-	Pr = 0.7
-	kw = (verbose = true, )
-	
-	heattransfercoef(L, D, u, ρ, μ, cₚ, Pr; kw...)
+    L = 100.0
+    D = 1.0
+    u = 1.0
+    ρ = 1000.0
+    μ = 0.01
+    cₚ = 4200.0
+    Pr = 0.7
+    kw = (verbose = true,)
+
+    heattransfercoef(L, D, u, ρ, μ, cₚ, Pr; kw...)
 end;
 
 # ╔═╡ 8f54879c-d297-4413-b09e-3479e24d6df3
@@ -199,44 +217,44 @@ md"""
 
 # ╔═╡ 06c21819-28b1-4735-8029-602126a526b6
 begin
-	# Comprimento do reator [m]
-	L = 10.0
+    # Comprimento do reator [m]
+    L = 10.0
 
-	# Diâmetro do reator [m]
-	D = 0.01
+    # Diâmetro do reator [m]
+    D = 0.01
 
-	# Mass específica do fluido [kg/m³]
+    # Mass específica do fluido [kg/m³]
     ρ = 1000.0
 
-	# Viscosidade do fluido [Pa.s]
+    # Viscosidade do fluido [Pa.s]
     μ = 0.001
 
-	# Calor específico do fluido [J/(kg.K)]
+    # Calor específico do fluido [J/(kg.K)]
     cₚ = 4182.0
 
-	# Número de Prandtl do fluido
+    # Número de Prandtl do fluido
     Pr = 6.9
-	
-	# Velocidade do fluido [m/s]
+
+    # Velocidade do fluido [m/s]
     u = 1.0
-	
- 	# Temperatura de entrada do fluido [K]
+
+    # Temperatura de entrada do fluido [K]
     Tₚ = 300.0
 
-	# Temperatura da parede do reator [K]
+    # Temperatura da parede do reator [K]
     Tₛ = 400.0
 
-	# Perímetro da seção circular do reator [m]
-	P = π * D
+    # Perímetro da seção circular do reator [m]
+    P = π * D
 
-	# Área da seção circula do reator [m²]
-	A = π * (D/2)^2
-	
-	# Coeficiente convectivo de troca de calor [W/(m².K)]
-	ĥ = heattransfercoef(L, D, u, ρ, μ, cₚ, Pr; verbose = true)
+    # Área da seção circula do reator [m²]
+    A = π * (D / 2)^2
 
-	# Coordenadas espaciais da solução [m]
-	z = LinRange(0, L, 10_000)
+    # Coeficiente convectivo de troca de calor [W/(m².K)]
+    ĥ = heattransfercoef(L, D, u, ρ, μ, cₚ, Pr; verbose = true)
+
+    # Coordenadas espaciais da solução [m]
+    z = LinRange(0, L, 10_000)
 end;
 
 # ╔═╡ 427d5757-a021-47f1-81d9-4e1efed83751
@@ -417,22 +435,22 @@ série e são tidos como conhecimentos *a priori* para as discussões.
 
 # ╔═╡ f2105003-4563-4449-a4ec-8ba49a9b4ccf
 let
-	Tₐ = analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+    Tₐ = analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
     Tend = @sprintf("%.2f", Tₐ[end])
-	yrng = (300, 400)
-	
-	fig = Figure(size = (720, 500))
-	ax = Axis(fig[1, 1])
-	lines!(ax, z, Tₐ, color = :red, linewidth = 5, label = "Analítica")
-	xlims!(ax, (0, L))
-	ax.title = "Temperatura final = $(Tend) K"
-	ax.xlabel = "Posição [m]"
-	ax.ylabel = "Temperatura [K]"
-	ax.xticks = range(0.0, L, 6)
-	ax.yticks = range(yrng..., 6)
-	ylims!(ax, yrng)
-	axislegend(position = :rb)
-	fig
+    yrng = (300, 400)
+
+    fig = Figure(size = (720, 500))
+    ax = Axis(fig[1, 1])
+    lines!(ax, z, Tₐ, color = :red, linewidth = 5, label = "Analítica")
+    xlims!(ax, (0, L))
+    ax.title = "Temperatura final = $(Tend) K"
+    ax.xlabel = "Posição [m]"
+    ax.ylabel = "Temperatura [K]"
+    ax.xticks = range(0.0, L, 6)
+    ax.yticks = range(yrng..., 6)
+    ylims!(ax, yrng)
+    axislegend(position = :rb)
+    fig
 end
 
 # ╔═╡ b76e3dd1-1a25-4c57-a134-49fb81609db9
@@ -446,32 +464,32 @@ No caso de uma equação diferencial ordinária (EDO) como no presente caso, a a
 
 # ╔═╡ 8c2129ac-28c5-4122-b89d-877ce8815467
 pfr = let
-	@info "Criação do modelo diferencial"
-	
-	@variables z
-	D = Differential(z)
+    @info "Criação do modelo diferencial"
 
-	@mtkmodel PFR begin
-		 @parameters begin
-		 	P
-			A
-			Tₛ
-			ĥ
-			u
-			ρ
-			cₚ
-		end
+    @variables z
+    D = Differential(z)
 
-		@variables begin
-			T(z)
-		end
+    @mtkmodel PFR begin
+        @parameters begin
+            P
+            A
+            Tₛ
+            ĥ
+            u
+            ρ
+            cₚ
+        end
 
-		@equations begin
-			D(T) ~ ĥ * P * (Tₛ - T) / (ρ * u * A * cₚ)
-		end
-	end
+        @variables begin
+            T(z)
+        end
 
-	@mtkbuild pfr = PFR()
+        @equations begin
+            D(T) ~ ĥ * P * (Tₛ - T) / (ρ * u * A * cₚ)
+        end
+    end
+
+    @mtkbuild pfr = PFR()
 end;
 
 # ╔═╡ 274cf65d-b1cd-4653-8c36-0167282b50d2
@@ -505,7 +523,7 @@ function solvemtkpfr(; pfr, P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
     zspan = (0, z[end])
     prob = ODEProblem(pfr, T₀, zspan, p)
 
-	return solve(prob; saveat = z)
+    return solve(prob; saveat = z)
 end
 
 # ╔═╡ 7cf4922a-d138-441d-8d4b-4742868212ee
@@ -515,25 +533,25 @@ Com isso podemos proceder à integração com ajuda de `solveodepfr` concebida a
 
 # ╔═╡ 0c623a22-8378-4923-a8c8-50e15f83cb2e
 let
-	Tₐ = analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
-	Tₒ = solvemtkpfr(; pfr, P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)[:T]
-	
+    Tₐ = analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+    Tₒ = solvemtkpfr(; pfr, P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)[:T]
+
     Tend = @sprintf("%.2f", Tₐ[end])
-	yrng = (300, 400)
-	
-	fig = Figure(size = (720, 500))
-	ax = Axis(fig[1, 1])
-	lines!(ax, z, Tₐ, color = :red, linewidth = 5, label = "Analítica")
-	lines!(ax, z, Tₒ, color = :black, linewidth = 2, label = "ModelingToolkit")
-	xlims!(ax, (0, L))
-	ax.title = "Temperatura final = $(Tend) K"
-	ax.xlabel = "Posição [m]"
-	ax.ylabel = "Temperatura [K]"
-	ax.xticks = range(0.0, L, 6)
-	ax.yticks = range(yrng..., 6)
-	ylims!(ax, yrng)
-	axislegend(position = :rb)
-	fig
+    yrng = (300, 400)
+
+    fig = Figure(size = (720, 500))
+    ax = Axis(fig[1, 1])
+    lines!(ax, z, Tₐ, color = :red, linewidth = 5, label = "Analítica")
+    lines!(ax, z, Tₒ, color = :black, linewidth = 2, label = "ModelingToolkit")
+    xlims!(ax, (0, L))
+    ax.title = "Temperatura final = $(Tend) K"
+    ax.xlabel = "Posição [m]"
+    ax.ylabel = "Temperatura [K]"
+    ax.xticks = range(0.0, L, 6)
+    ax.yticks = range(yrng..., 6)
+    ylims!(ax, yrng)
+    axislegend(position = :rb)
+    fig
 end
 
 # ╔═╡ 30cf0acb-83dc-4dd0-b9f2-81f69977a960
@@ -742,9 +760,9 @@ provida em `solvefvmpfr` abaixo.
 function solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
     N = length(z) - 1
 
-	# Vamos tratar somente o caso equi-espaçado aqui!
-	δ = z[2] - z[1]
-	
+    # Vamos tratar somente o caso equi-espaçado aqui!
+    δ = z[2] - z[1]
+
     a = (ρ * u * cₚ * A) / (ĥ * P * δ)
 
     A⁺ = (2a + 1) / (2Tₛ)
@@ -753,13 +771,13 @@ function solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
     b = ones(N)
     b[1] = 1 + A⁻[1] * Tₚ
 
-    M = spdiagm(-1 => -A⁻ * ones(N-1), 0 => +A⁺ * ones(N))
+    M = spdiagm(-1 => -A⁻ * ones(N - 1), 0 => +A⁺ * ones(N))
     U = similar(z)
 
     U[1] = Tₚ
     U[2:end] = M \ b
 
-	return U
+    return U
 end
 
 # ╔═╡ e1cca244-9c21-4288-947e-0fbc1d02bf28
@@ -777,29 +795,29 @@ que mostra o bom acordo de simulações 1-D no limite de validade do modelo.
 let
     data = readdlm("data/fluent-reference/postprocess.dat", Float64)
     x, Tᵣ = data[:, 1], data[:, 2]
-	
-	Tₐ = analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
-	Tₒ = solvemtkpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z, pfr)[:T]
-	Tₑ = solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
-	
+
+    Tₐ = analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+    Tₒ = solvemtkpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z, pfr)[:T]
+    Tₑ = solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+
     Tend = @sprintf("%.2f", Tₐ[end])
-	yrng = (300, 400)
-	
-	fig = Figure(size = (720, 500))
-	ax = Axis(fig[1, 1])
-	lines!(ax, z, Tₐ, color = :red, linewidth = 5, label = "Analítica")
-	lines!(ax, z, Tₒ, color = :black, linewidth = 2, label = "ModelingToolkit")
-	lines!(ax, z, Tₑ, color = :blue, linewidth = 2, label = "Finite Volumes")
-	lines!(ax, x, Tᵣ, color = :green, linewidth = 2, label = "CFD 3D")
-	xlims!(ax, (0, L))
-	ax.title = "Temperatura final = $(Tend) K"
-	ax.xlabel = "Posição [m]"
-	ax.ylabel = "Temperatura [K]"
-	ax.xticks = range(0.0, L, 6)
-	ax.yticks = range(yrng..., 6)
-	ylims!(ax, yrng)
-	axislegend(position = :rb)
-	fig
+    yrng = (300, 400)
+
+    fig = Figure(size = (720, 500))
+    ax = Axis(fig[1, 1])
+    lines!(ax, z, Tₐ, color = :red, linewidth = 5, label = "Analítica")
+    lines!(ax, z, Tₒ, color = :black, linewidth = 2, label = "ModelingToolkit")
+    lines!(ax, z, Tₑ, color = :blue, linewidth = 2, label = "Finite Volumes")
+    lines!(ax, x, Tᵣ, color = :green, linewidth = 2, label = "CFD 3D")
+    xlims!(ax, (0, L))
+    ax.title = "Temperatura final = $(Tend) K"
+    ax.xlabel = "Posição [m]"
+    ax.ylabel = "Temperatura [K]"
+    ax.xticks = range(0.0, L, 6)
+    ax.yticks = range(yrng..., 6)
+    ylims!(ax, yrng)
+    axislegend(position = :rb)
+    fig
 end
 
 # ╔═╡ 01af0b23-d0d1-4d43-8e1e-009327ce5eb5
@@ -809,30 +827,30 @@ Podemos também réalizar um estudo de sensibilidade a malha:
 
 # ╔═╡ 53780b8a-a1ed-4228-a58c-b51d2e323f30
 let
-	Tₐ = analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
-	
+    Tₐ = analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+
     Tend = @sprintf("%.2f", Tₐ[end])
-	yrng = (300, 400)
-	
-	fig = Figure(size = (720, 500))
-	ax = Axis(fig[1, 1])
-	lines!(ax, z, Tₐ, color = :red, linewidth = 5, label = "Analítica")
+    yrng = (300, 400)
 
-	for (c, N) in [(:blue, 20), (:green, 50)]
-		z = LinRange(0.0, L, N)
-		Tₑ = solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
-		stairs!(ax, z, Tₑ, color = c, label = "N = $(N)", step = :center)
-	end
+    fig = Figure(size = (720, 500))
+    ax = Axis(fig[1, 1])
+    lines!(ax, z, Tₐ, color = :red, linewidth = 5, label = "Analítica")
 
-	xlims!(ax, (0, L))
-	ax.title = "Temperatura final = $(Tend) K"
-	ax.xlabel = "Posição [m]"
-	ax.ylabel = "Temperatura [K]"
-	ax.xticks = range(0.0, L, 6)
-	ax.yticks = range(yrng..., 6)
-	ylims!(ax, yrng)
-	axislegend(position = :rb)
-	fig
+    for (c, N) in [(:blue, 20), (:green, 50)]
+        z = LinRange(0.0, L, N)
+        Tₑ = solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+        stairs!(ax, z, Tₑ, color = c, label = "N = $(N)", step = :center)
+    end
+
+    xlims!(ax, (0, L))
+    ax.title = "Temperatura final = $(Tend) K"
+    ax.xlabel = "Posição [m]"
+    ax.ylabel = "Temperatura [K]"
+    ax.xticks = range(0.0, L, 6)
+    ax.yticks = range(yrng..., 6)
+    ylims!(ax, yrng)
+    axislegend(position = :rb)
+    fig
 end
 
 # ╔═╡ bb178306-d9e0-432d-8907-90e845b8de3b

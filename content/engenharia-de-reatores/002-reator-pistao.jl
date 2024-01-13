@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.30
+# v0.19.36
 
 using Markdown
 using InteractiveUtils
@@ -35,6 +35,12 @@ $(TableOfContents())
 md"""
 Algumas funções de suporte que já foram bem estabelecidas no estudo se encontram em um módulo `PlugFlowReactors.jl` que pode ser importado localmente.
 """
+
+# ╔═╡ 0c6ce124-f1b3-419b-a927-869da96c114d
+"Solução analítica do modelo de reator pistão."
+function analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+    return @. Tₛ - (Tₛ - Tₚ) * exp(-z * (ĥ * P) / (ρ * u * cₚ * A))
+end
 
 # ╔═╡ 161c190d-fb18-490f-87df-7217db7179b0
 md"""
@@ -256,30 +262,6 @@ md"""
 Usamos agora essa função para uma última simulação do mesmo problema. Para que os resultados sejam comparáveis as soluções precedentes, fizemos ``h(T) = c_{p}T + h_{ref}``. O valor de ``h_{ref}`` é arbitrário e não deve afetar a solução por razões que deveriam ser evidentes neste ponto do estudo.
 """
 
-# ╔═╡ 2ff750d6-8680-44cd-a873-bc6f9ac9a383
-md"""
-Verificamos abaixo que a solução levou um certo número de iterações para convergir. Para concluir vamos averiguar a qualidade da convergência ao longo das iterações.
-"""
-
-# ╔═╡ 14a9f7a5-c127-4ac5-8fb9-e94dc4f8462d
-md"""
-Introduzimos também a possibilidade de se utilizar a relaxação diretamente na entalpia, resolvendo o problema não linear apenas para encontrar diretamente a nova estimação do campo de temperaturas. A figura que segue ilustas o comportamento de convergência. Neste caso específico a relaxação em entalpia não apresenta vantagens, mas veremos em outras ocasiões que esta é a maneira mais simples de se fazer convergir uma simulação.
-"""
-
-# ╔═╡ 5c97795c-fc24-409b-ac15-7fafebf6153b
-md"""
-Isso é tudo para esta sessão de estudo! Até a próxima!
-
-[Voltar aos conteúdos](https://wallytutor.github.io/medium-articles/content/engenharia-de-reatores/).
-"""
-
-# ╔═╡ 97f56fc2-bbb0-4cde-8d55-751160dea9a1
-"Solução analítica do reator pistão circular no espaço das temperaturas."
-function analyticalthermalpfr(; P::T, A::T, Tₛ::T, Tₚ::T, ĥ::T, u::T, ρ::T,
-                                cₚ::T, z::Vector{T})::Vector{T} where T
-    return @. Tₛ - (Tₛ - Tₚ) * exp(-z * (ĥ * P) / (ρ * u * cₚ * A))
-end
-
 # ╔═╡ 29f8a7e8-8570-43b6-a1e4-48f42f6b1e5a
 fig1, fig2 = let
     mesh = ImmersedConditionsFVM(; L = reactor.L, N = 10000)
@@ -334,8 +316,18 @@ end;
 # ╔═╡ 93cdcc24-60aa-4c6c-87aa-1f941c7a33f5
 fig1
 
+# ╔═╡ 2ff750d6-8680-44cd-a873-bc6f9ac9a383
+md"""
+Verificamos abaixo que a solução levou um certo número de iterações para convergir. Para concluir vamos averiguar a qualidade da convergência ao longo das iterações.
+"""
+
 # ╔═╡ c4b7cfe3-37a8-4619-b8c9-3d506f74468b
 fig2
+
+# ╔═╡ 14a9f7a5-c127-4ac5-8fb9-e94dc4f8462d
+md"""
+Introduzimos também a possibilidade de se utilizar a relaxação diretamente na entalpia, resolvendo o problema não linear apenas para encontrar diretamente a nova estimação do campo de temperaturas. A figura que segue ilustas o comportamento de convergência. Neste caso específico a relaxação em entalpia não apresenta vantagens, mas veremos em outras ocasiões que esta é a maneira mais simples de se fazer convergir uma simulação.
+"""
 
 # ╔═╡ 383998d7-2edf-4748-a58d-1fbfec86bb97
 fig3, fig4 = let
@@ -391,8 +383,12 @@ end;
 # ╔═╡ ef9aa780-07c1-490c-8056-286e97927867
 fig4
 
-# ╔═╡ 7158a6ea-48ec-4b19-81db-1317198cc980
+# ╔═╡ 5c97795c-fc24-409b-ac15-7fafebf6153b
+md"""
+Isso é tudo para esta sessão de estudo! Até a próxima!
 
+[Voltar aos conteúdos](https://wallytutor.github.io/medium-articles/content/engenharia-de-reatores/).
+"""
 
 # ╔═╡ ea183591-cc73-44cc-b1d0-572cf24d5b6b
 
@@ -2084,6 +2080,7 @@ version = "3.5.0+0"
 # ╟─118aef61-774f-4d98-9d43-1966d1bd2584
 # ╟─1bcae7c4-98fe-4e44-b9ce-3adb78b141a4
 # ╟─ccd43dd7-e7ac-40db-a423-7f54821807a7
+# ╟─0c6ce124-f1b3-419b-a927-869da96c114d
 # ╟─161c190d-fb18-490f-87df-7217db7179b0
 # ╟─c3ebf383-1217-4d28-9d29-337eb7903775
 # ╟─eaed30cf-e984-4ae6-8eb8-43ba533c23ee
@@ -2097,9 +2094,7 @@ version = "3.5.0+0"
 # ╟─14a9f7a5-c127-4ac5-8fb9-e94dc4f8462d
 # ╟─383998d7-2edf-4748-a58d-1fbfec86bb97
 # ╟─ef9aa780-07c1-490c-8056-286e97927867
-# ╠═5c97795c-fc24-409b-ac15-7fafebf6153b
-# ╟─97f56fc2-bbb0-4cde-8d55-751160dea9a1
-# ╠═7158a6ea-48ec-4b19-81db-1317198cc980
+# ╟─5c97795c-fc24-409b-ac15-7fafebf6153b
 # ╟─ea183591-cc73-44cc-b1d0-572cf24d5b6b
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
