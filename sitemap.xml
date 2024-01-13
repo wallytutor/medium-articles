@@ -74,12 +74,6 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/content/engenharia-de-reatores/001-reator-pistao-text/index.html</loc>
-    <lastmod>2024-01-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
     <loc>https://wallytutor.github.io/medium-articles/index.html</loc>
     <lastmod>2024-01-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -105,6 +99,12 @@
 </url>
 <url>
     <loc>https://wallytutor.github.io/medium-articles/content/engenharia-de-reatores/index.html</loc>
+    <lastmod>2024-01-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://wallytutor.github.io/medium-articles/content/engenharia-de-reatores/001-reator-pistao/</loc>
     <lastmod>2024-01-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

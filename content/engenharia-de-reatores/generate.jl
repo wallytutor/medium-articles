@@ -4,8 +4,8 @@ using Pluto: ServerSession, SessionActions
 using Pluto: generate_html
 
 function convertnotebook(s::ServerSession, nbname::String)
-    nbpath = joinpath(@__DIR__, "src/$(nbname).jl")
-    pgpath = "docs/$(nbname).html"
+    nbpath = joinpath(@__DIR__, "$(nbname).jl")
+    pgpath = "$(nbname).html"
     
     if !format_file(nbpath)
         @error "file not formatted: $(nbpath)"
@@ -36,18 +36,7 @@ VERBOSE = 3
 FORCE = false
 
 notebooks_ready = [
-    "index"
-    "01-Fundamentos/000-preambulo-e-pluto"
-    "01-Fundamentos/001-primeiros-passos"
-    "01-Fundamentos/002-manipulacao-textual"
-    "01-Fundamentos/003-estruturas-de-dados"
-    "01-Fundamentos/004-estruturas-de-dados"
-    # "a01-colaboracao-cientifica"
-    # "c01-reator-pistao"
-    # "c02-reator-pistao"
-    # "c03-reator-pistao"
-    # "c04-reator-pistao"
-    # "c99-reator-pistao"
+    "001-reator-pistao"
 ]
 
 workflow(notebooks_ready)
