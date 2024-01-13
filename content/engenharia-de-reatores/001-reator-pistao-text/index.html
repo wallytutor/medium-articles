@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="/medium-articles/libs/katex/katex.min.css">
      
-  
+   <link rel="stylesheet" href="/medium-articles/libs/highlight/styles/github.min.css">
+   
   <link rel="stylesheet" href="/medium-articles/css/franklin.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
 <link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
@@ -38,6 +39,15 @@
 <p>Este é o primeiro notebook de uma série abordando reatores do tipo <em>pistão</em> &#40;<em>plug-flow</em>&#41; no qual os efeitos advectivos são preponderantes sobre o comportamento difusivo, seja de calor, massa, ou espécies. O estudo e modelagem desse tipo de reator apresentar diversos interesses para a pesquisa fundamental e na indústria. Muitos reatores tubulares de síntese laboratorial de materiais apresentam aproximadamente um comportamento como tal e processos nas mais diversas indústrias podem ser aproximados por um ou uma rede de reatores pistão e reatores agitados interconectados.</p>
 <p>Começaremos por um caso simples considerando um fluido incompressível e ao longo da série aumentaremos progressivamente a complexidade dos modelos. Os notebooks nessa série vão utilizar uma estratégia focada nos resultados, o que indica que o código será na maior parte do tempo ocultado e o estudante interessado deverá executar o notebook por si mesmo para estudar as implementações.</p>
 <p>Nesta <em>Parte 1</em> vamos estuda a formulação na temperatura da equação de conservação de energia.</p>
+<pre><code class="language-julia">using CairoMakie
+using DelimitedFiles
+using DifferentialEquations: solve
+using ModelingToolkit
+using Printf
+using Roots
+using SparseArrays: spdiagm</code></pre><pre><code class="plaintext code-output">ArgumentError: Package Roots not found in current path.
+- Run `import Pkg; Pkg.add("Roots")` to install the Roots package.
+</code></pre>
 <h2 id="modelo_da_temperatura"><a href="#modelo_da_temperatura" class="header-anchor">Modelo da temperatura</a></h2>
 <p>No que se segue vamos implementar a forma mais simples de um reator pistão. Para este primeiro estudo o foco será dado apenas na solução da equação da energia. As etapas globais implementadas aqui seguem o livro de <a href="https://www.wiley.com/en-ie/Chemically&#43;Reacting&#43;Flow&#37;3A&#43;Theory&#37;2C&#43;Modeling&#37;2C&#43;and&#43;Simulation&#37;2C&#43;2nd&#43;Edition-p-9781119184874">Kee <em>et al.</em> &#40;2017&#41;</a>, seção 9.2.</p>
 <p>Da forma simplificada como tratado, o problema oferece uma solução analítica análoga à <a href="https://pt.wikipedia.org/wiki/Lei_do_resfriamento_de_Newton">lei do resfriamento de Newton</a>, o que é útil para a verificação do problema. Os cálculos do número de Nusselt para avaliação do coeficiente de transferência de calor são providos nos anexos com expressões discutidas <a href="https://en.wikipedia.org/wiki/Nusselt_number">aqui</a>.</p>
@@ -115,6 +125,9 @@ T=T_{w}-(T_{w}-T_{0})\exp\left(-\mathcal{C}_{0}z+\mathcal{C}_{1}\right)
 \[
 T=T_{w}-(T_{w}-T_{0})\exp\left(-\frac{\hat{h}P}{\rho{}u{}c_{p}A_{c}}z\right)
 \]
+<pre><code class="language-julia">function analyticalthermalpfr&#40;; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z&#41;
+    return @. Tₛ - &#40;Tₛ - Tₚ&#41; * exp&#40;-z * &#40;ĥ * P&#41; / &#40;ρ * u * cₚ * A&#41;&#41;
+end</code></pre>
 <p>O bloco abaixo resolve o problema para um conjunto de condições que você pode consultar nos anexos e expandindo o seu código. Observe abaixo da célula um <em>log</em> do cálculo dos números adimensionais relevantes ao problema e do coeficiente de transferência de calor convectivo associado. Esses elementos são tratados por funções externas que se encontram em um arquivo de suporte a esta série e são tidos como conhecimentos <em>a priori</em> para as discussões.</p>
 <h3 id="integração_numérica_da_edo"><a href="#integração_numérica_da_edo" class="header-anchor">Integração numérica da EDO</a></h3>
 <p>Neste exemplo tivemos <em>sorte</em> de dispor de uma solução analítica. Esse problema pode facilmente tornar-se intratável se considerarmos uma dependência arbitrária do calor específico com a temperatura ou se a parede do reator tem uma dependência na coordenada axial. É importante dispor de meios numéricos para o tratamento deste tipo de problema.</p>
@@ -231,6 +244,10 @@ T_{N}    \\
 <script>renderMathInElement(document.body)</script>
 
     
+    
+        <script src="/medium-articles/libs/highlight/highlight.min.js"></script>
+<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
+
     
   </body>
 </html>
