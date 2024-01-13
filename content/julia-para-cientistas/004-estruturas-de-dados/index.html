@@ -73,31 +73,31 @@
 <pre><code class="language-julia">typeof&#40;not_a_matrix&#41;</code></pre><pre><code class="plaintext code-output">Vector{Vector{Int64}} (alias for Array{Array{Int64, 1}, 1})</code></pre>
 <p>A função <a href="https://docs.julialang.org/en/v1/stdlib/Random/#Base.rand"><code>rand&#40;&#41;</code></a> pode ser usada para criar uma matriz de números aleatórios – e outras estruturas de ordem superior – como se segue. Observe o tipo <code>Matrix&#123;Float64&#125;</code> indicado.</p>
 <pre><code class="language-julia">a_matrix &#61; rand&#40;3, 3&#41;</code></pre><pre><code class="plaintext code-output">3×3 Matrix{Float64}:
- 0.732335  0.472405  0.300357
- 0.113469  0.705007  0.236402
- 0.370057  0.417141  0.283448</code></pre>
+ 0.24351   0.78182   0.00891744
+ 0.734942  0.183753  0.433142
+ 0.551062  0.313908  0.216088</code></pre>
 <p>Repetindo a verificação de tipo como fizemos para of <em>vetor de vetores</em> anteriormente, descobrimos que uma <code>Matrix</code> em Julia não é interpretada da mesma maneira, mas como um <code>Array</code> com duas dimensões. Isso é a forma que a linguagem emprega para assegurar as dimensões constantes segundo cada direção da matriz.</p>
 <pre><code class="language-julia">typeof&#40;a_matrix&#41;</code></pre><pre><code class="plaintext code-output">Matrix{Float64} (alias for Array{Float64, 2})</code></pre>
 <p>Vamos agora atribuir nossa <code>a_matrix</code> à uma outra variável e então modificar a matrix original.</p>
 <pre><code class="language-julia">maybe_another_matrix &#61; a_matrix
 a_matrix&#91;1, 1&#93; &#61; 999
 a_matrix</code></pre><pre><code class="plaintext code-output">3×3 Matrix{Float64}:
- 999.0       0.472405  0.300357
-   0.113469  0.705007  0.236402
-   0.370057  0.417141  0.283448</code></pre>
+ 999.0       0.78182   0.00891744
+   0.734942  0.183753  0.433142
+   0.551062  0.313908  0.216088</code></pre>
 <p>Tal como para a <code>Tuple</code> com objetos mutáveis, atribuir um novo nome à uma matriz não cria uma nova matriz, apenas referencia o seu endereço de memória: observamos abaixo que a tentativa de cópia <code>maybe_another_matriz</code> também é modificada em razão da operação sobre <code>a_matrix</code>.</p>
 <pre><code class="language-julia">maybe_another_matrix</code></pre><pre><code class="plaintext code-output">3×3 Matrix{Float64}:
- 999.0       0.472405  0.300357
-   0.113469  0.705007  0.236402
-   0.370057  0.417141  0.283448</code></pre>
+ 999.0       0.78182   0.00891744
+   0.734942  0.183753  0.433142
+   0.551062  0.313908  0.216088</code></pre>
 <p>Quando uma cópia da matriz é necessária devemos utilizar <code>copy&#40;&#41;</code>. Nas próximas células criamos uma matriz e então uma cópia, a qual é modificada, e verificamos não haver impacto na matriz original, validando a cópia em um novo endereço de memória.</p>
 <pre><code class="language-julia">another_matrix &#61; rand&#40;2, 2&#41;
 again_a_matrix &#61; copy&#40;another_matrix&#41;
 again_a_matrix&#91;1, 2&#93; &#61; 0
 again_a_matrix
 another_matrix</code></pre><pre><code class="plaintext code-output">2×2 Matrix{Float64}:
- 0.949455  0.875838
- 0.579427  0.891449</code></pre>
+ 0.339144   0.172551
+ 0.0676057  0.465259</code></pre>
 <h2 id="ranges"><a href="#ranges" class="header-anchor"><em>Ranges</em></a></h2>
 <p>Julia implementa uma variedade de tipos de <em>ranges</em>, iteradores para enumerações ou números espaçados segundo uma regra definida. Os tipos existentes encontram-se documentados em <a href="https://docs.julialang.org/en/v1/base/collections/">collections</a>. O leitor pode interessar-se também pela função mais genérica <a href="https://docs.julialang.org/en/v1/base/math/#Base.range">range</a> da biblioteca padrão.</p>
 <p>Vamos começar com a declaração de um <code>UnitRange</code> de números 1 à 10 que pode ser construido com a sintaxe simplificada abaixo.</p>
@@ -163,13 +163,13 @@ typeof&#40;a&#41;</code></pre><pre><code class="plaintext code-output">Float32</
 <div class="content">A <em>macro</em> <code>@benchmark</code> vai executar o código algumas vezes e retornar estatísticas de execução. Não se preocupe com ela por agora, vamos voltar na temática de <em>benchmarking</em> muito em breve.</div></div>
 <pre><code class="language-julia">using BenchmarkTools, Statistics
 @benchmark a::Vector&#123;Int64&#125; &#61; collect&#40;1:10&#41;</code></pre><pre><code class="plaintext code-output">BenchmarkTools.Trial: 10000 samples with 996 evaluations.
- Range (min … max):  24.956 ns … 628.007 ns  ┊ GC (min … max): 0.00% … 86.92%
- Time  (median):     27.200 ns               ┊ GC (median):    0.00%
- Time  (mean ± σ):   30.983 ns ±  31.163 ns  ┊ GC (mean ± σ):  4.76% ±  4.76%
+ Range (min … max):  24.594 ns … 744.598 ns  ┊ GC (min … max): 0.00% … 89.53%
+ Time  (median):     26.746 ns               ┊ GC (median):    0.00%
+ Time  (mean ± σ):   30.621 ns ±  29.935 ns  ┊ GC (mean ± σ):  4.56% ±  4.72%
 
-  ▄▇█▆▃                                                   ▁▁▁  ▂
-  ██████▇▆█▇▇▆▅▅▆▆▄▄▅▅▄▅▅▁▃▅▃▄▃▁▅▃▃▄▁▁▃▁▁▁▁▃▄▃▄▁▁▁▁▁▃▁▁▃▇█████ █
-  25 ns         Histogram: log(frequency) by time      83.2 ns <
+  ▂▇█▅▁                                                   ▁▁▁  ▂
+  ███████▇█▇█▆▆▆▆▇▅▅▆▃▄▅▄▅▄▅▃▃▄▃▃▃▁▃▃▃▄▄▁▃▁▁▃▁▃▄▃▃▁▁▁▃▄▃▅█████ █
+  24.6 ns       Histogram: log(frequency) by time      80.7 ns <
 
  Memory estimate: 144 bytes, allocs estimate: 1.</code></pre>
 <p>Vemos que o tempo de execução é da ordem de 30 ns. Abaixo repetimos essa avaliação para algumas ordens de grandeza de tamanho de <em>arrays</em>. Vemos que o tempo de execução para a criação dos objetos escala com o logaritmo na base 10 do número de elementos.</p>
@@ -180,31 +180,31 @@ typeof&#40;a&#41;</code></pre><pre><code class="plaintext code-output">Float32</
     mean&#40;&#40;@benchmark a::Vector&#123;Int64&#125; &#61; collect&#40;1:10^4&#41;&#41;.times&#41;
 &#93;
 log10.&#40;scalability&#41;</code></pre><pre><code class="plaintext code-output">4-element Vector{Float64}:
- 1.4987937423883106
- 2.02786060607593
- 2.797652398726353
- 3.651450659127582</code></pre>
+ 1.496364335315943
+ 2.0161715906946536
+ 2.914469866581324
+ 3.6400019842726907</code></pre>
 <p>Tentemos agora criar um vetor de <code>Float64</code> usando o mesmo método.</p>
 <pre><code class="language-julia">@benchmark a::Vector&#123;Float64&#125; &#61; collect&#40;1:10&#41;</code></pre><pre><code class="plaintext code-output">BenchmarkTools.Trial: 10000 samples with 983 evaluations.
- Range (min … max):  58.288 ns … 976.000 ns  ┊ GC (min … max): 0.00% … 80.72%
- Time  (median):     61.712 ns               ┊ GC (median):    0.00%
- Time  (mean ± σ):   71.234 ns ±  56.336 ns  ┊ GC (mean ± σ):  4.93% ±  6.24%
+ Range (min … max):  58.278 ns … 829.866 ns  ┊ GC (min … max): 0.00% … 82.62%
+ Time  (median):     61.030 ns               ┊ GC (median):    0.00%
+ Time  (mean ± σ):   70.861 ns ±  55.942 ns  ┊ GC (mean ± σ):  4.92% ±  6.24%
 
-  ▅█▆▂▁                                                 ▁▂▁    ▁
-  █████████▆▆▆▅▆▆▇▆▆▄▃▅▄▃▃▄▄▃▄▃▄▄▃▄▄▄▄▁▃▃▁▄▁▁▄▃▃▁▁▁▁▃▄▄█████▇▇ █
-  58.3 ns       Histogram: log(frequency) by time       177 ns <
+  ▆█▅▂▁▁                                                  ▂▂▁  ▁
+  █████████▇▇▆▄▄▅▅▅▄▅▄▃▃▃▄▃▃▄▄▄▄▄▅▅▄▃▁▄▁▄▄▁▃▁▃▄▁▃▁▄▁▁▃▄▄▄█████ █
+  58.3 ns       Histogram: log(frequency) by time       172 ns <
 
  Memory estimate: 288 bytes, allocs estimate: 2.</code></pre>
 <p>O tempo de execução mais que dobrou e a memória estimada foi multiplicada por dois&#33; Isso ocorre porque ao lado direito da expressão fornecemos números inteiros e o compilador é <em>obrigado</em> a incluir uma etapa de conversão de tipos, o que adiciona operações e alocações de memória.</p>
 <p>Se na criação do <em>range</em> utilizarmos o tipo esperado de dados voltamos a linha de base da alocação do vetor de inteiros, da ordem de 30 ns e 144 bytes.</p>
 <pre><code class="language-julia">@benchmark b::Vector&#123;Float64&#125; &#61; collect&#40;1.0:10.0&#41;</code></pre><pre><code class="plaintext code-output">BenchmarkTools.Trial: 10000 samples with 996 evaluations.
- Range (min … max):  24.887 ns … 728.848 ns  ┊ GC (min … max): 0.00% … 91.15%
- Time  (median):     27.019 ns               ┊ GC (median):    0.00%
- Time  (mean ± σ):   31.465 ns ±  35.633 ns  ┊ GC (mean ± σ):  5.40% ±  4.80%
+ Range (min … max):  24.825 ns …  2.909 μs  ┊ GC (min … max): 0.00% … 26.26%
+ Time  (median):     26.627 ns              ┊ GC (median):    0.00%
+ Time  (mean ± σ):   31.607 ns ± 45.222 ns  ┊ GC (mean ± σ):  5.39% ±  4.72%
 
-  ▃▇█▅▁                                                   ▁▂▁▁ ▂
-  █████▇▆▇▇▇▇▆▄▆▇▆▆▅▄▃▃▅▃▅▄▅▄▁▁▁▁▁▁▃▁▁▁▄▃▁▃▄▁▁▃▁▃▃▄▁▃▁▁▁▁█████ █
-  24.9 ns       Histogram: log(frequency) by time      81.5 ns <
+  ▄█▇▃                                                  ▁▂▂▁  ▂
+  ██████████▇▇▇▇█▇▆▅▄▅▄▄▄▅▄▅▄▄▃▄▄▁▃▁▁▄▁▁▃▁▁▁▁▁▃▁▄▃▃▁▃▁▁▃█████ █
+  24.8 ns      Histogram: log(frequency) by time      81.1 ns <
 
  Memory estimate: 144 bytes, allocs estimate: 1.</code></pre>
 <p>Repetimos o <em>benchmark</em> para comparar a criação de vetores de dupla-precisão inicializados por inteiros e números de dupla precisão. Incluímos no novo <em>benchmark</em> um vetor com um único elemento para entendermos um pouco mais do processo.</p>
@@ -217,10 +217,10 @@ log10.&#40;scalability&#41;</code></pre><pre><code class="plaintext code-output"
     &#93;
     scalability
 end</code></pre><pre><code class="plaintext code-output">4-element Vector{Float64}:
-   59.65052101522843
-   72.29604150559511
-  226.84241948881788
- 1349.8754139240507</code></pre>
+   59.3659594923858
+   71.82338148524924
+  220.85613991596642
+ 1639.1813899999997</code></pre>
 <pre><code class="language-julia">without_conversion &#61; let
     scalability &#61; &#91;
         mean&#40;&#40;@benchmark a::Vector&#123;Float64&#125; &#61; collect&#40;1.0:10.0^0&#41;&#41;.times&#41;
@@ -230,18 +230,18 @@ end</code></pre><pre><code class="plaintext code-output">4-element Vector{Float6
     &#93;
     scalability
 end</code></pre><pre><code class="plaintext code-output">4-element Vector{Float64}:
-   28.41004016064257
-   32.46440993975904
-  237.76271301058998
- 1908.9510999999995</code></pre>
+   28.54997409638554
+   32.136533232931725
+  237.68439847560973
+ 1964.5268699999995</code></pre>
 <p>O vetor <code>with_conversion</code> contém os tempos de execução para a criação de vetores de 1, 10, 100, 1000 e 10000 elementos com conversão de valores de inteiros para dupla-precisão. Observe que os dois primeiros elementos levaram um tempo &#40;aqui em nano-segundos&#41; quase idênticos: existe uma constante de tempo da criação do vetor propriamente dito, a criação dos 10 primeiros elementos é quase negligível nesse caso.</p>
 <p>Abaixo calculamos a diferença de tempo entre os dois processos e nos deparamos com mais uma surpresa: para 100 elementos, o tempo de alocação COM conversão é MENOR que o tempo SEM conversão. Ainda é muito cedo e fora de contexto para entrarmos no código LLVM gerado por Julia para entendermos a razão dessa <em>anomalia</em>. O importante a reter aqui é que para vetores de tamanhos importantes &#40;&gt; 1000 elementos&#41; um tempo adicional de execução é adicionado por elemento e isso deve ser levado em conta quando escrevendo código científico.</p>
 <pre><code class="language-julia">time_diff &#61; &#40;without_conversion - with_conversion&#41;
 time_diff_per_element &#61; time_diff ./ &#91;10^k for k &#61; 0:3&#93;</code></pre><pre><code class="plaintext code-output">4-element Vector{Float64}:
- -31.240480854585858
-  -3.9831631565836076
-   0.10920293521772095
-   0.5590756860759488</code></pre>
+ -30.815985396000258
+  -3.968684825231752
+   0.16828258559643303
+   0.32534547999999974</code></pre>
 <p>Espero que a decisão de incluir essas divagações um pouco cedo no aprendizado não sejam deletérias para a motivação do estudante, mas que criem curiosidade quanto aos tópicos mais avançados que veremos mais tarde.</p>
 <p>Ainda falta muito para se concluir a introdução à atribuição de tipos, mas esse primeiro contato era necessário para que as próximos tópicos avancem de maneira mais fluida.</p>
 <p>Isso é tudo para esta sessão de estudo&#33; Até a próxima&#33;</p>

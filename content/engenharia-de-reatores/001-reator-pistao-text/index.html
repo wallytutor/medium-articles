@@ -36,32 +36,6 @@
 <!-- Content appended here -->
 <div class="franklin-content">
 <h1 id="reator_pistão_-_introdução"><a href="#reator_pistão_-_introdução" class="header-anchor">Reator pistão - introdução</a></h1>
-<p>Este é o primeiro notebook de uma série abordando reatores do tipo <em>pistão</em> &#40;<em>plug-flow</em>&#41; no qual os efeitos advectivos são preponderantes sobre o comportamento difusivo, seja de calor, massa, ou espécies. O estudo e modelagem desse tipo de reator apresentar diversos interesses para a pesquisa fundamental e na indústria. Muitos reatores tubulares de síntese laboratorial de materiais apresentam aproximadamente um comportamento como tal e processos nas mais diversas indústrias podem ser aproximados por um ou uma rede de reatores pistão e reatores agitados interconectados.</p>
-<p>Começaremos por um caso simples considerando um fluido incompressível e ao longo da série aumentaremos progressivamente a complexidade dos modelos. Os notebooks nessa série vão utilizar uma estratégia focada nos resultados, o que indica que o código será na maior parte do tempo ocultado e o estudante interessado deverá executar o notebook por si mesmo para estudar as implementações.</p>
-<p>Nesta <em>Parte 1</em> vamos estuda a formulação na temperatura da equação de conservação de energia.</p>
-<pre><code class="language-julia">using CairoMakie
-using DelimitedFiles
-using DifferentialEquations: solve
-using ModelingToolkit
-using Printf
-using Roots
-using SparseArrays: spdiagm</code></pre><pre><code class="plaintext code-output">ArgumentError: Package Roots not found in current path.
-- Run `import Pkg; Pkg.add("Roots")` to install the Roots package.
-</code></pre>
-<h2 id="modelo_da_temperatura"><a href="#modelo_da_temperatura" class="header-anchor">Modelo da temperatura</a></h2>
-<p>No que se segue vamos implementar a forma mais simples de um reator pistão. Para este primeiro estudo o foco será dado apenas na solução da equação da energia. As etapas globais implementadas aqui seguem o livro de <a href="https://www.wiley.com/en-ie/Chemically&#43;Reacting&#43;Flow&#37;3A&#43;Theory&#37;2C&#43;Modeling&#37;2C&#43;and&#43;Simulation&#37;2C&#43;2nd&#43;Edition-p-9781119184874">Kee <em>et al.</em> &#40;2017&#41;</a>, seção 9.2.</p>
-<p>Da forma simplificada como tratado, o problema oferece uma solução analítica análoga à <a href="https://pt.wikipedia.org/wiki/Lei_do_resfriamento_de_Newton">lei do resfriamento de Newton</a>, o que é útil para a verificação do problema. Os cálculos do número de Nusselt para avaliação do coeficiente de transferência de calor são providos nos anexos com expressões discutidas <a href="https://en.wikipedia.org/wiki/Nusselt_number">aqui</a>.</p>
-<p>A primeira etapa no estabelecimento do modelo concerne as equações de conservação necessárias. No presente caso, com a ausência de reações químicas e trocas de matéria com o ambiente - o reator é um tubo fechado - precisamos estabelecer a conservação de massa e energia apenas. Como dito, o reator em questão conserva a massa transportada, o que é matematicamente expresso pela ausência de variação axial do fluxo de matéria, ou seja</p>
-\[
-\frac{d(\rho{}u)}{dz}=0
-\]
-<p>Mesmo que trivial, esse resultado é frequentemente útil na simplificação das outras equações de conservação para um reator pistão, como veremos &#40;com frequência&#41; mais tarde.</p>
-<p>Embora não trocando matéria com o ambiente a través das paredes, vamos considerar aqui trocas térmicas. Afinal não parece muito útil um modelo de reator sem trocas de nenhum tipo nem reações. Da primeira lei da Termodinâmica temos que a taxa de variação da energia interna \(E\) é igual a soma das taxas de trocas de energia \(Q\) e do trabalho realizado \(W\).</p>
-\[
-\frac{dE}{dt}=
-\frac{dQ}{dt}+
-\frac{dW}{dt}
-\]
 <p>Podemos reescrever essa equação para uma seção transversal do reator de área \(A_{c}\) em termos das grandezas específicas e densidade \(\rho\) com as integrais</p>
 \[
 \int_{\Omega}\rho{}e\mathbf{V}\cdotp\mathbf{n}dA_{c}=

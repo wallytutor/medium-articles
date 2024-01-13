@@ -1,2 +1,0 @@
-ArgumentError: Package Roots not found in current path.
-- Run `import Pkg; Pkg.add("Roots")` to install the Roots package.
