@@ -25,17 +25,15 @@ executar o notebook por si mesmo para estudar as implementações.
 Nesta *Parte 1* vamos estuda a formulação na temperatura da equação de
 conservação de energia.
 
-<!-- using CairoMakie
+```julia:output
+using CairoMakie
 using DelimitedFiles
 using DifferentialEquations: solve
-using DocStringExtensions
 using ModelingToolkit
 using Printf
 using Roots
 using SparseArrays: spdiagm
-import PlutoUI
-
-include("util-reator-pistao.jl") -->
+```
 
 ## Modelo da temperatura
 
@@ -195,11 +193,11 @@ $$
 T=T_{w}-(T_{w}-T_{0})\exp\left(-\frac{\hat{h}P}{\rho{}u{}c_{p}A_{c}}z\right)
 $$
 
-
-<!-- "Solução analítica do reator pistão circular no espaço das temperaturas."
+```julia
 function analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
     return @. Tₛ - (Tₛ - Tₚ) * exp(-z * (ĥ * P) / (ρ * u * cₚ * A))
-end -->
+end
+```
 
 O bloco abaixo resolve o problema para um conjunto de condições que você pode
 consultar nos anexos e expandindo o seu código. Observe abaixo da célula um
