@@ -1,0 +1,175 @@
+
+Fluent
+Version: 3d, dp, pbns, rke (3d, double precision, pressure-based, realizable k-epsilon)
+Release: 23.1.0
+Title: 
+
+Models
+------
+
+   Model                        Settings                                
+   ------------------------------------------------------------------
+   Space                        3D                                      
+   Time                         Steady                                  
+   Viscous                      Realizable k-epsilon turbulence model   
+   Wall Treatment               Standard Wall Functions                 
+   Heat Transfer                Enabled                                 
+   Solidification and Melting   Disabled                                
+   Radiation                    None                                    
+   Species                      Disabled                                
+   Coupled Dispersed Phase      Disabled                                
+   NOx Pollutants               Disabled                                
+   SOx Pollutants               Disabled                                
+   Soot                         Disabled                                
+   Mercury Pollutants           Disabled                                
+   Structure                    Disabled                                
+   Acoustics                    Disabled                                
+   Eulerian Wall Film           Disabled                                
+   Potential/Electrochemistry   Disabled                                
+   Multiphase                   Disabled                                
+
+Material Properties
+-------------------
+
+   Material: aluminum (solid)
+
+      Property               Units      Method     Value(s)   
+      -----------------------------------------------------
+      Density                kg/m^3     constant   2719       
+      Cp (Specific Heat)     J/(kg K)   constant   871        
+      Thermal Conductivity   W/(m K)    constant   202.4      
+
+   Material: fluid (fluid)
+
+      Property               Units      Method     Value(s)     
+      -------------------------------------------------------
+      Density                kg/m^3     constant   1000         
+      Cp (Specific Heat)     J/(kg K)   constant   4182         
+      Thermal Conductivity   W/(m K)    constant   0.60608696   
+      Viscosity              kg/(m s)   constant   0.001        
+      Molecular Weight       kg/kmol    constant   28.966       
+
+Cell Zone Conditions
+--------------------
+
+   Zones
+
+      name    id   type    
+      ------------------
+      fluid   95   fluid   
+
+   Setup Conditions
+
+      fluid
+
+         Condition       Value   
+         ---------------------
+         Frame Motion?   no      
+
+Boundary Conditions
+-------------------
+
+   Zones
+
+      name     id   type              
+      -----------------------------
+      inlet    13   velocity-inlet    
+      outlet   14   pressure-outlet   
+      wall     12   wall              
+
+   Setup Conditions
+
+      inlet
+
+         Condition                                                              Value        
+         ---------------------------------------------------------------------------------
+         Velocity Magnitude [m/s]                                               1            
+         Note: Reinjected particles do not change their injection association   3327495472   
+
+      outlet
+
+         Condition   Value   
+         -----------------
+
+      wall
+
+         Condition                  Value             
+         ------------------------------------------
+         Thermal BC Type            Temperature       
+         Temperature [K]            400               
+         Wall Motion                Stationary Wall   
+         Shear Boundary Condition   No Slip           
+
+Solver Settings
+---------------
+
+   Equations
+
+      Equation     Solved   
+      -------------------
+      Flow         yes      
+      Turbulence   yes      
+      Energy       yes      
+
+   Numerics
+
+      Numeric                         Enabled   
+      ---------------------------------------
+      Absolute Velocity Formulation   yes       
+
+   Under-Relaxation Factors
+
+      Variable                     Relaxation Factor   
+      ----------------------------------------------
+      Pressure                     0.7                 
+      Density                      1                   
+      Body Forces                  1                   
+      Momentum                     0.7                 
+      Turbulent Kinetic Energy     0.8                 
+      Turbulent Dissipation Rate   0.8                 
+      Turbulent Viscosity          1                   
+      Energy                       1                   
+
+   Linear Solver
+
+      Variable                     Solver Type   Termination Criterion   Residual Reduction Tolerance   
+      -----------------------------------------------------------------------------------------------
+      Pressure                     V-Cycle       0.1                                                    
+      X-Momentum                   Flexible      0.1                     0.7                            
+      Y-Momentum                   Flexible      0.1                     0.7                            
+      Z-Momentum                   Flexible      0.1                     0.7                            
+      Turbulent Kinetic Energy     Flexible      0.1                     0.7                            
+      Turbulent Dissipation Rate   Flexible      0.1                     0.7                            
+      Energy                       F-Cycle       0.1                                                    
+
+   Pressure-Velocity Coupling
+
+      Parameter                              Value     
+      ----------------------------------------------
+      Type                                   SIMPLEC   
+      Skewness Correction                    0         
+      Pseudo Time Method (Local Time-Step)   yes       
+      Pseudo-Time Courant Number             5         
+
+   Discretization Scheme
+
+      Variable                     Scheme                
+      ------------------------------------------------
+      Pressure                     Second Order          
+      Momentum                     Second Order Upwind   
+      Turbulent Kinetic Energy     Second Order Upwind   
+      Turbulent Dissipation Rate   Second Order Upwind   
+      Energy                       Second Order Upwind   
+
+   Solution Limits
+
+      Quantity                         Limit    
+      ---------------------------------------
+      Minimum Absolute Pressure        1        
+      Maximum Absolute Pressure        5e+10    
+      Minimum Temperature              1        
+      Maximum Temperature              5000     
+      Minimum Turb. Kinetic Energy     1e-14    
+      Minimum Turb. Dissipation Rate   1e-20    
+      Maximum Turb. Viscosity Ratio    100000   
+

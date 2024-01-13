@@ -12,13 +12,17 @@ begin
 	using DelimitedFiles
 	using DifferentialEquations: solve
 	using ModelingToolkit
+	using PlutoUI
 	using Printf
 	using Roots
+	using SparseArrays
 end
 
 # ╔═╡ 05b06ee0-b1e5-11ee-018d-73ad26daf458
 md"""
 # Reator pistão - introdução
+
+$(TableOfContents())
 
 Este é o primeiro notebook de uma série abordando reatores do tipo *pistão*
 (*plug-flow*) no qual os efeitos advectivos são preponderantes sobre o
@@ -41,11 +45,9 @@ conservação de energia.
 
 # ╔═╡ 44f09a40-8cca-48bd-9b6d-a5b551f76549
 md"""
-## Modelo da temperatura
-
 No que se segue vamos implementar a forma mais simples de um reator pistão. Para este primeiro estudo o foco será dado apenas na solução da equação da energia. As etapas globais implementadas aqui seguem o livro de [Kee *et al.* (2017)](https://www.wiley.com/en-ie/Chemically+Reacting+Flow%3A+Theory%2C+Modeling%2C+and+Simulation%2C+2nd+Edition-p-9781119184874), seção 9.2.
 
-### Etapas preliminares
+## Etapas preliminares
 
 Da forma simplificada como tratado, o problema oferece uma solução analítica análoga à [lei do resfriamento de Newton](https://pt.wikipedia.org/wiki/Lei_do_resfriamento_de_Newton), o que é útil para a verificação do problema. Antes de partir a derivação do modelo, os cálculos do número de Nusselt para avaliação do coeficiente de transferência de calor são providos no que se segue com expressões de Gnielinski e Dittus-Boelter discutidas [aqui](https://en.wikipedia.org/wiki/Nusselt_number).
 """
@@ -53,23 +55,24 @@ Da forma simplificada como tratado, o problema oferece uma solução analítica 
 # ╔═╡ b1e1ee97-d066-4be6-b1a5-0fda4a3db4c9
 "Função auxiliar para avaliação exaustiva de critérios de validação."
 function testall(tests)
-	shouldthrow = false
+	messages = []
+
 	for (evaluation, message) in tests
-		if !evaluation
-			@error message
-			shouldthrow = true
-		end
+		!evaluation && push!(messages, message)
 	end
-	shouldthrow && throw(ArgumentError("Check previous warnings"))
-	return
+	
+	if !isempty(messages)
+		@error join(messages, "\n")
+		throw(ArgumentError("Check previous warnings"))
+	end
 end
 
 # ╔═╡ 8a7dbcc9-b722-4eb7-a7d4-f2a98cdfe497
 "Equação de Gnielinski para número de Nusselt."
 function Nu_gnielinski(Re, Pr)
 	testall([
-		(3000.0 <= Re <= 5.0e+06, "Re=$(Re) ∉ [3000, 5×10⁶]"),
-		(0.5 <= Pr <= 2000.0,     "Pr=$(Pr) ∉ [0.5, 2000]")
+		(3000.0 <= Re <= 5.0e+06, "* Re = $(Re) ∉ [3000, 5×10⁶]"),
+		(0.5 <= Pr <= 2000.0,     "* Pr = $(Pr) ∉ [0.5, 2000]")
 	])
 
     f = (0.79 * log(Re) - 1.64)^(-2)
@@ -85,9 +88,9 @@ end
 "Equação de Dittus-Boelter para número de Nusselt."
 function Nu_dittusboelter(Re, Pr, L, D; what = :heating)
 	testall([
-		(Re >= 10000.0,       "Re=$(Re) < 10000"),
-		(0.6 <= Pr <= 160.0,  "Pr=$(Pr) ∉ [0.6, 160]"),
-		(L / D > 10.0,        "L/D=$(L/D) < 10.0")
+		(Re >= 10000.0,       "* Re = $(Re) < 10000"),
+		(0.6 <= Pr <= 160.0,  "* Pr = $(Pr) ∉ [0.6, 160]"),
+		(L / D > 10.0,        "* L/D = $(L/D) < 10.0")
 	])
 
     n = (what == :heating) ? 0.4 : 0.3
@@ -121,7 +124,7 @@ md"""
 Abaixo realizamos uma série de testes para verificação dos cálculos do número de Nusselt dadas as múltiplas configurações de parâmetros (complexidade ciclomática) possívels.
 """
 
-# ╔═╡ 8882997e-a1d8-4d59-a635-288ce2dbfe38
+# ╔═╡ 8b302c93-5cc6-441e-830c-65d388a820f8
 let
 	disp(x) = round(x, digits = 1)
 
@@ -134,8 +137,13 @@ let
 	@show Nu(1.5e+04, 0.7; method = :dittusboelter, L, D) |> disp
 	@show Nu(1.5e+04, 0.7; method = :dittusboelter, L, D , what = :heating) |> disp
 	@show Nu(1.5e+04, 0.7; method = :dittusboelter, L, D, what = :cooling) |> disp
+end;
 
-	# Falhas forçadas.
+# ╔═╡ 8882997e-a1d8-4d59-a635-288ce2dbfe38
+let
+	L = 100.0
+	D = 1.0
+
 	try Nu(5.0e+07, 0.7; method = :gnielinski)            catch end
 	try Nu(5.0e+03, 0.4; method = :gnielinski)            catch end
 	try Nu(5.0e+07, 0.4; method = :gnielinski)            catch end
@@ -184,9 +192,56 @@ let
 	heattransfercoef(L, D, u, ρ, μ, cₚ, Pr; kw...)
 end;
 
+# ╔═╡ 8f54879c-d297-4413-b09e-3479e24d6df3
+md"""
+## Condições compartilhadas
+"""
+
+# ╔═╡ 06c21819-28b1-4735-8029-602126a526b6
+begin
+	# Comprimento do reator [m]
+	L = 10.0
+
+	# Diâmetro do reator [m]
+	D = 0.01
+
+	# Mass específica do fluido [kg/m³]
+    ρ = 1000.0
+
+	# Viscosidade do fluido [Pa.s]
+    μ = 0.001
+
+	# Calor específico do fluido [J/(kg.K)]
+    cₚ = 4182.0
+
+	# Número de Prandtl do fluido
+    Pr = 6.9
+	
+	# Velocidade do fluido [m/s]
+    u = 1.0
+	
+ 	# Temperatura de entrada do fluido [K]
+    Tₚ = 300.0
+
+	# Temperatura da parede do reator [K]
+    Tₛ = 400.0
+
+	# Perímetro da seção circular do reator [m]
+	P = π * D
+
+	# Área da seção circula do reator [m²]
+	A = π * (D/2)^2
+	
+	# Coeficiente convectivo de troca de calor [W/(m².K)]
+	ĥ = heattransfercoef(L, D, u, ρ, μ, cₚ, Pr; verbose = true)
+
+	# Coordenadas espaciais da solução [m]
+	z = LinRange(0, L, 10_000)
+end;
+
 # ╔═╡ 427d5757-a021-47f1-81d9-4e1efed83751
 md"""
-### Derivação do modelo
+## Derivação do modelo
 
 A primeira etapa no estabelecimento do modelo concerne as equações de
 conservação necessárias. No presente caso, com a ausência de reações químicas e
@@ -307,6 +362,8 @@ seção circular de raio $R$ e todos os parâmetros do modelo são constantes.
 
 # ╔═╡ 0db7ded1-24f3-4f20-ad13-30a1f1019a88
 md"""
+## Métodos de solução
+
 ### Solução analítica da EDO
 
 O problema tratado aqui permite uma solução analítica simples que desenvolvemos
@@ -359,7 +416,451 @@ série e são tidos como conhecimentos *a priori* para as discussões.
 """
 
 # ╔═╡ f2105003-4563-4449-a4ec-8ba49a9b4ccf
+let
+	Tₐ = analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+    Tend = @sprintf("%.2f", Tₐ[end])
+	yrng = (300, 400)
+	
+	fig = Figure(size = (720, 500))
+	ax = Axis(fig[1, 1])
+	lines!(ax, z, Tₐ, color = :red, linewidth = 5, label = "Analítica")
+	xlims!(ax, (0, L))
+	ax.title = "Temperatura final = $(Tend) K"
+	ax.xlabel = "Posição [m]"
+	ax.ylabel = "Temperatura [K]"
+	ax.xticks = range(0.0, L, 6)
+	ax.yticks = range(yrng..., 6)
+	ylims!(ax, yrng)
+	axislegend(position = :rb)
+	fig
+end
 
+# ╔═╡ b76e3dd1-1a25-4c57-a134-49fb81609db9
+md"""
+### Integração numérica da EDO
+
+Neste exemplo tivemos *sorte* de dispor de uma solução analítica. Esse problema pode facilmente tornar-se intratável se considerarmos uma dependência arbitrária do calor específico com a temperatura ou se a parede do reator tem uma dependência na coordenada axial. É importante dispor de meios numéricos para o tratamento deste tipo de problema.
+
+No caso de uma equação diferencial ordinária (EDO) como no presente caso, a abordagem mais simples é a de se empregar um integrador numérico. Para tanto é prática comum estabelecer uma função que representa o *lado direito* do problema isolando a(s) derivada(s) no lado esquerdo. Em Julia dispomos do *framework* de `ModelingToolkit` que provê uma forma simbólica de representação de problemas e interfaces com diversos integradores. A estrutura `DifferentialEquationPFR` abaixo implementa o problema diferencial desta forma.
+"""
+
+# ╔═╡ 8c2129ac-28c5-4122-b89d-877ce8815467
+pfr = let
+	@info "Criação do modelo diferencial"
+	
+	@variables z
+	D = Differential(z)
+
+	@mtkmodel PFR begin
+		 @parameters begin
+		 	P
+			A
+			Tₛ
+			ĥ
+			u
+			ρ
+			cₚ
+		end
+
+		@variables begin
+			T(z)
+		end
+
+		@equations begin
+			D(T) ~ ĥ * P * (Tₛ - T) / (ρ * u * A * cₚ)
+		end
+	end
+
+	@mtkbuild pfr = PFR()
+end;
+
+# ╔═╡ 274cf65d-b1cd-4653-8c36-0167282b50d2
+md"""
+Uma funcionalidade bastante interessante de `ModelingToolkit` é sua capacidade de representar diretamente em com $\LaTeX$ as equações implementadas. Antes de proceder a solução verificamos na célula abaixo que a equação estabelecida no modelo está de acordo com a formulação que derivamos para o problema diferencial. Verifica-se que a ordem dos parâmetros pode não ser a mesma, mas o modelo é equivalente.
+"""
+
+# ╔═╡ 8e2ce8ce-1d48-42da-a54d-2936e710eba1
+pfr
+
+# ╔═╡ 385f5739-8d7c-4103-9157-3f7dd66b6c23
+md"""
+Para integração do modelo simbólico necessitamos substituir os parâmetros por valores numéricos e fornecer a condição inicial e intervalo de integração ao integrador que vai gerir o problema. A interface `solveodepfr` realiza essas etapas. É importante mencionar aqui que a maioria dos integradores numéricos vai *amostrar* pontos na coordenada de integração segundo a *rigidez numérica* do problema, de maneira que a solução retornada normalmente não está sobre pontos equi-espaçados. Podemos fornecer um parâmetro opcional para recuperar a solução sobre os pontos desejados, o que pode facilitar, por exemplo, comparação com dados experimentais.
+"""
+
+# ╔═╡ 8c9bde47-11c8-472b-809f-f9ee39fd0355
+"Integra o modelo diferencial de reator pistão"
+function solvemtkpfr(; pfr, P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+    T₀ = [pfr.T => Tₚ]
+
+    p = [
+        pfr.P => P,
+        pfr.A => A,
+        pfr.Tₛ => Tₛ,
+        pfr.ĥ => ĥ,
+        pfr.u => u,
+        pfr.ρ => ρ,
+        pfr.cₚ => cₚ,
+    ]
+
+    zspan = (0, z[end])
+    prob = ODEProblem(pfr, T₀, zspan, p)
+
+	return solve(prob; saveat = z)
+end
+
+# ╔═╡ 7cf4922a-d138-441d-8d4b-4742868212ee
+md"""
+Com isso podemos proceder à integração com ajuda de `solveodepfr` concebida acima e aproveitamos para traçar o resultado em conjunto com a solução analítica.
+"""
+
+# ╔═╡ 0c623a22-8378-4923-a8c8-50e15f83cb2e
+let
+	Tₐ = analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+	Tₒ = solvemtkpfr(; pfr, P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)[:T]
+	
+    Tend = @sprintf("%.2f", Tₐ[end])
+	yrng = (300, 400)
+	
+	fig = Figure(size = (720, 500))
+	ax = Axis(fig[1, 1])
+	lines!(ax, z, Tₐ, color = :red, linewidth = 5, label = "Analítica")
+	lines!(ax, z, Tₒ, color = :black, linewidth = 2, label = "ModelingToolkit")
+	xlims!(ax, (0, L))
+	ax.title = "Temperatura final = $(Tend) K"
+	ax.xlabel = "Posição [m]"
+	ax.ylabel = "Temperatura [K]"
+	ax.xticks = range(0.0, L, 6)
+	ax.yticks = range(yrng..., 6)
+	ylims!(ax, yrng)
+	axislegend(position = :rb)
+	fig
+end
+
+# ╔═╡ 30cf0acb-83dc-4dd0-b9f2-81f69977a960
+md"""
+### Método dos volumes finitos
+
+Quando integrando apenas um reator, o método de integração numérica da equação é
+geralmente a escolha mais simples. No entanto, em situações nas quais desejamos
+integrar trocas entre diferentes reatores aquela abordagem pode se tornar
+proibitiva. Uma dificuldade que aparece é a necessidade de solução iterativa até
+convergência dados os fluxos pelas paredes do reator, o que demandaria um código
+extremamente complexo para se gerir em integração direta. Outro caso são
+trocadores de calor que podem ser representados por conjutos de reatores em
+contra-corrente, um exemplo que vamos tratar mais tarde nesta série. Nestes
+casos podemos ganhar em simplicidade e tempo de cálculo empregando métodos que
+*linearizam* o problema para então resolvê-lo por uma simples *álgebra linear*.
+
+Na temática de fênomenos de transporte, o método provavelmente mais
+frequentemente utilizado é o dos volumes finitos (em inglês abreviado FVM). Note
+que em uma dimensão com coeficientes constantes pode-se mostrar que o método é
+equivalente à diferenças finitas (FDM), o que é nosso caso neste problema. No
+entanto vamos insistir na tipologia empregada com FVM para manter a consistência
+textual nos casos em que o problema não pode ser reduzido à um simples FDM.
+"""
+
+# ╔═╡ ae5ec32e-7b16-4929-9dce-3f5051e3d691
+md"""
+No que se segue vamos usar uma malha igualmente espaçada de maneira que nossas
+coordenadas de solução estão em ``z\in\{0,\delta,2\delta,\dots,N\delta\}`` e as
+interfaces das células encontram-se nos pontos intermediários. Isso dito, a
+primeira e última célula do sistema são *meias células*, o que chamaremos de
+*condição limite imersa*, contrariamente à uma condição ao limite com uma célula
+fantasma na qual o primeiro ponto da solução estaria em ``z=\delta/2``. Trataremos
+esse caso em outra ocasião.
+
+O problema de transporte advectivo em um reator pistão é essencialmente
+*upwind*, o que indica que a solução em uma célula $E$ *a leste* de uma célula
+$P$ depende exclusivamente da solução em ``P``. Veremos o impacto disto na forma
+matricial trivial que obteremos na sequência. Para a sua construção, começamos
+pela integração do problema entre ``P`` e ``E``, da qual se segue a separação de
+variáveis
+
+```math
+\int_{T_P}^{T_E}\rho{}u{}c_{p}A_{c}dT=
+\int_{0}^{\delta}\hat{h}{P}(T_{s}-T^{\star})dz
+```
+"""
+
+# ╔═╡ 80c6645a-2836-4628-ab23-b93041e973e6
+md"""
+Observe que introduzimos a variável ``T^{\star}`` no lado direito da equação e não
+sob a integral em $dT$. Essa escolha se fez porque ainda não precisamos definir
+qual a temperatura mais representativa deve-se usar para o cálculo do fluxo
+térmico. Logo vamos interpretá-la como uma constante que pode ser movida para
+fora da integral
+
+```math
+\rho{}u{}c_{p}A_{c}\int_{T_P}^{T_E}dT=
+\hat{h}{P}(T_{s}-T^{\star})\int_{0}^{\delta}dz
+```
+
+Realizando-se a integração definida obtemos a forma paramétrica
+
+```math
+\rho{}u{}c_{p}A_{c}(T_{E}-T_{P})=
+\hat{h}{P}\delta(T_{s}-T^{\star})
+```
+
+Para o tratamento com FVM agrupamos parâmetros para a construção matricial, o
+que conduz à
+
+```math
+aT_{E}-aT_{P}=
+T_{s}-T^{\star}
+```
+"""
+
+# ╔═╡ dcf085ce-80c4-475f-b903-994d482aabe0
+md"""
+No método dos volumes finitos consideramos que a solução é constante através de
+uma célula. Essa hipótese é a base para construção de um modelo para o parâmetro
+``T^{\star}`` na presente EDO. Isso não deve ser confundido com os esquemas de
+interpolaçãO que encontramos em equações diferenciais parciais.
+
+A ideia é simples: tomemos um par de células ``P`` e ``E`` com suas respectivas
+temperaturas ``T_{P}`` e ``T_{E}``. O limite dessas duas células encontra-se no
+ponto médio entre seus centros, que estão distantes de um comprimento ``\delta``.
+Como a solução é constante em cada célula, entre ``P`` e a parede o fluxo de calor
+total entre seu centro e a fronteira ``e`` com a célula ``E`` é
+
+```math
+\dot{Q}_{P-e} = \hat{h}{P}(T_{s}-T_{P})\delta_{P-e}=
+\frac{\hat{h}{P}\delta}{2}(T_{s} - T_{P})
+```
+
+De maneira análoga, o fluxo entre a fronteira $e$ e o centro de $E$ temos
+
+```math
+\dot{Q}_{e-E} = \hat{h}{P}(T_{s}-T_{E})\delta_{e-E}=
+\frac{\hat{h}{P}\delta}{2}(T_{s}-T_{E})
+```
+"""
+
+# ╔═╡ 31b4be76-da52-4d27-9eb8-43c3f0b1c007
+md"""
+Nas expressões acima usamos a notação em letras minúsculas para indicar
+fronteiras entre células. A célula de *referência* é normalmente designada ``P``,
+e logo chamamos a fronteira pela letra correspondendo a célula vizinha em
+questão, aqui ``E``. O fluxo convectivo total entre ``P`` e ``E`` é portanto
+
+```math
+\dot{Q}_{P-E}=\dot{Q}_{P-e}+\dot{Q}_{e-E}=
+\hat{h}{P}\left[T_{s}-\frac{(T_{E}+T_{P})}{2}\right]
+```
+
+de onde adotamos o modelo
+
+```math
+T^{\star}=\frac{T_{E}+T_{P}}{2}
+```
+
+A troca convectiva com a parede não seria corretamente representada se
+escolhessemos ``T_{P}`` como referência para o cálculo do fluxo (o que seria o
+caso em FDM). Obviamente aproximações de ordem superior são possíveíveis
+empregando-se mais de duas células mas isso ultrapassa o nível de complexidade
+que almejamos entrar no momento.
+"""
+
+# ╔═╡ 96c4c4fd-2d63-443b-bb92-e32970e1b95e
+md"""
+Aplicando-se esta expressão na forma numérica precedente, após manipulação
+chega-se à
+
+```math
+(2a + 1)T_{E}=
+(2a - 1)T_{P} + 2T_{w}
+```
+
+Com algumas manipulações adicionais obtemos a forma que será usada na sequência
+
+```math
+-A^{-}T_{P} + A^{+}T_{E}=1
+\quad\text{aonde}\quad{}
+A^{\pm} = \frac{2a \pm 1}{2T_{w}}
+```
+
+A expressão acima é válida entre todos os pares de células ``P\rightarrow{}E`` no
+sistema, exceto pela primeira. Como se trata de uma EDO, a primeira célula do
+sistema contém a condição inicial ``T_{0}`` e não é precedida por nenhuma outra
+célula e evidentemente não precisamos resolver uma equação adicional para esta.
+Considerando o par de vizinhos ``P\rightarrow{}E\equiv{}0\rightarrow{}1``,
+substituindo o valor da condição inicial obtemos a modificação da equação para a
+condição inicial imersa
+
+```math
+A^{+}T_{1}=1 + A^{-}T_{0}
+```
+"""
+
+# ╔═╡ 50409381-5264-4631-9c64-385c9554a29c
+md"""
+Como não se trata de um problema de condições de contorno, nada é necessário
+para a última célula do sistema. Podemos agora escrever a forma matricial do
+problema que se dá por
+
+```math
+\begin{bmatrix}
+ A^{+}  &  0     &  0     & \dots  &  0      &  0      \\
+-A^{-}  &  A^{+} &  0     & \dots  &  0      &  0      \\
+ 0      & -A^{-} &  A^{+} & \ddots &  0      &  0      \\
+\vdots  & \ddots & \ddots & \ddots & \ddots  & \vdots  \\
+ 0      &  0     &  0     & -A^{-} &  A^{+}  &   0     \\
+ 0      &  0     &  0     &  0     & -A^{-}  &   A^{+} \\
+\end{bmatrix}
+\begin{bmatrix}
+T_{1}    \\
+T_{2}    \\
+T_{3}    \\
+\vdots   \\
+T_{N-1}  \\
+T_{N}    \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 + A^{-}T_{0}  \\
+1               \\
+1               \\
+\vdots          \\
+1               \\
+1               \\
+\end{bmatrix}
+```
+"""
+
+# ╔═╡ 96745fb0-cd10-4af6-907c-de199bce4273
+md"""
+A dependência de ``E`` somente em ``P`` faz com que tenhamos uma matriz diagonal
+inferior, aonde os ``-A^{-}`` são os coeficientes de ``T_{P}`` na formulação
+algébrica anterior. A condição inicial modifica o primeiro elemento do vetor
+constante à direita da igualdade. A construção e solução deste problema é
+provida em `solvefvmpfr` abaixo.
+"""
+
+# ╔═╡ ff6844e5-064d-45f6-8878-1b389c01a2f9
+"Integra o modelo diferencial de reator pistão"
+function solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+    N = length(z) - 1
+
+	# Vamos tratar somente o caso equi-espaçado aqui!
+	δ = z[2] - z[1]
+	
+    a = (ρ * u * cₚ * A) / (ĥ * P * δ)
+
+    A⁺ = (2a + 1) / (2Tₛ)
+    A⁻ = (2a - 1) / (2Tₛ)
+
+    b = ones(N)
+    b[1] = 1 + A⁻[1] * Tₚ
+
+    M = spdiagm(-1 => -A⁻ * ones(N-1), 0 => +A⁺ * ones(N))
+    U = similar(z)
+
+    U[1] = Tₚ
+    U[2:end] = M \ b
+
+	return U
+end
+
+# ╔═╡ e1cca244-9c21-4288-947e-0fbc1d02bf28
+md"""
+Abaixo adicionamos a solução do problema sobre malhas grosseiras sobre as
+soluções desenvolvidas anteriormente. A ideia de se representar sobre malhas
+grosseiras é simplesmente ilustrar o caráter discreto da solução, que é
+representada como constante no interior de uma célula. Adicionalmente
+representamos no gráfico um resultado interpolado de uma simulação CFD 3-D de um
+reator tubular em condições *supostamente identicas* as representadas aqui, o
+que mostra o bom acordo de simulações 1-D no limite de validade do modelo.
+"""
+
+# ╔═╡ 90f92751-d6a5-4d3f-b7b9-e69e5cfa75f6
+let
+    data = readdlm("data/fluent-reference/postprocess.dat", Float64)
+    x, Tᵣ = data[:, 1], data[:, 2]
+	
+	Tₐ = analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+	Tₒ = solvemtkpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z, pfr)[:T]
+	Tₑ = solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+	
+    Tend = @sprintf("%.2f", Tₐ[end])
+	yrng = (300, 400)
+	
+	fig = Figure(size = (720, 500))
+	ax = Axis(fig[1, 1])
+	lines!(ax, z, Tₐ, color = :red, linewidth = 5, label = "Analítica")
+	lines!(ax, z, Tₒ, color = :black, linewidth = 2, label = "ModelingToolkit")
+	lines!(ax, z, Tₑ, color = :blue, linewidth = 2, label = "Finite Volumes")
+	lines!(ax, x, Tᵣ, color = :green, linewidth = 2, label = "CFD 3D")
+	xlims!(ax, (0, L))
+	ax.title = "Temperatura final = $(Tend) K"
+	ax.xlabel = "Posição [m]"
+	ax.ylabel = "Temperatura [K]"
+	ax.xticks = range(0.0, L, 6)
+	ax.yticks = range(yrng..., 6)
+	ylims!(ax, yrng)
+	axislegend(position = :rb)
+	fig
+end
+
+# ╔═╡ 01af0b23-d0d1-4d43-8e1e-009327ce5eb5
+md"""
+Podemos também réalizar um estudo de sensibilidade a malha:
+"""
+
+# ╔═╡ 53780b8a-a1ed-4228-a58c-b51d2e323f30
+let
+	Tₐ = analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+	
+    Tend = @sprintf("%.2f", Tₐ[end])
+	yrng = (300, 400)
+	
+	fig = Figure(size = (720, 500))
+	ax = Axis(fig[1, 1])
+	lines!(ax, z, Tₐ, color = :red, linewidth = 5, label = "Analítica")
+
+	for (c, N) in [(:blue, 20), (:green, 50)]
+		z = LinRange(0.0, L, N)
+		Tₑ = solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
+		stairs!(ax, z, Tₑ, color = c, label = "N = $(N)", step = :center)
+	end
+
+	xlims!(ax, (0, L))
+	ax.title = "Temperatura final = $(Tend) K"
+	ax.xlabel = "Posição [m]"
+	ax.ylabel = "Temperatura [K]"
+	ax.xticks = range(0.0, L, 6)
+	ax.yticks = range(yrng..., 6)
+	ylims!(ax, yrng)
+	axislegend(position = :rb)
+	fig
+end
+
+# ╔═╡ bb178306-d9e0-432d-8907-90e845b8de3b
+md"""
+## Conclusões
+
+Com isso encerramos essa primeira introdução a modelagem de reatores do tipo
+pistão. Estamos ainda longe de um modelo generalizado para estudo de casos de
+produção, mas os principais blocos de construção foram apresentados. Os pontos
+principais a reter deste estudo são:
+
+- A equação de conservação de massa é o ponto chave para a expansão e
+  simplificação das demais equações de conservação. Note que isso é uma
+  consequência de qua a massa corresponde à aplicação do [Teorema de Transporte
+  de Reynolds](https://pt.wikipedia.org/wiki/Teorema_de_transporte_de_Reynolds)
+  sobre a *unidade 1*. 
+
+- Sempre que a implementação permita, é mais fácil de se tratar o problema como
+  uma EDO e pacotes como ModelingToolkit proveem o ferramental básico para a
+  construção deste tipo de modelos facilmente.
+
+- Uma implementação em volumes finitos será desejável quando um acoplamento com
+  outros modelos seja envisajada. Neste caso a gestão da solução com uma EDO a
+  parâmetros variáveis pode se tornar computacionalmente proibitiva, seja em
+  complexidade de código ou tempo de cálculo.
+
+Isso é tudo para esta sessão de estudo! Até a próxima!
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -368,14 +869,17 @@ CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
 ModelingToolkit = "961ee093-0014-501f-94e3-6117800e7a78"
+PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Roots = "f2b01f46-fcfa-551c-844a-d8ac1e96c665"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]
 CairoMakie = "~0.11.5"
 DelimitedFiles = "~1.9.1"
 DifferentialEquations = "~7.12.0"
 ModelingToolkit = "~8.75.0"
+PlutoUI = "~0.7.54"
 Roots = "~2.1.0"
 """
 
@@ -385,7 +889,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.9.3"
 manifest_format = "2.0"
-project_hash = "d3d05e5ee87e595c042ebac99194a211ba8c91d7"
+project_hash = "f3d0e396cdeb7abfbaf7e3e761838a8843478256"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "41c37aa88889c171f1300ceac1313c06e891d245"
@@ -413,6 +917,12 @@ weakdeps = ["ChainRulesCore", "Test"]
 git-tree-sha1 = "222ee9e50b98f51b5d78feb93dd928880df35f06"
 uuid = "398f06c4-4d28-53ec-89ca-5b2656b7603d"
 version = "0.3.0"
+
+[[deps.AbstractPlutoDingetjes]]
+deps = ["Pkg"]
+git-tree-sha1 = "c278dfab760520b8bb7e9511b968bf4ba38b7acc"
+uuid = "6e696c72-6542-2067-7265-42206c756150"
+version = "1.2.3"
 
 [[deps.AbstractTrees]]
 git-tree-sha1 = "faa260e4cb5aba097a73fab382dd4b5819d8ec8c"
@@ -1226,6 +1736,24 @@ git-tree-sha1 = "f218fe3736ddf977e0e772bc9a586b2383da2685"
 uuid = "34004b35-14d8-5ef3-9330-4cdb6864b03a"
 version = "0.3.23"
 
+[[deps.Hyperscript]]
+deps = ["Test"]
+git-tree-sha1 = "8d511d5b81240fc8e6802386302675bdf47737b9"
+uuid = "47d2ed2b-36de-50cf-bf87-49c2cf4b8b91"
+version = "0.0.4"
+
+[[deps.HypertextLiteral]]
+deps = ["Tricks"]
+git-tree-sha1 = "7134810b1afce04bbc1045ca1985fbe81ce17653"
+uuid = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
+version = "0.9.5"
+
+[[deps.IOCapture]]
+deps = ["Logging", "Random"]
+git-tree-sha1 = "d75853a0bdbfb1ac815478bacd89cd27b550ace6"
+uuid = "b5f81e59-6552-4d32-b1f0-c071b021bf89"
+version = "0.2.3"
+
 [[deps.IfElse]]
 git-tree-sha1 = "debdd00ffef04665ccbb3e150747a77560e8fad1"
 uuid = "615f187c-cbe4-4ef1-ba3b-2fcf58d6d173"
@@ -1638,6 +2166,11 @@ weakdeps = ["ChainRulesCore", "ForwardDiff", "SpecialFunctions"]
     ForwardDiffExt = ["ChainRulesCore", "ForwardDiff"]
     SpecialFunctionsExt = "SpecialFunctions"
 
+[[deps.MIMEs]]
+git-tree-sha1 = "65f28ad4b594aebe22157d6fac869786a255b7eb"
+uuid = "6c6e2e6c-3030-632d-7369-2d6c69616d65"
+version = "0.1.4"
+
 [[deps.MKL_jll]]
 deps = ["Artifacts", "IntelOpenMP_jll", "JLLWrappers", "LazyArtifacts", "Libdl"]
 git-tree-sha1 = "72dc3cf284559eb8f53aa593fe62cb33f83ed0c0"
@@ -1980,6 +2513,12 @@ deps = ["ColorSchemes", "Colors", "Dates", "PrecompileTools", "Printf", "Random"
 git-tree-sha1 = "862942baf5663da528f66d24996eb6da85218e76"
 uuid = "995b91a9-d308-5afd-9ec6-746e21dbc043"
 version = "1.4.0"
+
+[[deps.PlutoUI]]
+deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "FixedPointNumbers", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "MIMEs", "Markdown", "Random", "Reexport", "URIs", "UUIDs"]
+git-tree-sha1 = "bd7c69c7f7173097e7b5e1be07cee2b8b7447f51"
+uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+version = "0.7.54"
 
 [[deps.PoissonRandom]]
 deps = ["Random"]
@@ -2844,15 +3383,18 @@ version = "3.5.0+0"
 # ╟─05b06ee0-b1e5-11ee-018d-73ad26daf458
 # ╟─07bf0333-ff7a-444b-a8d6-cc2398e211a0
 # ╟─44f09a40-8cca-48bd-9b6d-a5b551f76549
+# ╟─b1e1ee97-d066-4be6-b1a5-0fda4a3db4c9
 # ╟─8a7dbcc9-b722-4eb7-a7d4-f2a98cdfe497
 # ╟─9e338998-8836-4883-8c88-9bc40540e29b
-# ╟─b1e1ee97-d066-4be6-b1a5-0fda4a3db4c9
 # ╟─dce9a032-8851-4245-80db-9abb5dfe7626
 # ╟─7de15896-350b-4e77-bcbe-06bf0550a3bf
+# ╟─8b302c93-5cc6-441e-830c-65d388a820f8
 # ╟─8882997e-a1d8-4d59-a635-288ce2dbfe38
 # ╟─d9792197-8383-4312-8a06-fe76d9ea4022
 # ╟─138c20be-6a9d-4f2b-9673-ff5614631c92
 # ╟─53de560a-fc88-49e9-b22c-c370a305b857
+# ╟─8f54879c-d297-4413-b09e-3479e24d6df3
+# ╟─06c21819-28b1-4735-8029-602126a526b6
 # ╟─427d5757-a021-47f1-81d9-4e1efed83751
 # ╟─f9a2cb48-cf3b-4308-941d-d1050d55dc28
 # ╟─c7d443a5-8004-4db9-a938-b0ec23dadce0
@@ -2860,6 +3402,28 @@ version = "3.5.0+0"
 # ╟─0db7ded1-24f3-4f20-ad13-30a1f1019a88
 # ╟─96d6b7df-7e78-407e-8a0d-e1af5a90f651
 # ╟─a38a1093-2f8a-4084-aa01-8cbd6d2c2fb5
-# ╠═f2105003-4563-4449-a4ec-8ba49a9b4ccf
+# ╟─f2105003-4563-4449-a4ec-8ba49a9b4ccf
+# ╟─b76e3dd1-1a25-4c57-a134-49fb81609db9
+# ╟─8c2129ac-28c5-4122-b89d-877ce8815467
+# ╟─274cf65d-b1cd-4653-8c36-0167282b50d2
+# ╟─8e2ce8ce-1d48-42da-a54d-2936e710eba1
+# ╟─385f5739-8d7c-4103-9157-3f7dd66b6c23
+# ╟─8c9bde47-11c8-472b-809f-f9ee39fd0355
+# ╟─7cf4922a-d138-441d-8d4b-4742868212ee
+# ╟─0c623a22-8378-4923-a8c8-50e15f83cb2e
+# ╟─30cf0acb-83dc-4dd0-b9f2-81f69977a960
+# ╟─ae5ec32e-7b16-4929-9dce-3f5051e3d691
+# ╟─80c6645a-2836-4628-ab23-b93041e973e6
+# ╟─dcf085ce-80c4-475f-b903-994d482aabe0
+# ╟─31b4be76-da52-4d27-9eb8-43c3f0b1c007
+# ╟─96c4c4fd-2d63-443b-bb92-e32970e1b95e
+# ╟─50409381-5264-4631-9c64-385c9554a29c
+# ╟─96745fb0-cd10-4af6-907c-de199bce4273
+# ╟─ff6844e5-064d-45f6-8878-1b389c01a2f9
+# ╟─e1cca244-9c21-4288-947e-0fbc1d02bf28
+# ╟─90f92751-d6a5-4d3f-b7b9-e69e5cfa75f6
+# ╟─01af0b23-d0d1-4d43-8e1e-009327ce5eb5
+# ╟─53780b8a-a1ed-4228-a58c-b51d2e323f30
+# ╟─bb178306-d9e0-432d-8907-90e845b8de3b
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
