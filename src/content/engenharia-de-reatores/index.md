@@ -20,98 +20,133 @@ maturidade suficiente em
 [DryTooling.jl](https://wallytutor.github.io/DryTooling.jl/dev/).
 
 **Nota:** os links abaixo remetem a novas páginas que foram geradas usando
-[Pluto.jl](https://plutojl.org/). Essas páginas não possuem link de retorno
-aqui, então se necessário é importante não fechar esta *tab*. No canto direito
-superior das páginas você encontra um botão para exportar em alguns formatos,
-incluindo *Notebook file*, que pode em seguida ser executado localmente ou em
-seu *cloud* de preferência para estudar os materiais. Os notebooks criam seu
-próprio ambiente de pacotes e contém eventualmente ferramentas que não se
-encontram no `Project.toml` do repositório principal. Essa escolha visa a menor
-latência quando executando notebooks localmente para acelerar o estudo.
+[Pluto.jl](https://plutojl.org/). Essas páginas não fazem parte da estrutura
+normal deste site e não possuem link de retorno aqui, então se necessário é
+importante não fechar esta *tab*. No canto direito superior das páginas você
+encontra um botão para exportar em alguns formatos, incluindo *Notebook file*,
+que pode em seguida ser executado localmente ou em seu *cloud* de preferência
+para estudar os materiais. Os blocos de código nos notebooks foram
+intencionalmente colapsados para que você precise executálos para um estudo de
+qualidade. Os notebooks criam seu próprio ambiente de pacotes e contém
+eventualmente ferramentas que não se encontram no `Project.toml` do repositório
+principal. Essa escolha visa a menor latência quando executando notebooks
+localmente para acelerar o estudo.
 
 ## Conteúdos
 
 ~~~
-<ol>
-  <li style="height: 25px;">
-    <a href="001-reator-pistao" target="_blank">
-        Reator pistão - introdução
-    </a>
-  </li>
+<table>
+  <tr>
+    <td>1</td>
+    <td><input type="checkbox" checked /></td>
+    <td>
+      <a href="001-reator-pistao" target="_blank">
+          Reator pistão - introdução
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
+      Solução térmica de um reator incompressível formulado em termos da temperatura.
+      O objetivo é de realizar a introdução ao modelo de reator pistão sem entrar em
+      detalhes involvendo não-linearidades como a dependência da densidade em termos
+      da temperatura ou composição. Ademais, essa forma permite uma solução analítica.
+      Introduz o uso de ModelingToolkit e do método dos volumes finitos.
+    </td>
+  </tr>
 
-  <!-- <li style="height: 25px;">
-    <a href="c02-reator-pistao.html" target="_blank">
-      Reator pistão - Parte 2
-    </a>
-  </li>
-  <li style="height: 25px;">
-    <a href="#" target="_blank" style="pointer-events: none">
-      Reator pistão - Parte 3
-    </a>
-  </li>
-  <li style="height: 25px;">
-    <a href="c99-reator-pistao.html" target="_blank">
-      Reator pistão - Planejamento
-    </a>
-  </li> -->
-</ol> 
-~~~
+  <tr>
+    <td>2</td>
+    <td><input type="checkbox" checked /></td>
+    <td>
+      <a href="002-reator-pistao.html" target="_blank">
+        Formulação entálpica do reator pistão
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
+      Casos práticos de aplicação de reatores normalmente envolvem fluidos com propriedades
+      que dependem da temperatura, especialmente o calor específico. Em geral a sua solução
+      é tratada de forma mais conveniente com uma formulação em termos da entalpia. Continuamos
+      com o mesmo caso elaborado no estudo
+      <a href="001-reator-pistao" target="_blank"> Reator pistão - introdução </a> modificando
+      as equações para que a solução seja realizada com a entalpia como variável dependente.
+    </td>
+  </tr>
 
-## Ambições do projeto
+  <tr>
+   <td></td>
+    <td><input type="checkbox" checked /></td>
+    <td>
+      O precedente para um par de reatores em contra-corrente.
+    </td>
+  </tr>
 
-~~~
-<ol>
-<li style="height: 25px;">
-  <input type="checkbox" checked />
-  <label>Solução térmica de um reator incompressível formulado em termos da temperatura.</label>
-</li>
-<li style="height: 25px;">
-  <input type="checkbox" checked />
-  <label>O precedente mas formulado em termos da entalpia.</label>
-</li>
-<li style="height: 25px;">
-  <input type="checkbox" checked />
-  <label>O precedente para um par de reatores em contra-corrente.</label>
-</li>
-<li style="height: 25px;">
-  <input type="checkbox" />
-  <label>O precedente generalizado para um sólido e um gás (compressível).</label>
-</li>
-<li style="height: 25px;">
-  <input type="checkbox" />
-  <label>O precedente com coeficiente HTC dependente da posição.</label>
-</li>
-<li style="height: 25px;">
-  <input type="checkbox" />
-  <label>O precedente com trocas térmicas com o ambiente externo.</label>
-</li>
-<li style="height: 25px;">
-  <input type="checkbox" />
-  <label>O precedente com inclusão de perda de carga na fase gás.</label>
-</li>
-<li style="height: 25px;">
-  <input type="checkbox" />
-  <label>O precedente com um modelo de trocas térmicas com meio poroso.</label>
-</li>
-<li style="height: 25px;">
-  <input type="checkbox" />
-  <label>O precedente com um modelo de efeitos difusivos axiais no sólido.</label>
-</li>
-<li style="height: 25px;">
-  <input type="checkbox" />
-  <label>O precedente com inclusão da entalpia de fusão no sólido.</label>
-</li>
-<li style="height: 25px;">
-  <input type="checkbox" />
-  <label>O precedente com inclusão de cinética química no gás.</label>
-</li>
-<li style="height: 25px;">
-  <input type="checkbox" />
-  <label>Suporte à fluidos supercríticos (água, dióxido de carbono).</label>
-</li>
-<li style="height: 25px;">
-  <input type="checkbox" />
-  <label>...</label>
-</li>
-</ol>
+  <tr>
+    <td></td>
+    <td><input type="checkbox" /></td>
+    <td>
+      Suporte à fluidos supercríticos (água, dióxido de carbono).
+    </td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td><input type="checkbox" /></td>
+    <td>
+      O precedente generalizado para um sólido e um gás (compressível).
+    </td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td><input type="checkbox" /></td>
+    <td>
+      O precedente com coeficiente HTC dependente da posição.
+    </td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td><input type="checkbox" /></td>
+    <td>
+      O precedente com trocas térmicas com o ambiente externo.
+    </td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td><input type="checkbox" /></td>
+    <td>
+      O precedente com inclusão de perda de carga na fase gás.
+    </td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td><input type="checkbox" /></td>
+    <td>
+      O precedente com um modelo de trocas térmicas com meio poroso.
+    </td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td><input type="checkbox" /></td>
+    <td>
+      O precedente com um modelo de efeitos difusivos axiais no sólido.
+    </td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td><input type="checkbox" /></td>
+    <td>
+      O precedente com inclusão da entalpia de fusão no sólido.
+    </td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td><input type="checkbox" /></td>
+    <td>
+      O precedente com inclusão de cinética química no gás.
+    </td>
+  </tr>
+</table>
 ~~~
