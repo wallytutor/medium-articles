@@ -12,11 +12,11 @@ function workflow(nblist::Vector{String})
         pgpath = joinpath(@__DIR__, "$(nbname).html")
         
         if !format_file(nbpath)
-            @error "file not formatted: $(nbpath)"
+            @warn "file not formatted: $(nbpath)"
         end
         
         if isfile(pgpath) && !FORCE
-            VERBOSE > 2 && @info "file exists: $(pgpath)"
+            VERBOSE > 1 && @info "file exists: $(pgpath)"
             return
         end
         
@@ -27,13 +27,15 @@ function workflow(nblist::Vector{String})
     end
 end
 
-VERBOSE = 3
+VERBOSE = 2
 
-FORCE = true
+FORCE = false
 
 notebooks_ready = [
     "001-reator-pistao"
-    # "002-reator-pistao"
+    "002-reator-pistao"
+    "003-reator-pistao"
+    # "004-reator-pistao"
 ]
 
 workflow(notebooks_ready)
