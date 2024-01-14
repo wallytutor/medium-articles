@@ -89,6 +89,10 @@ Para execução local, caso não deseje clonar todo o repositório para estudar,
     <td></td>
     <td><input type="checkbox" /></td>
     <td>
+      <a href="004-reator-pistao" target="_blank">
+        Trocas em fluidos supercríticos
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
       Suporte à fluidos supercríticos (água, dióxido de carbono).
     </td>
   </tr>
