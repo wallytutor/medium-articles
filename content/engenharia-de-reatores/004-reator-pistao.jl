@@ -4,331 +4,199 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ fe2c3680-5b91-11ee-282c-c74d3b01ef9b
+# ╔═╡ 975b3cbd-f5e8-42f7-bc11-3c7ed1b1dfa3
 begin
 	@info "Importando ferramentas..."
 	
-	using CairoMakie
-	using DocStringExtensions
-	using PlutoUI
-	using Polynomials
-	using Printf
-	using Roots
+    using CairoMakie
+    using Interpolations
+    using PlutoUI
+    using Printf
+    using Roots
+    using SparseArrays: spdiagm
+    using SteamTables
 
 	# Fake a disponibilidade do pacote no caminho de importação.
 	push!(LOAD_PATH, @__DIR__)
 	
 	using PlugFlowReactors: heattransfercoef
-end;
+end
 
-# ╔═╡ f33f5453-dd05-4a4e-ae12-695320fcd70d
+# ╔═╡ db0cf709-c127-42e0-9e3d-6e988a1e659d
 md"""
-# Reatores em contra corrente
-
-As ideias gerais para a simulação de um reator formulado na entalpia tendo sido introduzidas na *Parte 2*, vamos agora aplicar o mesmo algoritmo de solução para um problema menos trivial: integração de reatores em contra-corrente com trocas térmicas. Esse é o caso, por exemplo, em uma serpentina dupla em contato mecânico. Esse sistema pode ser aproximado por um par de reatores pistão em contra-corrente se tomada propriamente em conta a resistência térmica dos dutos.
-
-Outro caso clássico que pode ser as vezes tratado desta forma é o modelo de forno rotativo para produção de cimento, como discutido por [Hanein *et al.* (2017)](https://doi.org/10.1080/17436753.2017.1303261). Outro exemplo é fornecido por [Bulfin (2019)](https://doi.org/10.1039/C8CP07077F) para a síntese de ceria. [Kerkhof (2007)](https://doi.org/10.1016/j.ces.2006.12.047) apresenta uma abordagem mais geral introduzindo troca de massa entre partículas.
-
-Ainda precisamos tratar de tópicos mais básicos antes de implementar modelos similares ao longo dessa série, mas espero que a literatura citada sirva como motivação para o estudo.
-
-Neste notebook trataremos dois casos:
-
-1. Um par de fluidos que diferem unicamente por seu calor específicos.
-1. Um fluido condensado e um gás com propriedades dependentes da temperatura.
+# Trocas em fluidos supercríticos
 
 $(TableOfContents())
 """
 
-# ╔═╡ 8b528478-c29f-45ad-97bc-ec38d4370504
-md"""
-## Concepção do programa
+# ╔═╡ 451f21a0-22ae-452f-937c-01f6617209ea
+# let
+#     P = 0.1 * 270.0
+#     T = collect(300.0:5:1200.0)
+#     ρ = map((t)->1.0 / SpecificV(P, t), T)
 
-Não há nada de diferente em termos do modelo de cada reator em relação ao tópico anterior abordando um reator pistão em termos da entalpia. O objetivo principal do programa a conceber neste notebook é usar os conhecimentos adquiridos na etapa anterior para implementar uma solução para um par de reatores que trocam energia entre si. Para simplificar a implementação vamos considerar que as paredes externas dos reatores são adiabáticas e que estes trocam calor somente entre eles mesmos. Algumas ideias chave são necessárias para uma implementação efetiva:
-
-1. É importante lembrar que as coordenadas dos reatores são invertidas entre elas. Se o reator ``r₁`` está orientado no sentido do eixo ``z``, então para um par de reatores de comprimento ``L`` as coordenadas das células homólogas em ``r₂`` são ``L-z``.
-
-1. Falando em células homólogas, embora seja possível implementar reatores conectados por uma parede com discretizações distintas, é muito mais fácil de se conceber um programa com reatores que usam a mesma malha espacial. Ademais, isso evita possíveis erros numéricos advindos da escolha de um método de interpolação.
-
-1. Embora uma solução acoplada seja possível, normalmente isso torna o programa mais complexo para se extender a um número arbitrário de reatores e pode conduzir a matrizes com [condição](https://en.wikipedia.org/wiki/Condition_number) pobre. Uma ideia para resolver o problema é realizar uma iteração em cada reator com o outro mantido constante (como no problema precedente) mas desta vez considerando que a *condição limite* da troca térmica possui uma dependência espacial.
-
-No que se segue não se fará hipótese de que ambos os escoamentos se dão com o mesmo fluido ou que no caso de mesmo fluido as velocidades são comparáveis. Neste caso mais geral, o número de Nusselt de cada lado da interface difere e portanto o coeficiente de troca térmica convectiva. É portanto necessário estabelecer-se uma condição de fluxo constante na interface das malhas para assegurar a conservação global da energia no sistema... **TODO (escrever, já programado)**
-
-Os blocos que se seguem implementam as estruturas necessárias com elementos reutilizáveis de maneira que ambos os reatores possam ser conectados facilmente.
-"""
-
-# ╔═╡ 87cb2263-959c-4e40-a97e-b0a18aa7f9bf
-"""
-Description of a single PFR formulated in enthalpy.
-
-```math
-\\frac{dh}{dz}=...
-```
-
-$(TYPEDFIELDS)
-"""
-struct ConstDensityEnthalpyPFRModel
-	"Documented"
-	m::Float64
-end
-
-# ╔═╡ 13a89050-36b4-497a-83dd-1943c3e20265
-
-
-# ╔═╡ ce24526d-4fcf-4db8-9674-b4cc02a3bd39
-
-
-# ╔═╡ addc8b80-a7ac-498e-9445-57eb6d1875ae
-
-
-# ╔═╡ 15278df3-3156-4870-a872-daacbf32f91d
-
-
-# ╔═╡ f4aac0b4-6f24-4aea-9b1a-0a4811851d01
-begin
-    # Comprimento do reator [m]
-    L = 10.0
-
-    # Diâmetro do reator [m]
-    D = 0.01
-
-    # Mass específica dos fluidos [kg/m³]
-    ρ = 1000.0
-
-    # Viscosidade dos fluidos [Pa.s]
-    μ = 0.001
-
-    # Número de Prandtl dos fluidos
-    Pr = 6.9
-	
-    # Calor específico do fluido [J/(kg.K)]
-    cₚ₁ = 1000.0
-    cₚ₂ = 3cₚ₁
-
-    # Velocidade do fluido [m/s]
-    u₁ = 1.0
-    u₂ = 2.0
-
-    # Temperatura de entrada do fluido [K]
-    Tₚ₁ = 300.0
-    Tₚ₂ = 400.0
-
-    # Perímetro troca térmica de cada reator [m]
-	# XXX: neste casa igual o diâmetro, ver descrição.
-    P = D
-
-    # Área da seção circula de cada reator [m²]
-    A = (1 // 2) * π * (D / 2)^2
-
-	# Diâmetro equivalente a seção para cada reator.
-	d = 2√(A/π)
-	
-    # Coeficiente convectivo de troca de calor [W/(m².K)]
-    ĥ₁ = heattransfercoef(L, d, u₁, ρ, μ, cₚ₁, Pr; verbose = true)
-    ĥ₂ = heattransfercoef(L, d, u₂, ρ, μ, cₚ₂, Pr; verbose = true)
-
-    # Coordenadas espaciais da solução [m]
-    z = LinRange(0, L, 500)
-
-    # Entalpia com constante arbitrária [J/kg]
-    h₁(T) = cₚ₁ * T + 1000.0
-    h₂(T) = cₚ₂ * T + 1000.0
-end;
-
-# ╔═╡ 7a278913-bf0f-4532-9c9b-f42aded9b6e9
-md"""
-## Estudo de caso I
-
-O par escolhido para exemplificar o comportamento de contra-corrente dos reatores
-pistão tem por característica de que cada reator ocupa a metade de um cilindro de diâmetro `D` = $(D) m de forma que o perímetro de troca é igual o diâmetro e a área transversal a metade daquela do cilindro.
-
-A temperatura inicial do fluido no reator (1) que escoa da esquerda para a direita é de $(Tₚ₁) K e naquele em contra-corrente (2) é de $(Tₚ₂) K.
-
-O fluido do reator (2) tem um calor específico que é o triplo daquele do reator (1).
-"""
-
-# ╔═╡ 5d3619f9-b0f6-4946-b3f2-fce160c52088
-
-
-# ╔═╡ 8968d40b-a054-4784-a1b4-d91f5d27e119
-
-
-# ╔═╡ 9a529019-9cfc-4018-a7ce-051e6dbdd85e
-#     N = 10
-#
-#     r₁ = IncompressibleEnthalpyPFRModel(;
-#         shared...,
-#         T = operations1.Tₚ,
-#         u = operations1.u,
-#         ĥ = ĥ₁,
-#         h = (T) -> 1.0fluid1.cₚ * T + 1000.0
-#     )
-
-#     r₂ = IncompressibleEnthalpyPFRModel(;
-#         shared...,
-#         T = operations2.Tₚ,
-#         u = operations2.u,
-#         ĥ = ĥ₂,
-#         h = (T) -> 3.0fluid1.cₚ * T + 1000.0,
-#     )
-
-#     r₁, r₂ = createprfpair1(; N = 1000)
-#     cf = CounterFlowPFRModel(r₁, r₂)
-
-#     resa, resb = outerloop(cf;
-#         inner = 30,
-#         outer = 100,
-#         relax = 0.0,
-#         Δhmax = 1.0e-10,
-#         rtol  = 1.0e-10
-#     )
-
-#     fig1 = plotpfrpair(cf)
-#     fig2 = plotreactorresiduals(resa, resb)
-#     fig1, fig2
-
-# ╔═╡ f3b7d46f-0fcc-4f68-9822-f83e977b87ee
-md"""
-## Estudo de caso II
-"""
-
-# ╔═╡ 7afff466-5463-431f-b817-083fe6102a8c
-#     # Condições operatórias do gás.
-#     p₃ = 101325.0
-#     h₃ = integrate(fluid3.cₚpoly)
-#     M̄₃ = 0.02897530345830224
-
-#     fluid₃ = (
-#         ρ = (p₃ * M̄₃) / (GAS_CONSTANT * operations3.Tₚ),
-#         μ = fluid3.μpoly(operations3.Tₚ),
-#         cₚ = fluid3.cₚpoly(operations3.Tₚ),
-#         Pr = fluid3.Pr
-#     )
-
-#     # Condições modificadas do fluido condensado.
-#     operations₁ = (
-#         u = operations3.u * (fluid₃.ρ / fluid1.ρ),
-#         Tₚ = operations1.Tₚ
-#     )
-
-#     shared = (
-#         N = N,
-#         L = reactor.L,
-#         P = reactor.D,
-#         A = 0.5π * (reactor.D/2)^2,
-#         ρ = fluid1.ρ
-#     )
-
-#     ĥ₁ = computehtc(; reactor..., fluid1..., u = operations₁.u, verbose = false)
-#     ĥ₃ = computehtc(; reactor..., fluid₃..., u = operations3.u, verbose = false)
-
-#     r₁ = IncompressibleEnthalpyPFRModel(;
-#         shared...,
-#         T = operations₁.Tₚ,
-#         u = operations₁.u,
-#         ĥ = ĥ₁,
-#         h = (T) -> 1.0fluid1.cₚ * T + 1000.0
-#     )
-
-#     r₃ = IncompressibleEnthalpyPFRModel(;
-#         shared...,
-#         T = operations3.Tₚ,
-#         u = operations3.u,
-#         ĥ = ĥ₃,
-#         h = (T) -> h₃(T),
-#     )
-
-#     r₁, r₂ = createprfpair2(; N = 1000)
-#     cf = CounterFlowPFRModel(r₁, r₂)
-
-#     resa, resb = outerloop(cf;
-#         inner = 100,
-#         outer = 200,
-#         relax = 0.6,
-#         Δhmax = 1.0e-10,
-#         rtol  = 1.0e-10
-#     )
-
-#     fig1 = plotpfrpair(cf, ylims = (300, 400))
-#     fig2 = plotreactorresiduals(resa, resb)
-
-# ╔═╡ 2d296ee3-ed4b-422a-9573-d10bbbdce344
-# "Ilustração padronizada para a simulação exemplo."
-# function plotpfrpair(cf::CounterFlowPFRModel; ylims = (300, 400), loc = :rb)
-#     z1 = coordinates(cf)
-#     T1 = thistemperature(cf)
-#     T2 = thattemperature(cf)
-
-#     fig = Figure(resolution = (720, 500))
-#     ax = Axis(fig[1, 1])
-#     stairs!(ax, z1, T1, label = "r₁", color = :blue, step = :center)
-#     stairs!(ax, z1, T2, label = "r₂", color = :red, step = :center)
-#     ax.xticks = range(0.0, z1[end], 6)
-#     ax.yticks = range(ylims..., 6)
-#     ax.xlabel = "Posição [m]"
-#     ax.ylabel = "Temperatura [K]"
-#     xlims!(ax, (0, z1[end]))
-#     ylims!(ax, ylims)
-#     axislegend(position = loc)
-#     return fig
+#     let
+#         fig = Figure(resolution = (720, 500))
+#         ax = Axis(fig[1, 1])
+#         lines!(ax, T, ρ)
+#         ax.xlabel = "Temperatura [K]"
+#         ax.ylabel = "Mass específica [kg/m³]"
+#         ax.xticks = 300:100:1200
+#         ax.yticks = 000:200:1000
+#         xlims!(ax, (300, 1200))
+#         ylims!(ax, (000, 1000))
+#         fig
+#     end
 # end
 
-# ╔═╡ 2b667c73-1c05-48a5-a6e7-b7490ab5916c
-# "Gera grafico com resíduos da simulação"
-# function plotreactorresiduals(ra, rb)
-#     function getreactordata(r)
-#         xg = 1:r.counter
-#         xs = r.finalsteps
-#         yg = log10.(r.residuals)
-#         ys = log10.(r.finalresiduals)
-#         return xg, xs, yg, ys
+# ╔═╡ 14dfac23-a63c-4715-9e39-105bd7c8c325
+# let
+#     P = 27.0
+#     T = collect(300.0:5.0:2000.0)
+#     h = map((t)->SpecificH(P, t), T)
+#     h_interp = linear_interpolation(T, h)
+
+#     let
+#         fig = Figure(resolution = (720, 500))
+#         ax = Axis(fig[1, 1])
+#         lines!(ax, T, h)
+#         lines!(ax, T, h_interp(T))
+#         ax.xlabel = "Temperatura [K]"
+#         ax.ylabel = "Entalpia específica [kJ/kg]"
+#         ax.xticks = 300:100:1200
+#         ax.yticks = 000:500:4500
+#         xlims!(ax, (300, 1200))
+#         ylims!(ax, (000, 4500))
+#         fig
+#     end
+# end
+
+# ╔═╡ 763992dd-0ab7-422e-8983-a398725326e7
+# "Integra reator pistão circular no espaço das entalpias."
+# function solveenthalpypfr(; mesh::AbstractDomainFVM, P::T, A::T, Tₛ::T, Tₚ::T,
+#                             ĥ::T, u::T, ρ::T, h::Function, M::Int64 = 100,
+#                             α::Float64 = 0.4, ε::Float64 = 1.0e-10,
+#                             alg::Any = Order16(), vars...) where T
+#     N = length(mesh.z) - 1
+
+#     Tm = Tₚ * ones(N + 1)
+#     hm = h.(Tm)
+
+#     a = (ĥ * P * mesh.δ) / (ρ * u * A)
+#     K = 2spdiagm(-1 => -ones(N-1), 0 => ones(N))
+
+#     b = (2a * Tₛ) * ones(N)
+#     b[1] += 2h(Tₚ)
+
+#     residual = -ones(M)
+
+#     @time for niter in 1:M
+#         Δ = (1-α) * (K\(b - a * (Tm[1:end-1] + Tm[2:end])) - hm[2:end])
+#         hm[2:end] += Δ
+
+#         Tm[2:end] = map(
+#             (Tₖ, hₖ) -> find_zero(t -> h(t) - hₖ, Tₖ, alg, atol=0.1),
+#             Tm[2:end], hm[2:end]
+#         )
+
+#         residual[niter] = maximum(abs.(Δ))
+
+#         if (residual[niter] <= ε)
+#             @info("Convergiu após $(niter) iterações")
+#             break
+#         end
 #     end
 
-#     function axlimitmax(niter)
-#         rounder = 10^floor(log10(niter))
-#         return convert(Int64, rounder * ceil(niter/rounder))
+#     return Tm, residual
+# end
+
+# ╔═╡ f2f7bae5-3bcc-426b-9c29-2d4b96abbf74
+# let
+#     L = 3.0
+#     mesh = ImmersedConditionsFVM(; L = L, N = 3000)
+
+#     D = 0.0254 / 2
+#     P = π * D
+#     A = π * D^2 / 4
+
+#     Tₛ = 873.15
+#     ṁ = 60.0 / 3600.0
+
+#     Pₚ = 27.0
+#     Tₚ = 300.0
+#     ρₚ = 1.0 / SpecificV(Pₚ, Tₚ)
+#     uₚ = ṁ / (ρₚ * A)
+
+#     h_interp = let
+#         T = collect(300.0:5.0:2000.0)
+#         h = map((t)->SpecificH(Pₚ, t), T)
+#         linear_interpolation(T, h)
 #     end
 
-#     niter = max(ra.counter, rb.counter)
-#     xga, xsa, yga, ysa = getreactordata(ra)
-#     xgb, xsb, ygb, ysb = getreactordata(rb)
+#     z = mesh.z
+#     ĥ = 4000.0
 
-#     fig = Figure(resolution = (720, 500))
-#     ax = Axis(fig[1, 1], yscale = identity)
+#     # TODO search literature for supercritical!
+#     # ĥ = computehtc(; reactor..., fluid..., u = operations.u)
 
-#     ax.xlabel = "Iteração global"
-#     ax.ylabel = "log10(Resíduo)"
-#     ax.title = "Histórico de convergência"
+#     h(t) = 1000h_interp(t)
 
-#     ax.yticks = -12:2:0
-#     xlims!(ax, (0, axlimitmax(niter)))
-#     ylims!(ax, (-12, 0))
+#     pars = (
+#         mesh = mesh,
+#         P = P,
+#         A = A,
+#         Tₛ = Tₛ,
+#         Tₚ = Tₚ,
+#         ĥ = ĥ,
+#         u = uₚ,
+#         ρ = ρₚ,
+#         h = h,
+#         M = 1000,
+#         α = 0.85,
+#         ε = 1.0e-06,
+#         alg = Order16()
+#     )
 
-#     lines!(ax, xga, yga, color = :blue,  linewidth = 0.9, label = "r₁")
-#     lines!(ax, xgb, ygb, color = :red, linewidth = 0.9, label = "r₂")
+#     T, residuals = solveenthalpypfr(; pars...)
 
-#     scatter!(ax, xsa, ysa, color = :black, markersize = 6)
-#     scatter!(ax, xsb, ysb, color = :black, markersize = 6)
+#     fig1 = let
+#         yrng = (300.0, 900.0)
 
-#     axislegend(position = :rt)
-#     return fig
+#         Tend = @sprintf("%.2f", T[end])
+#         fig = Figure(resolution = (720, 500))
+#         ax = Axis(fig[1, 1])
+#         stairs!(ax, z, T,
+#                 color = :red, linewidth = 2,
+#                 label = "Numérica", step = :center)
+#         xlims!(ax, (0, L))
+#         ax.title = "Temperatura final = $(Tend) K"
+#         ax.xlabel = "Posição [m]"
+#         ax.ylabel = "Temperatura [K]"
+#         ax.xticks = range(0.0, L, 5)
+#         ax.yticks = range(yrng..., 7)
+#         ylims!(ax, yrng)
+#         axislegend(position = :rb)
+#         fig
+#     end
 # end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
-DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
+Interpolations = "a98d9a8b-a2ab-59e6-89dd-64a1c18fca59"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
-Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Roots = "f2b01f46-fcfa-551c-844a-d8ac1e96c665"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+SteamTables = "43dc94dd-f011-5c5d-8ab2-5073432dc0ba"
 
 [compat]
 CairoMakie = "~0.11.5"
-DocStringExtensions = "~0.9.3"
+Interpolations = "~0.15.1"
 PlutoUI = "~0.7.54"
-Polynomials = "~4.0.6"
 Roots = "~2.1.0"
+SteamTables = "~1.4.1"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -337,7 +205,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.9.3"
 manifest_format = "2.0"
-project_hash = "762d8adc6c377cff8c48c47ee157a26d6805606d"
+project_hash = "049aa18a10f904aa24178ab08f3a5ef2213cbc47"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -976,12 +844,10 @@ deps = ["Adapt", "AxisAlgorithms", "ChainRulesCore", "LinearAlgebra", "OffsetArr
 git-tree-sha1 = "88a101217d7cb38a7b481ccd50d21876e1d1b0e0"
 uuid = "a98d9a8b-a2ab-59e6-89dd-64a1c18fca59"
 version = "0.15.1"
+weakdeps = ["Unitful"]
 
     [deps.Interpolations.extensions]
     InterpolationsUnitfulExt = "Unitful"
-
-    [deps.Interpolations.weakdeps]
-    Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [[deps.IntervalArithmetic]]
 deps = ["CRlibm", "RoundingEmulator"]
@@ -1757,6 +1623,12 @@ weakdeps = ["ChainRulesCore", "InverseFunctions"]
     StatsFunsChainRulesCoreExt = "ChainRulesCore"
     StatsFunsInverseFunctionsExt = "InverseFunctions"
 
+[[deps.SteamTables]]
+deps = ["ForwardDiff", "PrecompileTools", "Roots", "Unitful"]
+git-tree-sha1 = "a03b9ec4ee2d895b9483544d4c61c21089fd2733"
+uuid = "43dc94dd-f011-5c5d-8ab2-5073432dc0ba"
+version = "1.4.1"
+
 [[deps.StructArrays]]
 deps = ["Adapt", "ConstructionBase", "DataAPI", "GPUArraysCore", "StaticArraysCore", "Tables"]
 git-tree-sha1 = "0a3db38e4cce3c54fe7a71f831cd7b6194a54213"
@@ -1856,6 +1728,17 @@ deps = ["REPL"]
 git-tree-sha1 = "53915e50200959667e78a92a418594b428dffddf"
 uuid = "1cfade01-22cf-5700-b092-accc4b62d6e1"
 version = "0.4.1"
+
+[[deps.Unitful]]
+deps = ["Dates", "LinearAlgebra", "Random"]
+git-tree-sha1 = "3c793be6df9dd77a0cf49d80984ef9ff996948fa"
+uuid = "1986cc42-f94f-5a68-af5c-568840ba703d"
+version = "1.19.0"
+weakdeps = ["ConstructionBase", "InverseFunctions"]
+
+    [deps.Unitful.extensions]
+    ConstructionBaseUnitfulExt = "ConstructionBase"
+    InverseFunctionsUnitfulExt = "InverseFunctions"
 
 [[deps.WoodburyMatrices]]
 deps = ["LinearAlgebra", "SparseArrays"]
@@ -1999,22 +1882,11 @@ version = "3.5.0+0"
 """
 
 # ╔═╡ Cell order:
-# ╟─f33f5453-dd05-4a4e-ae12-695320fcd70d
-# ╟─fe2c3680-5b91-11ee-282c-c74d3b01ef9b
-# ╟─8b528478-c29f-45ad-97bc-ec38d4370504
-# ╠═87cb2263-959c-4e40-a97e-b0a18aa7f9bf
-# ╠═13a89050-36b4-497a-83dd-1943c3e20265
-# ╠═ce24526d-4fcf-4db8-9674-b4cc02a3bd39
-# ╠═addc8b80-a7ac-498e-9445-57eb6d1875ae
-# ╠═15278df3-3156-4870-a872-daacbf32f91d
-# ╟─7a278913-bf0f-4532-9c9b-f42aded9b6e9
-# ╟─f4aac0b4-6f24-4aea-9b1a-0a4811851d01
-# ╠═5d3619f9-b0f6-4946-b3f2-fce160c52088
-# ╠═8968d40b-a054-4784-a1b4-d91f5d27e119
-# ╠═9a529019-9cfc-4018-a7ce-051e6dbdd85e
-# ╟─f3b7d46f-0fcc-4f68-9822-f83e977b87ee
-# ╠═7afff466-5463-431f-b817-083fe6102a8c
-# ╠═2d296ee3-ed4b-422a-9573-d10bbbdce344
-# ╠═2b667c73-1c05-48a5-a6e7-b7490ab5916c
+# ╟─db0cf709-c127-42e0-9e3d-6e988a1e659d
+# ╟─975b3cbd-f5e8-42f7-bc11-3c7ed1b1dfa3
+# ╠═451f21a0-22ae-452f-937c-01f6617209ea
+# ╠═14dfac23-a63c-4715-9e39-105bd7c8c325
+# ╠═763992dd-0ab7-422e-8983-a398725326e7
+# ╠═f2f7bae5-3bcc-426b-9c29-2d4b96abbf74
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
