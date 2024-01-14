@@ -4,443 +4,293 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ ccd43dd7-e7ac-40db-a423-7f54821807a7
+# ╔═╡ fe2c3680-5b91-11ee-282c-c74d3b01ef9b
 begin
-    @info "Importando PlugFlowReactors.jl..."
+	@info "Importando ferramentas..."
+	
+	using CairoMakie
+	using PlutoUI
+	using Polynomials
+	using Printf
+	using Roots
+	# using Sp 	arseArrays
 
-    # Fake a disponibilidade do pacote no caminho de importação.
-    push!(LOAD_PATH, @__DIR__)
+	# Fake a disponibilidade do pacote no caminho de importação.
+	push!(LOAD_PATH, @__DIR__)
+	
+	# using PlugFlowReactors: heattransfercoef
+end;
 
-    using PlugFlowReactors: heattransfercoef
-end
-
-# ╔═╡ 118aef61-774f-4d98-9d43-1966d1bd2584
-begin
-    @info "Importando ferramentas..."
-
-    using CairoMakie
-    using PlutoUI
-    using Printf
-    using Roots
-    using SparseArrays
-end
-
-# ╔═╡ 0c42a060-5cf5-11ee-273c-b16c31ed2b48
+# ╔═╡ f33f5453-dd05-4a4e-ae12-695320fcd70d
 md"""
-# Formulação entálpica do reator pistão
+# Reatores em contra corrente
 
-Neste notebook damos continuidade ao precedente através da extensão do modelo
-para a resolução da conservação de energia empregando a entalpia do fluido como
-variável independente. O caso tratado será o mesmo estudado anteriormente para
-que possamos ter uma base de comparação da solução. Realizada a primeira
-introdução, os notebooks da série se tornam mais concisos e focados cada vez
-mais em código ao invés de derivações, exceto quando implementando novas
-físicas.
+As ideias gerais para a simulação de um reator formulado na entalpia tendo sido introduzidas na *Parte 2*, vamos agora aplicar o mesmo algoritmo de solução para um problema menos trivial: integração de reatores em contra-corrente com trocas térmicas. Esse é o caso, por exemplo, em uma serpentina dupla em contato mecânico. Esse sistema pode ser aproximado por um par de reatores pistão em contra-corrente se tomada propriamente em conta a resistência térmica dos dutos.
+
+Outro caso clássico que pode ser as vezes tratado desta forma é o modelo de forno rotativo para produção de cimento, como discutido por [Hanein *et al.* (2017)](https://doi.org/10.1080/17436753.2017.1303261). Outro exemplo é fornecido por [Bulfin (2019)](https://doi.org/10.1039/C8CP07077F) para a síntese de ceria. [Kerkhof (2007)](https://doi.org/10.1016/j.ces.2006.12.047) apresenta uma abordagem mais geral introduzindo troca de massa entre partículas.
+
+Ainda precisamos tratar de tópicos mais básicos antes de implementar modelos similares ao longo dessa série, mas espero que a literatura citada sirva como motivação para o estudo.
+
+Neste notebook trataremos dois casos: (I)... TODO
 
 $(TableOfContents())
 """
 
-# ╔═╡ 1bcae7c4-98fe-4e44-b9ce-3adb78b141a4
+# ╔═╡ 67b0a6ab-c128-4ab6-b588-c2322b0e61e9
 md"""
-Algumas funções de suporte que já foram bem estabelecidas no estudo se encontram
-em um módulo `PlugFlowReactors.jl` que pode ser importado localmente. Esse
-módulo será progressivamente alimentado com os blocos de código que vão
-encontrando maturidade para mais tarde integrar uma biblioteca como
-`DryTooling.jl`.
+No que se segue não se fará hipótese de que ambos os escoamentos se dão com o mesmo fluido ou que no caso de mesmo fluido as velocidades são comparáveis. Neste caso mais geral, o número de Nusselt de cada lado da interface difere e portanto o coeficiente de troca térmica convectiva. É portanto necessário estabelecer-se uma condição de fluxo constante na interface das malhas para assegurar a conservação global da energia no sistema... TODO (escrever, já programado)
 """
 
-# ╔═╡ 18f7746b-e0df-41c0-89d7-33dce6359e52
+# ╔═╡ 7a278913-bf0f-4532-9c9b-f42aded9b6e9
 md"""
-Dado seu uso restrito, não adicionamos `analyticalthermalpfr` ao módulo acima.
+## Estudo de caso I
+
+O par escolhido para exemplificar o comportamento de contra-corrente dos reatores
+pistão tem por característica de que cada reator ocupa a metade de um cilindro de diâmetro `D` = $(reactor.D) m de forma que o perímetro de troca é igual o diâmetro e a área transversal a metade daquela do cilindro. A temperatura inicial do fluido no reator (1) que escoa da esquerda para a direita é de $(operations1.Tₚ) K e naquele em contra-corrente (2) é de $(operations2.Tₚ) K.
+
+O fluido do reator (2) tem um calor específico que é o triplo daquele do reator (1).
 """
 
-# ╔═╡ 0c6ce124-f1b3-419b-a927-869da96c114d
-"Solução analítica do modelo de reator pistão."
-function analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
-    return @. Tₛ - (Tₛ - Tₚ) * exp(-z * (ĥ * P) / (ρ * u * cₚ * A))
-end
+# ╔═╡ 9a529019-9cfc-4018-a7ce-051e6dbdd85e
+# "Cria um par padronizado de reatores para simulação exemplo."
+# function createprfpair1(; N = 10)
+#     shared = (
+#         N = N,
+#         L = reactor.L,
+#         P = reactor.D,
+#         A = 0.5π * (reactor.D/2)^2,
+#         ρ = fluid1.ρ
+#     )
 
-# ╔═╡ 161c190d-fb18-490f-87df-7217db7179b0
+#     ĥ₁ = computehtc(; reactor..., fluid1..., u = operations1.u, verbose = false)
+#     ĥ₂ = computehtc(; reactor..., fluid1..., u = operations2.u, verbose = false)
+
+#     r₁ = IncompressibleEnthalpyPFRModel(;
+#         shared...,
+#         T = operations1.Tₚ,
+#         u = operations1.u,
+#         ĥ = ĥ₁,
+#         h = (T) -> 1.0fluid1.cₚ * T + 1000.0
+#     )
+
+#     r₂ = IncompressibleEnthalpyPFRModel(;
+#         shared...,
+#         T = operations2.Tₚ,
+#         u = operations2.u,
+#         ĥ = ĥ₂,
+#         h = (T) -> 3.0fluid1.cₚ * T + 1000.0,
+#     )
+
+#     return r₁ , r₂
+# end
+
+# ╔═╡ 2b57fee2-97cf-4f69-b1d4-b4e20065a07b
+# figs1[1]
+
+# ╔═╡ bdf4c11d-92e0-493b-b163-c3e5e52789ea
+# figs1[2]
+
+# ╔═╡ b1ccbbf0-cded-4831-8ecf-4b5534ae9fa4
+# figs1 = let
+#     r₁, r₂ = createprfpair1(; N = 1000)
+#     cf = CounterFlowPFRModel(r₁, r₂)
+
+#     resa, resb = outerloop(cf;
+#         inner = 30,
+#         outer = 100,
+#         relax = 0.0,
+#         Δhmax = 1.0e-10,
+#         rtol  = 1.0e-10
+#     )
+
+#     fig1 = plotpfrpair(cf)
+#     fig2 = plotreactorresiduals(resa, resb)
+#     fig1, fig2
+# end;
+
+# ╔═╡ f3b7d46f-0fcc-4f68-9822-f83e977b87ee
 md"""
-## Condições compartilhadas
-
-Na próxima célula provemos as mesmas condições do problema tradado no notebook
-precedente. Uma discretização espacial mais grosseira é utilizada aqui e a
-função entalpia compatível com o calor específico do fluido é provida. Para que
-os resultados sejam comparáveis as soluções precedentes, fizemos ``h(T) = c_{p}T
-+ h_{ref}``. O valor de ``h_{ref}`` é arbitrário e não deve afetar a solução por
-razões que deveriam ser evidentes neste ponto do estudo.
+## Estudo de caso II
 """
 
-# ╔═╡ c3ebf383-1217-4d28-9d29-337eb7903775
-begin
-    # Comprimento do reator [m]
-    L = 10.0
+# ╔═╡ 7afff466-5463-431f-b817-083fe6102a8c
+# "Cria um par padronizado de reatores para simulação exemplo."
+# function createprfpair2(; N = 10)
+#     # Condições operatórias do gás.
+#     p₃ = 101325.0
+#     h₃ = integrate(fluid3.cₚpoly)
+#     M̄₃ = 0.02897530345830224
 
-    # Diâmetro do reator [m]
-    D = 0.01
+#     fluid₃ = (
+#         ρ = (p₃ * M̄₃) / (GAS_CONSTANT * operations3.Tₚ),
+#         μ = fluid3.μpoly(operations3.Tₚ),
+#         cₚ = fluid3.cₚpoly(operations3.Tₚ),
+#         Pr = fluid3.Pr
+#     )
 
-    # Mass específica do fluido [kg/m³]
-    ρ = 1000.0
+#     # Condições modificadas do fluido condensado.
+#     operations₁ = (
+#         u = operations3.u * (fluid₃.ρ / fluid1.ρ),
+#         Tₚ = operations1.Tₚ
+#     )
 
-    # Viscosidade do fluido [Pa.s]
-    μ = 0.001
+#     shared = (
+#         N = N,
+#         L = reactor.L,
+#         P = reactor.D,
+#         A = 0.5π * (reactor.D/2)^2,
+#         ρ = fluid1.ρ
+#     )
 
-    # Calor específico do fluido [J/(kg.K)]
-    cₚ = 4182.0
+#     ĥ₁ = computehtc(; reactor..., fluid1..., u = operations₁.u, verbose = false)
+#     ĥ₃ = computehtc(; reactor..., fluid₃..., u = operations3.u, verbose = false)
 
-    # Número de Prandtl do fluido
-    Pr = 6.9
+#     r₁ = IncompressibleEnthalpyPFRModel(;
+#         shared...,
+#         T = operations₁.Tₚ,
+#         u = operations₁.u,
+#         ĥ = ĥ₁,
+#         h = (T) -> 1.0fluid1.cₚ * T + 1000.0
+#     )
 
-    # Velocidade do fluido [m/s]
-    u = 1.0
+#     r₃ = IncompressibleEnthalpyPFRModel(;
+#         shared...,
+#         T = operations3.Tₚ,
+#         u = operations3.u,
+#         ĥ = ĥ₃,
+#         h = (T) -> h₃(T),
+#     )
 
-    # Temperatura de entrada do fluido [K]
-    Tₚ = 300.0
+#     return r₁ , r₃
+# end
 
-    # Temperatura da parede do reator [K]
-    Tₛ = 400.0
+# ╔═╡ 509da475-fa3e-4f86-84f0-8ebca1088532
+# figs2[1]
 
-    # Perímetro da seção circular do reator [m]
-    P = π * D
+# ╔═╡ 486add22-bf9b-49ea-99d7-b61b961e2791
+# figs2[2]
 
-    # Área da seção circula do reator [m²]
-    A = π * (D / 2)^2
+# ╔═╡ 9f1357f1-1e7b-4f55-9f4b-cc6a1fd3e2aa
+# figs2 = let
+#     r₁, r₂ = createprfpair2(; N = 1000)
+#     cf = CounterFlowPFRModel(r₁, r₂)
 
-    # Coeficiente convectivo de troca de calor [W/(m².K)]
-    ĥ = heattransfercoef(L, D, u, ρ, μ, cₚ, Pr; verbose = true)
+#     resa, resb = outerloop(cf;
+#         inner = 100,
+#         outer = 200,
+#         relax = 0.6,
+#         Δhmax = 1.0e-10,
+#         rtol  = 1.0e-10
+#     )
 
-    # Coordenadas espaciais da solução [m]
-    z = LinRange(0, L, 500)
+#     fig1 = plotpfrpair(cf, ylims = (300, 400))
+#     fig2 = plotreactorresiduals(resa, resb)
+#     fig1, fig2
+# end;
 
-    # Entalpia com constante arbitrária [J/kg]
-    h(T) = cₚ * T + 1000.0
-end;
-
-# ╔═╡ f600a25f-2c33-4d30-a1e7-31d3857a692b
+# ╔═╡ 975744de-7ab0-4bfa-abe5-3741ec7ec1cf
 md"""
-## Modelo na entalpia
-
-Em diversos casos a forma expressa na temperatura não é conveniente. Esse
-geralmente é o caso quando se inclui transformações de fase no sistema. Nessas
-situações a solução não suporta integração direta e devemos recorrer a um método
-iterativo baseado na entalpia. Isso se dá pela adição de uma etapa suplementar
-da solução de equações não lineares para se encontrar a temperatura à qual a
-entalpia corresponde para se poder avaliar as trocas térmicas.
-
-Para se efetuar a integração partimos do modelo derivado anteriormente numa
-etapa antes da simplificação final para solução na temperatura e agrupamos os
-parâmetros livres em ``a``
-
-```math
-\frac{dh}{dz}=\frac{\hat{h}P}{\rho{}u{}A_{c}}(T_{s}-T^{\star})=a(T_{s}-T^{\star})
-```
-
-É interessante observar que toda a discussão precedente acerca de porque não
-integrar sobre ``T^{\star}`` perde seu sentido aqui: a temperatura é claramente
-um parâmetro.
-
-```math
-\int_{h_P}^{h_N}dh=a^{\prime}\int_{0}^{\delta}(T_{s}-T^{\star})dz
-```
+## Anexos
 """
 
-# ╔═╡ eaed30cf-e984-4ae6-8eb8-43ba533c23ee
+# ╔═╡ 04cf5b92-d10b-43f5-8fc5-1e549105ef9d
 md"""
-Seguindo um procedimento de integração similar ao aplicado na formulação usando
-a temperatura chegamos a equação do gradiente fazendo ``a=a^{\prime}\delta``
-
-```math
-h_{E}-h_{P}=aT_{s}-aT^{\star}
-```
-
-Seguindo a mesma lógica discutida na formulação na temperatura, introduzimos a
-relação de interpolação ``T^{\star}=(1/2)(T_{E}+T_{P})`` e aplicando-se esta
-expressão na forma numérica final, após manipulação chega-se à
-
-```math
--2h_{P}+2h_{E}=2aT_{s}-aT_{E}-aT_{P}
-```
-
-Essa expressão permite a solução da entalpia e a atualização do campo de
-temperaturas se faz através da solução de uma equação não linear do tipo
-``h(T_{P})-h_{P}=0`` por célula.
-
-Substituindo a temperatura inicial ``T_{0}`` e sua entalpia associada ``h_{0}``
-na forma algébrica do problema encontramos a primeira linha da matriz que
-explicita as modificações para se implementar a condição inicial do problema
-
-```math
-2h_{1}=2aT_{s}-aT_{1}-aT_{0}-2h_{0}
-```
-
-Completamos assim as derivações para se escrever a forma matricial
-
-```math
-\begin{bmatrix}
- 2      &  0     &  0     & \dots  &  0      &  0      \\
--2      &  2     &  0     & \dots  &  0      &  0      \\
- 0      & -2     &  2     & \ddots &  0      &  0      \\
-\vdots  & \ddots & \ddots & \ddots & \ddots  & \vdots  \\
- 0      &  0     &  0     & -2     &  2      &  0     \\
- 0      &  0     &  0     &  0     & -2      &  2 \\
-\end{bmatrix}
-\begin{bmatrix}
-h_{1}    \\
-h_{2}    \\
-h_{3}    \\
-\vdots   \\
-h_{N-1}  \\
-h_{N}    \\
-\end{bmatrix}
-=
-\begin{bmatrix}
-f_{0,1} + 2h(T_{0}) \\
-f_{1,2}     \\
-f_{2,3}      \\
-\vdots                       \\
-f_{N-2,N-1}  \\
-f_{N-1,N}    \\
-\end{bmatrix}
-```
-
-No vetor do lado direito introduzimos uma função de ``f`` dada por
-
-```math
-f_{i,j} = 2aT_{s} - a(T_{i}+T_{j})
-```
+### Dados
 """
 
-# ╔═╡ da2429b7-5dd5-44f4-a5ec-d60b69100fb6
-md"""
-## Solução em volumes finitos
+# ╔═╡ dcfd8b59-429f-4c99-9eae-1aa34fa87033
+# const reactor = notedata.c03.reactor
 
-Como as temperaturas usadas no lado direito da equação não são conhecidas
-inicialmente, o problema tem um carater iterativo intrínsico. Initializamos o
-lado direito da equação para em seguida resolver o problema na entalpia, que
-deve ser invertida (equações não lineares) para se atualizar as temperaturas.
-Isso se repete até que a solução entre duas iterações consecutivas atinja um
-*critério de convergência*.
+# ╔═╡ 9f94f21d-2805-4b30-8451-7b09b575081c
+# const fluid1 = notedata.c03.fluid1
 
-Como a estimativa inicial do campo de temperaturas pode ser extremamente ruim,
-usamos um método com relaxações consecutivas da solução no caminho da
-convergência. A ideia de base é evitar atualizações bruscas que podem gerar
-temperaturas negativas ou simplesmente divergir para o infinito. A cada passo,
-partindo das temperaturas ``T^{(m)}``, aonde ``m`` é o índice da iteração,
-resolvemos o sistema não-linear para encontrar ``T^{(m+1)^\prime}``. Pelas
-razões citadas, não é razoável utilizar essa solução diretamente, portanto
-realizamos a ponderação, dita relaxação, que se segue
+# ╔═╡ 2f088bd3-184d-41a3-9254-8fa458d8ccaf
+# const fluid3 = notedata.c03.fluid3
 
-```math
-T^{(m+1)}=(1-\alpha)T^{(m+1)^\prime}+αT^{(m)}
-```
+# ╔═╡ cc1a6701-8907-440a-a77b-b89ec6abac65
+# const operations1 = notedata.c03.operations1
 
-O fator ``\alpha`` representa neste caso a *fração* de contribuição da solução
-anterior a nova estimativa. Essa é somente a ponta do iceberg em termos de
-relaxação e ao longo da série veremos em mais detalhes o conceito. Como critério
-de parada do cálculo, o que chamamos convergência, queremos que a máxima
-*atualização* ``\Delta{}T`` relativa do campo de temperaturas seja menor que um
-critério ``\varepsilon``, ou seja
+# ╔═╡ f1cc566b-87bb-42be-a0a5-c160f326817f
+# const operations2 = notedata.c03.operations2
 
-```math
-\max\frac{\vert{}T^{(m+1)}-T^{(m)}\vert}{\vert{}\max{T^{(m)}}\vert}=
-\max\biggr\vert{}\frac{\Delta{}T{}}{\max{}T^{(m)}}\biggr\vert<\varepsilon
-```
+# ╔═╡ eecf85b0-180c-49c5-83ab-619ba6683960
+# const operations3 = notedata.c03.operations3
 
-Para evitar cálculos separados da nova temperatura e então da variação, podemos
-usar as definições acima para chegar à
+# ╔═╡ 2d296ee3-ed4b-422a-9573-d10bbbdce344
+# "Ilustração padronizada para a simulação exemplo."
+# function plotpfrpair(cf::CounterFlowPFRModel; ylims = (300, 400), loc = :rb)
+#     z1 = coordinates(cf)
+#     T1 = thistemperature(cf)
+#     T2 = thattemperature(cf)
 
-```math
-\Delta{}T{} = (1-\alpha)(T^{(m+1)^\prime}-T^{(m)})
-```
+#     fig = Figure(resolution = (720, 500))
+#     ax = Axis(fig[1, 1])
+#     stairs!(ax, z1, T1, label = "r₁", color = :blue, step = :center)
+#     stairs!(ax, z1, T2, label = "r₂", color = :red, step = :center)
+#     ax.xticks = range(0.0, z1[end], 6)
+#     ax.yticks = range(ylims..., 6)
+#     ax.xlabel = "Posição [m]"
+#     ax.ylabel = "Temperatura [K]"
+#     xlims!(ax, (0, z1[end]))
+#     ylims!(ax, ylims)
+#     axislegend(position = loc)
+#     return fig
+# end
 
-e então atualizar a solução com ``T^{(m+1)}=T^{(m)}+\Delta{}T{}``.
+# ╔═╡ 2b667c73-1c05-48a5-a6e7-b7490ab5916c
+# "Gera grafico com resíduos da simulação"
+# function plotreactorresiduals(ra, rb)
+#     function getreactordata(r)
+#         xg = 1:r.counter
+#         xs = r.finalsteps
+#         yg = log10.(r.residuals)
+#         ys = log10.(r.finalresiduals)
+#         return xg, xs, yg, ys
+#     end
 
-A solução integrando esses passos foi implementada em `solventhalpypfr`. Para
-simplificar a leitura do código o problema é implementado em diversos blocos de
-funções para montagem da função gerindo a solução do modelo.
-"""
+#     function axlimitmax(niter)
+#         rounder = 10^floor(log10(niter))
+#         return convert(Int64, rounder * ceil(niter/rounder))
+#     end
 
-# ╔═╡ 5bb4ecb4-8e5d-4c74-b10b-07506adf20d4
-"Calcula matriz advectiva do lado esquedo da equação."
-function fvmlhs(N)
-    return 2spdiagm(-1 => -ones(N - 1), 0 => ones(N))
-end
+#     niter = max(ra.counter, rb.counter)
+#     xga, xsa, yga, ysa = getreactordata(ra)
+#     xgb, xsb, ygb, ysb = getreactordata(rb)
 
-# ╔═╡ 6bf762f4-052a-4412-a032-a0151343ff36
-"Calcula parte constante do vetor do lado direito da equação."
-function fvmrhs(N; bₐ, b₁)
-    b = bₐ * ones(N)
-    b[1] += b₁
-    return b
-end
+#     fig = Figure(resolution = (720, 500))
+#     ax = Axis(fig[1, 1], yscale = identity)
 
-# ╔═╡ 1db55622-7f9e-48fa-9027-7dfac873cea2
-"Relaxa solução em termos da entalpia."
-function relaxenthalpy(h̄, hₘ, Tₘ, α)
-    Δ = (1 - α) * (h̄ - hₘ[2:end])
-    m = maximum(hₘ)
+#     ax.xlabel = "Iteração global"
+#     ax.ylabel = "log10(Resíduo)"
+#     ax.title = "Histórico de convergência"
 
-    hₘ[2:end] += Δ
+#     ax.yticks = -12:2:0
+#     xlims!(ax, (0, axlimitmax(niter)))
+#     ylims!(ax, (-12, 0))
 
-    # Solução das temperaturas compatíveis com hm.
-    Tₘ[2:end] = map((Tₖ, hₖ) -> find_zero(t -> h(t) - hₖ, Tₖ), Tₘ[2:end], hₘ[2:end])
+#     lines!(ax, xga, yga, color = :blue,  linewidth = 0.9, label = "r₁")
+#     lines!(ax, xgb, ygb, color = :red, linewidth = 0.9, label = "r₂")
 
-    return Tₘ, Δ, m
-end
+#     scatter!(ax, xsa, ysa, color = :black, markersize = 6)
+#     scatter!(ax, xsb, ysb, color = :black, markersize = 6)
 
-# ╔═╡ 238357c0-ff44-424f-8c4c-aca254a2916b
-"Relaxa solução em termos da temperatura."
-function relaxtemperature(h̄, hₘ, Tₘ, α)
-    # Solução das temperaturas compatíveis com h̄.
-    Uₘ = map((Tₖ, hₖ) -> find_zero(t -> h(t) - hₖ, Tₖ), Tₘ[2:end], h̄)
-
-    Δ = (1 - α) * (Uₘ - Tₘ[2:end])
-    m = maximum(Tₘ)
-
-    Tₘ[2:end] += Δ
-
-    return Tₘ, Δ, m
-end
-
-# ╔═╡ f30c8978-4438-4323-b2be-0e715442fd78
-"Realiza uma iteração usando a relaxação especificada."
-function steprelax(h̄, hₘ, Tₘ, α, how)
-    return (how == :h) ? relaxenthalpy(h̄, hₘ, Tₘ, α) : relaxtemperature(h̄, hₘ, Tₘ, α)
-end
-
-# ╔═╡ 64f741d8-cc4d-4ea5-8f09-722757aba028
-"Integra o modelo diferencial de reator pistão"
-function solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, h, z, kw...)
-    N = length(z) - 1
-
-    # Parâmetros para o solver.
-    M = get(kw, :M, 100)
-    α = get(kw, :α, 0.4)
-    ε = get(kw, :ε, 1.0e-12)
-    relax = get(kw, :relax, :h)
-    verbose = get(kw, :verbose, true)
-
-    # Vamos tratar somente o caso equi-espaçado aqui!
-    δ = z[2] - z[1]
-
-    a = (ĥ * P * δ) / (ρ * u * A)
-
-    Tₘ = Tₚ * ones(N + 1)
-    hₘ = h.(Tₘ)
-
-    K = fvmlhs(N)
-    b = fvmrhs(N; bₐ = 2a * Tₛ, b₁ = 2h(Tₚ))
-
-    # Aloca e inicia em negativo o vetor de residuos. Isso
-    # é interessante para o gráfico aonde podemos eliminar
-    # os elementos negativos que não tem sentido físico.
-    residual = -ones(M)
-
-    verbose && @info "Usando relaxação do tipo $(relax)"
-
-    @time for niter = 1:M
-        # Calcula o vetor `b` do lado direito e resolve o sistema.
-        h̄ = K \ (b - a * (Tₘ[1:end-1] + Tₘ[2:end]))
-
-        # Relaxa solução para gerir não linearidades.
-        Tₘ, Δ, m = steprelax(h̄, hₘ, Tₘ, α, relax)
-
-        # Verifica status da convergência.
-        residual[niter] = maximum(abs.(Δ / m))
-
-        if (residual[niter] <= ε)
-            verbose && @info("Convergiu após $(niter) iterações")
-            break
-        end
-    end
-
-    return Tₘ, residual
-end
-
-# ╔═╡ bd79aef3-2634-48b2-b06c-2f0185ebc3ac
-md"""
-Usamos agora essa função para uma última simulação do problema. Verificamos
-abaixo que a solução levou um certo número de iterações para convergir. Para
-concluir vamos averiguar a qualidade da convergência ao longo das iterações na
-parte inferior do gráfico.
-
-Introduzimos também a possibilidade de se utilizar a relaxação diretamente na
-entalpia, resolvendo o problema não linear apenas para encontrar diretamente a
-nova estimação do campo de temperaturas. A figura que segue ilustas o
-comportamento de convergência. Neste caso específico (e usando a métrica de
-convergência em questão) a relaxação em entalpia não apresenta vantagens, mas
-veremos em outras ocasiões que esta é a maneira mais simples de se fazer
-convergir uma simulação.
-"""
-
-# ╔═╡ 0c37a219-312d-4ee2-bd1b-75d89c39f8f3
-let
-    α = 0.4
-    ε = 1.0e-12
-
-    # Uma chamada para pre-compilação...
-    verbose = false
-    solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, h, z, α, ε, relax = :T, verbose)
-    solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, h, z, α, ε, relax = :h, verbose)
-
-    Tₕ, εₕ = solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, h, z, α, ε, relax = :h)
-    Tₜ, εₜ = solvefvmpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, h, z, α, ε, relax = :T)
-    Tₐ = analyticalthermalpfr(; P, A, Tₛ, Tₚ, ĥ, u, ρ, cₚ, z)
-
-    Tend = @sprintf("%.2f", Tₐ[end])
-    yrng = (300, 400)
-
-    fig = Figure(size = (720, 600))
-
-    ax = Axis(fig[1, 1])
-    lines!(ax, z, Tₐ, color = :red, linewidth = 5, label = "Analítica")
-    lines!(ax, z, Tₕ, color = :blue, linewidth = 2, label = "FVM (H)")
-    lines!(ax, z, Tₜ, color = :cyan, linewidth = 2, label = "FVM (T)")
-    xlims!(ax, (0, L))
-    ax.title = "Temperatura final = $(Tend) K"
-    ax.xlabel = "Posição [m]"
-    ax.ylabel = "Temperatura [K]"
-    ax.xticks = range(0.0, L, 6)
-    ax.yticks = range(yrng..., 6)
-    ylims!(ax, yrng)
-    axislegend(position = :rb)
-
-    ax = Axis(fig[2, 1], height = 120)
-    lines!(ax, log10.(εₕ[εₕ.>0]), color = :blue, label = "FVM (H)")
-    lines!(ax, log10.(εₜ[εₜ.>0]), color = :cyan, label = "FVM (T)")
-    ax.xlabel = "Iteração"
-    ax.ylabel = "log10(ε)"
-    ax.xticks = vcat(1, collect(5:5:30))
-    ax.yticks = -12:3:0
-    xlims!(ax, 1, 30)
-    axislegend(position = :rt)
-
-    fig
-end
-
-# ╔═╡ 5c97795c-fc24-409b-ac15-7fafebf6153b
-md"""
-Isso é tudo para esta sessão de estudo! Até a próxima!
-
-[Voltar aos conteúdos](https://wallytutor.github.io/medium-articles/content/engenharia-de-reatores/).
-"""
-
-# ╔═╡ ea183591-cc73-44cc-b1d0-572cf24d5b6b
-
+#     axislegend(position = :rt)
+#     return fig
+# end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Roots = "f2b01f46-fcfa-551c-844a-d8ac1e96c665"
-SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]
 CairoMakie = "~0.11.5"
 PlutoUI = "~0.7.54"
+Polynomials = "~4.0.6"
 Roots = "~2.1.0"
 """
 
@@ -450,7 +300,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.9.3"
 manifest_format = "2.0"
-project_hash = "b2444dff3f82e41446c29ce1a99d36507fd99476"
+project_hash = "33a0761f575a3a5d2ffc097bd4c8f21ce8408d06"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -616,9 +466,9 @@ version = "0.5.1"
 
 [[deps.ChainRulesCore]]
 deps = ["Compat", "LinearAlgebra"]
-git-tree-sha1 = "2118cb2765f8197b08e5958cdd17c165427425ee"
+git-tree-sha1 = "c1deebd76f7a443d527fc0430d5758b8b2112ed8"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-version = "1.19.0"
+version = "1.19.1"
 weakdeps = ["SparseArrays"]
 
     [deps.ChainRulesCore.extensions]
@@ -676,9 +526,9 @@ version = "0.3.0"
 
 [[deps.Compat]]
 deps = ["TOML", "UUIDs"]
-git-tree-sha1 = "ed2ebb1ff7550226ddb584ba8352facf8d9ffb22"
+git-tree-sha1 = "75bd5b6fc5089df449b5d35fa501c846c9b6549b"
 uuid = "34da2185-b29b-5c13-b0c7-acf172513d20"
-version = "4.11.0"
+version = "4.12.0"
 weakdeps = ["Dates", "LinearAlgebra"]
 
     [deps.Compat.extensions]
@@ -1623,9 +1473,9 @@ version = "1.0.0"
 
 [[deps.QuadGK]]
 deps = ["DataStructures", "LinearAlgebra"]
-git-tree-sha1 = "9ebcd48c498668c7fa0e97a9cae873fbee7bfee1"
+git-tree-sha1 = "9b23c31e76e333e6fb4c1595ae6afa74966a729e"
 uuid = "1fd47b50-473d-5c70-9696-f719f8f3bcdc"
-version = "2.9.1"
+version = "2.9.4"
 
 [[deps.REPL]]
 deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
@@ -1828,9 +1678,9 @@ version = "0.1.1"
 
 [[deps.StaticArrays]]
 deps = ["LinearAlgebra", "PrecompileTools", "Random", "StaticArraysCore"]
-git-tree-sha1 = "4e17a790909b17f7bf1496e3aec138cf01b60b3b"
+git-tree-sha1 = "f68dd04d131d9a8a8eb836173ee8f105c360b0c5"
 uuid = "90137ffa-7385-5640-81b9-e52037218182"
-version = "1.9.0"
+version = "1.9.1"
 weakdeps = ["ChainRulesCore", "Statistics"]
 
     [deps.StaticArrays.extensions]
@@ -2112,26 +1962,28 @@ version = "3.5.0+0"
 """
 
 # ╔═╡ Cell order:
-# ╟─0c42a060-5cf5-11ee-273c-b16c31ed2b48
-# ╟─118aef61-774f-4d98-9d43-1966d1bd2584
-# ╟─1bcae7c4-98fe-4e44-b9ce-3adb78b141a4
-# ╟─ccd43dd7-e7ac-40db-a423-7f54821807a7
-# ╟─18f7746b-e0df-41c0-89d7-33dce6359e52
-# ╟─0c6ce124-f1b3-419b-a927-869da96c114d
-# ╟─161c190d-fb18-490f-87df-7217db7179b0
-# ╟─c3ebf383-1217-4d28-9d29-337eb7903775
-# ╟─f600a25f-2c33-4d30-a1e7-31d3857a692b
-# ╟─eaed30cf-e984-4ae6-8eb8-43ba533c23ee
-# ╟─da2429b7-5dd5-44f4-a5ec-d60b69100fb6
-# ╟─5bb4ecb4-8e5d-4c74-b10b-07506adf20d4
-# ╟─6bf762f4-052a-4412-a032-a0151343ff36
-# ╟─1db55622-7f9e-48fa-9027-7dfac873cea2
-# ╟─238357c0-ff44-424f-8c4c-aca254a2916b
-# ╟─f30c8978-4438-4323-b2be-0e715442fd78
-# ╟─64f741d8-cc4d-4ea5-8f09-722757aba028
-# ╟─bd79aef3-2634-48b2-b06c-2f0185ebc3ac
-# ╟─0c37a219-312d-4ee2-bd1b-75d89c39f8f3
-# ╟─5c97795c-fc24-409b-ac15-7fafebf6153b
-# ╟─ea183591-cc73-44cc-b1d0-572cf24d5b6b
+# ╟─f33f5453-dd05-4a4e-ae12-695320fcd70d
+# ╟─fe2c3680-5b91-11ee-282c-c74d3b01ef9b
+# ╟─67b0a6ab-c128-4ab6-b588-c2322b0e61e9
+# ╟─7a278913-bf0f-4532-9c9b-f42aded9b6e9
+# ╠═9a529019-9cfc-4018-a7ce-051e6dbdd85e
+# ╠═2b57fee2-97cf-4f69-b1d4-b4e20065a07b
+# ╠═bdf4c11d-92e0-493b-b163-c3e5e52789ea
+# ╠═b1ccbbf0-cded-4831-8ecf-4b5534ae9fa4
+# ╟─f3b7d46f-0fcc-4f68-9822-f83e977b87ee
+# ╠═7afff466-5463-431f-b817-083fe6102a8c
+# ╠═509da475-fa3e-4f86-84f0-8ebca1088532
+# ╠═486add22-bf9b-49ea-99d7-b61b961e2791
+# ╠═9f1357f1-1e7b-4f55-9f4b-cc6a1fd3e2aa
+# ╟─975744de-7ab0-4bfa-abe5-3741ec7ec1cf
+# ╟─04cf5b92-d10b-43f5-8fc5-1e549105ef9d
+# ╠═dcfd8b59-429f-4c99-9eae-1aa34fa87033
+# ╠═9f94f21d-2805-4b30-8451-7b09b575081c
+# ╠═2f088bd3-184d-41a3-9254-8fa458d8ccaf
+# ╠═cc1a6701-8907-440a-a77b-b89ec6abac65
+# ╠═f1cc566b-87bb-42be-a0a5-c160f326817f
+# ╠═eecf85b0-180c-49c5-83ab-619ba6683960
+# ╠═2d296ee3-ed4b-422a-9573-d10bbbdce344
+# ╠═2b667c73-1c05-48a5-a6e7-b7490ab5916c
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
