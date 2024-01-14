@@ -37,6 +37,7 @@
 <p>Neste tópico abordamos modelos de reatores de uma ótica que pode ser simultâneamente útil em Engenharia Química e Engenharia Mecânica. Os modelos de reator estudados incluem em alguns casos aspectos voltados a engenharia dos aspectos térmicos e em outros elementos de cinética química. Isso inclui modelos 0-D de reatores perfeitamente agitados, modelos 1-D de reatores pistão, e outros tópicos mais avançados.</p>
 <p>O objetivo final da série é progressivamente introduzir complexidate em termos da física considerada, mas também na organização de ferramentas para a concepção e extensão de modelos genéricos de reators para integração dos modelos com maturidade suficiente em <a href="https://wallytutor.github.io/DryTooling.jl/dev/">DryTooling.jl</a>.</p>
 <p><strong>Nota:</strong> os links abaixo remetem a novas páginas que foram geradas usando <a href="https://plutojl.org/">Pluto.jl</a>. Essas páginas não fazem parte da estrutura normal deste site e não possuem link de retorno aqui, então se necessário é importante não fechar esta <em>tab</em>. No canto direito superior das páginas você encontra um botão para exportar em alguns formatos, incluindo <em>Notebook file</em>, que pode em seguida ser executado localmente ou em seu <em>cloud</em> de preferência para estudar os materiais. Os blocos de código nos notebooks foram intencionalmente colapsados para que você precise executálos para um estudo de qualidade. Os notebooks criam seu próprio ambiente de pacotes e contém eventualmente ferramentas que não se encontram no <code>Project.toml</code> do repositório principal. Essa escolha visa a menor latência quando executando notebooks localmente para acelerar o estudo.</p>
+<p>Para execução local, caso não deseje clonar todo o repositório para estudar, é necessário salvar na mesma pasta que os notebooks este <a href="https://github.com/wallytutor/medium-articles/blob/main/src/content/engenharia-de-reatores/PlugFlowReactors.jl">módulo</a>.</p>
 <h2 id="conteúdos"><a href="#conteúdos" class="header-anchor">Conteúdos</a></h2>
 
 <table>
@@ -60,7 +61,7 @@
     <td>2</td>
     <td><input type="checkbox" checked /></td>
     <td>
-      <a href="002-reator-pistao.html" target="_blank">
+      <a href="002-reator-pistao" target="_blank">
         Formulação entálpica do reator pistão
       </a>
       <hr style="padding: 0pt; margin: 5pt"/>
@@ -77,6 +78,10 @@
    <td></td>
     <td><input type="checkbox" checked /></td>
     <td>
+      <a href="003-reator-pistao" target="_blank">
+        Reatores em contra corrente
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
       O precedente para um par de reatores em contra-corrente.
     </td>
   </tr>
