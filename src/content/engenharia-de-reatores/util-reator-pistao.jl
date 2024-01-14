@@ -3,17 +3,8 @@ using DocStringExtensions
 using Polynomials
 using SparseArrays: SparseMatrixCSC
 
-"Constante dos gases ideais [J/(mol.K)]."
-const GAS_CONSTANT = 8.314_462_618_153_24
-
-"Tipo abstrato para domínios em FVM."
-abstract type AbstractDomainFVM end
-
-"Tipo abstrato para um modelo de reator pistão."
-abstract type AbstractPFRModel end
-
 "Método dos volumes finitos com condição limite imersa."
-struct ImmersedConditionsFVM <: AbstractDomainFVM
+struct ImmersedConditionsFVM
     "Coordenadas dos centros das células [m]."
     z::Vector{Float64}
 
@@ -67,7 +58,7 @@ end
 
 $(TYPEDFIELDS)
 "
-struct IncompressibleEnthalpyPFRModel <: AbstractPFRModel
+struct IncompressibleEnthalpyPFRModel
     "Estrutura de discretização espacial."
     mesh::ImmersedConditionsFVM
 
@@ -129,9 +120,6 @@ struct CounterFlowPFRModel
     this::IncompressibleEnthalpyPFRModel
     that::IncompressibleEnthalpyPFRModel
 end
-
-
-
 
 "Cria o par inverso de reatores em contra-fluxo."
 function swap(cf::CounterFlowPFRModel)
@@ -293,34 +281,7 @@ end
 
 "Dados usados nos notebooks da série."
 const notedata = (
-    c01 = (
-        reactor = (
-            L = 10.0,    # Comprimento do reator [m]
-            D = 0.01     # Diâmetro do reator [m]
-        ),
-        fluid = (
-            ρ = 1000.0,  # Mass específica do fluido [kg/m³]
-            μ = 0.001,   # Viscosidade do fluido [Pa.s]
-            cₚ = 4182.0, # Calor específico do fluido [J/(kg.K)]
-            Pr = 6.9     # Número de Prandtl do fluido
-        ),
-        operations = (
-            u = 1.0,     # Velocidade do fluido [m/s]
-            Tₚ = 300.0,  # Temperatura de entrada do fluido [K]
-            Tₛ = 400.0   # Temperatura da parede do reator [K]
-        )
-    ),
     c03 = (
-        reactor = (
-            L = 10.0,    # Comprimento do reator [m]
-            D = 0.01     # Diâmetro do reator [m]
-        ),
-        fluid1 = (
-            ρ = 1000.0,  # Mass específica do fluido [kg/m³]
-            μ = 0.001,   # Viscosidade do fluido [Pa.s]
-            cₚ = 4182.0, # Calor específico do fluido [J/(kg.K)]
-            Pr = 6.9     # Número de Prandtl do fluido
-        ),
         fluid3 = (
             # Viscosidade do fluido [Pa.s]
             μpoly = Polynomial([
@@ -336,14 +297,6 @@ const notedata = (
                 ], :T),
             # Número de Prandtl do fluido
             Pr = 0.70
-        ),
-        operations1 = (
-            u = 1.0,     # Velocidade do fluido [m/s]
-            Tₚ = 300.0,  # Temperatura de entrada do fluido [K]
-        ),
-        operations2 = (
-            u = 2.0,     # Velocidade do fluido [m/s]
-            Tₚ = 400.0,  # Temperatura de entrada do fluido [K]
         ),
         operations3 = (
             u = 2.5,      # Velocidade do fluido [m/s]

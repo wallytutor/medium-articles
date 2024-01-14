@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 module PlugFlowReactors
 
+"Constante dos gases ideais [J/(mol.K)]."
+const GAS_CONSTANT::Float64 = 8.314_462_618_153_24
+
 "Função auxiliar para avaliação exaustiva de critérios de validação."
 function testall(tests)
     messages = []
