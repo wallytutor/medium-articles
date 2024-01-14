@@ -32,6 +32,10 @@ eventualmente ferramentas que não se encontram no `Project.toml` do repositóri
 principal. Essa escolha visa a menor latência quando executando notebooks
 localmente para acelerar o estudo.
 
+Para execução local, caso não deseje clonar todo o repositório para estudar,
+é necessário salvar na mesma pasta que os notebooks este
+[módulo](https://github.com/wallytutor/medium-articles/blob/main/src/content/engenharia-de-reatores/PlugFlowReactors.jl).
+
 ## Conteúdos
 
 ~~~
@@ -56,7 +60,7 @@ localmente para acelerar o estudo.
     <td>2</td>
     <td><input type="checkbox" checked /></td>
     <td>
-      <a href="002-reator-pistao.html" target="_blank">
+      <a href="002-reator-pistao" target="_blank">
         Formulação entálpica do reator pistão
       </a>
       <hr style="padding: 0pt; margin: 5pt"/>
@@ -73,6 +77,10 @@ localmente para acelerar o estudo.
    <td></td>
     <td><input type="checkbox" checked /></td>
     <td>
+      <a href="003-reator-pistao" target="_blank">
+        Reatores em contra corrente
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
       O precedente para um par de reatores em contra-corrente.
     </td>
   </tr>
