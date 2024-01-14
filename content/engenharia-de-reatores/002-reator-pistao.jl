@@ -66,10 +66,15 @@ md"""
 
 Na próxima célula provemos as mesmas condições do problema tradado no notebook
 precedente. Uma discretização espacial mais grosseira é utilizada aqui e a
-função entalpia compatível com o calor específico do fluido é provida. Para que
-os resultados sejam comparáveis as soluções precedentes, fizemos ``h(T) = c_{p}T
-+ h_{ref}``. O valor de ``h_{ref}`` é arbitrário e não deve afetar a solução por
-razões que deveriam ser evidentes neste ponto do estudo.
+função entalpia compatível com o calor específico do fluido é provida.
+
+Para que os resultados sejam comparáveis as soluções precedentes, definimos 
+
+```math
+h(T)=c_{p}T+ h_{ref}
+```
+
+O valor de ``h_{ref}`` é arbitrário e não afeta a solução.
 """
 
 # ╔═╡ c3ebf383-1217-4d28-9d29-337eb7903775

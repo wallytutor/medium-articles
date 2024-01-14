@@ -13,12 +13,11 @@ begin
 	using Polynomials
 	using Printf
 	using Roots
-	# using Sp 	arseArrays
 
 	# Fake a disponibilidade do pacote no caminho de importação.
 	push!(LOAD_PATH, @__DIR__)
 	
-	# using PlugFlowReactors: heattransfercoef
+	using PlugFlowReactors: heattransfercoef
 end;
 
 # ╔═╡ f33f5453-dd05-4a4e-ae12-695320fcd70d
@@ -41,30 +40,106 @@ md"""
 No que se segue não se fará hipótese de que ambos os escoamentos se dão com o mesmo fluido ou que no caso de mesmo fluido as velocidades são comparáveis. Neste caso mais geral, o número de Nusselt de cada lado da interface difere e portanto o coeficiente de troca térmica convectiva. É portanto necessário estabelecer-se uma condição de fluxo constante na interface das malhas para assegurar a conservação global da energia no sistema... TODO (escrever, já programado)
 """
 
+# ╔═╡ 8b528478-c29f-45ad-97bc-ec38d4370504
+md"""
+## Concepção do programa
+
+Não há nada de diferente em termos do modelo de cada reator em relação ao tópico anterior abordando um reator pistão em termos da entalpia. O objetivo principal do programa a conceber neste notebook é usar os conhecimentos adquiridos na etapa anterior para implementar uma solução para um par de reatores que trocam energia entre si. Para simplificar a implementação vamos considerar que as paredes externas dos reatores são adiabáticas e que estes trocam calor somente entre eles mesmos. Algumas ideias chave são necessárias para uma implementação efetiva:
+
+1. É importante lembrar que as coordenadas dos reatores são invertidas entre elas. Se o reator ``r₁`` está orientado no sentido do eixo ``z``, então para um par de reatores de comprimento ``L`` as coordenadas das células homólogas em ``r₂`` são ``L-z``.
+
+1. Falando em células homólogas, embora seja possível implementar reatores conectados por uma parede com discretizações distintas, é muito mais fácil de se conceber um programa com reatores que usam a mesma malha espacial. Ademais, isso evita possíveis erros numéricos advindos da escolha de um método de interpolação.
+
+Os blocos que se seguem implementam as estruturas necessárias com elementos reutilizáveis de maneira que ambos os reatores possam ser conectados facilmente.
+"""
+
+# ╔═╡ 87cb2263-959c-4e40-a97e-b0a18aa7f9bf
+
+
+# ╔═╡ 13a89050-36b4-497a-83dd-1943c3e20265
+
+
+# ╔═╡ ce24526d-4fcf-4db8-9674-b4cc02a3bd39
+
+
+# ╔═╡ addc8b80-a7ac-498e-9445-57eb6d1875ae
+
+
+# ╔═╡ 15278df3-3156-4870-a872-daacbf32f91d
+
+
+# ╔═╡ f4aac0b4-6f24-4aea-9b1a-0a4811851d01
+begin
+    # Comprimento do reator [m]
+    L = 10.0
+
+    # Diâmetro do reator [m]
+    D = 0.01
+
+    # Mass específica dos fluidos [kg/m³]
+    ρ = 1000.0
+
+    # Viscosidade dos fluidos [Pa.s]
+    μ = 0.001
+
+    # Número de Prandtl dos fluidos
+    Pr = 6.9
+	
+    # Calor específico do fluido [J/(kg.K)]
+    cₚ₁ = 1000.0
+    cₚ₂ = 3cₚ₁
+
+    # Velocidade do fluido [m/s]
+    u₁ = 1.0
+    u₂ = 2.0
+
+    # Temperatura de entrada do fluido [K]
+    Tₚ₁ = 300.0
+    Tₚ₂ = 400.0
+
+    # Perímetro troca térmica de cada reator [m]
+	# XXX: neste casa igual o diâmetro, ver descrição.
+    P = D
+
+    # Área da seção circula de cada reator [m²]
+    A = (1 // 2) * π * (D / 2)^2
+
+	# Diâmetro equivalente a seção para cada reator.
+	d = 2√(A/π)
+	
+    # Coeficiente convectivo de troca de calor [W/(m².K)]
+    ĥ₁ = heattransfercoef(L, d, u₁, ρ, μ, cₚ₁, Pr; verbose = true)
+    ĥ₂ = heattransfercoef(L, d, u₂, ρ, μ, cₚ₂, Pr; verbose = true)
+
+    # Coordenadas espaciais da solução [m]
+    z = LinRange(0, L, 500)
+
+    # Entalpia com constante arbitrária [J/kg]
+    h₁(T) = cₚ₁ * T + 1000.0
+    h₂(T) = cₚ₂ * T + 1000.0
+end;
+
 # ╔═╡ 7a278913-bf0f-4532-9c9b-f42aded9b6e9
 md"""
 ## Estudo de caso I
 
 O par escolhido para exemplificar o comportamento de contra-corrente dos reatores
-pistão tem por característica de que cada reator ocupa a metade de um cilindro de diâmetro `D` = $(reactor.D) m de forma que o perímetro de troca é igual o diâmetro e a área transversal a metade daquela do cilindro. A temperatura inicial do fluido no reator (1) que escoa da esquerda para a direita é de $(operations1.Tₚ) K e naquele em contra-corrente (2) é de $(operations2.Tₚ) K.
+pistão tem por característica de que cada reator ocupa a metade de um cilindro de diâmetro `D` = $(D) m de forma que o perímetro de troca é igual o diâmetro e a área transversal a metade daquela do cilindro.
+
+A temperatura inicial do fluido no reator (1) que escoa da esquerda para a direita é de $(Tₚ₁) K e naquele em contra-corrente (2) é de $(Tₚ₂) K.
 
 O fluido do reator (2) tem um calor específico que é o triplo daquele do reator (1).
 """
 
+# ╔═╡ 5d3619f9-b0f6-4946-b3f2-fce160c52088
+
+
+# ╔═╡ 8968d40b-a054-4784-a1b4-d91f5d27e119
+
+
 # ╔═╡ 9a529019-9cfc-4018-a7ce-051e6dbdd85e
-# "Cria um par padronizado de reatores para simulação exemplo."
-# function createprfpair1(; N = 10)
-#     shared = (
-#         N = N,
-#         L = reactor.L,
-#         P = reactor.D,
-#         A = 0.5π * (reactor.D/2)^2,
-#         ρ = fluid1.ρ
-#     )
-
-#     ĥ₁ = computehtc(; reactor..., fluid1..., u = operations1.u, verbose = false)
-#     ĥ₂ = computehtc(; reactor..., fluid1..., u = operations2.u, verbose = false)
-
+#     N = 10
+#
 #     r₁ = IncompressibleEnthalpyPFRModel(;
 #         shared...,
 #         T = operations1.Tₚ,
@@ -81,17 +156,6 @@ O fluido do reator (2) tem um calor específico que é o triplo daquele do reato
 #         h = (T) -> 3.0fluid1.cₚ * T + 1000.0,
 #     )
 
-#     return r₁ , r₂
-# end
-
-# ╔═╡ 2b57fee2-97cf-4f69-b1d4-b4e20065a07b
-# figs1[1]
-
-# ╔═╡ bdf4c11d-92e0-493b-b163-c3e5e52789ea
-# figs1[2]
-
-# ╔═╡ b1ccbbf0-cded-4831-8ecf-4b5534ae9fa4
-# figs1 = let
 #     r₁, r₂ = createprfpair1(; N = 1000)
 #     cf = CounterFlowPFRModel(r₁, r₂)
 
@@ -106,7 +170,6 @@ O fluido do reator (2) tem um calor específico que é o triplo daquele do reato
 #     fig1 = plotpfrpair(cf)
 #     fig2 = plotreactorresiduals(resa, resb)
 #     fig1, fig2
-# end;
 
 # ╔═╡ f3b7d46f-0fcc-4f68-9822-f83e977b87ee
 md"""
@@ -114,8 +177,6 @@ md"""
 """
 
 # ╔═╡ 7afff466-5463-431f-b817-083fe6102a8c
-# "Cria um par padronizado de reatores para simulação exemplo."
-# function createprfpair2(; N = 10)
 #     # Condições operatórias do gás.
 #     p₃ = 101325.0
 #     h₃ = integrate(fluid3.cₚpoly)
@@ -161,17 +222,6 @@ md"""
 #         h = (T) -> h₃(T),
 #     )
 
-#     return r₁ , r₃
-# end
-
-# ╔═╡ 509da475-fa3e-4f86-84f0-8ebca1088532
-# figs2[1]
-
-# ╔═╡ 486add22-bf9b-49ea-99d7-b61b961e2791
-# figs2[2]
-
-# ╔═╡ 9f1357f1-1e7b-4f55-9f4b-cc6a1fd3e2aa
-# figs2 = let
 #     r₁, r₂ = createprfpair2(; N = 1000)
 #     cf = CounterFlowPFRModel(r₁, r₂)
 
@@ -185,36 +235,6 @@ md"""
 
 #     fig1 = plotpfrpair(cf, ylims = (300, 400))
 #     fig2 = plotreactorresiduals(resa, resb)
-#     fig1, fig2
-# end;
-
-# ╔═╡ 975744de-7ab0-4bfa-abe5-3741ec7ec1cf
-md"""
-## Anexos
-"""
-
-# ╔═╡ 04cf5b92-d10b-43f5-8fc5-1e549105ef9d
-md"""
-### Dados
-"""
-
-# ╔═╡ dcfd8b59-429f-4c99-9eae-1aa34fa87033
-# const reactor = notedata.c03.reactor
-
-# ╔═╡ 9f94f21d-2805-4b30-8451-7b09b575081c
-# const fluid1 = notedata.c03.fluid1
-
-# ╔═╡ 2f088bd3-184d-41a3-9254-8fa458d8ccaf
-# const fluid3 = notedata.c03.fluid3
-
-# ╔═╡ cc1a6701-8907-440a-a77b-b89ec6abac65
-# const operations1 = notedata.c03.operations1
-
-# ╔═╡ f1cc566b-87bb-42be-a0a5-c160f326817f
-# const operations2 = notedata.c03.operations2
-
-# ╔═╡ eecf85b0-180c-49c5-83ab-619ba6683960
-# const operations3 = notedata.c03.operations3
 
 # ╔═╡ 2d296ee3-ed4b-422a-9573-d10bbbdce344
 # "Ilustração padronizada para a simulação exemplo."
@@ -1965,24 +1985,19 @@ version = "3.5.0+0"
 # ╟─f33f5453-dd05-4a4e-ae12-695320fcd70d
 # ╟─fe2c3680-5b91-11ee-282c-c74d3b01ef9b
 # ╟─67b0a6ab-c128-4ab6-b588-c2322b0e61e9
+# ╟─8b528478-c29f-45ad-97bc-ec38d4370504
+# ╠═87cb2263-959c-4e40-a97e-b0a18aa7f9bf
+# ╠═13a89050-36b4-497a-83dd-1943c3e20265
+# ╠═ce24526d-4fcf-4db8-9674-b4cc02a3bd39
+# ╠═addc8b80-a7ac-498e-9445-57eb6d1875ae
+# ╠═15278df3-3156-4870-a872-daacbf32f91d
 # ╟─7a278913-bf0f-4532-9c9b-f42aded9b6e9
+# ╟─f4aac0b4-6f24-4aea-9b1a-0a4811851d01
+# ╠═5d3619f9-b0f6-4946-b3f2-fce160c52088
+# ╠═8968d40b-a054-4784-a1b4-d91f5d27e119
 # ╠═9a529019-9cfc-4018-a7ce-051e6dbdd85e
-# ╠═2b57fee2-97cf-4f69-b1d4-b4e20065a07b
-# ╠═bdf4c11d-92e0-493b-b163-c3e5e52789ea
-# ╠═b1ccbbf0-cded-4831-8ecf-4b5534ae9fa4
 # ╟─f3b7d46f-0fcc-4f68-9822-f83e977b87ee
 # ╠═7afff466-5463-431f-b817-083fe6102a8c
-# ╠═509da475-fa3e-4f86-84f0-8ebca1088532
-# ╠═486add22-bf9b-49ea-99d7-b61b961e2791
-# ╠═9f1357f1-1e7b-4f55-9f4b-cc6a1fd3e2aa
-# ╟─975744de-7ab0-4bfa-abe5-3741ec7ec1cf
-# ╟─04cf5b92-d10b-43f5-8fc5-1e549105ef9d
-# ╠═dcfd8b59-429f-4c99-9eae-1aa34fa87033
-# ╠═9f94f21d-2805-4b30-8451-7b09b575081c
-# ╠═2f088bd3-184d-41a3-9254-8fa458d8ccaf
-# ╠═cc1a6701-8907-440a-a77b-b89ec6abac65
-# ╠═f1cc566b-87bb-42be-a0a5-c160f326817f
-# ╠═eecf85b0-180c-49c5-83ab-619ba6683960
 # ╠═2d296ee3-ed4b-422a-9573-d10bbbdce344
 # ╠═2b667c73-1c05-48a5-a6e7-b7490ab5916c
 # ╟─00000000-0000-0000-0000-000000000001
