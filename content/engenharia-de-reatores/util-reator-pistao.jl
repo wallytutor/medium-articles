@@ -3,39 +3,6 @@ using DocStringExtensions
 using Polynomials
 using SparseArrays: SparseMatrixCSC
 
-
-"Estrutura com memória do estado de um reator.
-
-$(TYPEDFIELDS)
-"
-struct IncompressibleEnthalpyPFRModel
-    "Estrutura de discretização espacial."
-    mesh::ImmersedConditionsFVM
-
-    "Dados para a solução do problema."
-    fvdata::SparseLinearProblemData
-
-
-
-
-
-
-
-    """	Construtor interno dos dados de reatores.
-
-    - `N`  : Número de células no sistema, incluindo limites.
-    - `L`  : Comprimento do reator [m].
-    - `P`  : Perímetro da seção [m].
-    - `A`  : Área da seção [m²].
-    - `T`  : Temperatura inicial do fluido [K].
-    - `u`  : Velocidade do fluido [m/s].
-    - `ĥ`  : Coeficiente de troca convectiva [W/(m².K)].
-    - `ρ`  : Densidade do fluido [kg/m³].
-    - `h`  : Entalpia em função da temperatura [J/kg]
-    """
-
-end
-
 "Dados usados nos notebooks da série."
 const notedata = (
     c03 = (
@@ -108,5 +75,3 @@ function feedinnerresidual(r::ResidualsRaw, ε::Float64)
     r.counter += 1
     r.residuals[r.counter] = ε
 end
-
-@info("Verifique `util-reator-pistao.jl` para mais detalhes...")

@@ -99,6 +99,27 @@ struct ConstDensityEnthalpyPFRModel <: AbstractPlugFlowReactor
     "Entalpia em função da temperatura [J/kg]."
     h::Function
 	
+	""" Construtor do modelo de reator pistão.
+
+	`N::Int64`
+		Número de células no sistema, incluindo limites.
+	`L::Float64`
+		Comprimento total do reator [m].
+	`P::Float64`
+		Perímetro da de troca de calor do reator [m].
+	`A::Float64`
+		Área da seção transversal do reator [m²].
+	`T::Float64`
+		Temperatura inicial do fluido [K].
+	`ĥ::Float64`
+		Coeficiente de troca convectiva [W/(m².K)].
+	`u::Float64`
+		Velocidade do fluido [m/s].
+	`ρ::Float64`
+		Densidade do fluido [kg/m³].
+	`h::Function`
+		Entalpia em função da temperatura [J/kg].
+	"""
 	function ConstDensityEnthalpyPFRModel(;
 		N::Int64,
 		L::Float64,
@@ -108,16 +129,17 @@ struct ConstDensityEnthalpyPFRModel <: AbstractPlugFlowReactor
 		ĥ::Float64,
 		u::Float64,
 		ρ::Float64,
-		h::Function,
-		kw...
+		h::Function
 	)
+		# TODO: fix N cause not including limits I think!
+		
 		# Aloca memória para o problema linear.
         K = 2spdiagm(0 => ones(N), -1 => -ones(N-1))
         b = ones(N+0)
         x = ones(N+1)
 
 		# Discretização do espaço.
-		z = LinRange(0, L, 500)
+		z = LinRange(0, L, N+1)
 		δ = z[2] - z[1]
 
 		# Coeficiente do problema.
@@ -280,9 +302,9 @@ function outerloop(
         cf::CounterFlowPFRModel;
         inneriter::Int64 = 50,
         outeriter::Int64 = 500,
-        Δhmax::Float64 = 1.0e-08,
-        α::Float64 = 0.70,
-        ε::Float64 = 1.0e-08,
+        Δhmax::Float64 = 1.0e-10,
+        α::Float64 = 0.6,
+        ε::Float64 = 1.0e-10,
 		relax::Symbol = :h
     )#::Tuple{ResidualsProcessed, ResidualsProcessed}
     ra = cf
@@ -306,21 +328,34 @@ function outerloop(
         end
     end
 
-    @info("Conservação da entalpia = $(enthalpyresidual(cf))")
+	hres = @sprintf("%.1e", enthalpyresidual(cf))
+    @info("Conservação da entalpia = $(hres)")
     # return ResidualsProcessed(resa), ResidualsProcessed(resb)
 end
 
-# ╔═╡ 13a89050-36b4-497a-83dd-1943c3e20265
+# ╔═╡ 2d296ee3-ed4b-422a-9573-d10bbbdce344
+"Ilustração padronizada para a simulação exemplo."
+function plotpfrpair(cf::CounterFlowPFRModel; ylims, loc, func = lines!)
+    z1 = coordinates(cf)
+    T1 = thistemperature(cf)
+    T2 = thattemperature(cf)
 
+    fig = Figure(size = (720, 500))
+    ax = Axis(fig[1, 1])
+	
+    func(ax, z1, T1, label = "r₁ →", color = :blue, step = :center)
+    func(ax, z1, T2, label = "r₂ ←", color = :red,  step = :center)
 
-# ╔═╡ ce24526d-4fcf-4db8-9674-b4cc02a3bd39
+    ax.xticks = range(0.0, z1[end], 6)
+    ax.yticks = range(ylims..., 6)
+    ax.xlabel = "Posição [m]"
+    ax.ylabel = "Temperatura [K]"
+    xlims!(ax, (0, z1[end]))
+    ylims!(ax, ylims)
+    axislegend(position = loc)
 
-
-# ╔═╡ addc8b80-a7ac-498e-9445-57eb6d1875ae
-
-
-# ╔═╡ 15278df3-3156-4870-a872-daacbf32f91d
-
+    return fig
+end
 
 # ╔═╡ f4aac0b4-6f24-4aea-9b1a-0a4811851d01
 begin
@@ -375,37 +410,6 @@ begin
     h₂(T) = cₚ₂ * T + 1000.0
 end;
 
-# ╔═╡ 5d3619f9-b0f6-4946-b3f2-fce160c52088
-let
-	r₁ = ConstDensityEnthalpyPFRModel(;
-			N = N,
-			L = L,
-			P = P,
-			A = A,
-			T = T₁,
-			ĥ = ĥ₁,
-			u = u₁,
-			ρ = ρ,
-			h = h₁
-	)
-
-	r₂ = ConstDensityEnthalpyPFRModel(;
-			N = N,
-			L = L,
-			P = P,
-			A = A,
-			T = T₂,
-			ĥ = ĥ₂,
-			u = u₂,
-			ρ = ρ,
-			h = h₂
-	)
-
-	cf = CounterFlowPFRModel(r₁, r₂)
-
-	outerloop(cf)
-end
-
 # ╔═╡ 7a278913-bf0f-4532-9c9b-f42aded9b6e9
 md"""
 ## Estudo de caso I
@@ -418,42 +422,20 @@ A temperatura inicial do fluido no reator (1) que escoa da esquerda para a direi
 O fluido do reator (2) tem um calor específico que é o triplo daquele do reator (1).
 """
 
-# ╔═╡ 8968d40b-a054-4784-a1b4-d91f5d27e119
+# ╔═╡ 5d3619f9-b0f6-4946-b3f2-fce160c52088
+let
+	common = (N = N, L = L, P = P, A = A, ρ = ρ)
+	param₁ = (T = T₁, ĥ = ĥ₁, u = u₁, h = h₁)
+	param₂ = (T = T₂, ĥ = ĥ₂, u = u₂, h = h₂)
+	
+	r₁ = ConstDensityEnthalpyPFRModel(; common..., param₁...)
+	r₂ = ConstDensityEnthalpyPFRModel(; common..., param₂...)
+	cf = CounterFlowPFRModel(r₁, r₂)
 
+	outerloop(cf)
 
-# ╔═╡ 9a529019-9cfc-4018-a7ce-051e6dbdd85e
-#     N = 10
-#
-#     r₁ = IncompressibleEnthalpyPFRModel(;
-#         shared...,
-#         T = operations1.Tₚ,
-#         u = operations1.u,
-#         ĥ = ĥ₁,
-#         h = (T) -> 1.0fluid1.cₚ * T + 1000.0
-#     )
-
-#     r₂ = IncompressibleEnthalpyPFRModel(;
-#         shared...,
-#         T = operations2.Tₚ,
-#         u = operations2.u,
-#         ĥ = ĥ₂,
-#         h = (T) -> 3.0fluid1.cₚ * T + 1000.0,
-#     )
-
-#     r₁, r₂ = createprfpair1(; N = 1000)
-#     cf = CounterFlowPFRModel(r₁, r₂)
-
-#     resa, resb = outerloop(cf;
-#         inner = 30,
-#         outer = 100,
-#         relax = 0.0,
-#         Δhmax = 1.0e-10,
-#         rtol  = 1.0e-10
-#     )
-
-#     fig1 = plotpfrpair(cf)
-#     fig2 = plotreactorresiduals(resa, resb)
-#     fig1, fig2
+	plotpfrpair(cf; ylims = (300, 400), loc = :rb)
+end
 
 # ╔═╡ f3b7d46f-0fcc-4f68-9822-f83e977b87ee
 md"""
@@ -519,27 +501,6 @@ md"""
 
 #     fig1 = plotpfrpair(cf, ylims = (300, 400))
 #     fig2 = plotreactorresiduals(resa, resb)
-
-# ╔═╡ 2d296ee3-ed4b-422a-9573-d10bbbdce344
-# "Ilustração padronizada para a simulação exemplo."
-# function plotpfrpair(cf::CounterFlowPFRModel; ylims = (300, 400), loc = :rb)
-#     z1 = coordinates(cf)
-#     T1 = thistemperature(cf)
-#     T2 = thattemperature(cf)
-
-#     fig = Figure(resolution = (720, 500))
-#     ax = Axis(fig[1, 1])
-#     stairs!(ax, z1, T1, label = "r₁", color = :blue, step = :center)
-#     stairs!(ax, z1, T2, label = "r₂", color = :red, step = :center)
-#     ax.xticks = range(0.0, z1[end], 6)
-#     ax.yticks = range(ylims..., 6)
-#     ax.xlabel = "Posição [m]"
-#     ax.ylabel = "Temperatura [K]"
-#     xlims!(ax, (0, z1[end]))
-#     ylims!(ax, ylims)
-#     axislegend(position = loc)
-#     return fig
-# end
 
 # ╔═╡ 2b667c73-1c05-48a5-a6e7-b7490ab5916c
 # "Gera grafico com resíduos da simulação"
@@ -2273,7 +2234,7 @@ version = "3.5.0+0"
 # ╟─fe2c3680-5b91-11ee-282c-c74d3b01ef9b
 # ╟─8b528478-c29f-45ad-97bc-ec38d4370504
 # ╟─559a88ce-eb43-48c1-aa83-826cabb9df53
-# ╠═87cb2263-959c-4e40-a97e-b0a18aa7f9bf
+# ╟─87cb2263-959c-4e40-a97e-b0a18aa7f9bf
 # ╟─7344ea6c-09d4-4972-9ad8-12cbd1c1b550
 # ╟─840e4957-67b0-4b4a-86e6-39b65aff4c0a
 # ╟─6780c94d-d401-438f-b1e3-3c681379437e
@@ -2284,20 +2245,14 @@ version = "3.5.0+0"
 # ╟─9e90676b-9f88-4a3e-9679-dbd8c3f39d0b
 # ╟─cbb38c68-a3a6-45ca-9e84-682541b6dd0b
 # ╟─2930a5c5-23cc-4773-b14c-d5130bb49050
-# ╠═84286cd4-4c7a-4ef7-b45d-0ad39ea208a0
-# ╠═f82ab335-4b3a-4345-8160-ac8a89072c86
-# ╠═5d3619f9-b0f6-4946-b3f2-fce160c52088
-# ╠═13a89050-36b4-497a-83dd-1943c3e20265
-# ╠═ce24526d-4fcf-4db8-9674-b4cc02a3bd39
-# ╠═addc8b80-a7ac-498e-9445-57eb6d1875ae
-# ╠═15278df3-3156-4870-a872-daacbf32f91d
+# ╟─84286cd4-4c7a-4ef7-b45d-0ad39ea208a0
+# ╟─f82ab335-4b3a-4345-8160-ac8a89072c86
+# ╟─2d296ee3-ed4b-422a-9573-d10bbbdce344
 # ╟─7a278913-bf0f-4532-9c9b-f42aded9b6e9
 # ╟─f4aac0b4-6f24-4aea-9b1a-0a4811851d01
-# ╠═8968d40b-a054-4784-a1b4-d91f5d27e119
-# ╠═9a529019-9cfc-4018-a7ce-051e6dbdd85e
+# ╟─5d3619f9-b0f6-4946-b3f2-fce160c52088
 # ╟─f3b7d46f-0fcc-4f68-9822-f83e977b87ee
 # ╠═7afff466-5463-431f-b817-083fe6102a8c
-# ╠═2d296ee3-ed4b-422a-9573-d10bbbdce344
 # ╠═2b667c73-1c05-48a5-a6e7-b7490ab5916c
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
