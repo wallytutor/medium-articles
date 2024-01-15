@@ -29,47 +29,60 @@ md"""
 $(TableOfContents())
 """
 
-# ╔═╡ 451f21a0-22ae-452f-937c-01f6617209ea
-# let
-#     P = 0.1 * 270.0
-#     T = collect(300.0:5:1200.0)
-#     ρ = map((t)->1.0 / SpecificV(P, t), T)
+# ╔═╡ 5022732b-8cb1-4dca-bd01-dcfcbd4e227a
+md"""
+## O estado supercrítico
 
-#     let
-#         fig = Figure(resolution = (720, 500))
-#         ax = Axis(fig[1, 1])
-#         lines!(ax, T, ρ)
-#         ax.xlabel = "Temperatura [K]"
-#         ax.ylabel = "Mass específica [kg/m³]"
-#         ax.xticks = 300:100:1200
-#         ax.yticks = 000:200:1000
-#         xlims!(ax, (300, 1200))
-#         ylims!(ax, (000, 1000))
-#         fig
-#     end
-# end
+A condição supercrítica não implica uma transição de fase de primeira ordem propriamente dita. Usando o pacote `SteamTables` implementa propriedades da água em acordo com a *IAPWS Industrial Formulation (1997)* recuperamos a seguinte curva de massa específica.
+"""
+
+# ╔═╡ 451f21a0-22ae-452f-937c-01f6617209ea
+let
+    P = 0.1 * 270.0
+    T = collect(400.0:5:1000.0)
+    ρ = map((t)->1.0 / SpecificV(P, t), T)
+
+	fig = Figure(size = (720, 500))
+	ax = Axis(fig[1, 1])
+	lines!(ax, T, ρ; color = :black)
+	ax.xlabel = "Temperatura [K]"
+	ax.ylabel = "Mass específica [kg/m³]"
+	ax.xticks = 300:100:1200
+	ax.yticks = 000:200:1000
+	xlims!(ax, (400, 1000))
+	ylims!(ax, (000, 1000))
+    fig
+end
+
+# ╔═╡ a38b6710-8232-44de-a4b8-adc4a887660b
+md"""
+De maneira análoga verificamos a transição progressiva na entalpia. Como buscamos desenvolver um modelo de reator formulado em termos da entalpia, provemos uma função de interpolação para uma pressão dada abaixo. No caso mais geral (com perda de carga) a entalpia deverá ser avaliada para cada célula no domínio do reator.
+"""
 
 # ╔═╡ 14dfac23-a63c-4715-9e39-105bd7c8c325
-# let
-#     P = 27.0
-#     T = collect(300.0:5.0:2000.0)
-#     h = map((t)->SpecificH(P, t), T)
-#     h_interp = linear_interpolation(T, h)
+let
+    P = 27.0
+    
+	T = collect(300.0:5.0:1200.0)
+    h = map((t)->SpecificH(P, t), T)
+	
+    T_interp = collect(300.0:10.0:1200.0)
+    h_interp = linear_interpolation(T, h)
 
-#     let
-#         fig = Figure(resolution = (720, 500))
-#         ax = Axis(fig[1, 1])
-#         lines!(ax, T, h)
-#         lines!(ax, T, h_interp(T))
-#         ax.xlabel = "Temperatura [K]"
-#         ax.ylabel = "Entalpia específica [kJ/kg]"
-#         ax.xticks = 300:100:1200
-#         ax.yticks = 000:500:4500
-#         xlims!(ax, (300, 1200))
-#         ylims!(ax, (000, 4500))
-#         fig
-#     end
-# end
+    let
+        fig = Figure(size = (720, 500))
+        ax = Axis(fig[1, 1])
+        scatter!(ax, T_interp, h_interp(T_interp); color = :red, alpha = 0.7)
+        lines!(ax, T, h; color = :black)
+        ax.xlabel = "Temperatura [K]"
+        ax.ylabel = "Entalpia específica [kJ/kg]"
+        ax.xticks = 400:100:1000
+        ax.yticks = 000:500:4000
+        xlims!(ax, (400, 1000))
+        ylims!(ax, (500, 4000))
+        fig
+    end
+end
 
 # ╔═╡ 763992dd-0ab7-422e-8983-a398725326e7
 # "Integra reator pistão circular no espaço das entalpias."
@@ -1884,8 +1897,10 @@ version = "3.5.0+0"
 # ╔═╡ Cell order:
 # ╟─db0cf709-c127-42e0-9e3d-6e988a1e659d
 # ╟─975b3cbd-f5e8-42f7-bc11-3c7ed1b1dfa3
-# ╠═451f21a0-22ae-452f-937c-01f6617209ea
-# ╠═14dfac23-a63c-4715-9e39-105bd7c8c325
+# ╟─5022732b-8cb1-4dca-bd01-dcfcbd4e227a
+# ╟─451f21a0-22ae-452f-937c-01f6617209ea
+# ╟─a38b6710-8232-44de-a4b8-adc4a887660b
+# ╟─14dfac23-a63c-4715-9e39-105bd7c8c325
 # ╠═763992dd-0ab7-422e-8983-a398725326e7
 # ╠═f2f7bae5-3bcc-426b-9c29-2d4b96abbf74
 # ╟─00000000-0000-0000-0000-000000000001
