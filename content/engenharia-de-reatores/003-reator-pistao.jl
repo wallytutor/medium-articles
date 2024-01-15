@@ -14,6 +14,7 @@ begin
 	using Polynomials
 	using Printf
 	using Roots
+	using SparseArrays
 
 	# Fake a disponibilidade do pacote no caminho de importação.
 	push!(LOAD_PATH, @__DIR__)
@@ -56,6 +57,10 @@ No que se segue não se fará hipótese de que ambos os escoamentos se dão com 
 Os blocos que se seguem implementam as estruturas necessárias com elementos reutilizáveis de maneira que ambos os reatores possam ser conectados facilmente.
 """
 
+# ╔═╡ 559a88ce-eb43-48c1-aa83-826cabb9df53
+"Tipo para qualquer reator pistão."
+abstract type AbstractPlugFlowReactor end
+
 # ╔═╡ 87cb2263-959c-4e40-a97e-b0a18aa7f9bf
 """
 Description of a single PFR formulated in enthalpy.
@@ -66,9 +71,243 @@ Description of a single PFR formulated in enthalpy.
 
 $(TYPEDFIELDS)
 """
-struct ConstDensityEnthalpyPFRModel
-	"Documented"
-	m::Float64
+struct ConstDensityEnthalpyPFRModel <: AbstractPlugFlowReactor
+    "Tamanho do problema linear."
+    N::Int64
+
+	"Matriz do problema."
+	K::SparseMatrixCSC{Float64, Int64}
+
+    "Vetor do problema."
+    b::Vector{Float64}
+
+    "Solução do problema."
+    x::Vector{Float64}
+
+	"Coeficiente do modelo."
+	a::Float64
+	
+	"Coordenadas espaciais das células do reator."
+	z::Vector{Float64}
+
+    "Coeficiente de troca térmica convectiva [W/(m².K)]."
+    ĥ::Float64
+
+    "Fluxo mássico através do reator [kg/s]."
+    ṁ::Float64
+
+    "Entalpia em função da temperatura [J/kg]."
+    h::Function
+	
+	function ConstDensityEnthalpyPFRModel(;
+		N::Int64,
+		L::Float64,
+		P::Float64,
+		A::Float64,
+		T::Float64,
+		ĥ::Float64,
+		u::Float64,
+		ρ::Float64,
+		h::Function,
+		kw...
+	)
+		# Aloca memória para o problema linear.
+        K = 2spdiagm(0 => ones(N), -1 => -ones(N-1))
+        b = ones(N+0)
+        x = ones(N+1)
+
+		# Discretização do espaço.
+		z = LinRange(0, L, 500)
+		δ = z[2] - z[1]
+
+		# Coeficiente do problema.
+		ṁ = ρ * u * A
+		a = (ĥ * P * δ) / ṁ
+		
+		# Inicializa solução constante.
+		x[1:end] .= T
+
+		return new(N, K, b, x, a, z, ĥ, ṁ, h)
+	end
+end
+
+# ╔═╡ 7344ea6c-09d4-4972-9ad8-12cbd1c1b550
+"Representa um par de reatores em contrafluxo."
+struct CounterFlowPFRModel
+    this::AbstractPlugFlowReactor
+    that::AbstractPlugFlowReactor
+end
+
+# ╔═╡ 840e4957-67b0-4b4a-86e6-39b65aff4c0a
+"Cria o par inverso de reatores em contra-fluxo."
+function swap(cf::CounterFlowPFRModel)
+    return CounterFlowPFRModel(cf.that, cf.this)
+end
+
+# ╔═╡ 6780c94d-d401-438f-b1e3-3c681379437e
+"Acesso as coordenadas espaciais do reator."
+function coordinates(cf::CounterFlowPFRModel)
+    return cf.this.z
+end
+
+# ╔═╡ 61080bd1-399a-488e-9173-38138f69ef9b
+"Acesso ao perfil de temperatura do primeiro reator em um par."
+thistemperature(cf::CounterFlowPFRModel) = cf.this.x |> identity
+
+# ╔═╡ bc893607-8ee3-4e6a-b261-bc2390c4c785
+"Acesso ao perfil de temperatura do segundo reator em um par."
+thattemperature(cf::CounterFlowPFRModel) = cf.that.x |> reverse
+
+# ╔═╡ 86085f76-1b40-4e72-9c48-a42bdb11330a
+"Perfil de temperatura na parede entre dois fluidos respeitando fluxo."
+function surfacetemperature(cf::CounterFlowPFRModel)
+    T1 = thistemperature(cf)
+    T2 = thattemperature(cf)
+
+    ĥ1 = cf.this.ĥ
+    ĥ2 = cf.that.ĥ
+
+    Tw1 = 0.5 * (T1[1:end-1] + T1[2:end])
+    Tw2 = 0.5 * (T2[1:end-1] + T2[2:end])
+
+    return (ĥ1 * Tw1 + ĥ2 * Tw2) / (ĥ1 + ĥ2)
+end
+
+# ╔═╡ f461507b-e3df-487d-83d3-5fc5e6223aa9
+"Conservação de entalpia entre dois reatores em contra-corrente."
+function enthalpyresidual(cf::CounterFlowPFRModel)
+    function enthalpyrate(r)
+        return r.ṁ * (r.h(r.x[end]) - r.h(r.x[1]))
+    end
+
+    Δha = enthalpyrate(cf.this)
+    Δhb = enthalpyrate(cf.that)
+	
+    return abs(Δhb + Δha) / abs(Δha)
+end
+
+# ╔═╡ 9e90676b-9f88-4a3e-9679-dbd8c3f39d0b
+"""
+Produz função para inverter solução em entalpia.
+
+**TODO:** o pacote `Roots` possui melhores funcionalidades para isso.
+"""
+function getrootfinder(h::Function)::Function
+    return (Tₖ, hₖ) -> find_zero(t -> h(t) - hₖ, Tₖ)
+end
+
+# ╔═╡ cbb38c68-a3a6-45ca-9e84-682541b6dd0b
+"Método de relaxação baseado na entalpia."
+function relaxenthalpy!(Tm, hm, h̄, α, f)
+    # Calcula erro e atualização antes!
+    Δ = (1-α) * (h̄ - hm[2:end])
+    ε = maximum(abs.(Δ)) / abs(maximum(hm))
+
+    # Autaliza solução antes de resolver NLP.
+    hm[2:end] += Δ
+
+    # Solução das temperaturas compatíveis com hm.
+    Tm[2:end] = map(f, Tm[2:end], hm[2:end])
+
+    return ε
+end
+
+# ╔═╡ 2930a5c5-23cc-4773-b14c-d5130bb49050
+"Método de relaxação baseado na temperatura."
+function relaxtemperature!(Tm, hm, h̄, α, f)
+    # XXX: manter hm na interface para compabilidade com relaxenthalpy!
+    # Solução das temperaturas compatíveis com h̄.
+    Um = map(f, Tm[2:end], h̄)
+
+    # Calcula erro e atualização depois!
+    Δ = (1-α) * (Um - Tm[2:end])
+    ε = maximum(abs.(Δ)) / abs(maximum(Tm))
+
+    # Autaliza solução com resultado do NLP.
+    Tm[2:end] += Δ
+
+    return ε
+end
+
+# ╔═╡ 84286cd4-4c7a-4ef7-b45d-0ad39ea208a0
+"Laço interno da solução de reatores em contra-corrente."
+function innerloop(
+        # residual::ResidualsRaw
+		;
+        cf::CounterFlowPFRModel,
+        inneriter::Int64,
+        α::Float64,
+        ε::Float64,
+        relax::Symbol
+    )::Int64
+	
+    relax = (relax == :h) ? relaxenthalpy! : relaxtemperature!
+
+    S = surfacetemperature(cf)
+    f = getrootfinder(cf.this.h)
+
+    K = cf.this.K
+    b = cf.this.b
+    T = cf.this.x
+    a = cf.this.a
+    h = cf.this.h
+
+    Tm = T
+    hm = h.(Tm)
+
+    b[1:end] = 2a * S
+    b[1] += 2h(Tm[1])
+
+	εm = 1.0e+300
+	
+    for niter in 1:inneriter
+        h̄ = K \ (b - a * (Tm[1:end-1] + Tm[2:end]))
+        εm = relax(Tm, hm, h̄, α, f)
+        # feedinnerresidual(residual, εm)
+
+        if (εm <= ε)
+            return niter
+        end
+    end
+
+    @warn "Não convergiu após $(inneriter) passos $(εm)"
+    return inneriter
+end
+
+# ╔═╡ f82ab335-4b3a-4345-8160-ac8a89072c86
+"Laço externo da solução de reatores em contra-corrente."
+function outerloop(
+        cf::CounterFlowPFRModel;
+        inneriter::Int64 = 50,
+        outeriter::Int64 = 500,
+        Δhmax::Float64 = 1.0e-08,
+        α::Float64 = 0.70,
+        ε::Float64 = 1.0e-08,
+		relax::Symbol = :h
+    )#::Tuple{ResidualsProcessed, ResidualsProcessed}
+    ra = cf
+    rb = swap(ra)
+
+    # resa = ResidualsRaw(inner, outer)
+    # resb = ResidualsRaw(inner, outer)
+
+    @time for nouter in 1:outeriter
+        # ca = innerloop(resa; cf = ra, shared...)
+        # cb = innerloop(resb; cf = rb, shared...)
+        ca = innerloop(; cf = ra, inneriter, α, ε, relax)
+        cb = innerloop(; cf = rb, inneriter, α, ε, relax)
+
+        # resa.innersteps[nouter] = ca
+        # resb.innersteps[nouter] = cb
+
+        if enthalpyresidual(cf) < Δhmax
+            @info("Laço externo convergiu após $(nouter) iterações")
+            break
+        end
+    end
+
+    @info("Conservação da entalpia = $(enthalpyresidual(cf))")
+    # return ResidualsProcessed(resa), ResidualsProcessed(resb)
 end
 
 # ╔═╡ 13a89050-36b4-497a-83dd-1943c3e20265
@@ -85,6 +324,11 @@ end
 
 # ╔═╡ f4aac0b4-6f24-4aea-9b1a-0a4811851d01
 begin
+	@info "Condições para o caso I"
+	
+	# Número de células no sistema.
+	N =  50
+	
     # Comprimento do reator [m]
     L = 10.0
 
@@ -109,8 +353,8 @@ begin
     u₂ = 2.0
 
     # Temperatura de entrada do fluido [K]
-    Tₚ₁ = 300.0
-    Tₚ₂ = 400.0
+    T₁ = 300.0
+    T₂ = 400.0
 
     # Perímetro troca térmica de cada reator [m]
 	# XXX: neste casa igual o diâmetro, ver descrição.
@@ -126,13 +370,41 @@ begin
     ĥ₁ = heattransfercoef(L, d, u₁, ρ, μ, cₚ₁, Pr; verbose = true)
     ĥ₂ = heattransfercoef(L, d, u₂, ρ, μ, cₚ₂, Pr; verbose = true)
 
-    # Coordenadas espaciais da solução [m]
-    z = LinRange(0, L, 500)
-
     # Entalpia com constante arbitrária [J/kg]
     h₁(T) = cₚ₁ * T + 1000.0
     h₂(T) = cₚ₂ * T + 1000.0
 end;
+
+# ╔═╡ 5d3619f9-b0f6-4946-b3f2-fce160c52088
+let
+	r₁ = ConstDensityEnthalpyPFRModel(;
+			N = N,
+			L = L,
+			P = P,
+			A = A,
+			T = T₁,
+			ĥ = ĥ₁,
+			u = u₁,
+			ρ = ρ,
+			h = h₁
+	)
+
+	r₂ = ConstDensityEnthalpyPFRModel(;
+			N = N,
+			L = L,
+			P = P,
+			A = A,
+			T = T₂,
+			ĥ = ĥ₂,
+			u = u₂,
+			ρ = ρ,
+			h = h₂
+	)
+
+	cf = CounterFlowPFRModel(r₁, r₂)
+
+	outerloop(cf)
+end
 
 # ╔═╡ 7a278913-bf0f-4532-9c9b-f42aded9b6e9
 md"""
@@ -141,13 +413,10 @@ md"""
 O par escolhido para exemplificar o comportamento de contra-corrente dos reatores
 pistão tem por característica de que cada reator ocupa a metade de um cilindro de diâmetro `D` = $(D) m de forma que o perímetro de troca é igual o diâmetro e a área transversal a metade daquela do cilindro.
 
-A temperatura inicial do fluido no reator (1) que escoa da esquerda para a direita é de $(Tₚ₁) K e naquele em contra-corrente (2) é de $(Tₚ₂) K.
+A temperatura inicial do fluido no reator (1) que escoa da esquerda para a direita é de $(T₁) K e naquele em contra-corrente (2) é de $(T₂) K.
 
 O fluido do reator (2) tem um calor específico que é o triplo daquele do reator (1).
 """
-
-# ╔═╡ 5d3619f9-b0f6-4946-b3f2-fce160c52088
-
 
 # ╔═╡ 8968d40b-a054-4784-a1b4-d91f5d27e119
 
@@ -322,6 +591,7 @@ PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Roots = "f2b01f46-fcfa-551c-844a-d8ac1e96c665"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]
 CairoMakie = "~0.11.5"
@@ -337,7 +607,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.9.3"
 manifest_format = "2.0"
-project_hash = "762d8adc6c377cff8c48c47ee157a26d6805606d"
+project_hash = "2cddb24cb8fa9f47a80e4694805dd86bc31af55e"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -2002,14 +2272,27 @@ version = "3.5.0+0"
 # ╟─f33f5453-dd05-4a4e-ae12-695320fcd70d
 # ╟─fe2c3680-5b91-11ee-282c-c74d3b01ef9b
 # ╟─8b528478-c29f-45ad-97bc-ec38d4370504
+# ╟─559a88ce-eb43-48c1-aa83-826cabb9df53
 # ╠═87cb2263-959c-4e40-a97e-b0a18aa7f9bf
+# ╟─7344ea6c-09d4-4972-9ad8-12cbd1c1b550
+# ╟─840e4957-67b0-4b4a-86e6-39b65aff4c0a
+# ╟─6780c94d-d401-438f-b1e3-3c681379437e
+# ╟─61080bd1-399a-488e-9173-38138f69ef9b
+# ╟─bc893607-8ee3-4e6a-b261-bc2390c4c785
+# ╟─86085f76-1b40-4e72-9c48-a42bdb11330a
+# ╟─f461507b-e3df-487d-83d3-5fc5e6223aa9
+# ╟─9e90676b-9f88-4a3e-9679-dbd8c3f39d0b
+# ╟─cbb38c68-a3a6-45ca-9e84-682541b6dd0b
+# ╟─2930a5c5-23cc-4773-b14c-d5130bb49050
+# ╠═84286cd4-4c7a-4ef7-b45d-0ad39ea208a0
+# ╠═f82ab335-4b3a-4345-8160-ac8a89072c86
+# ╠═5d3619f9-b0f6-4946-b3f2-fce160c52088
 # ╠═13a89050-36b4-497a-83dd-1943c3e20265
 # ╠═ce24526d-4fcf-4db8-9674-b4cc02a3bd39
 # ╠═addc8b80-a7ac-498e-9445-57eb6d1875ae
 # ╠═15278df3-3156-4870-a872-daacbf32f91d
 # ╟─7a278913-bf0f-4532-9c9b-f42aded9b6e9
 # ╟─f4aac0b4-6f24-4aea-9b1a-0a4811851d01
-# ╠═5d3619f9-b0f6-4946-b3f2-fce160c52088
 # ╠═8968d40b-a054-4784-a1b4-d91f5d27e119
 # ╠═9a529019-9cfc-4018-a7ce-051e6dbdd85e
 # ╟─f3b7d46f-0fcc-4f68-9822-f83e977b87ee
