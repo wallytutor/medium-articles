@@ -51,23 +51,37 @@ Não há nada de diferente em termos do modelo de cada reator em relação ao t�
 1. Falando em células homólogas, embora seja possível implementar reatores conectados por uma parede com discretizações distintas, é muito mais fácil de se conceber um programa com reatores que usam a mesma malha espacial. Ademais, isso evita possíveis erros numéricos advindos da escolha de um método de interpolação.
 
 1. Embora uma solução acoplada seja possível, normalmente isso torna o programa mais complexo para se extender a um número arbitrário de reatores e pode conduzir a matrizes com [condição](https://en.wikipedia.org/wiki/Condition_number) pobre. Uma ideia para resolver o problema é realizar uma iteração em cada reator com o outro mantido constante (como no problema precedente) mas desta vez considerando que a *condição limite* da troca térmica possui uma dependência espacial.
+"""
 
-No que se segue não se fará hipótese de que ambos os escoamentos se dão com o mesmo fluido ou que no caso de mesmo fluido as velocidades são comparáveis. Neste caso mais geral, o número de Nusselt de cada lado da interface difere e portanto o coeficiente de troca térmica convectiva. É portanto necessário estabelecer-se uma condição de fluxo constante na interface das malhas para assegurar a conservação global da energia no sistema... **TODO (escrever, já programado)**
-
+# ╔═╡ 920af022-29ee-4274-948b-45c766ce5818
+md"""
 Os blocos que se seguem implementam as estruturas necessárias com elementos reutilizáveis de maneira que ambos os reatores possam ser conectados facilmente.
+
+Pensando na implementação do módulo `PlugFlowReactors.jl` vamos prover um tipo abstrato a partir do qual definiremos o presente e futuros modelos de reator pistão.
 """
 
 # ╔═╡ 559a88ce-eb43-48c1-aa83-826cabb9df53
 "Tipo para qualquer reator pistão."
 abstract type AbstractPlugFlowReactor end
 
+# ╔═╡ 985cb672-ac32-4ce5-a78b-c8be3f516cab
+md"""
+### Modelo de reator pistão
+
+Como desejamos simular simultâneamente dois reatores, é interessante encapsular a construção dos elementos descrevendo um reator em uma estrutura. Desta forma evitamos código duplicado.
+"""
+
 # ╔═╡ 87cb2263-959c-4e40-a97e-b0a18aa7f9bf
 """
-Description of a single PFR formulated in enthalpy.
+Descrição de um reator pistão formulado na entalpia.
 
 ```math
-\\frac{dh}{dz}=...
+\\frac{dh}{dz}=a(T_{s}(z)-T^{\\star})
+\\qquad\\text{aonde}\\qquad
+a=\\frac{\\hat{h}P}{\\rho{}u{}A_{c}}
 ```
+
+O modelo é representado em volumes finitos como ``Kh=b`` tal como discutido no notebook anterior. Os parâmetros da estrutura listado abaixo visam manter uma representação tão próxima quanto possível da expressão matemática do modelo.
 
 $(TYPEDFIELDS)
 """
@@ -102,7 +116,7 @@ struct ConstDensityEnthalpyPFRModel <: AbstractPlugFlowReactor
 	""" Construtor do modelo de reator pistão.
 
 	`N::Int64`
-		Número de células no sistema, incluindo limites.
+		Número de células no sistema sem a condição inicial.
 	`L::Float64`
 		Comprimento total do reator [m].
 	`P::Float64`
@@ -121,24 +135,22 @@ struct ConstDensityEnthalpyPFRModel <: AbstractPlugFlowReactor
 		Entalpia em função da temperatura [J/kg].
 	"""
 	function ConstDensityEnthalpyPFRModel(;
-		N::Int64,
-		L::Float64,
-		P::Float64,
-		A::Float64,
-		T::Float64,
-		ĥ::Float64,
-		u::Float64,
-		ρ::Float64,
-		h::Function
-	)
-		# TODO: fix N cause not including limits I think!
-		
+			N::Int64,
+			L::Float64,
+			P::Float64,
+			A::Float64,
+			T::Float64,
+			ĥ::Float64,
+			u::Float64,
+			ρ::Float64,
+			h::Function
+		)
 		# Aloca memória para o problema linear.
         K = 2spdiagm(0 => ones(N), -1 => -ones(N-1))
         b = ones(N+0)
         x = ones(N+1)
 
-		# Discretização do espaço.
+		# Discretização do espaço, N+1 para condição inicial.
 		z = LinRange(0, L, N+1)
 		δ = z[2] - z[1]
 
@@ -153,6 +165,11 @@ struct ConstDensityEnthalpyPFRModel <: AbstractPlugFlowReactor
 	end
 end
 
+# ╔═╡ c06c6abd-b462-4573-a53e-34c328b8e8fe
+md"""
+### Acoplando reatores
+"""
+
 # ╔═╡ 7344ea6c-09d4-4972-9ad8-12cbd1c1b550
 "Representa um par de reatores em contrafluxo."
 struct CounterFlowPFRModel
@@ -160,25 +177,18 @@ struct CounterFlowPFRModel
     that::AbstractPlugFlowReactor
 end
 
-# ╔═╡ 840e4957-67b0-4b4a-86e6-39b65aff4c0a
-"Cria o par inverso de reatores em contra-fluxo."
-function swap(cf::CounterFlowPFRModel)
-    return CounterFlowPFRModel(cf.that, cf.this)
-end
-
-# ╔═╡ 6780c94d-d401-438f-b1e3-3c681379437e
-"Acesso as coordenadas espaciais do reator."
-function coordinates(cf::CounterFlowPFRModel)
-    return cf.this.z
-end
-
 # ╔═╡ 61080bd1-399a-488e-9173-38138f69ef9b
 "Acesso ao perfil de temperatura do primeiro reator em um par."
-thistemperature(cf::CounterFlowPFRModel) = cf.this.x |> identity
+thistemperature(cf::CounterFlowPFRModel) = cf.this.x
 
 # ╔═╡ bc893607-8ee3-4e6a-b261-bc2390c4c785
 "Acesso ao perfil de temperatura do segundo reator em um par."
 thattemperature(cf::CounterFlowPFRModel) = cf.that.x |> reverse
+
+# ╔═╡ 534cbebf-1b30-4fc4-b082-e133e92f1546
+md"""
+No que se segue não se fará hipótese de que ambos os escoamentos se dão com o mesmo fluido ou que no caso de mesmo fluido as velocidades são comparáveis. Neste caso mais geral, o número de Nusselt de cada lado da interface difere e portanto o coeficiente de troca térmica convectiva. É portanto necessário estabelecer-se uma condição de fluxo constante na interface das malhas para assegurar a conservação global da energia no sistema... **TODO (escrever, já programado)**
+"""
 
 # ╔═╡ 86085f76-1b40-4e72-9c48-a42bdb11330a
 "Perfil de temperatura na parede entre dois fluidos respeitando fluxo."
@@ -198,24 +208,12 @@ end
 # ╔═╡ f461507b-e3df-487d-83d3-5fc5e6223aa9
 "Conservação de entalpia entre dois reatores em contra-corrente."
 function enthalpyresidual(cf::CounterFlowPFRModel)
-    function enthalpyrate(r)
-        return r.ṁ * (r.h(r.x[end]) - r.h(r.x[1]))
-    end
+    enthalpyrate(r) = r.ṁ * (r.h(r.x[end]) - r.h(r.x[1]))
 
     Δha = enthalpyrate(cf.this)
     Δhb = enthalpyrate(cf.that)
 	
     return abs(Δhb + Δha) / abs(Δha)
-end
-
-# ╔═╡ 9e90676b-9f88-4a3e-9679-dbd8c3f39d0b
-"""
-Produz função para inverter solução em entalpia.
-
-**TODO:** o pacote `Roots` possui melhores funcionalidades para isso.
-"""
-function getrootfinder(h::Function)::Function
-    return (Tₖ, hₖ) -> find_zero(t -> h(t) - hₖ, Tₖ)
 end
 
 # ╔═╡ cbb38c68-a3a6-45ca-9e84-682541b6dd0b
@@ -251,6 +249,16 @@ function relaxtemperature!(Tm, hm, h̄, α, f)
     return ε
 end
 
+# ╔═╡ ff492961-6c26-456c-828e-7369ea4f1904
+md"""
+### Gestão de resíduos
+"""
+
+# ╔═╡ 681c9491-b353-42d4-b660-5af9e499d948
+md"""
+### Laços de solução
+"""
+
 # ╔═╡ 84286cd4-4c7a-4ef7-b45d-0ad39ea208a0
 "Laço interno da solução de reatores em contra-corrente."
 function innerloop(
@@ -260,13 +268,13 @@ function innerloop(
         inneriter::Int64,
         α::Float64,
         ε::Float64,
-        relax::Symbol
+        method::Symbol
     )::Int64
 	
-    relax = (relax == :h) ? relaxenthalpy! : relaxtemperature!
+    relax = (method == :h) ? relaxenthalpy! : relaxtemperature!
 
     S = surfacetemperature(cf)
-    f = getrootfinder(cf.this.h)
+    f = (Tₖ, hₖ) -> find_zero(t -> cf.this.h(t) - hₖ, Tₖ)
 
     K = cf.this.K
     b = cf.this.b
@@ -305,10 +313,10 @@ function outerloop(
         Δhmax::Float64 = 1.0e-10,
         α::Float64 = 0.6,
         ε::Float64 = 1.0e-10,
-		relax::Symbol = :h
+		method::Symbol = :h
     )#::Tuple{ResidualsProcessed, ResidualsProcessed}
     ra = cf
-    rb = swap(ra)
+    rb = CounterFlowPFRModel(cf.that, cf.this)
 
     # resa = ResidualsRaw(inner, outer)
     # resb = ResidualsRaw(inner, outer)
@@ -316,8 +324,8 @@ function outerloop(
     @time for nouter in 1:outeriter
         # ca = innerloop(resa; cf = ra, shared...)
         # cb = innerloop(resb; cf = rb, shared...)
-        ca = innerloop(; cf = ra, inneriter, α, ε, relax)
-        cb = innerloop(; cf = rb, inneriter, α, ε, relax)
+        ca = innerloop(; cf = ra, inneriter, α, ε, method)
+        cb = innerloop(; cf = rb, inneriter, α, ε, method)
 
         # resa.innersteps[nouter] = ca
         # resb.innersteps[nouter] = cb
@@ -333,10 +341,15 @@ function outerloop(
     # return ResidualsProcessed(resa), ResidualsProcessed(resb)
 end
 
+# ╔═╡ 683707b7-c02f-450c-93aa-f4bfb078407f
+md"""
+### Pós-processamento
+"""
+
 # ╔═╡ 2d296ee3-ed4b-422a-9573-d10bbbdce344
 "Ilustração padronizada para a simulação exemplo."
 function plotpfrpair(cf::CounterFlowPFRModel; ylims, loc, func = lines!)
-    z1 = coordinates(cf)
+    z1 = cf.this.z
     T1 = thistemperature(cf)
     T2 = thattemperature(cf)
 
@@ -362,7 +375,7 @@ begin
 	@info "Condições para o caso I"
 	
 	# Número de células no sistema.
-	N =  50
+	N =  100
 	
     # Comprimento do reator [m]
     L = 10.0
@@ -424,6 +437,7 @@ O fluido do reator (2) tem um calor específico que é o triplo daquele do reato
 
 # ╔═╡ 5d3619f9-b0f6-4946-b3f2-fce160c52088
 let
+	1
 	common = (N = N, L = L, P = P, A = A, ρ = ρ)
 	param₁ = (T = T₁, ĥ = ĥ₁, u = u₁, h = h₁)
 	param₂ = (T = T₂, ĥ = ĥ₂, u = u₂, h = h₂)
@@ -541,6 +555,80 @@ md"""
 
 #     axislegend(position = :rt)
 #     return fig
+# end
+
+# ╔═╡ cdf10672-6e0a-4535-8797-7a519d47ad76
+# "Dados usados nos notebooks da série."
+# const notedata = (
+#     c03 = (
+#         fluid3 = (
+#             # Viscosidade do fluido [Pa.s]
+#             μpoly = Polynomial([
+#                 1.7e-05 #TODO copy good here!
+#             ], :T),
+#             # Calor específico do fluido [J/(kg.K)]
+#             cₚpoly = Polynomial([
+#                     959.8458126240355,
+#                     0.3029051601580761,
+#                     3.988896105280984e-05,
+#                     -6.093647929461819e-08,
+#                     1.0991100692950414e-11
+#                 ], :T),
+#             # Número de Prandtl do fluido
+#             Pr = 0.70
+#         ),
+#         operations3 = (
+#             u = 2.5,      # Velocidade do fluido [m/s]
+#             Tₚ = 380.0,   # Temperatura de entrada do fluido [K]
+#         )
+#     ),
+# )
+
+# "Calcula a potência de `x` mais próxima de `v`."
+# function closestpowerofx(v::Number; x::Number = 10)::Number
+#     rounder = x^floor(log(x, v))
+#     return convert(Int64, rounder * ceil(v/rounder))
+# end
+
+# "Gestor de resíduos durante uma simulação."
+# mutable struct ResidualsRaw
+#     inner::Int64
+#     outer::Int64
+#     counter::Int64
+#     innersteps::Vector{Int64}
+#     residuals::Vector{Float64}
+#     function ResidualsRaw(inner::Int64, outer::Int64)
+#         innersteps = -ones(Int64, outer)
+#         residuals = -ones(Float64, outer * inner)
+#         return new(inner, outer, 0, innersteps, residuals)
+#     end
+# end
+
+# "Resíduos de uma simulação processados."
+# struct ResidualsProcessed
+#     counter::Int64
+#     innersteps::Vector{Int64}
+#     residuals::Vector{Float64}
+#     finalsteps::Vector{Int64}
+#     finalresiduals::Vector{Float64}
+
+#     function ResidualsProcessed(r::ResidualsRaw)
+#         innersteps = r.innersteps[r.innersteps .> 0.0]
+#         residuals = r.residuals[r.residuals .> 0.0]
+
+#         finalsteps = cumsum(innersteps)
+#         finalresiduals = residuals[finalsteps]
+
+#         return new(r.counter, innersteps, residuals,
+#                    finalsteps, finalresiduals)
+#     end
+# end
+
+# "Alimenta resíduos da simulação no laço interno."
+# function feedinnerresidual(r::ResidualsRaw, ε::Float64)
+#     # TODO: add resizing test here!
+#     r.counter += 1
+#     r.residuals[r.counter] = ε
 # end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -2233,20 +2321,24 @@ version = "3.5.0+0"
 # ╟─f33f5453-dd05-4a4e-ae12-695320fcd70d
 # ╟─fe2c3680-5b91-11ee-282c-c74d3b01ef9b
 # ╟─8b528478-c29f-45ad-97bc-ec38d4370504
+# ╟─920af022-29ee-4274-948b-45c766ce5818
 # ╟─559a88ce-eb43-48c1-aa83-826cabb9df53
+# ╟─985cb672-ac32-4ce5-a78b-c8be3f516cab
 # ╟─87cb2263-959c-4e40-a97e-b0a18aa7f9bf
+# ╟─c06c6abd-b462-4573-a53e-34c328b8e8fe
 # ╟─7344ea6c-09d4-4972-9ad8-12cbd1c1b550
-# ╟─840e4957-67b0-4b4a-86e6-39b65aff4c0a
-# ╟─6780c94d-d401-438f-b1e3-3c681379437e
 # ╟─61080bd1-399a-488e-9173-38138f69ef9b
 # ╟─bc893607-8ee3-4e6a-b261-bc2390c4c785
+# ╟─534cbebf-1b30-4fc4-b082-e133e92f1546
 # ╟─86085f76-1b40-4e72-9c48-a42bdb11330a
 # ╟─f461507b-e3df-487d-83d3-5fc5e6223aa9
-# ╟─9e90676b-9f88-4a3e-9679-dbd8c3f39d0b
 # ╟─cbb38c68-a3a6-45ca-9e84-682541b6dd0b
 # ╟─2930a5c5-23cc-4773-b14c-d5130bb49050
+# ╟─ff492961-6c26-456c-828e-7369ea4f1904
+# ╟─681c9491-b353-42d4-b660-5af9e499d948
 # ╟─84286cd4-4c7a-4ef7-b45d-0ad39ea208a0
 # ╟─f82ab335-4b3a-4345-8160-ac8a89072c86
+# ╟─683707b7-c02f-450c-93aa-f4bfb078407f
 # ╟─2d296ee3-ed4b-422a-9573-d10bbbdce344
 # ╟─7a278913-bf0f-4532-9c9b-f42aded9b6e9
 # ╟─f4aac0b4-6f24-4aea-9b1a-0a4811851d01
@@ -2254,5 +2346,6 @@ version = "3.5.0+0"
 # ╟─f3b7d46f-0fcc-4f68-9822-f83e977b87ee
 # ╠═7afff466-5463-431f-b817-083fe6102a8c
 # ╠═2b667c73-1c05-48a5-a6e7-b7490ab5916c
+# ╠═cdf10672-6e0a-4535-8797-7a519d47ad76
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
