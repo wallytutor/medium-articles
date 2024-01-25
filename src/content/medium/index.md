@@ -17,6 +17,7 @@ showall = true
       <hr style="padding: 0pt; margin: 5pt"/>
     </td>
   </tr>
+
   <tr>
     <td>2</td>
     <td>
@@ -26,8 +27,10 @@ showall = true
       <hr style="padding: 0pt; margin: 5pt"/>
     </td>
   </tr>
+
+  <!--
   <tr>
-   <td>3</td>
+    <td>3</td>
     <td>
       <a href="03-Function-Approximation" target="_blank">
         Function approximation
@@ -35,6 +38,8 @@ showall = true
       <hr style="padding: 0pt; margin: 5pt"/>
     </td>
   </tr>
+  -->
+  
   <tr>
     <td>4</td>
     <td>
@@ -44,6 +49,7 @@ showall = true
       <hr style="padding: 0pt; margin: 5pt"/>
     </td>
   </tr>
+
   <tr>
     <td>5</td>
     <td>
@@ -53,6 +59,7 @@ showall = true
       <hr style="padding: 0pt; margin: 5pt"/>
     </td>
   </tr>
+
   <tr>
     <td>6</td>
     <td>
