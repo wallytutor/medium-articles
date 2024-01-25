@@ -207,7 +207,7 @@ maxiter &#61; 80
 rtol &#61; 1.0e-12
 β &#61; 0.99
 
-@time solution &#61; integrate&#40;t, T, K, B; maxiter, rtol, β&#41;;</code></pre><pre><code class="plaintext code-output">  0.513443 seconds (2.80 M allocations: 237.676 MiB, 8.14% gc time, 62.20% compilation time)
+@time solution &#61; integrate&#40;t, T, K, B; maxiter, rtol, β&#41;;</code></pre><pre><code class="plaintext code-output">  0.546438 seconds (2.80 M allocations: 237.648 MiB, 7.85% gc time, 66.35% compilation time)
 </code></pre>
 <p>Below we can inspect the solution and the residuals at the end of each time-step. For the solution to make sense it is important that every single step must converge during time advancement. Note the leap in gas temperature during the first time steps resulting from the problem stiffness. As a matter of fact, a smaller time-step should have been used for properly resolving its dynamics in the early stages or even better, an adaptative time-stepping approach should have been adopted.</p>
 
@@ -220,7 +220,7 @@ rtol &#61; 1.0e-12
 <h2 id="using_modelingtoolkit"><a href="#using_modelingtoolkit" class="header-anchor">Using <code>ModelingToolkit</code></a></h2>
 <p>In the future...</p>
 <div class="note"><div class="title">⚠  Liked my content?</div>
-<div class="content">Please help me be able to produce more by subscribing     to my <a href="https://patreon.com/WallyTutor">Patreon</a>&#33;</div></div>
+<div class="content">Please help me be able to produce more by becoming     my <a href="https://patreon.com/WallyTutor">Patreon</a>&#33;</div></div>
 <div class="page-foot">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
     Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
