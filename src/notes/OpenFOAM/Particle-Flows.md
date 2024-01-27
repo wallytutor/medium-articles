@@ -131,7 +131,7 @@ Hypotheses testing cases:
 
 ![Case 009](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-009.gif?raw=true)
 
-- [010](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/010): check the role of gravity option over implicit packing model we derive a variant of [009](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/009) because it runs faster than with `localInteraction`. 
+- [010](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/010): check the role of gravity option over implicit packing model. Here we derive a variant of [009](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/009) because it runs faster than with `localInteraction`. 
 
 ![Case 010](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-010.gif?raw=true)
 
@@ -140,13 +140,14 @@ Hypotheses testing cases:
 #### Physical refinement phase
 
 | Model | Takings |
-| ----- | ------- |
+| ---- | ---- |
 | [`InjectionModel`](https://cpp.openfoam.org/v11/classFoam_1_1InjectionModel.html) | **CONFIRM CONCLUSIONS WITH POLYDISTRIBUTED CLOUDS (particles per parcel)!** |
 | [`PatchInteractionModel`](https://cpp.openfoam.org/v11/classFoam_1_1PatchInteractionModel.html) | This model is key for the simulation of particles coupled to a fluid. Unless different behavior is expected in the different walls so customization of interaction is required, it is much faster to use a `standardWallInteraction` approach. For understanding the role of parameters `e` and `mu` over rebound one can check [lines 144-168 of source code](https://cpp.openfoam.org/v11/StandardWallInteraction_8C_source.html) and confirm the model is the same as the one implemented in `localInteraction` in [lines 366-391 of sources](https://cpp.openfoam.org/v11/LocalInteraction_8C_source.html). |
 | [`PackingModel`](https://cpp.openfoam.org/v11/classFoam_1_1PackingModel.html) |  |
 | [`DampingModel`](https://cpp.openfoam.org/v11/classFoam_1_1DampingModel.html) |  |
-| [`IsotropyModel`](https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html) | |
-| [`ParticleForce`](https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html) | Will be discussed in this section. |
+| [`IsotropyModel`](https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html) |  |
+| [`ParticleForce`](https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html) | This will be discussed in this section. |
+|  |  |
 
 Solution with different drag models:
 
@@ -170,9 +171,22 @@ Solution with different cloud types
 - `MPPICCloud`
 - `collidingCloud`
 
+#### Sub-models
+
+For the [`PackingModel`](https://cpp.openfoam.org/v11/classFoam_1_1PackingModel.html)one needs to specify the [ParticleStressModel](https://cpp.openfoam.org/v11/classFoam_1_1ParticleStressModel.html) among the following:
+
+- [HarrisCrighton](https://cpp.openfoam.org/v11/classFoam_1_1ParticleStressModels_1_1HarrisCrighton.html#details)
+- [Lun](https://cpp.openfoam.org/v11/classFoam_1_1ParticleStressModels_1_1Lun.html#details)
+
+For both  [`DampingModel`](https://cpp.openfoam.org/v11/classFoam_1_1DampingModel.html) and [`IsotropyModel`](https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html) one needs a [TimeScaleModel](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModel.html)
+
+- [equilibrium](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1equilibrium.html)
+- [isotropic](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1isotropic.html)
+- [nonEquilibrium](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1nonEquilibrium.html)
 #### Post-processing features
 
 - [ ] Compute fractional mass in system with respected to injected (extract from log files).
+- [ ] Work towards enabling `particleTracks` in `cloudFunctions`.
 
 ## Non-isothermal models
 
