@@ -147,17 +147,24 @@ Hypotheses testing cases:
 | [`DampingModel`](https://cpp.openfoam.org/v11/classFoam_1_1DampingModel.html) |  |
 | [`IsotropyModel`](https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html) |  |
 | [`ParticleForce`](https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html) | This will be discussed in this section. |
-|  |  |
 
 Solution with different drag models:
 
-- [ ] [`sphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1SphereDragForce.html)
-- [ ] [`WenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1WenYuDragForce.html)
-- [ ] [`ErgunWenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1ErgunWenYuDragForce.html)
-- [ ] [`PlessisMasliyahDrag`](https://cpp.openfoam.org/v11/classFoam_1_1PlessisMasliyahDragForce.html)
-- [ ] [`distortedSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1DistortedSphereDragForce.html)
-- [ ] [`nonSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1NonSphereDragForce.html)
-- [ ] [`SchillerNaumannDrag`](https://cpp.openfoam.org/v11/classFoam_1_1SchillerNaumannDragForce.html)
+- [012](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/012) :  [`sphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1SphereDragForce.html)
+
+![Case 012](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-012.gif?raw=true)
+
+- [013](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/013) :  [`WenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1WenYuDragForce.html)
+
+- [014](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/014) :  [`ErgunWenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1ErgunWenYuDragForce.html)
+
+- [015](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/015) :  [`PlessisMasliyahDrag`](https://cpp.openfoam.org/v11/classFoam_1_1PlessisMasliyahDragForce.html)
+
+- [016](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/016) :  [`distortedSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1DistortedSphereDragForce.html)
+
+- [017](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/017) :  [`nonSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1NonSphereDragForce.html)
+
+- [018](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/018) :  [`SchillerNaumannDrag`](https://cpp.openfoam.org/v11/classFoam_1_1SchillerNaumannDragForce.html)
 	
 Solution with different `sizeDistribution`:
 
@@ -176,17 +183,26 @@ Solution with different cloud types
 For the [`PackingModel`](https://cpp.openfoam.org/v11/classFoam_1_1PackingModel.html)one needs to specify the [ParticleStressModel](https://cpp.openfoam.org/v11/classFoam_1_1ParticleStressModel.html) among the following:
 
 - [HarrisCrighton](https://cpp.openfoam.org/v11/classFoam_1_1ParticleStressModels_1_1HarrisCrighton.html#details)
+
 - [Lun](https://cpp.openfoam.org/v11/classFoam_1_1ParticleStressModels_1_1Lun.html#details)
 
 For both  [`DampingModel`](https://cpp.openfoam.org/v11/classFoam_1_1DampingModel.html) and [`IsotropyModel`](https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html) one needs a [TimeScaleModel](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModel.html)
 
 - [equilibrium](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1equilibrium.html)
+
 - [isotropic](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1isotropic.html)
+
 - [nonEquilibrium](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1nonEquilibrium.html)
-#### Post-processing features
+
+#### Post-processing features and To-do's
 
 - [ ] Compute fractional mass in system with respected to injected (extract from log files).
 - [ ] Work towards enabling `particleTracks` in `cloudFunctions`.
+- [ ] Ensure individual time-steps converged during solution (residuals get first value only).
+- [ ] Plots of data in `patchFlowRate(patch=outlet, cloud:massFlux)` files.
+- [ ] Process `lagrangian/cloud/patchPostProcessing1/*` (Julia script ongoing).
+- [ ] Explore [`solution`](https://cpp.openfoam.org/v11/classFoam_1_1cloudSolution.html#details) configuration.
+- [ ] Organize scripts as a single module and runners.
 
 ## Non-isothermal models
 
