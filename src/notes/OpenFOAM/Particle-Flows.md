@@ -2,7 +2,7 @@ Approaches for setting up a flow interacting with particles in OpenFOAM (v11+).
 
 ## Fundamental concepts
 
-- **Parcel** is a computational particle unit that may be composed of several particles which are all identical sharing a state, which include velocity, size, temperature, ... See [O'Rourke (2010)](https://doi.org/10.1016/j.ces.2010.08.032) for details.
+- **Parcel** is a computational particle unit that may be composed of several particles which are all identical sharing a state, which include velocity, size, temperature, etc. See [O'Rourke (2010)](https://doi.org/10.1016/j.ces.2010.08.032) for details.
 
 ## Incompressible isothermal
 
