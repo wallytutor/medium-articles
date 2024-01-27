@@ -50,6 +50,8 @@ Packages](https://juliapackages.com/).}
 1. [Estruturas De Dados](003-estruturas-de-dados)
 1. [Estruturas De Dados](004-estruturas-de-dados)
 
+Uma lista de [pacotes recomendados](bookmarks) é provida com uma breve descrição.
+
 <!--
 # 1. [Lacos E Condicionais](005-lacos-e-condicionais.md)
 # 1. [Funcoes E Despacho](006-funcoes-e-despacho.md)
