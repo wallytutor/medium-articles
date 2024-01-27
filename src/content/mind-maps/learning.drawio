@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-01-27T08:10:36.332Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="kta1RHnOU8IAGEux8l89" version="23.0.2" type="github">
+<mxfile host="app.diagrams.net" modified="2024-01-27T08:15:52.611Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="HXVerABgxpY9ohtBiUX8" version="23.0.2" type="github">
   <diagram name="Page-1" id="tNx86WEGERc1XLciAWc1">
     <mxGraphModel dx="1434" dy="746" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4681" pageHeight="3300" math="0" shadow="0">
       <root>
@@ -131,6 +131,12 @@
         <mxCell id="QDy-FQWbMPKasR52hYSL-4" style="edgeStyle=orthogonalEdgeStyle;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="QDy-FQWbMPKasR52hYSL-2" target="QDy-FQWbMPKasR52hYSL-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <mxCell id="zpE5mvqkoiEEd82nboEs-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;curved=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="QDy-FQWbMPKasR52hYSL-2" target="zpE5mvqkoiEEd82nboEs-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zpE5mvqkoiEEd82nboEs-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="QDy-FQWbMPKasR52hYSL-2" target="zpE5mvqkoiEEd82nboEs-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="QDy-FQWbMPKasR52hYSL-2" value="To review" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" parent="1" vertex="1">
           <mxGeometry x="870" y="1710" width="120" height="60" as="geometry" />
         </mxCell>
@@ -145,12 +151,12 @@
         </mxCell>
         <UserObject label="Nemati, 2021" link="https://1drv.ms/b/s!Ar4x-UlrYAiZjv4O83J4rxP3v68lgA?e=0grBoP" linkTarget="_blank" id="QDy-FQWbMPKasR52hYSL-5">
           <mxCell style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-            <mxGeometry x="1170" y="1600" width="120" height="60" as="geometry" />
+            <mxGeometry x="1170" y="1590" width="120" height="60" as="geometry" />
           </mxCell>
         </UserObject>
         <UserObject label="Oii (project leader)" link="https://www.eng.ed.ac.uk/research/projects/multi-scale-approach-characterising-fluid-contribution-conductive-heat-transfer" linkTarget="_blank" id="QDy-FQWbMPKasR52hYSL-6">
           <mxCell style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-            <mxGeometry x="1170" y="1680" width="120" height="60" as="geometry" />
+            <mxGeometry x="1170" y="1670" width="120" height="60" as="geometry" />
           </mxCell>
         </UserObject>
         <mxCell id="tdlnybzZ0rQNsdedE5Ah-23" style="edgeStyle=orthogonalEdgeStyle;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="tdlnybzZ0rQNsdedE5Ah-1" target="tdlnybzZ0rQNsdedE5Ah-22" edge="1">
@@ -859,28 +865,44 @@
         <mxCell id="OuBXmGr73WI9B_g8OrTr-1" value="Elmer Multiphysics" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="2370" y="2780" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="zpE5mvqkoiEEd82nboEs-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="zpE5mvqkoiEEd82nboEs-1" target="tdlnybzZ0rQNsdedE5Ah-50">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="zpE5mvqkoiEEd82nboEs-1" value="Review" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1960" y="2200" width="80" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="zpE5mvqkoiEEd82nboEs-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="zpE5mvqkoiEEd82nboEs-2" target="zpE5mvqkoiEEd82nboEs-1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <UserObject label="Fatahi (2022)" link="https://doi.org/10.1080/02726351.2022.2135470" linkTarget="_blank" id="zpE5mvqkoiEEd82nboEs-2">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-            <mxGeometry x="1760" y="2140" width="120" height="60" as="geometry" />
+            <mxGeometry x="580" y="1790" width="120" height="60" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="zpE5mvqkoiEEd82nboEs-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="zpE5mvqkoiEEd82nboEs-5" target="zpE5mvqkoiEEd82nboEs-1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <UserObject label="Zhou (2006)" link="https://doi.org/10.1007/978-3-540-37256-1_49" linkTarget="_blank" id="zpE5mvqkoiEEd82nboEs-5">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-            <mxGeometry x="1760" y="2210" width="120" height="60" as="geometry" />
+            <mxGeometry x="580" y="1860" width="120" height="60" as="geometry" />
           </mxCell>
         </UserObject>
+        <UserObject label="Zhang (2020)" link="https://doi.org/10.1109/CAC51589.2020.9326658" linkTarget="_blank" id="zpE5mvqkoiEEd82nboEs-7">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="580" y="1930" width="120" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="zpE5mvqkoiEEd82nboEs-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="zpE5mvqkoiEEd82nboEs-9" target="zpE5mvqkoiEEd82nboEs-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zpE5mvqkoiEEd82nboEs-9" value="ML in cement" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="740" y="1620" width="80" height="80" as="geometry" />
+        </mxCell>
+        <UserObject label="Li (2022)" link="https://doi.org/10.1038/s41524-022-00810-x" linkTarget="_blank" id="zpE5mvqkoiEEd82nboEs-10">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="560" y="1630" width="120" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="zpE5mvqkoiEEd82nboEs-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="zpE5mvqkoiEEd82nboEs-14" target="zpE5mvqkoiEEd82nboEs-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zpE5mvqkoiEEd82nboEs-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="zpE5mvqkoiEEd82nboEs-14" target="zpE5mvqkoiEEd82nboEs-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zpE5mvqkoiEEd82nboEs-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="zpE5mvqkoiEEd82nboEs-14" target="zpE5mvqkoiEEd82nboEs-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zpE5mvqkoiEEd82nboEs-14" value="Rotary kiln" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="790" y="1850" width="80" height="80" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
