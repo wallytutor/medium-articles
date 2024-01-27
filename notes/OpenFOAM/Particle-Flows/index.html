@@ -177,22 +177,25 @@
 </li>
 </ul>
 <h4 id="physical_refinement_phase"><a href="#physical_refinement_phase" class="header-anchor">Physical refinement phase</a></h4>
-<table><tr><th align="right">Model</th><th align="right">Takings</th></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1InjectionModel.html"><code>InjectionModel</code></a></td><td align="right"><strong>CONFIRM CONCLUSIONS WITH POLYDISTRIBUTED CLOUDS &#40;particles per parcel&#41;&#33;</strong></td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1PatchInteractionModel.html"><code>PatchInteractionModel</code></a></td><td align="right">This model is key for the simulation of particles coupled to a fluid. Unless different behavior is expected in the different walls so customization of interaction is required, it is much faster to use a <code>standardWallInteraction</code> approach. For understanding the role of parameters <code>e</code> and <code>mu</code> over rebound one can check <a href="https://cpp.openfoam.org/v11/StandardWallInteraction_8C_source.html">lines 144-168 of source code</a> and confirm the model is the same as the one implemented in <code>localInteraction</code> in <a href="https://cpp.openfoam.org/v11/LocalInteraction_8C_source.html">lines 366-391 of sources</a>.</td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1PackingModel.html"><code>PackingModel</code></a></td><td align="right"></td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1DampingModel.html"><code>DampingModel</code></a></td><td align="right"></td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html"><code>IsotropyModel</code></a></td><td align="right"></td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html"><code>ParticleForce</code></a></td><td align="right">This will be discussed in this section.</td></tr><tr><td align="right"></td><td align="right"></td></tr></table>
+<table><tr><th align="right">Model</th><th align="right">Takings</th></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1InjectionModel.html"><code>InjectionModel</code></a></td><td align="right"><strong>CONFIRM CONCLUSIONS WITH POLYDISTRIBUTED CLOUDS &#40;particles per parcel&#41;&#33;</strong></td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1PatchInteractionModel.html"><code>PatchInteractionModel</code></a></td><td align="right">This model is key for the simulation of particles coupled to a fluid. Unless different behavior is expected in the different walls so customization of interaction is required, it is much faster to use a <code>standardWallInteraction</code> approach. For understanding the role of parameters <code>e</code> and <code>mu</code> over rebound one can check <a href="https://cpp.openfoam.org/v11/StandardWallInteraction_8C_source.html">lines 144-168 of source code</a> and confirm the model is the same as the one implemented in <code>localInteraction</code> in <a href="https://cpp.openfoam.org/v11/LocalInteraction_8C_source.html">lines 366-391 of sources</a>.</td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1PackingModel.html"><code>PackingModel</code></a></td><td align="right"></td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1DampingModel.html"><code>DampingModel</code></a></td><td align="right"></td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html"><code>IsotropyModel</code></a></td><td align="right"></td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html"><code>ParticleForce</code></a></td><td align="right">This will be discussed in this section.</td></tr></table>
 <p>Solution with different drag models:</p>
 <ul>
-<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1SphereDragForce.html"><code>sphereDrag</code></a></p>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/012">012</a> :  <a href="https://cpp.openfoam.org/v11/classFoam_1_1SphereDragForce.html"><code>sphereDrag</code></a></p>
 </li>
-<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1WenYuDragForce.html"><code>WenYuDrag</code></a></p>
+</ul>
+<p><img src="https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-012.gif?raw&#61;true" alt="Case 012" /></p>
+<ul>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/013">013</a> :  <a href="https://cpp.openfoam.org/v11/classFoam_1_1WenYuDragForce.html"><code>WenYuDrag</code></a></p>
 </li>
-<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1ErgunWenYuDragForce.html"><code>ErgunWenYuDrag</code></a></p>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/014">014</a> :  <a href="https://cpp.openfoam.org/v11/classFoam_1_1ErgunWenYuDragForce.html"><code>ErgunWenYuDrag</code></a></p>
 </li>
-<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1PlessisMasliyahDragForce.html"><code>PlessisMasliyahDrag</code></a></p>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/015">015</a> :  <a href="https://cpp.openfoam.org/v11/classFoam_1_1PlessisMasliyahDragForce.html"><code>PlessisMasliyahDrag</code></a></p>
 </li>
-<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1DistortedSphereDragForce.html"><code>distortedSphereDrag</code></a></p>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/016">016</a> :  <a href="https://cpp.openfoam.org/v11/classFoam_1_1DistortedSphereDragForce.html"><code>distortedSphereDrag</code></a></p>
 </li>
-<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1NonSphereDragForce.html"><code>nonSphereDrag</code></a></p>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/017">017</a> :  <a href="https://cpp.openfoam.org/v11/classFoam_1_1NonSphereDragForce.html"><code>nonSphereDrag</code></a></p>
 </li>
-<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1SchillerNaumannDragForce.html"><code>SchillerNaumannDrag</code></a></p>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/018">018</a> :  <a href="https://cpp.openfoam.org/v11/classFoam_1_1SchillerNaumannDragForce.html"><code>SchillerNaumannDrag</code></a></p>
 </li>
 </ul>
 <p>Solution with different <code>sizeDistribution</code>:</p>
@@ -230,11 +233,21 @@
 <li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1nonEquilibrium.html">nonEquilibrium</a></p>
 </li>
 </ul>
-<h4 id="post-processing_features"><a href="#post-processing_features" class="header-anchor">Post-processing features</a></h4>
+<h4 id="post-processing_features_and_to-dos"><a href="#post-processing_features_and_to-dos" class="header-anchor">Post-processing features and To-do&#39;s</a></h4>
 <ul>
 <li><p>&#91; &#93; Compute fractional mass in system with respected to injected &#40;extract from log files&#41;.</p>
 </li>
 <li><p>&#91; &#93; Work towards enabling <code>particleTracks</code> in <code>cloudFunctions</code>.</p>
+</li>
+<li><p>&#91; &#93; Ensure individual time-steps converged during solution &#40;residuals get first value only&#41;.</p>
+</li>
+<li><p>&#91; &#93; Plots of data in <code>patchFlowRate&#40;patch&#61;outlet, cloud:massFlux&#41;</code> files.</p>
+</li>
+<li><p>&#91; &#93; Process <code>lagrangian/cloud/patchPostProcessing1/*</code> &#40;Julia script ongoing&#41;.</p>
+</li>
+<li><p>&#91; &#93; Explore <a href="https://cpp.openfoam.org/v11/classFoam_1_1cloudSolution.html#details"><code>solution</code></a> configuration.</p>
+</li>
+<li><p>&#91; &#93; Organize scripts as a single module and runners.</p>
 </li>
 </ul>
 <h2 id="non-isothermal_models"><a href="#non-isothermal_models" class="header-anchor">Non-isothermal models</a></h2>
