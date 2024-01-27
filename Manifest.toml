@@ -668,9 +668,9 @@ version = "0.3.2"
 
 [[deps.FastLapackInterface]]
 deps = ["LinearAlgebra"]
-git-tree-sha1 = "b12f05108e405dadcc2aff0008db7f831374e051"
+git-tree-sha1 = "d576a29bf8bcabf4b1deb9abe88a3d7f78306ab5"
 uuid = "29a986be-02c6-4525-aec4-84b980013641"
-version = "2.0.0"
+version = "2.0.1"
 
 [[deps.FileIO]]
 deps = ["Pkg", "Requires", "UUIDs"]
