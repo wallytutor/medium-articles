@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+   <link rel="stylesheet" href="/medium-articles/libs/highlight/styles/github.min.css">
+   
+  <link rel="stylesheet" href="/medium-articles/css/franklin.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
+<link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
+<link rel="stylesheet" href="/medium-articles/css/celeste.min.css">
+<link rel="stylesheet" href="/medium-articles/css/custom.css">
+
+<link rel="icon" type="image/png" sizes="192x192" href="/medium-articles/assets/favicon.png">
+<link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
+
+
+   <title>Fundamental concepts</title>  
+</head>
+<body>
+  <header>
+<nav class="nav-main">
+  <ul>
+    <li class="logo"><a class="hvr-ripple-out" href="/medium-articles/">W</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/medium/">Medium Articles</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/transport-phenomena/">Transport Phenomena</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/julia-para-cientistas/">Julia para Cientistas</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/engenharia-de-reatores/">Engenharia de Reatores</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/bookmarks/">Links</a></li>
+  </ul>
+</nav>
+</header>
+
+
+<!-- Content appended here -->
+<div class="franklin-content"><p>Approaches for setting up a flow interacting with particles in OpenFOAM &#40;v11&#43;&#41;.</p>
+<h2 id="fundamental_concepts"><a href="#fundamental_concepts" class="header-anchor">Fundamental concepts</a></h2>
+<ul>
+<li><p><strong>Parcel</strong> is a computational particle unit that may be composed of several particles which are all identical sharing a state, which include velocity, size, temperature, etc. See <a href="https://doi.org/10.1016/j.ces.2010.08.032">O&#39;Rourke &#40;2010&#41;</a> for details.</p>
+</li>
+</ul>
+<h2 id="incompressible_isothermal"><a href="#incompressible_isothermal" class="header-anchor">Incompressible isothermal</a></h2>
+<p>In this case use solver <code>incompressibleDenseParticleFluid</code>. This approach is interesting for dealing with conditions where flow can be considered isothermal and eventual packing of particles is possible. Examples are provided with <code>OpenFOAM</code> use <code>MPPCCloud</code> or <code>collidingCloud</code>.</p>
+<p>Boundary fields in general are almost the same as any case in <em>pure fluid</em> simulations but transported quantities must be named by appending <code>.air</code> to the files if <code>air</code> is the name of transporting phase &#40;specified as <code>continuousPhaseName air</code> in <code>constant/physicalProperties</code>&#41;, producing things as <code>k.air</code> and <code>U.air</code>. Pressure file name remains unchanged. The particularity here is that you must provide <code>phi</code> for all hydrodynamic solution variables &#40;such as <code>k.air</code>, <code>U.air</code>&#41; in outlets. That means that an outlet for velocity should include something as</p>
+<pre><code class="language-C">outlet
+&#123;
+	type            pressureInletOutletVelocity;
+	phi             phi.air;
+	inletValue      uniform &#40;0 0 0&#41;;
+	value           uniform &#40;0 0 0&#41;;
+&#125;</code></pre>
+<p>The most complex file to set is <code>constant/cloudProperties</code>. Most default values in <code>solution</code> dictionary are fine, but for fluid-solid interaction it is important to configure <code>coupled</code> as <code>true</code> and turn on <code>cellValueSourceCorrection</code>, which will correct cell values using latest transfer information, as given in the following block.</p>
+<pre><code class="language-C">solution
+&#123;
+	coupled                   true;
+	transient                 yes;
+	cellValueSourceCorrection on;
+	maxCo                     0.7;
+
+	...
+&#125;</code></pre>
+<p>Using <code>collidingCloud</code> enables the use of <code>collisionModel pairCollision</code> and material properties can be set in detail with <code>constantProperties</code>. With this cloud one can optionally make <code>patchInteractionModel standardWallInteraction</code> or other alternative and set global coefficients for interaction with walls &#40;check examples&#41;. Notice that this is computationally expensive.</p>
+<p>On the other hand, <code>MPPICCloud</code> makes use only of <code>patchInteractionModel localInteraction</code> for interaction with the environment and collisions between particles are not taken into account.</p>
+<h3 id="sub-models_to_explore"><a href="#sub-models_to_explore" class="header-anchor">Sub-models to explore</a></h3>
+<p>The main models for setting up a particle simulation are:</p>
+<ul>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1InjectionModel.html"><code>InjectionModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html"><code>ParticleForce</code></a></p>
+</li>
+</ul>
+<p>In the case of <code>MPPICCloud</code> focus is given in the following:</p>
+<ul>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1DampingModel.html"><code>DampingModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html"><code>IsotropyModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1PackingModel.html"><code>PackingModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1PatchInteractionModel.html"><code>PatchInteractionModel</code></a></p>
+</li>
+</ul>
+<p>In some particular situations the following models might be required:</p>
+<ul>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1DispersionModel.html"><code>DispersionModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1HeatTransferModel.html"><code>HeatTransferModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1StochasticCollisionModel.html"><code>StochasticCollisionModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1SurfaceFilmModel.html"><code>SurfaceFilmModel</code></a></p>
+</li>
+</ul>
+<p>Notice that when dealing with <code>incompressibleDenseParticleFluid</code> the main <code>ParticleForce</code> models other than <code>gravity</code> are inherited by <a href="https://cpp.openfoam.org/v11/classFoam_1_1DenseDragForce.html"><code>DenseDragForce</code></a>.</p>
+<p>When working with <code>collidingCloud</code> the following and <code>PatchInteractionModel</code> are important:</p>
+<ul>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1CollisionModel.html"><code>CollisionModel</code></a></p>
+</li>
+</ul>
+<h3 id="tips_and_reminders"><a href="#tips_and_reminders" class="header-anchor">Tips and reminders</a></h3>
+<ul>
+<li><p>It is a good idea to set <code>SOI</code> to a value higher than zero &#40;dimensioned to match the global time-scale of the problem&#41; so that flow is fully developed before particles arrive.</p>
+</li>
+<li><p>If it makes sense to do so, make parameter <code>U0</code> in the entries of <code>injectionModels</code> of <code>cloudProperties</code> identical to the velocity specified for the corresponding path. In most cases this applies, except when modeling a particle jet that originates from another source <em>outside</em> of the computational domain.</p>
+</li>
+<li><p>When working with a 2-D extruded mesh &#40;1-cell in thickness&#41;, the mass flow rate must be scaled by the width of the domain to keep consistency with what would be expected in 3-D.</p>
+</li>
+<li><p>After the start of injection, a <code>patchInteraction</code> is <a href="https://cpp.openfoam.org/v11/classFoam_1_1NoInteraction.html#details">required</a> otherwise the dummy class representing the setting <code>none</code> will generate an error.</p>
+</li>
+</ul>
+<h3 id="study_case_-_horizontal_mixer"><a href="#study_case_-_horizontal_mixer" class="header-anchor">Study case - horizontal mixer</a></h3>
+<p>The following numerical experiments concern the <a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/">horizontalMixer</a> sample case.</p>
+<h4 id="conceptual_phase"><a href="#conceptual_phase" class="header-anchor">Conceptual phase</a></h4>
+<p>Minimal working examples:</p>
+<ul>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/000">000</a>: no models active other than <code>patchInteraction rebound</code>.</p>
+</li>
+</ul>
+<p><img src="https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-000.gif?raw&#61;true" alt="Case 000" /></p>
+<ul>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/001">001</a>: no models active other than <code>patchInteraction standardWallInteraction</code>.</p>
+</li>
+</ul>
+<p><img src="https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-001.gif?raw&#61;true" alt="Case 001" /></p>
+<ul>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/002">002</a>: no models active other than <code>patchInteraction localInteraction</code>.</p>
+</li>
+</ul>
+<p><img src="https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-002.gif?raw&#61;true" alt="Case 002" /></p>
+<p>If there are outlets in the system, <code>rebound</code> model is not suitable. Because of this, all the next cases, unless stated otherwise, will use <code>localInteraction</code> given the better control it provides over individual patches with respect to <code>standardWallInteraction</code> &#40;although it is much slower than the latter&#41;.</p>
+<ul>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/007">007</a>: compare solution for same &#40;approximate&#41; mass flow with using multiple particles per parcel -  with respect to the single particle per parcel performed in the <a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/002">reference case 002</a>. The overall cloud shape remains the same but some spatial resolution is lost. For conception studies it seems valid to use a higher number of particles per parcel.</p>
+</li>
+</ul>
+<p><img src="https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-007.gif?raw&#61;true" alt="Case 007" /></p>
+<p>Using the basic <code>patchInteraction localInteraction</code> add these variants &#40;notice that the option <code>none</code> for all these models is already covered by the <a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/002">reference case 002</a>. After comparing cases <a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/002">002</a> and <a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/007">007</a> the following variants were modified to match <a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/007">007</a> as a reference case given the much lower computational time &#40;more particles per parcel&#41;.</p>
+<ul>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/003">003</a>: <code>packingModel explicit</code>.</p>
+</li>
+</ul>
+<p><img src="https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-003.gif?raw&#61;true" alt="Case 003" /></p>
+<ul>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/004">004</a>: <code>packingModel implicit</code>.</p>
+</li>
+</ul>
+<p><img src="https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-004.gif?raw&#61;true" alt="Case 004" /></p>
+<ul>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/005">005</a>: <code>dampingModel relaxation</code>. Particle velocities are relaxed towards the local mean over a time-scale. Notice that <a href="https://doi.org/10.1016/j.ces.2010.08.032 ">reference paper</a> intended to improve MP-PIC for polydisperse sedimenting particle clouds.</p>
+</li>
+</ul>
+<p><img src="https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-005.gif?raw&#61;true" alt="Case 005" /></p>
+<ul>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/006">006</a> <code>isotropyModel stochastic</code>. According to the <a href="https://doi.org/10.1016/j.ces.2012.05.047">reference paper</a> collisions cause numerical particles to scatter in MP-PIC calculations, just as physical particles do in particle/fluid flows, just as the generated animation implies.</p>
+</li>
+</ul>
+<p><img src="https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-006.gif?raw&#61;true" alt="Case 006" /></p>
+<p>Implicit packing so far is the only model for which particles left the system and turbulence effects and segregation becomes apparent. In fact without implicit packing the results do not even look physical, so it is probably a requirement to activate this model. Damping and isotropy models produce similar results, with a little more dispersed cloud when isotropy is active, as stated above from its reference.</p>
+<p>Hypotheses testing cases:</p>
+<ul>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/008">008</a>: modify case <a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/004">004</a> to test if with <code>rebound</code> patch interaction particles are able to quit the system. Confirmed that this patch interaction does not handle outlets.</p>
+</li>
+</ul>
+<p><img src="https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-008.gif?raw&#61;true" alt="Case 008" /></p>
+<ul>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/009">009</a>: modify case <a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/004">004</a> to test if with <code>standardWallInteraction</code> patch interaction particles are able to quit the system. Confirmed that this patch interaction <strong>does</strong> handle outlets similarly to the <code>localInteraction</code>. It was not possible to confirm if inlets also allow backflow since reporting is not provided by patch.</p>
+</li>
+</ul>
+<p><img src="https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-009.gif?raw&#61;true" alt="Case 009" /></p>
+<ul>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/010">010</a>: check the role of gravity option over implicit packing model we derive a variant of <a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/009">009</a> because it runs faster than with <code>localInteraction</code>. </p>
+</li>
+</ul>
+<p><img src="https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-010.gif?raw&#61;true" alt="Case 010" /></p>
+<ul>
+<li><p><a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/011">011</a>: in fact the role of gravity in <a href="https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/010">010</a> was pretty devastating over the sedimentation rate &#40;quite unexpected given the particle sizes that were used&#41; so a variant  of this case was manually initialized from last state and left to run for a much longer physical time &#40;100 s&#41; using <code>maxCo 2.0</code> for faster execution.</p>
+</li>
+</ul>
+<h4 id="physical_refinement_phase"><a href="#physical_refinement_phase" class="header-anchor">Physical refinement phase</a></h4>
+<table><tr><th align="right">Model</th><th align="right">Takings</th></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1InjectionModel.html"><code>InjectionModel</code></a></td><td align="right"><strong>CONFIRM CONCLUSIONS WITH POLYDISTRIBUTED CLOUDS &#40;particles per parcel&#41;&#33;</strong></td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1PatchInteractionModel.html"><code>PatchInteractionModel</code></a></td><td align="right">This model is key for the simulation of particles coupled to a fluid. Unless different behavior is expected in the different walls so customization of interaction is required, it is much faster to use a <code>standardWallInteraction</code> approach. For understanding the role of parameters <code>e</code> and <code>mu</code> over rebound one can check <a href="https://cpp.openfoam.org/v11/StandardWallInteraction_8C_source.html">lines 144-168 of source code</a> and confirm the model is the same as the one implemented in <code>localInteraction</code> in <a href="https://cpp.openfoam.org/v11/LocalInteraction_8C_source.html">lines 366-391 of sources</a>.</td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1PackingModel.html"><code>PackingModel</code></a></td><td align="right"></td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1DampingModel.html"><code>DampingModel</code></a></td><td align="right"></td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html"><code>IsotropyModel</code></a></td><td align="right"></td></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html"><code>ParticleForce</code></a></td><td align="right">Will be discussed in this section.</td></tr></table>
+<p>Solution with different drag models:</p>
+<ul>
+<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1SphereDragForce.html"><code>sphereDrag</code></a></p>
+</li>
+<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1WenYuDragForce.html"><code>WenYuDrag</code></a></p>
+</li>
+<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1ErgunWenYuDragForce.html"><code>ErgunWenYuDrag</code></a></p>
+</li>
+<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1PlessisMasliyahDragForce.html"><code>PlessisMasliyahDrag</code></a></p>
+</li>
+<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1DistortedSphereDragForce.html"><code>distortedSphereDrag</code></a></p>
+</li>
+<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1NonSphereDragForce.html"><code>nonSphereDrag</code></a></p>
+</li>
+<li><p>&#91; &#93; <a href="https://cpp.openfoam.org/v11/classFoam_1_1SchillerNaumannDragForce.html"><code>SchillerNaumannDrag</code></a></p>
+</li>
+</ul>
+<p>Solution with different <code>sizeDistribution</code>:</p>
+<ul>
+<li><p>&#91; &#93; <code>fixedValue</code></p>
+</li>
+<li><p>&#91; &#93; <code>normal</code></p>
+</li>
+<li><p>&#91; &#93; <code>RosinRammler</code></p>
+</li>
+<li><p>&#91; &#93; <code>tabulatedDensity</code></p>
+</li>
+</ul>
+<p>Solution with different cloud types</p>
+<ul>
+<li><p><code>MPPICCloud</code></p>
+</li>
+<li><p><code>collidingCloud</code></p>
+</li>
+</ul>
+<h4 id="post-processing_features"><a href="#post-processing_features" class="header-anchor">Post-processing features</a></h4>
+<ul>
+<li><p>&#91; &#93; Compute fractional mass in system with respected to injected &#40;extract from log files&#41;.</p>
+</li>
+</ul>
+<h2 id="non-isothermal_models"><a href="#non-isothermal_models" class="header-anchor">Non-isothermal models</a></h2>
+<ul>
+<li><p><code>thermoCloud</code></p>
+</li>
+</ul>
+<div class="page-foot">
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
+    Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    
+    
+        <script src="/medium-articles/libs/highlight/highlight.min.js"></script>
+<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
+
+    
+  </body>
+</html>
