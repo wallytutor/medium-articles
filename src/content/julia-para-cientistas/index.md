@@ -39,9 +39,9 @@ encontre confortável com o conteúdo aqui apresentado, recomenda-se estudar o
 o qual apresenta detalhes omitidos nesta introdução almejada para um primeiro
 contato.
 
-{Julia possui um largo ecossistema de pacotes implementado uma vasta gama
+Julia possui um largo ecossistema de pacotes implementado uma vasta gama
 de funcionalidades. Para conhecer mais não deixe de visitar [Julia
-Packages](https://juliapackages.com/).}
+Packages](https://juliapackages.com/).
 
 ## Conteúdos
 

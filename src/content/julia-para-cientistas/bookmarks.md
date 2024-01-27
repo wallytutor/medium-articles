@@ -1,7 +1,6 @@
-
 +++
 title   = "Bookmarks"
-tags    = ["programming", "science"]
+tags    = ["programming", "bookmarks"]
 showall = true
 +++
 
