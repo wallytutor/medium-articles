@@ -56,7 +56,7 @@ showall = true
     <td>5</td>
     <td>
       <a href="05-Image-Segmentation-in-Julia" target="_blank">
-        Quantitative image analysis in Julia
+        Quantitative image analysis in Julia (Pluto notebook)
       </a>
       <hr style="padding: 0pt; margin: 5pt"/>
     </td>
@@ -71,5 +71,16 @@ showall = true
       <hr style="padding: 0pt; margin: 5pt"/>
     </td>
   </tr>
+
+  <tr>
+    <td>7</td>
+    <td>
+      <a href="07-Harmonic-Oscilator-POD" target="_blank">
+        Harmonic Oscilator mode detection (Pluto notebook)
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
+    </td>
+  </tr>
+
 </table>
 ~~~
