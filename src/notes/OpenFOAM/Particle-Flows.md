@@ -135,7 +135,7 @@ Hypotheses testing cases:
 
 ![Case 010](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-010.gif?raw=true)
 
-- [011](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/011): in fact the role of gravity in [010](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/010) was pretty devastating over the sedimentation rate (quite unexpected given the particle sizes that were used) so a variant  of this case was manually initialized from last state and left to run for a much longer physical time (100 s) using `maxCo 2.0` for faster execution.
+- [011](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/011): in fact the role of gravity in [010](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/010) was pretty devastating over the sedimentation rate (quite unexpected given the particle sizes that were used) so a variant  of this case was manually initialized from last state and left to run for a much longer physical time (100 s) using `maxCo 2.0` for faster execution. **CALCULATION DIVERGED, REDO!**
 
 #### Physical refinement phase
 
@@ -154,18 +154,24 @@ Solution with different drag models:
 
 ![Case 012](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-012.gif?raw=true)
 
-- [013](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/013) :  [`WenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1WenYuDragForce.html)
+- [013](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/013) :  [`WenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1WenYuDragForce.html) (used in `injectionChannel`) [implemented](https://cpp.openfoam.org/v11/WenYuDragForce_8C_source.html) from equation (2.12) of Gidaspow (1994).
 
-- [014](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/014) :  [`ErgunWenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1ErgunWenYuDragForce.html)
+![Case 013](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-013.gif?raw=true)
 
-- [015](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/015) :  [`PlessisMasliyahDrag`](https://cpp.openfoam.org/v11/classFoam_1_1PlessisMasliyahDragForce.html)
+- [014](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/014) :  [`ErgunWenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1ErgunWenYuDragForce.html) (used in `Goldschmidt`, `cyclone`, and `column`) [implemented](https://cpp.openfoam.org/v11/ErgunWenYuDragForce_8C_source.html) from equation (5.11) of Gidaspow (1994).
 
-- [016](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/016) :  [`distortedSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1DistortedSphereDragForce.html)
+![Case 014](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-014.gif?raw=true)
 
-- [017](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/017) :  [`nonSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1NonSphereDragForce.html)
+Other drag models:
 
-- [018](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/018) :  [`SchillerNaumannDrag`](https://cpp.openfoam.org/v11/classFoam_1_1SchillerNaumannDragForce.html)
-	
+- [`PlessisMasliyahDrag`](https://cpp.openfoam.org/v11/classFoam_1_1PlessisMasliyahDragForce.html) (used in `GoldschmidtMPPIC) [implemented](https://cpp.openfoam.org/v11/PlessisMasliyahDragForce_8C_source.html) from Plessis (1988) is adapted for flow through consolidated isotropic porous media. This is outside the scope of the current study but functionality is tested anyways from a computational point of view and to understand its behavior far from its reference application. Calculation diverged, so no results are available.
+
+- [`distortedSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1DistortedSphereDragForce.html) (not used in any tutorial) [implemented](https://cpp.openfoam.org/v11/DistortedSphereDragForce_8C_source.html) as per Liu (1993) is conceived for the simulation of the effects of drop drag and breakup on fuel sprays. This is far from our scope and is not tested.
+- 
+- [`nonSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1NonSphereDragForce.html)  (not used in any tutorial) [implemented]()
+
+- [`SchillerNaumannDrag`](https://cpp.openfoam.org/v11/classFoam_1_1SchillerNaumannDragForce.html)  (not used in any tutorial) [implemented]()
+
 Solution with different `sizeDistribution`:
 
 - [ ] `fixedValue`
@@ -203,9 +209,16 @@ For both  [`DampingModel`](https://cpp.openfoam.org/v11/classFoam_1_1DampingMode
 - [ ] Process `lagrangian/cloud/patchPostProcessing1/*` (Julia script ongoing).
 - [ ] Explore [`solution`](https://cpp.openfoam.org/v11/classFoam_1_1cloudSolution.html#details) configuration.
 - [ ] Organize scripts as a single module and runners.
+- [ ] Download all related papers!
+- [ ] Create sedimentation in a box cases.
 
 ## Non-isothermal models
 
 - `thermoCloud`
 
+## References
+
+- [Gidaspow (1994)]([https://doi.org/10.1016/C2009-0-21244-X](https://doi.org/10.1016/C2009-0-21244-X))
+- [Plessis (1988)](https://doi.org/10.1007/BF00820342)
+- [Liu (1993)](https://doi.org/10.4271/930072)
 
