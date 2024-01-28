@@ -85,13 +85,12 @@ Solution with different drag models:
 
 Other drag models:
 
-- [`PlessisMasliyahDrag`](https://cpp.openfoam.org/v11/classFoam_1_1PlessisMasliyahDragForce.html) (used in `GoldschmidtMPPIC) [implemented](https://cpp.openfoam.org/v11/PlessisMasliyahDragForce_8C_source.html) from Plessis (1988) is adapted for flow through consolidated isotropic porous media. This is outside the scope of the current study but functionality is tested anyways from a computational point of view and to understand its behavior far from its reference application. Calculation diverged, so no results are available.
-
-- [`distortedSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1DistortedSphereDragForce.html) (not used in any tutorial) [implemented](https://cpp.openfoam.org/v11/DistortedSphereDragForce_8C_source.html) as per Liu (1993) is conceived for the simulation of the effects of drop drag and breakup on fuel sprays. This is far from our scope and is not tested.
-- 
-- [`nonSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1NonSphereDragForce.html)  (not used in any tutorial) [implemented]()
-
-- [`SchillerNaumannDrag`](https://cpp.openfoam.org/v11/classFoam_1_1SchillerNaumannDragForce.html)  (not used in any tutorial) [implemented]()
+| Model | Details |
+| ---- | ---- |
+| [`PlessisMasliyahDrag`](https://cpp.openfoam.org/v11/classFoam_1_1PlessisMasliyahDragForce.html) | Used in GoldschmidtMPPIC. [Implemented](https://cpp.openfoam.org/v11/PlessisMasliyahDragForce_8C_source.html) from Plessis (1988) is adapted for flow through consolidated isotropic porous media. This is outside the scope of the current study but functionality is tested anyways from a computational point of view and to understand its behavior far from its reference application. Calculation diverged, so no results are available. |
+| [`distortedSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1DistortedSphereDragForce.html) | Not used in any tutorial. [Implemented](https://cpp.openfoam.org/v11/DistortedSphereDragForce_8C_source.html) as per Liu (1993) is conceived for the simulation of the effects of drop drag and breakup on fuel sprays. This is far from our scope and is not tested. |
+| [`nonSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1NonSphereDragForce.html) | Not used in any tutorial. [Implemented](https://cpp.openfoam.org/v11/NonSphereDragForce_8C_source.html) as per Haider (1989) is a drag model for non-spherical particles. Its most important parameter is `phi`, the ratio of the surface area of a sphere with the same volume as the particle to the actual surface area of the particle. |
+| [`SchillerNaumannDrag`](https://cpp.openfoam.org/v11/classFoam_1_1SchillerNaumannDragForce.html) | Not used in any tutorial. [Implemented](https://cpp.openfoam.org/v11/SchillerNaumannDragForce_8C_source.html) according the classical paper by Schiller (1935) for modeling drag over spheres. |
 
 Solution with different `sizeDistribution`:
 
@@ -105,25 +104,26 @@ Solution with different cloud types
 - `MPPICCloud`
 - `collidingCloud`
 
-## Sub-models
-
 For the [`PackingModel`](https://cpp.openfoam.org/v11/classFoam_1_1PackingModel.html)one needs to specify the [ParticleStressModel](https://cpp.openfoam.org/v11/classFoam_1_1ParticleStressModel.html) among the following:
 
-- [HarrisCrighton](https://cpp.openfoam.org/v11/classFoam_1_1ParticleStressModels_1_1HarrisCrighton.html#details)
-
-- [Lun](https://cpp.openfoam.org/v11/classFoam_1_1ParticleStressModels_1_1Lun.html#details)
+| Model | Details |
+| ---- | ---- |
+| [HarrisCrighton](https://cpp.openfoam.org/v11/classFoam_1_1ParticleStressModels_1_1HarrisCrighton.html#details) |  |
+| [Lun](https://cpp.openfoam.org/v11/classFoam_1_1ParticleStressModels_1_1Lun.html#details) |  |
 
 For both  [`DampingModel`](https://cpp.openfoam.org/v11/classFoam_1_1DampingModel.html) and [`IsotropyModel`](https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html) one needs a [TimeScaleModel](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModel.html)
 
-- [equilibrium](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1equilibrium.html)
-
-- [isotropic](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1isotropic.html)
-
-- [nonEquilibrium](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1nonEquilibrium.html)
+| Option | Details |
+| ---- | ---- |
+| [equilibrium](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1equilibrium.html) |  |
+|  [isotropic](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1isotropic.html) |  |
+| [nonEquilibrium](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1nonEquilibrium.html) |  |
 
 ## References
 
 - [Gidaspow (1994)]([https://doi.org/10.1016/C2009-0-21244-X](https://doi.org/10.1016/C2009-0-21244-X))
 - [Plessis (1988)](https://doi.org/10.1007/BF00820342)
 - [Liu (1993)](https://doi.org/10.4271/930072)
+- [Haider (1989)](https://doi.org/10.1016/0032-5910(89)80008-7)
+- Schiller (1935)
 
