@@ -1,85 +1,6 @@
-Approaches for setting up a flow interacting with particles in OpenFOAM (v11+).
-
-## Fundamental concepts
-
-- **Parcel** is a computational particle unit that may be composed of several particles which are all identical sharing a state, which include velocity, size, temperature, etc. See [O'Rourke (2010)](https://doi.org/10.1016/j.ces.2010.08.032) for details.
-
-## Incompressible isothermal
-
-In this case use solver `incompressibleDenseParticleFluid`. This approach is interesting for dealing with conditions where flow can be considered isothermal and eventual packing of particles is possible. Examples are provided with `OpenFOAM` use `MPPCCloud` or `collidingCloud`.
-
-Boundary fields in general are almost the same as any case in *pure fluid* simulations but transported quantities must be named by appending `.air` to the files if `air` is the name of transporting phase (specified as `continuousPhaseName air` in `constant/physicalProperties`), producing things as `k.air` and `U.air`. Pressure file name remains unchanged. The particularity here is that you must provide `phi` for all hydrodynamic solution variables (such as `k.air`, `U.air`) in outlets. That means that an outlet for velocity should include something as
-
-```C
-outlet
-{
-	type            pressureInletOutletVelocity;
-	phi             phi.air;
-	inletValue      uniform (0 0 0);
-	value           uniform (0 0 0);
-}
-```
-
-The most complex file to set is `constant/cloudProperties`. Most default values in `solution` dictionary are fine, but for fluid-solid interaction it is important to configure `coupled` as `true` and turn on `cellValueSourceCorrection`, which will correct cell values using latest transfer information, as given in the following block.
-
-```C
-solution
-{
-	coupled                   true;
-	transient                 yes;
-	cellValueSourceCorrection on;
-	maxCo                     0.7;
-
-	...
-}
-```
-
-Using `collidingCloud` enables the use of `collisionModel pairCollision` and material properties can be set in detail with `constantProperties`. With this cloud one can optionally make `patchInteractionModel standardWallInteraction` or other alternative and set global coefficients for interaction with walls (check examples). Notice that this is computationally expensive.
-
-On the other hand, `MPPICCloud` makes use only of `patchInteractionModel localInteraction` for interaction with the environment and collisions between particles are not taken into account.
-
-### Sub-models to explore
-
-The main models for setting up a particle simulation are:
-
-- [`InjectionModel`](https://cpp.openfoam.org/v11/classFoam_1_1InjectionModel.html)
-- [`ParticleForce`](https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html)
-
-In the case of `MPPICCloud` focus is given in the following:
-
-- [`DampingModel`](https://cpp.openfoam.org/v11/classFoam_1_1DampingModel.html)
-- [`IsotropyModel`](https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html)
-- [`PackingModel`](https://cpp.openfoam.org/v11/classFoam_1_1PackingModel.html)
-- [`PatchInteractionModel`](https://cpp.openfoam.org/v11/classFoam_1_1PatchInteractionModel.html)
-
-In some particular situations the following models might be required:
-
-- [`DispersionModel`](https://cpp.openfoam.org/v11/classFoam_1_1DispersionModel.html)
-- [`HeatTransferModel`](https://cpp.openfoam.org/v11/classFoam_1_1HeatTransferModel.html)
-- [`StochasticCollisionModel`](https://cpp.openfoam.org/v11/classFoam_1_1StochasticCollisionModel.html)
-- [`SurfaceFilmModel`](https://cpp.openfoam.org/v11/classFoam_1_1SurfaceFilmModel.html)
-
-Notice that when dealing with `incompressibleDenseParticleFluid` the main `ParticleForce` models other than `gravity` are inherited by [`DenseDragForce`](https://cpp.openfoam.org/v11/classFoam_1_1DenseDragForce.html).
-
-When working with `collidingCloud` the following and `PatchInteractionModel` are important:
-
--  [`CollisionModel`](https://cpp.openfoam.org/v11/classFoam_1_1CollisionModel.html)
-
-### Tips and reminders
-
-- It is a good idea to set `SOI` to a value higher than zero (dimensioned to match the global time-scale of the problem) so that flow is fully developed before particles arrive.
-
-- If it makes sense to do so, make parameter `U0` in the entries of `injectionModels` of `cloudProperties` identical to the velocity specified for the corresponding path. In most cases this applies, except when modeling a particle jet that originates from another source *outside* of the computational domain.
-
-- When working with a 2-D extruded mesh (1-cell in thickness), the mass flow rate must be scaled by the width of the domain to keep consistency with what would be expected in 3-D.
-
-- After the start of injection, a `patchInteraction` is [required](https://cpp.openfoam.org/v11/classFoam_1_1NoInteraction.html#details) otherwise the dummy class representing the setting `none` will generate an error.
-
-### Study case - horizontal mixer
-
 The following numerical experiments concern the [horizontalMixer](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/) sample case.
 
-#### Conceptual phase
+## Conceptual phase
 
 Minimal working examples:
 
@@ -137,7 +58,7 @@ Hypotheses testing cases:
 
 - [011](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/011): in fact the role of gravity in [010](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/010) was pretty devastating over the sedimentation rate (quite unexpected given the particle sizes that were used) so a variant  of this case was manually initialized from last state and left to run for a much longer physical time (100 s) using `maxCo 2.0` for faster execution. **CALCULATION DIVERGED, REDO!**
 
-#### Physical refinement phase
+## Physical refinement phase
 
 | Model | Takings |
 | ---- | ---- |
@@ -184,7 +105,7 @@ Solution with different cloud types
 - `MPPICCloud`
 - `collidingCloud`
 
-#### Sub-models
+## Sub-models
 
 For the [`PackingModel`](https://cpp.openfoam.org/v11/classFoam_1_1PackingModel.html)one needs to specify the [ParticleStressModel](https://cpp.openfoam.org/v11/classFoam_1_1ParticleStressModel.html) among the following:
 
@@ -199,22 +120,6 @@ For both  [`DampingModel`](https://cpp.openfoam.org/v11/classFoam_1_1DampingMode
 - [isotropic](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1isotropic.html)
 
 - [nonEquilibrium](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1nonEquilibrium.html)
-
-#### Post-processing features and To-do's
-
-- [ ] Compute fractional mass in system with respected to injected (extract from log files).
-- [ ] Work towards enabling `particleTracks` in `cloudFunctions`.
-- [ ] Ensure individual time-steps converged during solution (residuals get first value only).
-- [ ] Plots of data in `patchFlowRate(patch=outlet, cloud:massFlux)` files.
-- [ ] Process `lagrangian/cloud/patchPostProcessing1/*` (Julia script ongoing).
-- [ ] Explore [`solution`](https://cpp.openfoam.org/v11/classFoam_1_1cloudSolution.html#details) configuration.
-- [ ] Organize scripts as a single module and runners.
-- [ ] Download all related papers!
-- [ ] Create sedimentation in a box cases.
-
-## Non-isothermal models
-
-- `thermoCloud`
 
 ## References
 

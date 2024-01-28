@@ -34,3 +34,7 @@ coding practices through a *think-before-coding* approach.
 1. Navier-Stokes Equation
 1. Introduction to Finite Volume Method
 1. Fundamentals of Parallel Computing -->
+
+## OpenFOAM
+
+- [OpenFOAM](../../notes/OpenFOAM/)
