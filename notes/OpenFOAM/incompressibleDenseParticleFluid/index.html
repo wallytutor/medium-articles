@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+   <link rel="stylesheet" href="/medium-articles/libs/highlight/styles/github.min.css">
+   
+  <link rel="stylesheet" href="/medium-articles/css/franklin.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
+<link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
+<link rel="stylesheet" href="/medium-articles/css/celeste.min.css">
+<link rel="stylesheet" href="/medium-articles/css/custom.css">
+
+<link rel="icon" type="image/png" sizes="192x192" href="/medium-articles/assets/favicon.png">
+<link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
+
+
+   <title>Fundamental concepts</title>  
+</head>
+<body>
+  <header>
+<nav class="nav-main">
+  <ul>
+    <li class="logo"><a class="hvr-ripple-out" href="/medium-articles/">W</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/medium/">Medium Articles</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/transport-phenomena/">Transport Phenomena</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/julia-para-cientistas/">Julia para Cientistas</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/engenharia-de-reatores/">Engenharia de Reatores</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/bookmarks/">Links</a></li>
+  </ul>
+</nav>
+</header>
+
+
+<!-- Content appended here -->
+<div class="franklin-content"><p>In OpenFOAM v11 solver module <code>incompressibleDenseParticleFluid</code> provides approaches for setting up a flow interacting with particles. In this directory we discuss and assembly cases built using this solver to handle incompressible isothermal flows with fluid-particle interactions, including cases with dense packing of particles, such as packed beds or initialization of fluidized beds. </p>
+<h2 id="fundamental_concepts"><a href="#fundamental_concepts" class="header-anchor">Fundamental concepts</a></h2>
+<ul>
+<li><p><strong>Parcel</strong> is a computational particle unit that may be composed of several particles which are all identical sharing a state, which include velocity, size, temperature, etc. See <a href="https://doi.org/10.1016/j.ces.2010.08.032">O&#39;Rourke &#40;2010&#41;</a> for details.</p>
+</li>
+<li><p><strong>Cloud</strong> is the term OpenFOAM uses to describe particle flows. Here we will use both <code>MPPICCloud</code> and<code>collidingCloud</code>, other types being available for reacting or multiphase solvers, such as <code>thermoCloud</code>.</p>
+</li>
+</ul>
+<h2 id="boundary_fields"><a href="#boundary_fields" class="header-anchor">Boundary fields</a></h2>
+<p>Boundary fields in general are almost the same as any case in <em>pure fluid</em> simulations but transported quantities must be named by appending the name of the continuous phase specified in <code>constant/physicalProperties</code> as <code>continuousPhaseName &lt;phase&gt;</code>. To make it simple let&#39;s call this phase <code>air</code> in what follows. Notice that pressure file name remains unchanged since it is not really <em>transported</em> as you don&#39;t have an equation in the form of Reynolds transport theorem for it.</p>
+<p>That said, we have things as <code>k.air</code> and <code>U.air</code>.  The particularity here is that you must provide <code>phi</code> for all hydrodynamic solution variables &#40;such as <code>k.air</code>, <code>U.air</code>&#41; in outlets, what is implicit in single phase flow models. That means that an outlet for velocity should include something as</p>
+<pre><code class="language-C">outlet
+&#123;
+	type            pressureInletOutletVelocity;
+	phi             phi.air;
+	inletValue      uniform &#40;0 0 0&#41;;
+	value           uniform &#40;0 0 0&#41;;
+&#125;</code></pre>
+<h2 id="creating_a_cloud"><a href="#creating_a_cloud" class="header-anchor">Creating a cloud</a></h2>
+<p>The most complex file to set is <code>constant/cloudProperties</code>. Most default values in <code>solution</code> dictionary should be fine for typical gas-particle applications, but for phase interaction it is important to configure <code>coupled</code> as <code>true</code> so that drag forces are applied to the particles and conversely, particles disturb the fluid. We must also turn on <code>cellValueSourceCorrection</code>, which will correct cell values using latest transfer information. These elements as given in the following block &#40;you can check the full dictionary in the official OpenFOAM tutorials for other details&#41;.</p>
+<pre><code class="language-C">solution
+&#123;
+	coupled                   true;
+	transient                 yes;
+	cellValueSourceCorrection on;
+	maxCo                     0.7;
+
+	...
+&#125;</code></pre>
+<p>When using <code>collidingCloud</code> we enabled the use of <code>collisionModel pairCollision</code> and material properties can be set in detail in sub-dictionary <code>constantProperties</code>. Notice that this is computationally expensive, we will come back to this topic in specific examples using it. On the other hand, <code>MPPICCloud</code> makes use only of <code>patchInteractionModel localInteraction</code> for interaction with the environment and collisions between particles are not taken into account &#40;that is not completely true if you consider the packing effects that can be enabled as <em>collisions</em>&#41;. Again, it is better to go deeper in the case studies.</p>
+<p>The main models for setting up a particle simulation in <code>constant/cloudProperties</code>  are:</p>
+<ul>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1InjectionModel.html"><code>InjectionModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html"><code>ParticleForce</code></a></p>
+</li>
+</ul>
+<p>In the case of <code>MPPICCloud</code> focus is given in the following:</p>
+<ul>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1DampingModel.html"><code>DampingModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html"><code>IsotropyModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1PackingModel.html"><code>PackingModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1PatchInteractionModel.html"><code>PatchInteractionModel</code></a></p>
+</li>
+</ul>
+<p>In some particular situations the following models might be required:</p>
+<ul>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1DispersionModel.html"><code>DispersionModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1HeatTransferModel.html"><code>HeatTransferModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1StochasticCollisionModel.html"><code>StochasticCollisionModel</code></a></p>
+</li>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1SurfaceFilmModel.html"><code>SurfaceFilmModel</code></a></p>
+</li>
+</ul>
+<p>Notice that when dealing with <code>incompressibleDenseParticleFluid</code> the main <code>ParticleForce</code> models other than <code>gravity</code> are inherited by <a href="https://cpp.openfoam.org/v11/classFoam_1_1DenseDragForce.html"><code>DenseDragForce</code></a>.</p>
+<p>When working with <code>collidingCloud</code> the following is also needed:</p>
+<ul>
+<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1CollisionModel.html"><code>CollisionModel</code></a></p>
+</li>
+</ul>
+<h2 id="tips_and_reminders"><a href="#tips_and_reminders" class="header-anchor">Tips and reminders</a></h2>
+<ul>
+<li><p>It is a good idea to set <code>SOI</code> to a value higher than zero &#40;dimensioned to match the global time-scale of the problem&#41; so that flow is fully developed before particles arrive.</p>
+</li>
+<li><p>If it makes sense to do so, make parameter <code>U0</code> in the entries of <code>injectionModels</code> of <code>cloudProperties</code> identical to the velocity specified for the corresponding path. In most cases this applies, except when modeling a particle jet that originates from another source <em>outside</em> of the computational domain.</p>
+</li>
+<li><p>When working with a 2-D extruded mesh &#40;1-cell in thickness&#41;, the mass flow rate must be scaled by the width of the domain to keep consistency with what would be expected in 3-D.</p>
+</li>
+<li><p>After the start of injection, a <code>patchInteraction</code> is <a href="https://cpp.openfoam.org/v11/classFoam_1_1NoInteraction.html#details">required</a> otherwise the dummy class representing the setting <code>none</code> will generate an error.</p>
+</li>
+</ul>
+<h2 id="list_of_samples"><a href="#list_of_samples" class="header-anchor">List of samples</a></h2>
+<h3 id="gas-particle_flows"><a href="#gas-particle_flows" class="header-anchor">Gas-particle flows</a></h3>
+<ul>
+<li><p><a href="sedimentationBox">sedimentationBox</a>:</p>
+</li>
+<li><p><a href="horizontalMixer">horizontalMixer</a>:</p>
+</li>
+</ul>
+<h3 id="liquid-particle_flows"><a href="#liquid-particle_flows" class="header-anchor">Liquid-particle flows</a></h3>
+<ul>
+<li><p><em>Upcoming...</em></p>
+</li>
+</ul>
+<div class="page-foot">
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
+    Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    
+    
+        <script src="/medium-articles/libs/highlight/highlight.min.js"></script>
+<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
+
+    
+  </body>
+</html>

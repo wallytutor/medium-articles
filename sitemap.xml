@@ -44,19 +44,13 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/General/index.html</loc>
+    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/incompressibleDenseParticleFluid/sedimentationBox/index.html</loc>
     <lastmod>2024-01-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>https://wallytutor.github.io/medium-articles/content/julia-para-cientistas/001-primeiros-passos/index.html</loc>
-    <lastmod>2024-01-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/README/index.html</loc>
     <lastmod>2024-01-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -104,6 +98,12 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/incompressibleDenseParticleFluid/index.html</loc>
+    <lastmod>2024-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>https://wallytutor.github.io/medium-articles/content/bookmarks/index.html</loc>
     <lastmod>2024-01-28</lastmod>
     <changefreq>monthly</changefreq>
@@ -129,6 +129,12 @@
 </url>
 <url>
     <loc>https://wallytutor.github.io/medium-articles/content/engenharia-de-reatores/index.html</loc>
+    <lastmod>2024-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/index.html</loc>
     <lastmod>2024-01-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
