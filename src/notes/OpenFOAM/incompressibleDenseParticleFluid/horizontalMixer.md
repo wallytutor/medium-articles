@@ -71,17 +71,11 @@ Hypotheses testing cases:
 
 Solution with different drag models:
 
-- [012](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/012) :  [`sphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1SphereDragForce.html)
-
-![Case 012](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-012.gif?raw=true)
-
-- [013](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/013) :  [`WenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1WenYuDragForce.html) (used in `injectionChannel`) [implemented](https://cpp.openfoam.org/v11/WenYuDragForce_8C_source.html) from equation (2.12) of Gidaspow (1994).
-
-![Case 013](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-013.gif?raw=true)
-
-- [014](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/014) :  [`ErgunWenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1ErgunWenYuDragForce.html) (used in `Goldschmidt`, `cyclone`, and `column`) [implemented](https://cpp.openfoam.org/v11/ErgunWenYuDragForce_8C_source.html) from equation (5.11) of Gidaspow (1994).
-
-![Case 014](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-014.gif?raw=true)
+| Model | Results |
+| ---- | ---- |
+| [`sphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1SphereDragForce.html) | ![Case 012](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-012.gif?raw=true) [012](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/012) |
+| [`WenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1WenYuDragForce.html) (used in `injectionChannel`) [implemented](https://cpp.openfoam.org/v11/WenYuDragForce_8C_source.html) from equation (2.12) of Gidaspow (1994). | ![Case 013](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-013.gif?raw=true) [013](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/013)  |
+| [`ErgunWenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1ErgunWenYuDragForce.html) (used in `Goldschmidt`, `cyclone`, and `column`) [implemented](https://cpp.openfoam.org/v11/ErgunWenYuDragForce_8C_source.html) from equation (5.11) of Gidaspow (1994). | ![Case 014](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-014.gif?raw=true) [014](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/014) |
 
 Other drag models:
 
