@@ -75,6 +75,10 @@ When working with `collidingCloud` the following is also needed:
 
 - After the start of injection, a `patchInteraction` is [required](https://cpp.openfoam.org/v11/classFoam_1_1NoInteraction.html#details) otherwise the dummy class representing the setting `none` will generate an error.
 
+## Problems found
+
+- When working with non-constant particle size distribution (tested with `tabulatedDensity`) and `uniformParcelSize nParticle`, if `nParticle` is not `1` no particle mass inlet was possible. Probably the implementation of how to inject multiple particles per parcel is not implemented in this case (with sampling). Update: after some investigation and variants it would not work even with one particle per parcel. It seems related to the threshold of particle volume fraction per cell (set by `alphaMin` - to be confirmed) since for coarser meshes the it stopped injecting particles.
+
 ## List of samples
 
 ### Gas-particle flows
