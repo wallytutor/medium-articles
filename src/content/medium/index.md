@@ -99,5 +99,18 @@ showall = true
     </td>
   </tr>
 
+  <tr>
+    <td>8</td>
+    <td>
+      <!-- <a href="" target="_blank">Medium</a> -->
+    </td>
+    <td>
+      <a href="08-PSR-control-MPC-in-Python" target="_blank">
+        Chemical Engineering Model Predictive Control (Jupyter notebook)
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
+    </td>
+  </tr>
+
 </table>
 ~~~
