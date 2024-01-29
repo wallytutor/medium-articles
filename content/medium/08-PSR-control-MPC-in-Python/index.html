@@ -48,6 +48,8 @@ n_t\dot{x}_i = \dot{q}_i - \dot{q}_t x_i + \dot{n}_{gen,i}
 \]
 <p>Here \(\dot{n}_{gen,B}\) is zero for \(B\) and is computed as a first order kinetic term \(\dot{n}_{gen,A}=-\dot{n}_{gen,C}=-k_1 x_A\) for other species.</p>
 <p>To create the optimization routine we will make use of <code>SX</code> symbolic class of <code>casadi</code>. That will be used to compose right-hand side derivative <code>Function</code> objects for later integrating the problem. Optimization of controls is done though solver <a href="https://github.com/coin-or/Ipopt">Ipopt</a> which can be accessed though interface <code>nlpsol</code>. The reminder of imports are utilities that will be invoked at the right moment.</p>
+<pre><code class="language-python"># &#37;pip install casadi
+# &#37;pip install matplotlib</code></pre>
 <pre><code class="language-python">from casadi import SX
 from casadi import Function
 from casadi import nlpsol

@@ -34,6 +34,8 @@ Here we will need a few tools:
 - `SpecialPolynomials` to compute some Hermite polynomials without coding them.
 
 Backend `pyplot` has been chosen for graphics rendering.
+
+https://docs.makie.org/stable/reference/plots/surface/
 """
 
 # ╔═╡ d4bc0825-9b0d-4e88-8e7d-451d845a838e
