@@ -83,8 +83,8 @@ When working with `collidingCloud` the following is also needed:
 
 ### Gas-particle flows
 
-- [sedimentationBox](sedimentationBox.md):
-- [horizontalMixer](horizontalMixer.md):
+- [sedimentationBox](sedimentationBox):
+- [horizontalMixer](horizontalMixer):
 
 ### Liquid-particle flows
 

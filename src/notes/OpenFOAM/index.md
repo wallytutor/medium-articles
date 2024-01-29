@@ -5,4 +5,4 @@
 
 ## Study cases
 
-- [incompressibleDenseParticleFluid](incompressibleDenseParticleFluid/index.md)
+- [incompressibleDenseParticleFluid](incompressibleDenseParticleFluid/index)
