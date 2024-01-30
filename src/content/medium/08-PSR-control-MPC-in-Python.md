@@ -38,8 +38,9 @@ Here $\dot{n}_{gen,B}$ is zero for $B$ and is computed as a first order kinetic 
 To create the optimization routine we will make use of `SX` symbolic class of `casadi`. That will be used to compose right-hand side derivative `Function` objects for later integrating the problem. Optimization of controls is done though solver [Ipopt](https://github.com/coin-or/Ipopt) which can be accessed though interface `nlpsol`. The reminder of imports are utilities that will be invoked at the right moment.
 
 ```python
-# %pip install casadi
-# %pip install matplotlib
+# casadi==3.6.4
+# matplotlib==3.8.2
+# numpy==1.26.3
 ```
 
 ```python
