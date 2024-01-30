@@ -79,10 +79,21 @@ When working with `collidingCloud` the following is also needed:
 
 - When working with non-constant particle size distribution (tested with `tabulatedDensity`) and `uniformParcelSize nParticle`, if `nParticle` is not `1` no particle mass inlet was possible. Probably the implementation of how to inject multiple particles per parcel is not implemented in this case (with sampling). Update: after some investigation and variants it would not work even with one particle per parcel. It seems related to the threshold of particle volume fraction per cell (set by `alphaMin` - to be confirmed) since for coarser meshes the it stopped injecting particles.
 
+## Verification
+
+Using the base package provided [here](https://github.com/wallytutor/OpenFOAM) we can verify the computation of number of parcels per second of sample case `injectionChannel`. Notice that the value of `mdot` has been reversed engineered so that it matches the expected value.
+
+```
+import OpenFOAM as OF
+
+OF.parcels_per_second(; mdot = 0.2, rhop = 1000.0, diam = 650.0e-06, nParticle = 1)
+# Output: 1390885
+```
 ## List of samples
 
 ### Gas-particle flows
 
+- [dustCollector](dustCollector):
 - [sedimentationBox](sedimentationBox):
 - [horizontalMixer](horizontalMixer):
 
