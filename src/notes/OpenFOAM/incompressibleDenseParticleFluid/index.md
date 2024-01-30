@@ -1,4 +1,6 @@
-In OpenFOAM v11 solver module `incompressibleDenseParticleFluid` provides approaches for setting up a flow interacting with particles. In this directory we discuss and assembly cases built using this solver to handle incompressible isothermal flows with fluid-particle interactions, including cases with dense packing of particles, such as packed beds or initialization of fluidized beds. 
+In OpenFOAM v11 solver module `incompressibleDenseParticleFluid` provides approaches for setting up a transient flow interacting with particles.
+
+In this directory we discuss and assembly cases built using this solver to handle incompressible isothermal flows with fluid-particle interactions, including cases with dense packing of particles, such as packed beds or initialization of fluidized beds. 
 
 ## Fundamental concepts
 
