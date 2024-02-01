@@ -123,13 +123,16 @@
 OF.parcels_per_second&#40;; mdot &#61; 0.2, rhop &#61; 1000.0, diam &#61; 650.0e-06, nParticle &#61; 1&#41;
 # Output: 1390885</code></pre>
 <h2 id="list_of_samples"><a href="#list_of_samples" class="header-anchor">List of samples</a></h2>
+<p>The lists below are provided in a relative order of complexity of model setup &#40;options, post-processing, etc&#41;. That might be not the case with respect to the physics involved.</p>
 <h3 id="gas-particle_flows"><a href="#gas-particle_flows" class="header-anchor">Gas-particle flows</a></h3>
 <ul>
-<li><p><a href="dustCollector">dustCollector</a>:</p>
+<li><p><a href="sedimentationBox">sedimentationBox</a>: particles drop-off in a steady closed box.</p>
 </li>
-<li><p><a href="sedimentationBox">sedimentationBox</a>:</p>
+<li><p><a href="injectionChannel">injectionChannel</a>: particles injection in a channel with outlet flow rate &#40;fan&#41;.</p>
 </li>
-<li><p><a href="horizontalMixer">horizontalMixer</a>:</p>
+<li><p><a href="horizontalMixer">horizontalMixer</a>: a simple mixer for testing several particle models.</p>
+</li>
+<li><p><a href="dustCollector">dustCollector</a>: study case of the role of deflectors over particle flows.</p>
 </li>
 </ul>
 <h3 id="liquid-particle_flows"><a href="#liquid-particle_flows" class="header-anchor">Liquid-particle flows</a></h3>
