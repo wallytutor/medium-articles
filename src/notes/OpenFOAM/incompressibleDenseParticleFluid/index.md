@@ -93,11 +93,13 @@ OF.parcels_per_second(; mdot = 0.2, rhop = 1000.0, diam = 650.0e-06, nParticle =
 ```
 ## List of samples
 
+The lists below are provided in a relative order of complexity of model setup (options, post-processing, etc). That might be not the case with respect to the physics involved.
 ### Gas-particle flows
 
-- [dustCollector](dustCollector):
-- [sedimentationBox](sedimentationBox):
-- [horizontalMixer](horizontalMixer):
+- [sedimentationBox](sedimentationBox): particles drop-off in a steady closed box.
+- [injectionChannel](injectionChannel): particles injection in a channel with outlet flow rate (fan).
+- [horizontalMixer](horizontalMixer): a simple mixer for testing several particle models.
+- [dustCollector](dustCollector): study case of the role of deflectors over particle flows.
 
 ### Liquid-particle flows
 

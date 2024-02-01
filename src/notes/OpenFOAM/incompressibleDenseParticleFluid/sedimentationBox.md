@@ -1,0 +1,1 @@
+The goal of this study is to verify the role of some drag models over particle drop dynamics. Other than the drag models, particle size and 
