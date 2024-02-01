@@ -118,6 +118,18 @@ showall = true
         <img src="https://julialang.org/assets/infra/logo.svg" alt="logo" />
     </td>
     <td>
+      <a href="https://jverzani.github.io/Mustache.jl/dev/" target="_blank">
+          Mustache.jl
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
+    </td>
+  </tr>
+
+  <tr>
+    <td width="64px" height="64px" style="vertical-align: middle;">
+        <img src="https://julialang.org/assets/infra/logo.svg" alt="logo" />
+    </td>
+    <td>
       <a href="https://julialang.github.io/PackageCompiler.jl/stable/index.html" target="_blank">
           PackageCompiler.jl
       </a>
