@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+   <link rel="stylesheet" href="/medium-articles/libs/highlight/styles/github.min.css">
+   
+  <link rel="stylesheet" href="/medium-articles/css/franklin.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
+<link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
+<link rel="stylesheet" href="/medium-articles/css/celeste.min.css">
+<link rel="stylesheet" href="/medium-articles/css/custom.css">
+
+<link rel="icon" type="image/png" sizes="192x192" href="/medium-articles/assets/favicon.png">
+<link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
+
+
+   <title></title>  
+</head>
+<body>
+  <header>
+<nav class="nav-main">
+  <ul>
+    <li class="logo"><a class="hvr-ripple-out" href="/medium-articles/">W</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/medium/">Medium Articles</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/transport-phenomena/">Transport Phenomena</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/julia-para-cientistas/">Julia para Cientistas</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/engenharia-de-reatores/">Engenharia de Reatores</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/bookmarks/">Links</a></li>
+  </ul>
+</nav>
+</header>
+
+
+<!-- Content appended here -->
+<div class="franklin-content"><pre><code class="language-python">&#37;matplotlib inline</code></pre>
+<pre><code class="language-python">from casadi import SX
+from casadi import Function
+from casadi import nlpsol
+from casadi import vertcat
+import numpy as np
+import matplotlib.pyplot as plt</code></pre>
+<pre><code class="language-python">x &#61; SX.sym&#40;&quot;x&quot;, 3&#41;
+x</code></pre>
+<p>SX&#40;&#91;x_0, x_1, x_2&#93;&#41;</p>
+<pre><code class="language-python">ndot_tot &#61; SX.sym&#40;&quot;ndot_tot&quot;&#41;
+
+ndot &#61; SX.sym&#40;&quot;ndot&quot;, 3&#41;
+ndot&#91;1&#93; &#61; ndot_tot - ndot&#91;0&#93;
+ndot&#91;2&#93; &#61; 0
+
+ndot</code></pre>
+<p>SX&#40;&#91;ndot_0, &#40;ndot_tot-ndot_0&#41;, 0&#93;&#41;</p>
+<pre><code class="language-python">k &#61; SX.sym&#40;&quot;k&quot;&#41;
+rate &#61; k * x&#91;0&#93;
+rate</code></pre>
+<p>SX&#40;&#40;k*x_0&#41;&#41;</p>
+<pre><code class="language-python">ndot_gen &#61; vertcat&#40;-rate, 0.0, rate&#41;
+ndot_gen</code></pre>
+<p>SX&#40;@1&#61;&#40;k*x_0&#41;, &#91;&#40;-@1&#41;, 0, @1&#93;&#41;</p>
+<pre><code class="language-python">n_tot &#61; SX.sym&#40;&quot;n_tot&quot;&#41;
+
+xdot &#61; &#40;ndot - ndot_tot * x &#43; ndot_gen&#41; / n_tot
+xdot</code></pre>
+<p>SX&#40;@1&#61;&#40;k*x_0&#41;, &#91;&#40;&#40;&#40;ndot_0-&#40;ndot_tot*x_0&#41;&#41;-@1&#41;/n_tot&#41;, &#40;&#40;&#40;ndot_tot-ndot_0&#41;-&#40;ndot_tot*x_1&#41;&#41;/n_tot&#41;, &#40;&#40;@1-&#40;ndot_tot*x_2&#41;&#41;/n_tot&#41;&#93;&#41;</p>
+<pre><code class="language-python">p &#61; &#91;ndot&#91;0&#93;, ndot_tot, n_tot, k&#93;
+F_xdot &#61; Function&#40;&quot;F_xdot&quot;, &#91;x, *p&#93;, &#91;xdot&#93;&#41;</code></pre>
+<pre><code class="language-python">F_xdot</code></pre>
+<p>Function&#40;F_xdot:&#40;i0&#91;3&#93;,i1,i2,i3,i4&#41;-&gt;&#40;o0&#91;3&#93;&#41; SXFunction&#41;</p>
+<pre><code class="language-python">F_xdot&#40;&#91;0.5, 0.5, 0.0&#93;, 10.0, 3.0, 1000.0, 10.0&#41;</code></pre>
+<p>DM&#40;&#91;0.0035, -0.0085, 0.005&#93;&#41;</p>
+<pre><code class="language-python">Np &#61; 100
+tau &#61; 15.0
+
+Q &#61; 1.0
+R &#61; 0.05
+S &#61; 100.0
+
+k_num &#61; 10.0
+n_tot_num &#61; 1000.0
+ndot_tot_num &#61; 3.0
+
+x_A_max &#61; 0.85
+ndot0_A &#61; 0.5 * ndot_tot_num</code></pre>
+<pre><code class="language-python">J &#61; 0.0
+g &#61; &#91;&#93;</code></pre>
+<pre><code class="language-python">xs_C &#61; SX.sym&#40;&quot;xs_C&quot;, Np&#43;1&#41;</code></pre>
+<pre><code class="language-python">lbx &#61; &#91;0.0&#93;
+ubx &#61; &#91;x_A_max*ndot_tot_num&#93;
+v_qdot_A &#61; &#91;SX.sym&#40;f&quot;v_dot_A_0&quot;&#41;&#93;</code></pre>
+
+<div class="page-foot">
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
+    Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    
+    
+        <script src="/medium-articles/libs/highlight/highlight.min.js"></script>
+<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
+
+    
+  </body>
+</html>
