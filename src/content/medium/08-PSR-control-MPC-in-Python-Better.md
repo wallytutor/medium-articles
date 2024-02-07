@@ -17,15 +17,6 @@ import matplotlib.pyplot as plt
 x = SX.sym("x", 3)
 x
 ```
-
-
-
-
-    SX([x_0, x_1, x_2])
-
-
-
-
 ```python
 ndot_tot = SX.sym("ndot_tot")
 
@@ -35,57 +26,21 @@ ndot[2] = 0
 
 ndot
 ```
-
-
-
-
-    SX([ndot_0, (ndot_tot-ndot_0), 0])
-
-
-
-
 ```python
 k = SX.sym("k")
 rate = k * x[0]
 rate
 ```
-
-
-
-
-    SX((k*x_0))
-
-
-
-
 ```python
 ndot_gen = vertcat(-rate, 0.0, rate)
 ndot_gen
 ```
-
-
-
-
-    SX(@1=(k*x_0), [(-@1), 0, @1])
-
-
-
-
 ```python
 n_tot = SX.sym("n_tot")
 
 xdot = (ndot - ndot_tot * x + ndot_gen) / n_tot
 xdot
 ```
-
-
-
-
-    SX(@1=(k*x_0), [(((ndot_0-(ndot_tot*x_0))-@1)/n_tot), (((ndot_tot-ndot_0)-(ndot_tot*x_1))/n_tot), ((@1-(ndot_tot*x_2))/n_tot)])
-
-
-
-
 ```python
 p = [ndot[0], ndot_tot, n_tot, k]
 F_xdot = Function("F_xdot", [x, *p], [xdot])
@@ -95,27 +50,9 @@ F_xdot = Function("F_xdot", [x, *p], [xdot])
 ```python
 F_xdot
 ```
-
-
-
-
-    Function(F_xdot:(i0[3],i1,i2,i3,i4)->(o0[3]) SXFunction)
-
-
-
-
 ```python
 F_xdot([0.5, 0.5, 0.0], 10.0, 3.0, 1000.0, 10.0)
 ```
-
-
-
-
-    DM([0.0035, -0.0085, 0.005])
-
-
-
-
 ```python
 Np = 100
 tau = 15.0
@@ -152,5 +89,20 @@ v_qdot_A = [SX.sym(f"v_dot_A_0")]
 
 
 ```python
+# for ts in range(1, Np+1):
+#     v_qdot_A_ts = SX.sym(f"v_dot_A_{ts}")
+#     v_qdot_A.append(v_qdot_A_ts)
+    
+#     lbx.append(0.0)
+#     ubx.append(x_A_max*qdot_t)
 
+#     xn = vertcat(xt_A, xt_B, xt_C)
+#     pn = v_qdot_A_ts
+        
+#     xt_A = xt_A + tau * F_xdot_A(xn, pn)
+#     xt_B = xt_B + tau * F_xdot_B(xn, pn)
+#     xt_C = xt_C + tau * F_xdot_C(xn, pn)
+    
+#     J += Q * pow(xt_C - xs_C[ts], 2) +\
+#          R * pow(v_qdot_A_ts - v_qdot_A[ts-1], 2)
 ```
