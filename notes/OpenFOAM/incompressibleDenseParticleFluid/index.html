@@ -40,6 +40,8 @@
 <ul>
 <li><p><strong>Parcel</strong> is a computational particle unit that may be composed of several particles which are all identical sharing a state, which include velocity, size, temperature, etc. See <a href="https://doi.org/10.1016/j.ces.2010.08.032">O&#39;Rourke &#40;2010&#41;</a> for details.</p>
 </li>
+</ul>
+<ul>
 <li><p><strong>Cloud</strong> is the term OpenFOAM uses to describe particle flows. Here we will use both <code>MPPICCloud</code> and<code>collidingCloud</code>, other types being available for reacting or multiphase solvers, such as <code>thermoCloud</code>.</p>
 </li>
 </ul>
@@ -104,10 +106,16 @@
 <ul>
 <li><p>It is a good idea to set <code>SOI</code> to a value higher than zero &#40;dimensioned to match the global time-scale of the problem&#41; so that flow is fully developed before particles arrive.</p>
 </li>
+</ul>
+<ul>
 <li><p>If it makes sense to do so, make parameter <code>U0</code> in the entries of <code>injectionModels</code> of <code>cloudProperties</code> identical to the velocity specified for the corresponding path. In most cases this applies, except when modeling a particle jet that originates from another source <em>outside</em> of the computational domain.</p>
 </li>
+</ul>
+<ul>
 <li><p>When working with a 2-D extruded mesh &#40;1-cell in thickness&#41;, the mass flow rate must be scaled by the width of the domain to keep consistency with what would be expected in 3-D.</p>
 </li>
+</ul>
+<ul>
 <li><p>After the start of injection, a <code>patchInteraction</code> is <a href="https://cpp.openfoam.org/v11/classFoam_1_1NoInteraction.html#details">required</a> otherwise the dummy class representing the setting <code>none</code> will generate an error.</p>
 </li>
 </ul>

@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="/medium-articles/libs/katex/katex.min.css">
      
-   <link rel="stylesheet" href="/medium-articles/libs/highlight/styles/github.min.css">
-   
+  
   <link rel="stylesheet" href="/medium-articles/css/franklin.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
 <link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
@@ -36,13 +35,13 @@
 
 <!-- Content appended here -->
 <div class="franklin-content">
-<h1>Julia para Cientistas</h1>
+<h1 id="julia_para_cientistas"><a href="#julia_para_cientistas" class="header-anchor">Julia para Cientistas</a></h1>
 <p>Julia <em>from zero to hero</em> com uma abordagem para computação científica.</p>
 <p>Antes de entrar realmente nos tópicos de estudo listados abaixo, vamos falar um pouco sobre alguns elementos básicos para se seguir a série em relação a linguagem de programação <a href="https://julialang.org/">Julia</a>. Os conteúdos aqui apresentados são uma extensão daqueles providos pela <a href="https://juliaacademy.com/">JuliaAcademy</a> em seu <a href="https://github.com/JuliaAcademy/Introduction-to-Julia">curso introdutório</a>. O objetivo desta extensão é apresentar alguns elementos suplementares para a prática de computação científica. A temática de gráficos em Julia, será abordada em um tutorial distinto do curso no qual nos baseamos dada a necessidade de ir um pouco além na qualidade gráfica para publicações em <em>journals</em>.</p>
 <p>Julia é uma linguagem sintaticamente similar à <a href="https://www.python.org/">Python</a> mas o estilo de programação tipicamente adotado tende a ser procedural com uso de estruturas e métodos para processar dados contidos nestas. Esta nova linguagem publicada pela primeira vez em 2012 vem ganhando grante <em>momentum</em> e uma comunidade bastante interessante na sua diversidade científica. Após alguns anos hesitando em me engajar no seu uso para aplicações em pesquisa em desenvolvimento, em 2023 fui convencido que é chegada hora de transferir parte dos estudos em Julia e então adaptar todos os conteúdos que produzo nesta linguagem.</p>
 <p>Recomenda-se o estudo do presente tutorial de forma interativa em uma longa seção de aproximadamente 4 horas de estudo. Após este primeiro contato, os tutorials mais complexos que se seguem se tornarão acessíveis mesmo para aqueles que estão tendo seu primeiro contato com computação. Este tutorial pode ao longo do estudo ser consultado para clarificar elementos da linguagem. Uma vez que se encontre confortável com o conteúdo aqui apresentado, recomenda-se estudar o <a href="https://docs.julialang.org/en/v1/manual/getting-started/">manual</a> da linguagem, o qual apresenta detalhes omitidos nesta introdução almejada para um primeiro contato.</p>
 <p>Julia possui um largo ecossistema de pacotes implementado uma vasta gama de funcionalidades. Para conhecer mais não deixe de visitar <a href="https://juliapackages.com/">Julia Packages</a>.</p>
-<h2>Conteúdos</h2>
+<h2 id="conteúdos"><a href="#conteúdos" class="header-anchor">Conteúdos</a></h2>
 <ol>
 <li><p><a href="001-primeiros-passos">Primeiros Passos</a></p>
 </li>
@@ -61,21 +60,26 @@
 <ol>
 <li><p>Ler sobre <em>ciência colaborativa</em> abaixo para se familiarizar com alguns elementos que vamos abordar no que se segue.</p>
 </li>
+</ol>
+<ol>
 <li><p><a href="https://julialang.org/downloads/">Instalar Julia</a> na versão estável para seu sistema operacional.</p>
 </li>
+</ol>
+<ol>
 <li><p><a href="https://github.com/fonsp/Pluto.jl">Instalar Pluto</a> para visualizar e editar os notebooks do curso.</p>
 </li>
+</ol>
+<ol>
 <li><p>Clonar este repositório com todos os materiais usando a seguinte ordem de prioridade:</p>
-<ul>
-<li><p>Usando Git à través da linha de comando, forma recomendada com <code>git clone https://github.com/wallytutor/medium-articles.git</code></p>
-</li>
-<li><p>Com a interface gráfica de <a href="https://desktop.github.com/">GitHub Desktop</a></p>
-</li>
-<li><p>Usando o botão de <a href="https://github.com/DryTooling/DryTooling.jl/archive/refs/heads/main.zip">Download</a></p>
-</li>
-</ul>
 </li>
 </ol>
+<p>- Usando Git à través da linha de comando, forma recomendada com <code>git clone
+      https://github.com/wallytutor/medium-articles.git</code>
+
+- Com a interface gráfica de &#91;GitHub Desktop&#93;&#40;https://desktop.github.com/&#41;
+
+- Usando o botão de
+  &#91;Download&#93;&#40;https://github.com/DryTooling/DryTooling.jl/archive/refs/heads/main.zip&#41;</p>
 <p>Caso a última opção de download tenha sido a sua escolha, observe que o arquivo <code>.zip</code> não contem os elementos de <em>repositório git</em> para controle de versão, implicando que as suas modificações e notas tomadas deverão ser geridas localmente, o que não é recomendável. Para estudantes ainda não familiarizados com <em>git</em>, a opção de utilizar GitHub Desktop é a mais apropriada.</p>
 <h2 id="ciência_colaborativa"><a href="#ciência_colaborativa" class="header-anchor">Ciência colaborativa</a></h2>
 <p>Uma dificuldade recorrente encontrada em projetos científicos contendo uma componente numérica é o despreparo dos colaboradores para a gestão de dados e documentos. Essa dificuldade não é somente técnica, mas frequentemente a origem de discórdias nos projetos.</p>
@@ -141,10 +145,6 @@
 <script>renderMathInElement(document.body)</script>
 
     
-    
-        <script src="/medium-articles/libs/highlight/highlight.min.js"></script>
-<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
-
     
   </body>
 </html>

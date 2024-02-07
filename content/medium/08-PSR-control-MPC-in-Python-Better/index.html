@@ -43,7 +43,6 @@ import numpy as np
 import matplotlib.pyplot as plt</code></pre>
 <pre><code class="language-python">x &#61; SX.sym&#40;&quot;x&quot;, 3&#41;
 x</code></pre>
-<p>SX&#40;&#91;x_0, x_1, x_2&#93;&#41;</p>
 <pre><code class="language-python">ndot_tot &#61; SX.sym&#40;&quot;ndot_tot&quot;&#41;
 
 ndot &#61; SX.sym&#40;&quot;ndot&quot;, 3&#41;
@@ -51,25 +50,19 @@ ndot&#91;1&#93; &#61; ndot_tot - ndot&#91;0&#93;
 ndot&#91;2&#93; &#61; 0
 
 ndot</code></pre>
-<p>SX&#40;&#91;ndot_0, &#40;ndot_tot-ndot_0&#41;, 0&#93;&#41;</p>
 <pre><code class="language-python">k &#61; SX.sym&#40;&quot;k&quot;&#41;
 rate &#61; k * x&#91;0&#93;
 rate</code></pre>
-<p>SX&#40;&#40;k*x_0&#41;&#41;</p>
 <pre><code class="language-python">ndot_gen &#61; vertcat&#40;-rate, 0.0, rate&#41;
 ndot_gen</code></pre>
-<p>SX&#40;@1&#61;&#40;k*x_0&#41;, &#91;&#40;-@1&#41;, 0, @1&#93;&#41;</p>
 <pre><code class="language-python">n_tot &#61; SX.sym&#40;&quot;n_tot&quot;&#41;
 
 xdot &#61; &#40;ndot - ndot_tot * x &#43; ndot_gen&#41; / n_tot
 xdot</code></pre>
-<p>SX&#40;@1&#61;&#40;k*x_0&#41;, &#91;&#40;&#40;&#40;ndot_0-&#40;ndot_tot*x_0&#41;&#41;-@1&#41;/n_tot&#41;, &#40;&#40;&#40;ndot_tot-ndot_0&#41;-&#40;ndot_tot*x_1&#41;&#41;/n_tot&#41;, &#40;&#40;@1-&#40;ndot_tot*x_2&#41;&#41;/n_tot&#41;&#93;&#41;</p>
 <pre><code class="language-python">p &#61; &#91;ndot&#91;0&#93;, ndot_tot, n_tot, k&#93;
 F_xdot &#61; Function&#40;&quot;F_xdot&quot;, &#91;x, *p&#93;, &#91;xdot&#93;&#41;</code></pre>
 <pre><code class="language-python">F_xdot</code></pre>
-<p>Function&#40;F_xdot:&#40;i0&#91;3&#93;,i1,i2,i3,i4&#41;-&gt;&#40;o0&#91;3&#93;&#41; SXFunction&#41;</p>
 <pre><code class="language-python">F_xdot&#40;&#91;0.5, 0.5, 0.0&#93;, 10.0, 3.0, 1000.0, 10.0&#41;</code></pre>
-<p>DM&#40;&#91;0.0035, -0.0085, 0.005&#93;&#41;</p>
 <pre><code class="language-python">Np &#61; 100
 tau &#61; 15.0
 
@@ -89,7 +82,22 @@ g &#61; &#91;&#93;</code></pre>
 <pre><code class="language-python">lbx &#61; &#91;0.0&#93;
 ubx &#61; &#91;x_A_max*ndot_tot_num&#93;
 v_qdot_A &#61; &#91;SX.sym&#40;f&quot;v_dot_A_0&quot;&#41;&#93;</code></pre>
+<pre><code class="language-python"># for ts in range&#40;1, Np&#43;1&#41;:
+#     v_qdot_A_ts &#61; SX.sym&#40;f&quot;v_dot_A_&#123;ts&#125;&quot;&#41;
+#     v_qdot_A.append&#40;v_qdot_A_ts&#41;
+    
+#     lbx.append&#40;0.0&#41;
+#     ubx.append&#40;x_A_max*qdot_t&#41;
 
+#     xn &#61; vertcat&#40;xt_A, xt_B, xt_C&#41;
+#     pn &#61; v_qdot_A_ts
+        
+#     xt_A &#61; xt_A &#43; tau * F_xdot_A&#40;xn, pn&#41;
+#     xt_B &#61; xt_B &#43; tau * F_xdot_B&#40;xn, pn&#41;
+#     xt_C &#61; xt_C &#43; tau * F_xdot_C&#40;xn, pn&#41;
+    
+#     J &#43;&#61; Q * pow&#40;xt_C - xs_C&#91;ts&#93;, 2&#41; &#43;\
+#          R * pow&#40;v_qdot_A_ts - v_qdot_A&#91;ts-1&#93;, 2&#41;</code></pre>
 <div class="page-foot">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
     Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.

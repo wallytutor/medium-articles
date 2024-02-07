@@ -63,8 +63,12 @@ class Params:
 <ul>
 <li><p>We start with <a href="https://scipy.org/">SciPy</a>. If you have already done some numerical methods in Python, you certainly know this package. It is one of the main players in the Python ecosystem and it is broad in the scope of covered algorithms. There you find optimization, interpolation, integration, signal processing, and much more. Although it provides <a href="https://docs.scipy.org/doc/scipy/tutorial/optimize.html#constrained-minimization-of-multivariate-scalar-functions-minimize">some constrained optimization</a> possibilities, it is a quite cumbersome interface, and I would stick to it only in simple cases. Here we use version 1.10.1.</p>
 </li>
+</ul>
+<ul>
 <li><p>The second package we will explore is <a href="https://web.casadi.org/">CasADi</a>. If you are not in the field of model predictive controls, you have never heard of it. This package does the job of computing the <a href="https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant">jacobian matrix</a> of your problem for you. Why is that great? Nonlinear root-finding is based on some sort of gradient descent, and routines need to compute finite difference derivatives to find the progress direction. This is <em>VERY</em> error-prone, and following the gradient computed from an analytical Jacobian introduces great robustness. Yes, you could provide SciPy with the problem Jacobian, but good luck deriving and implementing it for complex cases. Version 3.5.6 was employed here.</p>
 </li>
+</ul>
+<ul>
 <li><p>To wrap-up we introduce <a href="http://www.pyomo.org/">Pyomo</a>. This package has a broader audience than CasADi but also a steeper learning curve. Pyomo makes things formal from a mathematical standpoint. Let me elaborate. Pyomo allows you to declare variables and parameters with given domains, boundaries, initialization, etc., using a proper terminology. Also, it supports inequality constraints, what is harder to do with CasADi. If you are into Operational Research, this is the tool to go. We ran the script with version 6.4.1.</p>
 </li>
 </ul>
