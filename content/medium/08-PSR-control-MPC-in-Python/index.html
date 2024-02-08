@@ -35,7 +35,7 @@
 
 
 <!-- Content appended here -->
-<div class="franklin-content"><p><hr /> jupyter:   jupytext:     formats: ipynb,md     text<em>representation:       extension: .md       format</em>name: markdown       format<em>version: &#39;1.3&#39;       jupytext</em>version: 1.16.1   kernelspec:     display_name: Python 3 &#40;ipykernel&#41;     language: python     name: python3 –-</p>
+<div class="franklin-content"><p><hr /> jupyter:   jupytext:     formats: ipynb,md     text<em>representation:       extension: .md       format</em>name: markdown       format<em>version: &#39;1.3&#39;       jupytext</em>version: 1.15.2   kernelspec:     display_name: Python 3 &#40;ipykernel&#41;     language: python     name: python3 –-</p>
 <h1 id="teaching_model_predictive_control_with_a_stirred_reactor_example"><a href="#teaching_model_predictive_control_with_a_stirred_reactor_example" class="header-anchor">Teaching Model Predictive Control with a Stirred Reactor Example</a></h1>
 <p>In this study we implement a model predictive control &#40;MPC&#41; for a dummy chemical reactor. This notebook guides you through the different steps of the implementation using the powerful package <a href="https://web.casadi.org/">CasADi</a> in its Python programming interface. Our goal is to provide controlled concentration output, which may be required to change in time, <em>i.e.</em> a costumer order required different concentratio, in a continuous stirred tank reactor. In our dummy production, reagent \(A\) is fed to the system with a carrier \(B\) to produce \(C\), whose concentration is the target. The chemical process is illustrated as the irreversible reaction happening at a known rate \(k_1\):</p>
 \[
@@ -48,9 +48,6 @@ n_t\dot{x}_i = \dot{q}_i - \dot{q}_t x_i + \dot{n}_{gen,i}
 \]
 <p>Here \(\dot{n}_{gen,B}\) is zero for \(B\) and is computed as a first order kinetic term \(\dot{n}_{gen,A}=-\dot{n}_{gen,C}=-k_1 x_A\) for other species.</p>
 <p>To create the optimization routine we will make use of <code>SX</code> symbolic class of <code>casadi</code>. That will be used to compose right-hand side derivative <code>Function</code> objects for later integrating the problem. Optimization of controls is done though solver <a href="https://github.com/coin-or/Ipopt">Ipopt</a> which can be accessed though interface <code>nlpsol</code>. The reminder of imports are utilities that will be invoked at the right moment.</p>
-<pre><code class="language-python"># casadi&#61;&#61;3.6.4
-# matplotlib&#61;&#61;3.8.2
-# numpy&#61;&#61;1.26.3</code></pre>
 <pre><code class="language-python">from casadi import SX
 from casadi import Function
 from casadi import nlpsol
