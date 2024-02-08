@@ -15,7 +15,7 @@
 <link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
 
 
-   <title>Tips and reminders</title>  
+   <title>Tutorial cases</title>  
 </head>
 <body>
   <header>
@@ -33,16 +33,48 @@
 
 
 <!-- Content appended here -->
-<div class="franklin-content"><h2 id="tips_and_reminders"><a href="#tips_and_reminders" class="header-anchor">Tips and reminders</a></h2>
+<div class="franklin-content"><p>In OpenFOAM v11 solver module <code>multicomponentFluid</code> provides approaches for setting up the simulation of fluids with multiple species, including combustion.</p>
+<h2 id="tutorial_cases"><a href="#tutorial_cases" class="header-anchor">Tutorial cases</a></h2>
+<h3 id="gas_phase_combustion"><a href="#gas_phase_combustion" class="header-anchor">Gas phase combustion</a></h3>
+<h3 id="droplet_evaporation_combustion"><a href="#droplet_evaporation_combustion" class="header-anchor">Droplet evaporation combustion</a></h3>
 <ul>
-<li><p>When converting to OpenFOAM v11 <a href="https://cpp.openfoam.org/v11/viscosityModel_8H.html"><code>viscosityModel</code></a> instead of <code>transportModel</code> in <code>physicalProperties</code> files. Currently setting <code>transportModel Newtonian</code> does not raise any errors.</p>
+<li><p>DLR<em>A</em>LTS</p>
 </li>
-</ul>
-<h2 id="study_cases"><a href="#study_cases" class="header-anchor">Study cases</a></h2>
-<ul>
-<li><p><a href="incompressibleDenseParticleFluid/index">incompressibleDenseParticleFluid</a></p>
+<li><p>SandiaD_LTS</p>
 </li>
-<li><p><a href="multicomponentFluid/index">multicomponentFluid</a></p>
+<li><p><a href="https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/aachenBomb">aachenBomb</a>: global combustion kinetics of droplets released in a box.</p>
+</li>
+<li><p>counterFlowFlame2D</p>
+</li>
+<li><p>counterFlowFlame2DLTS</p>
+</li>
+<li><p>counterFlowFlame2DLTS<em>GRI</em>TDAC</p>
+</li>
+<li><p>counterFlowFlame2D_GRI</p>
+</li>
+<li><p>counterFlowFlame2D<em>GRI</em>TDAC</p>
+</li>
+<li><p>filter</p>
+</li>
+<li><p>lockExchange</p>
+</li>
+<li><p>membrane</p>
+</li>
+<li><p><a href="https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/nc7h16">nc7h16</a>: zero dimensional model of homogeneous kinetics.</p>
+</li>
+<li><p><a href="https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/parcelInBox">parcelInBox</a>: evaporation of a single water particle in a closed box.</p>
+</li>
+<li><p>simplifiedSiwek</p>
+</li>
+<li><p>smallPoolFire2D</p>
+</li>
+<li><p>smallPoolFire3D</p>
+</li>
+<li><p>verticalChannel</p>
+</li>
+<li><p>verticalChannelLTS</p>
+</li>
+<li><p>verticalChannelSteady</p>
 </li>
 </ul>
 <div class="page-foot">

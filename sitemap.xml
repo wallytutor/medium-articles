@@ -74,6 +74,12 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>https://wallytutor.github.io/medium-articles/notes/multicomponentFluid/index.html</loc>
+    <lastmod>2024-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>https://wallytutor.github.io/medium-articles/notes/ROM/index.html</loc>
     <lastmod>2024-02-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -147,6 +153,12 @@
 </url>
 <url>
     <loc>https://wallytutor.github.io/medium-articles/content/transport-phenomena/001-advection-1d/index.html</loc>
+    <lastmod>2024-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/multicomponentFluid/index.html</loc>
     <lastmod>2024-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
