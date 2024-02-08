@@ -6,3 +6,4 @@
 ## Study cases
 
 - [incompressibleDenseParticleFluid](incompressibleDenseParticleFluid/index)
+- [multicomponentFluid](multicomponentFluid/index)

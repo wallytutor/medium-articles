@@ -2,6 +2,14 @@ In OpenFOAM v11 solver module `incompressibleDenseParticleFluid` provides approa
 
 In this directory we discuss and assembly cases built using this solver to handle incompressible isothermal flows with fluid-particle interactions, including cases with dense packing of particles, such as packed beds or initialization of fluidized beds. 
 
+## Tutorial cases
+
+- Goldschmidt
+- GoldschmidtMPPIC
+- column
+- cyclone
+- injectionChannel
+
 ## Fundamental concepts
 
 - **Parcel** is a computational particle unit that may be composed of several particles which are all identical sharing a state, which include velocity, size, temperature, etc. See [O'Rourke (2010)](https://doi.org/10.1016/j.ces.2010.08.032) for details.
