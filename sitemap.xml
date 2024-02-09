@@ -80,13 +80,19 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/notes/ROM/index.html</loc>
+    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/Cases/index.html</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>https://wallytutor.github.io/medium-articles/content/medium/08-PSR-control-MPC-in-Python-Better/index.html</loc>
+    <lastmod>2024-02-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://wallytutor.github.io/medium-articles/notes/ROM/index.html</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
