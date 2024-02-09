@@ -49,13 +49,6 @@
 <li><p>injectionChannel</p>
 </li>
 </ul>
-<h2 id="fundamental_concepts"><a href="#fundamental_concepts" class="header-anchor">Fundamental concepts</a></h2>
-<ul>
-<li><p><strong>Parcel</strong> is a computational particle unit that may be composed of several particles which are all identical sharing a state, which include velocity, size, temperature, etc. See <a href="https://doi.org/10.1016/j.ces.2010.08.032">O&#39;Rourke &#40;2010&#41;</a> for details.</p>
-</li>
-<li><p><strong>Cloud</strong> is the term OpenFOAM uses to describe particle flows. Here we will use both <code>MPPICCloud</code> and<code>collidingCloud</code>, other types being available for reacting or multiphase solvers, such as <code>thermoCloud</code>.</p>
-</li>
-</ul>
 <h2 id="boundary_fields"><a href="#boundary_fields" class="header-anchor">Boundary fields</a></h2>
 <p>Boundary fields in general are almost the same as any case in <em>pure fluid</em> simulations but transported quantities must be named by appending the name of the continuous phase specified in <code>constant/physicalProperties</code> as <code>continuousPhaseName &lt;phase&gt;</code>. To make it simple let&#39;s call this phase <code>air</code> in what follows. Notice that pressure file name remains unchanged since it is not really <em>transported</em> as you don&#39;t have an equation in the form of Reynolds transport theorem for it.</p>
 <p>That said, we have things as <code>k.air</code> and <code>U.air</code>.  The particularity here is that you must provide <code>phi</code> for all hydrodynamic solution variables &#40;such as <code>k.air</code>, <code>U.air</code>&#41; in outlets, what is implicit in single phase flow models. That means that an outlet for velocity should include something as</p>
