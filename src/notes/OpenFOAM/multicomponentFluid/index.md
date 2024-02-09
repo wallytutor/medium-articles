@@ -20,7 +20,7 @@ In OpenFOAM v11 solver module `multicomponentFluid` provides approaches for sett
 - membrane
 - [nc7h16](https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/nc7h16): zero dimensional model of homogeneous kinetics.
 - [parcelInBox](https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/parcelInBox): evaporation of a single water particle in a closed box.
-- simplifiedSiwek
+- [simplifiedSiwek](https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/simplifiedSiwek): co-combustion of coal and limestone clouds in Siwek chamber.
 - smallPoolFire2D
 - smallPoolFire3D
 - verticalChannel

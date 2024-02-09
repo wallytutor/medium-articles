@@ -9,13 +9,6 @@ In this directory we discuss and assembly cases built using this solver to handl
 - column
 - cyclone
 - injectionChannel
-
-## Fundamental concepts
-
-- **Parcel** is a computational particle unit that may be composed of several particles which are all identical sharing a state, which include velocity, size, temperature, etc. See [O'Rourke (2010)](https://doi.org/10.1016/j.ces.2010.08.032) for details.
-
-- **Cloud** is the term OpenFOAM uses to describe particle flows. Here we will use both `MPPICCloud` and`collidingCloud`, other types being available for reacting or multiphase solvers, such as `thermoCloud`.
-
 ## Boundary fields
 
 Boundary fields in general are almost the same as any case in *pure fluid* simulations but transported quantities must be named by appending the name of the continuous phase specified in  `constant/physicalProperties` as `continuousPhaseName <phase>`. To make it simple let's call this phase `air` in what follows. Notice that pressure file name remains unchanged since it is not really *transported* as you don't have an equation in the form of Reynolds transport theorem for it.
