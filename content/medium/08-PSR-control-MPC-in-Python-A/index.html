@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="/medium-articles/libs/katex/katex.min.css">
+     
+   <link rel="stylesheet" href="/medium-articles/libs/highlight/styles/github.min.css">
+   
+  <link rel="stylesheet" href="/medium-articles/css/franklin.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
+<link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
+<link rel="stylesheet" href="/medium-articles/css/celeste.min.css">
+<link rel="stylesheet" href="/medium-articles/css/custom.css">
+
+<link rel="icon" type="image/png" sizes="192x192" href="/medium-articles/assets/favicon.png">
+<link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
+
+
+   <title>Stirred Reactor Model Predictive Control</title>  
+</head>
+<body>
+  <header>
+<nav class="nav-main">
+  <ul>
+    <li class="logo"><a class="hvr-ripple-out" href="/medium-articles/">W</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/medium/">Medium Articles</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/transport-phenomena/">Transport Phenomena</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/julia-para-cientistas/">Julia para Cientistas</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/engenharia-de-reatores/">Engenharia de Reatores</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/bookmarks/">Links</a></li>
+  </ul>
+</nav>
+</header>
+
+
+<!-- Content appended here -->
+<div class="franklin-content"><p><hr /> jupyter:   jupytext:     text<em>representation:       extension: .md       format</em>name: markdown       format<em>version: &#39;1.3&#39;       jupytext</em>version: 1.15.2   kernelspec:     display_name: Python 3 &#40;ipykernel&#41;     language: python     name: python3 –-</p>
+<h1 id="stirred_reactor_model_predictive_control"><a href="#stirred_reactor_model_predictive_control" class="header-anchor">Stirred Reactor Model Predictive Control</a></h1>
+<p>In this study we implement a model predictive control &#40;MPC&#41; for a dummy chemical reactor. This notebook guides you through the different steps of the implementation using the powerful package <a href="https://web.casadi.org/">CasADi</a> in its Python programming interface.</p>
+<p>Our goal is to provide controlled concentration output, which may be required to change in time, <em>i.e.</em> a costumer order required different concentratio, in a continuous stirred tank reactor. </p>
+<hr />
+<p>In our dummy production, reagent \(A\) is fed to the system with a carrier \(B\) to produce \(C\), whose concentration is the target. The chemical process is illustrated as the irreversible reaction happening at a known rate \(k_1\):</p>
+\[
+A + B \rightarrow B + C
+\]
+<p>To control the molar fraction of \(C\), denoted \(x_C\), we play with flow rates of \(A\) and \(B\) given by \(\dot{n}_A\) and \(\dot{n}_B\). For smooth functioning of the system, the total flow rate is required to remain constant at \(\dot{n}_t\) so that \(\dot{n}_B=\dot{n}_t-\dot{n}_A\), <em>i.e.</em> a compensation valve is the action we control. That implies we have a single degree of freedom in the actions we can take to pilot this simple system.</p>
+<p>The reactor volume is kept constant at \(n_t\) moles. The following differential equation applies to each chemical species \(i\)</p>
+\[
+n_t\dot{x}_i = \dot{n}_i - \dot{n}_t x_i + \dot{n}_{gen,i}
+\]
+<p>Here \(\dot{n}_{gen,B}\) is zero for \(B\) and is computed as a first order kinetic term \(\dot{n}_{gen,A}=-\dot{n}_{gen,C}=-k_1 x_A\) for other species.</p>
+<hr />
+<p>Our tools:</p>
+<ul>
+<li><p>To create the optimization routine we will make use of <code>SX</code> symbolic class of <code>casadi</code>.</p>
+</li>
+<li><p>That will be used to compose right-hand side derivative <code>Function</code> objects for later integrating the problem. </p>
+</li>
+<li><p>Optimization of controls is done though solver <a href="https://github.com/coin-or/Ipopt">Ipopt</a> which can be accessed though interface <code>nlpsol</code>.</p>
+</li>
+<li><p>The reminder of imports are utilities that will be invoked at the right moment.</p>
+</li>
+</ul>
+<pre><code class="language-python">from casadi import SX
+from casadi import Function
+from casadi import nlpsol
+from casadi import vertcat
+import numpy as np
+import matplotlib.pyplot as plt
+
+&#37;matplotlib inline</code></pre>
+<p>As stated in the introduction, some quantities are fixed/known. That includes the reaction rate \(k_1=10.0\:\mathrm{mol\cdotp{}s^{-1}}\), the size of reactor \(n_t=500.0\:\mathrm{mol}\) and the total flow rate of \(\dot{n}_t=3.0\:\mathrm{mol\cdotp{}s^{-1}}\). We declare them here so that we can focus on symbolic manipulations.</p>
+<pre><code class="language-python">k_1 &#61; 10.0
+n_t &#61; 500.0
+ndot_t &#61; 3.0</code></pre>
+<p>There are 3 chemical species being modeled in the fictional system.</p>
+<p>Using <code>SX</code> we create their symbolic variables so that we can profit from <code>casadi</code> automatic differentiation.</p>
+<p>This is helpful for computation of jacobian and hessian matrices required by the optimizer.</p>
+<pre><code class="language-python">x_A &#61; SX.sym&#40;&quot;x_A&quot;&#41;
+x_B &#61; SX.sym&#40;&quot;x_B&quot;&#41;
+x_C &#61; SX.sym&#40;&quot;x_C&quot;&#41;</code></pre>
+<p>The same is done for flow rate \(\dot{n}_A\) and restriction on total flow is applied.</p>
+<p>Notice here that we can use numerical <code>ndot_t</code> and symbolic <code>ndot_A</code> in the same expression.</p>
+<pre><code class="language-python">ndot_A &#61; SX.sym&#40;&quot;ndot_A&quot;&#41;
+ndot_B &#61; ndot_t - ndot_A</code></pre>
+<p>Source terms are then computed as previously described.</p>
+<p>Again we illustrate simultaneous use of symbolics and numerics.</p>
+<pre><code class="language-python">rate &#61; k_1 * x_A
+ndot_gen_A &#61; -rate
+ndot_gen_B &#61; 0.0
+ndot_gen_C &#61; &#43;rate</code></pre>
+<p>With these elements we are ready to perform the molar balances describing the time-evolution of the system.</p>
+<pre><code class="language-python">xdot_A &#61; &#40;ndot_A - ndot_t * x_A &#43; ndot_gen_A&#41; / n_t
+xdot_B &#61; &#40;ndot_B - ndot_t * x_B &#43; ndot_gen_B&#41; / n_t
+xdot_C &#61; &#40;0.0    - ndot_t * x_C &#43; ndot_gen_C&#41; / n_t</code></pre>
+<p>To create nice interfaces we group the variables in <code>x</code> and <code>p</code>.</p>
+<p>It is common to use these names for the unknowns and control parameters is optimal control problem statements.</p>
+<pre><code class="language-python">x &#61; vertcat&#40;x_A, x_B, x_C&#41;
+p &#61; ndot_A</code></pre>
+<p>Using <code>Function</code> we wrap-up the above expressions.</p>
+<p>Each function is provided a name, a list of inputs and a list of outputs.</p>
+<p>Optional arguments are not used here to name the inputs and outputs and you can check their usage in the <a href="https://web.casadi.org/docs/">documentation</a>.</p>
+<pre><code class="language-python">F_xdot_A &#61; Function&#40;&quot;F_xdot_A&quot;, &#91;x, p&#93;, &#91;xdot_A&#93;&#41;
+F_xdot_B &#61; Function&#40;&quot;F_xdot_B&quot;, &#91;x, p&#93;, &#91;xdot_B&#93;&#41;
+F_xdot_C &#61; Function&#40;&quot;F_xdot_C&quot;, &#91;x, p&#93;, &#91;xdot_C&#93;&#41;</code></pre>
+<p>It is interesting to check the string representation of a <code>Function</code>.</p>
+<p>Here we see that it receives a first input <code>i0</code> which is an array of 3 elements and a second number <code>i1</code> for the returning a single value <code>o0</code>. As stated before, you can name these I/O using the more complete interface of <code>Function</code>.</p>
+<pre><code class="language-python">F_xdot_A</code></pre>
+<p>We can check the proper functioning of these functions as simple Python objects.</p>
+<p>It shows that although we have symbolically built the system but numerical evaluation is possible. </p>
+<p>Return values are of type <code>DM</code>, CasADi&#39;s way of representing dense matrices &#40;here an order zero matrix, a single number&#41;.</p>
+<pre><code class="language-python">F_xdot_A&#40;&#91;0.5, 0.5, 0&#93;, 10&#41;,\
+F_xdot_B&#40;&#91;0.5, 0.5, 0&#93;, 10&#41;,\
+F_xdot_C&#40;&#91;0.5, 0.5, 0&#93;, 10&#41;</code></pre>
+<p>The model being ready we can start the conception of our controller.</p>
+<p>The numbers we need to choose here require <em>domain-specific knowledge</em>:</p>
+<ul>
+<li><p>The first is the prediction horizon \(N_p\). It must be long enough so that the optimization routine foresees the dynamics of the system to apply corrections in time.</p>
+</li>
+<li><p>The horizon size alone has no sense without the definition of the time-step \(\tau\) between consective corrective actions. This again must take into consideration the delays system response and the valve itself in this specific case.</p>
+</li>
+</ul>
+<p>Here we chose to take into account the next 2000 s of the dynamics through 200 steps of 10 s.</p>
+<blockquote>
+<p>You can check that given the aforementioned reactor size and flow rate, the characteristic time of the system is of the order of \(n_t/\dot{n}_t = 500\:\mathrm{mol} / 3\:\mathrm{mol\cdotp{}s^{-1}} \approx 170\:\mathrm{s}\), so the process window seems large enough to describe the <em>full dilution</em> of the system and the time step is less 10&#37; of that time, what seems reasonable here.</p>
+</blockquote>
+<p><strong>Note:</strong> the time-step \(\tau\) may be the same used for integration of the problem, but you may use a smaller value if during each length \(\tau\) you keep the control action constant. This might be required when dealing with stiff differential equations of system model, <em>i.e.</em> a combustion process or complex gas pressure control.</p>
+<pre><code class="language-python">Np &#61; 200
+tau &#61; 10.0</code></pre>
+<p>The composition of the cost function in MPC also requires domain knowledge.</p>
+<ul>
+<li><p>The scale of the problem is usually selected to be one of deviation of main controlled variable so the mutiplier of quadratic term \(Q\) is set to unity &#40;or identity matrix in more complex multidimensional formulations&#41;. </p>
+</li>
+<li><p>We should also pay attention to the change in command, so another quadratic term penalizing important changes is added to cost function. Its scaling \(R\) has to be chosen so that is remains in a good order of magnitude compared to target variable cost and still perform its function.</p>
+</li>
+<li><p>The last parameter \(S\) is the terminal penalization, generally set to a high value so that we enforce the last point in prediction horizon to match the set-point.</p>
+</li>
+</ul>
+<pre><code class="language-python">Q &#61; 1.0
+R &#61; 0.1
+S &#61; 100.0</code></pre>
+<p>Because of limitations of our compensation valve, the fraction of \(A\) in the total flow is limited to 90&#37; of total feed rate.</p>
+<p>Initially it is found to be at 50&#37; of the total capacity and that will impact the first command change.</p>
+<pre><code class="language-python">ndot_A_max &#61; 0.9 * ndot_t
+ndot_A_ini &#61; 0.5 * ndot_t</code></pre>
+<p>Next we create our cost function <code>J</code> set initially to zero and the list of constraints <code>g</code>.</p>
+<pre><code class="language-python">J &#61; 0.0
+g &#61; &#91;&#93;</code></pre>
+<p>The production planning already knows the target concentration &#40;set-point&#41; over the prediction horizon so that we can construct our cost function. It is symbolically declared in <code>xs_C</code> and contains one extra point over <code>Np</code> representing the current state of the reactor.</p>
+<pre><code class="language-python">xs_C &#61; SX.sym&#40;&quot;xs_C&quot;, Np&#43;1&#41;</code></pre>
+<p>We also need lower and upper boundaries, <code>lbx</code> and <code>ubx</code>, of our solution variable, here the controller command for the flow rate of \(A\). It can be set from zero up to the maximum amount it can be set, here 90&#37; of total flow rate.</p>
+<blockquote>
+<p>Note that constant numeric values could have been provided here, but for generality we will use a list here and feed it along with the integration so that you can see how one could implement a possibly <em>varying</em> control boundaries.</p>
+</blockquote>
+<p>Same is done for the commands at each step sent to the valve.</p>
+<pre><code class="language-python">lbx &#61; &#91;&#93;
+ubx &#61; &#91;&#93;
+v_ndot_A &#61; &#91;&#93;</code></pre>
+<p>The initial state of the system is set to the symbols we already know &#40;later we will replace them by numeric <em>measurements</em>&#41;. Notice that in this tutorial case we are handling the variables individually, but in a real-world problem you would probably use a vector with all variables as we edd in <code>x</code> before.</p>
+<pre><code class="language-python">xt_A, xt_B, xt_C &#61; x_A, x_B, x_C</code></pre>
+<p>Finally we integrate the problem over time. The loop is composed of a few characteristic steps:</p>
+<ul>
+<li><p>Creation of a command variable <code>v_ndot_a_ts</code> for the current step.</p>
+</li>
+<li><p>Bounding the values of control variable throughs <code>lbx</code> and <code>ubx</code>.</p>
+</li>
+<li><p>Stacking of current system state in <code>xn</code> and current commands in <code>pn</code>.</p>
+</li>
+<li><p>Actual time integration of the system dynamics.</p>
+</li>
+<li><p>Increment of cost function with current deviations.</p>
+</li>
+<li><p>Add constraints &#40;not done here&#41; to the states and controls.</p>
+</li>
+</ul>
+<p>Below you will recognize a simple Euler time-stepping. </p>
+<blockquote>
+<p>Again, in real-world problems you would at least use a Runge-Kutta order 4 integration. As it was said before, you might need to use an internal &#40;smaller&#41; time-step for very stiff problems, situation where the states <code>xn</code> would be internally updated but the command <code>pn</code> would be held constant.</p>
+</blockquote>
+<blockquote>
+<p>In real-world you would probably use a multiple-shooting approach to simultaneously simulate and optimize the problem, if that is required. That comes with an additional computational cost because the optimization problem becomes larger. For keeping this tutorial focused on the main ideas it was chosen to exploit this simpler approach &#40;from the implementation standpoint&#41;.</p>
+</blockquote>
+<p>Since initial flow rate of \(A\) is already known and we are using <code>R</code> to avoid abrupt changes in the flow command, we make use of that value here to compute the initial step accordingly.</p>
+<pre><code class="language-python">for ts in range&#40;Np&#41;:
+    v_ndot_A_ts &#61; SX.sym&#40;f&quot;v_qdot_A_&#123;ts&#125;&quot;&#41;
+    v_ndot_A.append&#40;v_ndot_A_ts&#41;
+    
+    lbx.append&#40;0.0&#41;
+    ubx.append&#40;ndot_A_max&#41;
+
+    xn &#61; vertcat&#40;xt_A, xt_B, xt_C&#41;
+    pn &#61; v_ndot_A_ts
+        
+    xt_A &#61; xt_A &#43; tau * F_xdot_A&#40;xn, pn&#41;
+    xt_B &#61; xt_B &#43; tau * F_xdot_B&#40;xn, pn&#41;
+    xt_C &#61; xt_C &#43; tau * F_xdot_C&#40;xn, pn&#41;
+    
+    v_prev &#61; ndot_A_ini if ts &#61;&#61; 0 else v_ndot_A&#91;ts-1&#93;
+    
+    # scale_error  &#61; &#40;xt_C - xs_C&#91;ts&#93;&#41; / &#40;xt_C &#43; 1.0e-09&#41;
+    # scale_change &#61; &#40;v_prev - v_ndot_A_ts&#41; / &#40;v_prev &#43; 1.0e-09&#41;
+
+    scale_error  &#61; xt_C - xs_C&#91;ts&#93;
+    scale_change &#61; v_prev - v_ndot_A_ts
+
+    cost_error &#61; Q * pow&#40;scale_error, 2&#41;
+    cost_change &#61; R * pow&#40;scale_change, 2&#41;
+
+    J &#43;&#61; cost_error &#43; cost_change</code></pre>
+<p>To complete the cost function, the terminal cost is added with scale <code>S</code>.</p>
+<pre><code class="language-python">J &#43;&#61; S * pow&#40;xt_C - xs_C&#91;-1&#93;, 2&#41;</code></pre>
+<p>The assembly of the system to be solved made below. Here we have chosen to optimize the problem with Ipopt as a nonlinear problem. In some cases you might wish to use a quadratic solver, but it imposes some limitations in problem formulation. You should do that when solving as a NLP is too slow for your problem. In CasADi&#39;s representation <code>f</code> denotes the cost, <code>x</code> the free variables &#40;the commands here&#41;, <code>g</code> the constraints list, and <code>p</code> the parameters, values that were left in symbolic form and we need to provide numerically. Here <code>p</code> is the array of set-points and the system initial state. Interface <code>nlpsol</code> allows for creating a solver, which may be used many times later.</p>
+<pre><code class="language-python">nlp &#61; &#123;
+    &quot;f&quot;: J,
+    &quot;x&quot;: vertcat&#40;*v_ndot_A&#41;, 
+    &quot;g&quot;: vertcat&#40;*g&#41;,
+    &quot;p&quot;: vertcat&#40;xs_C, x&#41;
+&#125;
+solver &#61; nlpsol&#40;&quot;solver&quot;, &quot;ipopt&quot;, nlp&#41;</code></pre>
+<p>Below we see the interface of the solver with the sizes of the arrays we must provide.</p>
+<pre><code class="language-python">solver</code></pre>
+<p>Let&#39;s now compose the parameters array. For the set-point <code>xs_C_num</code> consider that you need the solution to be delivered with a concentration of 30&#37; in the first 75 steps &#40;3/4 of prediction horizon&#41; of \(C\) and for the next lot the concetration must be increased to 60&#37;. Below we create and array with that.</p>
+<pre><code class="language-python">xs_C_num &#61; np.zeros&#40;Np&#43;1&#41;
+xs_C_num&#91;:3*Np//5&#93; &#61; 0.2
+xs_C_num&#91;3*Np//5:&#93; &#61; 0.5</code></pre>
+<p>At the initial time the system is composed only of \(B\), the second element in our composition array. With that we can merge the arrays in the format expected by the solver &#40;as declared above&#41; to provide <code>p</code>.</p>
+<pre><code class="language-python">x0_num &#61; &#91;0.0, 1.0, 0.0&#93;
+p &#61; &#91;*xs_C_num, *x0_num&#93;</code></pre>
+<p>Call of the solver is mostly trivial. If this is the first call to the solver, normally provide an initial guess composed of a fixed value that makes sense to your system. Here an array of ones was chosen. When using the solver in an actual control loop, generally the results of last call are provided. Since we have a single constraint in <code>g</code>, it suffices to provide <code>lbg&#61;ubg&#61;0.0</code> to enforce the initial flow rate to the prescribed value. Call can be a bit verbose and you might want to log it in a production environment.</p>
+<pre><code class="language-python">solution &#61; solver&#40;x0&#61;np.ones&#40;Np&#41;, p&#61;p, lbx&#61;lbx, ubx&#61;ubx, lbg&#61;0.0, ubg&#61;0.0&#41;</code></pre>
+<p>Below we recover the solution for reuse in system simulation. Observe that the simulation loop is essentially the same as the construction of the cost function but we implement just the time-stepping routines.</p>
+<pre><code class="language-python">ndot_A_opt &#61; solution&#91;&quot;x&quot;&#93;.full&#40;&#41;.ravel&#40;&#41;
+
+xt_A &#61; np.zeros&#40;Np&#43;1&#41;
+xt_B &#61; np.zeros&#40;Np&#43;1&#41;
+xt_C &#61; np.zeros&#40;Np&#43;1&#41;
+
+xt_A&#91;0&#93; &#61; x0_num&#91;0&#93;
+xt_B&#91;0&#93; &#61; x0_num&#91;1&#93;
+xt_C&#91;0&#93; &#61; x0_num&#91;2&#93;
+
+for ts in range&#40;1, Np&#43;1&#41;:
+    xn &#61; vertcat&#40;xt_A&#91;ts-1&#93;, xt_B&#91;ts-1&#93;, xt_C&#91;ts-1&#93;&#41;
+    pn &#61; ndot_A_opt&#91;ts-1&#93;
+        
+    xt_A&#91;ts&#93; &#61; xt_A&#91;ts-1&#93; &#43; tau * F_xdot_A&#40;xn, pn&#41;
+    xt_B&#91;ts&#93; &#61; xt_B&#91;ts-1&#93; &#43; tau * F_xdot_B&#40;xn, pn&#41;
+    xt_C&#91;ts&#93; &#61; xt_C&#91;ts-1&#93; &#43; tau * F_xdot_C&#40;xn, pn&#41;</code></pre>
+<p>According to the quality deparment, the product is good to be delivered if its concentration is anywhere withing 5&#37; of the prescribed value. A boolean array <code>good</code> is created for displaying. This could be used to predict when the exit valve feed barrels of product or when it should recycle/throw the output.</p>
+<pre><code class="language-python">xs_C_max &#61; np.clip&#40;xs_C_num &#43; 0.05, 0.0, 1.0&#41;
+xs_C_min &#61; np.clip&#40;xs_C_num - 0.05, 0.0, 1.0&#41;
+good &#61; &#40;xt_C &gt;&#61; xs_C_min&#41; &amp; &#40;xt_C &lt;&#61; xs_C_max&#41;</code></pre>
+<p>The next figure illustrates the expected dynamical behavior of the system. First concentration of \(C\) rises from zero to the prescribed value in about 20 steps, and because of the change in set-point it starts deviating from target at step 60 to reach the new value. It is also interesting to observe that command saturates at 85&#37;, what indicates that production of the second target is a limiting case for this reactor. We respected the process window during 58.4&#37; of the time.</p>
+<p>Because of how <code>matplotlib.step</code> works, to display properly the commands and responses we need to add an extra copy of last command to the end of the results. Using <code>where&#61;&quot;post&quot;</code> is also required so that a command <em>starts</em> at the reference time-step it is supposed to. You can check the plotting behaviour with the following snippet.</p>
+<pre><code class="language-python">x &#61; &#91;1, 2, 3, 4&#93;
+y &#61; &#91;0, 1, 3, 1&#93;
+
+z &#61; &#91;1, 2, 0&#93;
+z.append&#40;z&#91;-1&#93;&#41;
+
+plt.plot&#40;x, y, &quot;o-&quot;, label&#61;&quot;Response&quot;&#41;
+plt.step&#40;x, z, &quot;o-&quot;, label&#61;&quot;Command&quot;, where&#61;&quot;post&quot;&#41;
+plt.legend&#40;loc&#61;2&#41;</code></pre>
+<pre><code class="language-python">steps &#61; list&#40;range&#40;Np&#43;1&#41;&#41;
+quality &#61; 100 * sum&#40;good.astype&#40;&quot;u8&quot;&#41;&#41; / len&#40;good&#41;
+
+cmd &#61; list&#40;ndot_A_opt / ndot_t&#41;
+cmd.append&#40;cmd&#91;-1&#93;&#41;
+
+plt.style.use&#40;&quot;default&quot;&#41;
+plt.figure&#40;figsize&#61;&#40;12, 6&#41;&#41;
+plt.grid&#40;linestyle&#61;&quot;:&quot;&#41;
+
+plt.plot&#40;steps, xt_A, lw&#61;2, label&#61;&quot;&#36;X_A&#36;&quot;&#41;
+plt.plot&#40;steps, xt_B, lw&#61;2, label&#61;&quot;&#36;X_B&#36;&quot;&#41;
+plt.plot&#40;steps, xt_C, lw&#61;4, label&#61;&quot;&#36;X_C&#36;&quot;&#41;
+
+plt.step&#40;steps, xs_C_max, &quot;k:&quot;, label&#61;&quot;_none_&quot;, where&#61;&quot;post&quot;&#41;
+plt.step&#40;steps, xs_C_min, &quot;k:&quot;, label&#61;&quot;_none_&quot;, where&#61;&quot;post&quot;&#41;
+plt.step&#40;steps, xs_C_num, &quot;m-&quot;, lw&#61;4, label&#61;&quot;&#36;X_C&#36; &#40;target&#41;&quot;, where&#61;&quot;post&quot;&#41;
+
+# Add *negative time* with initial flow rate.
+plt.step&#40;&#91;-1, *steps&#93;, &#91;ndot_A_ini/ ndot_t, *cmd&#93;, &quot;r&quot;, lw&#61;2, 
+         label&#61;&quot;&#36;Q_A&#36; &#40;relative&#41;&quot;, where&#61;&quot;post&quot;&#41;
+
+plt.fill_between&#40;steps, xs_C_min, xs_C_max, where&#61;good, alpha&#61;0.3&#41;
+
+plt.title&#40;f&quot;Expected quality level at &#123;quality:.1f&#125;&#37;&quot;&#41;
+plt.ylabel&#40;&quot;Mole fractions and relative flow rate of A&quot;&#41;
+plt.xlabel&#40;&quot;Action step number over prediction horizon&quot;&#41;
+plt.legend&#40;loc&#61;&quot;upper center&quot;, fancybox&#61;True, framealpha&#61;1.0, ncol&#61;6&#41;
+plt.xlim&#40;-1, Np&#43;1&#41;
+plt.ylim&#40;0, 1&#41;
+plt.tight_layout&#40;&#41;</code></pre>
+<p>There are many ways you could propose exercises from this guided study:</p>
+<ul>
+<li><p>Implement a higher order time-stepping scheme.</p>
+</li>
+<li><p>Provide simultaneous simulation/optimization with multiple-shooting.</p>
+</li>
+<li><p>Investigate role of total flow rate or reactor size over quality.</p>
+</li>
+<li><p>Use the solver in a simulated control loop with random noise in measurements.</p>
+</li>
+<li><p>...</p>
+</li>
+</ul>
+<div class="page-foot">
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
+    Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    
+        <script src="/medium-articles/libs/katex/katex.min.js"></script>
+<script src="/medium-articles/libs/katex/contrib/auto-render.min.js"></script>
+<script>renderMathInElement(document.body)</script>
+
+    
+    
+        <script src="/medium-articles/libs/highlight/highlight.min.js"></script>
+<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
+
+    
+  </body>
+</html>

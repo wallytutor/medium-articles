@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+   <link rel="stylesheet" href="/medium-articles/libs/highlight/styles/github.min.css">
+   
+  <link rel="stylesheet" href="/medium-articles/css/franklin.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
+<link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
+<link rel="stylesheet" href="/medium-articles/css/celeste.min.css">
+<link rel="stylesheet" href="/medium-articles/css/custom.css">
+
+<link rel="icon" type="image/png" sizes="192x192" href="/medium-articles/assets/favicon.png">
+<link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
+
+
+   <title>Stirred Reactor Model Predictive Control</title>  
+</head>
+<body>
+  <header>
+<nav class="nav-main">
+  <ul>
+    <li class="logo"><a class="hvr-ripple-out" href="/medium-articles/">W</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/medium/">Medium Articles</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/transport-phenomena/">Transport Phenomena</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/julia-para-cientistas/">Julia para Cientistas</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/engenharia-de-reatores/">Engenharia de Reatores</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/bookmarks/">Links</a></li>
+  </ul>
+</nav>
+</header>
+
+
+<!-- Content appended here -->
+<div class="franklin-content"><h1 id="stirred_reactor_model_predictive_control"><a href="#stirred_reactor_model_predictive_control" class="header-anchor">Stirred Reactor Model Predictive Control</a></h1>
+<h2 id="import_tools"><a href="#import_tools" class="header-anchor">Import tools</a></h2>
+<pre><code class="language-python">&#37;matplotlib inline</code></pre>
+<pre><code class="language-python">from casadi import SX
+from casadi import Function
+from casadi import nlpsol
+from casadi import vertcat
+import numpy as np
+import matplotlib.pyplot as plt</code></pre>
+<h2 id="build_system_of_equations"><a href="#build_system_of_equations" class="header-anchor">Build system of equations</a></h2>
+<pre><code class="language-python">x &#61; SX.sym&#40;&quot;x&quot;, 3&#41;
+x</code></pre>
+<pre><code class="language-python">ndot_tot &#61; SX.sym&#40;&quot;ndot_tot&quot;&#41;
+
+ndot &#61; SX.sym&#40;&quot;ndot&quot;, 3&#41;
+ndot&#91;1&#93; &#61; ndot_tot - ndot&#91;0&#93;
+ndot&#91;2&#93; &#61; 0
+
+ndot</code></pre>
+<pre><code class="language-python">k &#61; SX.sym&#40;&quot;k&quot;&#41;
+rate &#61; k * x&#91;0&#93;
+rate</code></pre>
+<pre><code class="language-python">ndot_gen &#61; vertcat&#40;-rate, 0.0, rate&#41;
+ndot_gen</code></pre>
+<pre><code class="language-python">n_tot &#61; SX.sym&#40;&quot;n_tot&quot;&#41;
+
+xdot &#61; &#40;ndot - ndot_tot * x &#43; ndot_gen&#41; / n_tot
+xdot</code></pre>
+<pre><code class="language-python">p &#61; &#91;ndot&#91;0&#93;, ndot_tot, n_tot, k&#93;
+F_xdot &#61; Function&#40;&quot;F_xdot&quot;, &#91;x, *p&#93;, &#91;xdot&#93;&#41;</code></pre>
+<pre><code class="language-python">F_xdot</code></pre>
+<pre><code class="language-python">F_xdot&#40;&#91;0.5, 0.5, 0.0&#93;, 10.0, 3.0, 1000.0, 10.0&#41;</code></pre>
+<h2 id="provide_parameters"><a href="#provide_parameters" class="header-anchor">Provide parameters</a></h2>
+<pre><code class="language-python">Np &#61; 200
+tau &#61; 10.0
+
+Q &#61; 1.0
+R &#61; 0.1
+S &#61; 100.0
+
+k_num &#61; 10.0
+n_tot_num &#61; 500.0
+ndot_tot_num &#61; 3.0
+
+ndot0_max &#61; 0.9 * ndot_tot_num
+ndot0_ini &#61; 0.5 * ndot_tot_num
+
+pars_fixed &#61; &#91;ndot_tot_num, n_tot_num, k_num&#93;</code></pre>
+<h2 id="integrate_symbolically"><a href="#integrate_symbolically" class="header-anchor">Integrate symbolically</a></h2>
+<pre><code class="language-python">def step&#40;xn, pn&#41;:
+    return F_xdot&#40;xn, pn, *pars_fixed&#41;
+
+def integrate&#40;xn, pn&#41;:
+    return xn &#43; tau * step&#40;xn, pn&#41;</code></pre>
+<pre><code class="language-python">integrate&#40;x, ndot0_ini&#41;</code></pre>
+<pre><code class="language-python">J &#61; 0.0
+g &#61; &#91;&#93;
+
+xs2 &#61; SX.sym&#40;&quot;xs2&quot;, Np&#43;1&#41;
+
+lbx &#61; &#91;&#93;
+ubx &#61; &#91;&#93;
+v_ndot0 &#61; &#91;&#93;</code></pre>
+<pre><code class="language-python">xn &#61; x
+    
+for ts in range&#40;Np&#41;:
+    v_ndot0_ts &#61; SX.sym&#40;f&quot;v_ndot0_&#123;ts&#125;&quot;&#41;
+    v_ndot0.append&#40;v_ndot0_ts&#41;
+    
+    lbx.append&#40;0.0&#41;
+    ubx.append&#40;ndot0_max&#41;
+
+    xn &#61; integrate&#40;xn, v_ndot0_ts&#41;
+
+    v_prev &#61; ndot0_ini if ts &#61;&#61; 0 else v_ndot0&#91;ts-1&#93;
+
+    scale_error  &#61; xn&#91;2&#93; - xs2&#91;ts&#93;
+    scale_change &#61; v_prev - v_ndot0_ts
+
+    cost_error &#61; Q * pow&#40;scale_error, 2&#41;
+    cost_change &#61; R * pow&#40;scale_change, 2&#41;
+    
+    J &#43;&#61; cost_error &#43; cost_change
+    
+J &#43;&#61; S * pow&#40;xn&#91;2&#93; - xs2&#91;-1&#93;, 2&#41;</code></pre>
+<h2 id="optimize_controls"><a href="#optimize_controls" class="header-anchor">Optimize controls</a></h2>
+<pre><code class="language-python">nlp &#61; &#123;
+    &quot;f&quot;: J,
+    &quot;x&quot;: vertcat&#40;*v_ndot0&#41;, 
+    &quot;g&quot;: vertcat&#40;*g&#41;,
+    &quot;p&quot;: vertcat&#40;xs2, x&#41;
+&#125;
+solver &#61; nlpsol&#40;&quot;solver&quot;, &quot;ipopt&quot;, nlp&#41;</code></pre>
+<pre><code class="language-python">solver</code></pre>
+<pre><code class="language-python">xs2_num &#61; np.zeros&#40;Np&#43;1&#41;
+xs2_num&#91;:3*Np//5&#93; &#61; 0.2
+xs2_num&#91;3*Np//5:&#93; &#61; 0.5</code></pre>
+<pre><code class="language-python">x0_num &#61; &#91;0.0, 1.0, 0.0&#93;
+p &#61; &#91;*xs2_num, *x0_num&#93;</code></pre>
+<pre><code class="language-python">solution &#61; solver&#40;x0&#61;np.ones&#40;Np&#41;, p&#61;p, lbx&#61;lbx, ubx&#61;ubx, lbg&#61;0.0, ubg&#61;0.0&#41;</code></pre>
+<h2 id="post-processing"><a href="#post-processing" class="header-anchor">Post-processing</a></h2>
+<pre><code class="language-python">ndot0_opt &#61; solution&#91;&quot;x&quot;&#93;.full&#40;&#41;.ravel&#40;&#41;
+
+xt &#61; np.zeros&#40;&#40;Np&#43;1, 3&#41;&#41;
+xt&#91;0, :&#93; &#61; x0_num
+
+xn &#61; xt&#91;0&#93;
+    
+for ts in range&#40;1, Np&#43;1&#41;:
+    xn &#61; integrate&#40;xn, ndot0_opt&#91;ts-1&#93;&#41;
+    xt&#91;ts&#93; &#61; xn.full&#40;&#41;.ravel&#40;&#41;</code></pre>
+<pre><code class="language-python">xs2_max &#61; np.clip&#40;xs2_num &#43; 0.05, 0.0, 1.0&#41;
+xs2_min &#61; np.clip&#40;xs2_num - 0.05, 0.0, 1.0&#41;
+good &#61; &#40;xt&#91;:, 2&#93; &gt;&#61; xs2_min&#41; &amp; &#40;xt&#91;:, 2&#93; &lt;&#61; xs2_max&#41;
+
+steps &#61; list&#40;range&#40;Np&#43;1&#41;&#41;
+quality &#61; 100 * sum&#40;good.astype&#40;&quot;u8&quot;&#41;&#41; / len&#40;good&#41;
+
+cmd &#61; list&#40;ndot0_opt / ndot_tot_num&#41;
+cmd.append&#40;cmd&#91;-1&#93;&#41;
+
+plt.style.use&#40;&quot;default&quot;&#41;
+fig &#61; plt.figure&#40;figsize&#61;&#40;12, 6&#41;&#41;
+plt.grid&#40;linestyle&#61;&quot;:&quot;&#41;
+
+plt.plot&#40;steps, xt&#91;:, 0&#93;, label&#61;&quot;&#36;X_A&#36;&quot;&#41;
+plt.plot&#40;steps, xt&#91;:, 1&#93;, label&#61;&quot;&#36;X_B&#36;&quot;&#41;
+plt.plot&#40;steps, xt&#91;:, 2&#93;, lw&#61;4, label&#61;&quot;&#36;X_C&#36;&quot;&#41;
+
+plt.step&#40;steps, xs2_max, &quot;k:&quot;, label&#61;&quot;_none_&quot;, where&#61;&quot;post&quot;&#41;
+plt.step&#40;steps, xs2_min, &quot;k:&quot;, label&#61;&quot;_none_&quot;, where&#61;&quot;post&quot;&#41;
+plt.step&#40;steps, xs2_num, &quot;m-&quot;, lw&#61;4, label&#61;&quot;&#36;X_C&#36; &#40;target&#41;&quot;, where&#61;&quot;post&quot;&#41;
+
+# Add *negative time* with initial flow rate.
+plt.step&#40;&#91;-1, *steps&#93;, &#91;ndot0_ini/ ndot_tot_num, *cmd&#93;, &quot;r&quot;, lw&#61;2, 
+         label&#61;&quot;&#36;Q_A&#36; &#40;relative&#41;&quot;, where&#61;&quot;post&quot;&#41;
+
+plt.fill_between&#40;steps, xs2_min, xs2_max, where&#61;good, alpha&#61;0.3&#41;
+
+plt.title&#40;f&quot;Expected quality level at &#123;quality:.1f&#125;&#37;&quot;&#41;
+plt.ylabel&#40;&quot;Mole fractions and relative flow rate of A&quot;&#41;
+plt.xlabel&#40;&quot;Action step number over prediction horizon&quot;&#41;
+plt.legend&#40;loc&#61;4, fancybox&#61;True,  framealpha&#61;1.0&#41;
+plt.xlim&#40;-1, Np&#43;1&#41;
+plt.ylim&#40;0, 1&#41;
+plt.tight_layout&#40;&#41;</code></pre>
+<div class="page-foot">
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
+    Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    
+    
+        <script src="/medium-articles/libs/highlight/highlight.min.js"></script>
+<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
+
+    
+  </body>
+</html>
