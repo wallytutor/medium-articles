@@ -1,26 +1,12 @@
+# Stirred Reactor Model Predictive Control
+
+
+## Import tools
+
 ```python
 %matplotlib inline
 ```
 
-
-<!-- #region -->
-The conception of this notebook was performed under the following environment:
-
-```python
->>> import sys; sys.version
-
-# Output:
-# '3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]'
-```
-
-Contents for `requirements.txt` for reproducing this notebook:
-
-```plaintext
-casadi==3.6.4
-matplotlib==3.8.2
-numpy==1.26.3
-```
-<!-- #endregion -->
 
 ```python
 from casadi import SX
@@ -31,6 +17,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 ```
 
+
+## Build system of equations
 
 ```python
 x = SX.sym("x", 3)
@@ -72,24 +60,28 @@ F_xdot
 ```python
 F_xdot([0.5, 0.5, 0.0], 10.0, 3.0, 1000.0, 10.0)
 ```
+## Provide parameters
+
 ```python
-Np = 100
-tau = 15.0
+Np = 200
+tau = 10.0
 
 Q = 1.0
-R = 0.05
+R = 0.1
 S = 100.0
 
 k_num = 10.0
-n_tot_num = 1000.0
+n_tot_num = 500.0
 ndot_tot_num = 3.0
 
-x0_max = 0.85
-ndot0 = 0.5 * ndot_tot_num
+ndot0_max = 0.9 * ndot_tot_num
+ndot0_ini = 0.5 * ndot_tot_num
 
 pars_fixed = [ndot_tot_num, n_tot_num, k_num]
 ```
 
+
+## Integrate symbolically
 
 ```python
 def step(xn, pn):
@@ -100,55 +92,52 @@ def integrate(xn, pn):
 ```
 
 ```python
-integrate(x, ndot0)
+integrate(x, ndot0_ini)
 ```
 
 ```python
 J = 0.0
 g = []
-```
 
-
-```python
 xs2 = SX.sym("xs2", Np+1)
-```
 
-
-```python
-lbx = [0.0]
-ubx = [x0_max*ndot_tot_num]
-v_qdot0 = [SX.sym(f"v_qdot0_0")]
+lbx = []
+ubx = []
+v_ndot0 = []
 ```
 
 
 ```python
 xn = x
     
-for ts in range(1, Np+1):
-    v_qdot0_ts = SX.sym(f"v_qdot0_{ts}")
-    v_qdot0.append(v_qdot0_ts)
+for ts in range(Np):
+    v_ndot0_ts = SX.sym(f"v_ndot0_{ts}")
+    v_ndot0.append(v_ndot0_ts)
     
     lbx.append(0.0)
-    ubx.append(x0_max*ndot_tot_num)
+    ubx.append(ndot0_max)
 
-    xn = integrate(xn, v_qdot0_ts)
+    xn = integrate(xn, v_ndot0_ts)
+
+    v_prev = ndot0_ini if ts == 0 else v_ndot0[ts-1]
+
+    scale_error  = xn[2] - xs2[ts]
+    scale_change = v_prev - v_ndot0_ts
+
+    cost_error = Q * pow(scale_error, 2)
+    cost_change = R * pow(scale_change, 2)
     
-    J += Q * pow(xn[2] - xs2[ts], 2) +\
-         R * pow(v_qdot0_ts - v_qdot0[ts-1], 2)
-```
-
-```python
-g.append(v_qdot0[0] - ndot0)
-```
-
-```python
+    J += cost_error + cost_change
+    
 J += S * pow(xn[2] - xs2[-1], 2)
 ```
+
+## Optimize controls
 
 ```python
 nlp = {
     "f": J,
-    "x": vertcat(*v_qdot0), 
+    "x": vertcat(*v_ndot0), 
     "g": vertcat(*g),
     "p": vertcat(xs2, x)
 }
@@ -161,8 +150,8 @@ solver
 
 ```python
 xs2_num = np.zeros(Np+1)
-xs2_num[:3*Np//4] = 0.3
-xs2_num[3*Np//4:] = 0.6
+xs2_num[:3*Np//5] = 0.2
+xs2_num[3*Np//5:] = 0.5
 ```
 
 ```python
@@ -171,8 +160,10 @@ p = [*xs2_num, *x0_num]
 ```
 
 ```python
-solution = solver(x0=np.ones(Np+1), p=p, lbx=lbx, ubx=ubx, lbg=0.0, ubg=0.0)
+solution = solver(x0=np.ones(Np), p=p, lbx=lbx, ubx=ubx, lbg=0.0, ubg=0.0)
 ```
+
+## Post-processing
 
 ```python
 ndot0_opt = solution["x"].full().ravel()
@@ -191,44 +182,36 @@ for ts in range(1, Np+1):
 xs2_max = np.clip(xs2_num + 0.05, 0.0, 1.0)
 xs2_min = np.clip(xs2_num - 0.05, 0.0, 1.0)
 good = (xt[:, 2] >= xs2_min) & (xt[:, 2] <= xs2_max)
-```
 
-```python
 steps = list(range(Np+1))
 quality = 100 * sum(good.astype("u8")) / len(good)
+
+cmd = list(ndot0_opt / ndot_tot_num)
+cmd.append(cmd[-1])
 
 plt.style.use("default")
 fig = plt.figure(figsize=(12, 6))
 plt.grid(linestyle=":")
+
 plt.plot(steps, xt[:, 0], label="$X_A$")
 plt.plot(steps, xt[:, 1], label="$X_B$")
 plt.plot(steps, xt[:, 2], lw=4, label="$X_C$")
-plt.step(steps, xs2_max, "k:", label="_none_")
-plt.step(steps, xs2_min, "k:", label="_none_")
-plt.step(steps, xs2_num, lw=4, label="$X_C$ (target)")
-plt.step(steps, ndot0_opt / ndot_tot_num, label="$Q_A$ (relative)", where="post")
+
+plt.step(steps, xs2_max, "k:", label="_none_", where="post")
+plt.step(steps, xs2_min, "k:", label="_none_", where="post")
+plt.step(steps, xs2_num, "m-", lw=4, label="$X_C$ (target)", where="post")
+
+# Add *negative time* with initial flow rate.
+plt.step([-1, *steps], [ndot0_ini/ ndot_tot_num, *cmd], "r", lw=2, 
+         label="$Q_A$ (relative)", where="post")
+
 plt.fill_between(steps, xs2_min, xs2_max, where=good, alpha=0.3)
+
 plt.title(f"Expected quality level at {quality:.1f}%")
 plt.ylabel("Mole fractions and relative flow rate of A")
 plt.xlabel("Action step number over prediction horizon")
 plt.legend(loc=4, fancybox=True,  framealpha=1.0)
-plt.xlim(0, Np)
+plt.xlim(-1, Np+1)
+plt.ylim(0, 1)
 plt.tight_layout()
-```
-
-## Organizing the code
-
-```python
-class PlantModel:
-    pass
-
-class ControlsMPC:
-    pass
-
-def displayresults():
-    pass
-```
-
-```python
-
 ```

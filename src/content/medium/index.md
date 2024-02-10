@@ -105,8 +105,16 @@ showall = true
       <!-- <a href="" target="_blank">Medium</a> -->
     </td>
     <td>
-      <a href="08-PSR-control-MPC-in-Python" target="_blank">
+      <a href="08-PSR-control-MPC-in-Python-A" target="_blank">
         Chemical Engineering Model Predictive Control (Jupyter notebook)
+      </a>
+      <br/>
+      <a href="08-PSR-control-MPC-in-Python-B" target="_blank">
+        Vectorized form without text (Jupyter notebook)
+      </a>
+      <br/>
+      <a href="08-PSR-control-MPC-in-Python-C" target="_blank">
+        Production format without text (Jupyter notebook)
       </a>
       <hr style="padding: 0pt; margin: 5pt"/>
     </td>
