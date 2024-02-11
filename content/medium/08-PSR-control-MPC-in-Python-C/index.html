@@ -106,48 +106,55 @@ import matplotlib.pyplot as plt</code></pre>
         return xn &#43; self._tau * self._rhs&#40;xn, pn, *self._pars&#41;</code></pre>
 <pre><code class="language-python">class ControlsMPC:
     &quot;&quot;&quot; A simple MPC for a given plant. &quot;&quot;&quot;
-    def __init__&#40;self, plant, Np, Q, R, S&#41;:
+    def __init__&#40;self, plant, Np, R, S&#41;:
         self._plant &#61; plant
         self._horizon &#61; Np
 
         # TODO instead of computing cost directly in _integrate
         # just store the values in arrays and provide these
         # in optimize so that we can play for parametrization.
-        self._Q &#61; Q
         self._R &#61; R
         self._S &#61; S
 
         self._p &#61; SX.sym&#40;&quot;p&quot;, Np&#43;1&#41;
         self._xp &#61; SX.sym&#40;&quot;xp&quot;, Np&#43;1&#41;
         
-        self._cost &#61; None
+        self._x0 &#61; SX.sym&#40;&quot;x0&quot;, 3, 1&#41;
+        self._xt &#61; SX.sym&#40;&quot;xt&quot;, 3, Np&#43;1&#41;
+        self._xt&#91;:, 0&#93; &#61; self._x0
         
+        J, F &#61; self._integrate&#40;&#41;
+        self._cost &#61; J
+        self._sim &#61; F
+
     def _integrate&#40;self&#41;:
         print&#40;&quot;Initial call to MPC: symbolic integration&quot;&#41;
-        
-        J &#61; 0
-        x &#61; self._plant.states
 
+        J &#61; 0
+        x &#61; self._xt&#91;:, 0&#93;
+        
         for ts in range&#40;1, self._horizon&#43;1&#41;:
             x &#61; self._plant.step_euler&#40;x, self._p&#91;ts&#93;&#41;
-
+            self._xt&#91;:, ts&#93; &#61; x
+            
             # TODO: implement an actual scaling so that both have
             # the same magnitude and Q, R become scale-independent&#33;
             scale_error  &#61; x&#91;2&#93; - self._xp&#91;ts&#93;
             scale_change &#61; self._p&#91;ts&#93; - self._p&#91;ts-1&#93; 
-
-            cost_error &#61; self._Q * pow&#40;scale_error, 2&#41;
+            # scale_error /&#61; &#40;x&#91;2&#93; &#43; 1.0e-15&#41;
+            # scale_change /&#61; &#40;self._p&#91;ts&#93; &#43; 1.0e-15&#41;
+            
+            cost_error &#61; pow&#40;scale_error, 2&#41;
             cost_change &#61; self._R * pow&#40;scale_change, 2&#41;
 
             J &#43;&#61; cost_error &#43; cost_change
 
         J &#43;&#61; self._S * pow&#40;x&#91;2&#93; - self._xp&#91;-1&#93;, 2&#41;
-        self._cost &#61; J
+        F &#61; Function&#40;&quot;sim&quot;, &#91;self._x0, self._p&#93;, &#91;self._xt&#93;&#41;
         
-    def optimize&#40;self, x0, p0, xsp, pmax&#41;:
-        if self._cost is None:
-            self._integrate&#40;&#41;
-            
+        return J, F
+
+    def optimize&#40;self, x0, p0, xsp, pmax&#41;:           
         # Constraint *negative time* command to the current value.
         g &#61; &#91;self._p&#91;0&#93; - p0&#93;
         
@@ -160,29 +167,17 @@ import matplotlib.pyplot as plt</code></pre>
             &quot;f&quot;: self._cost,
             &quot;x&quot;: self._p, 
             &quot;g&quot;: vertcat&#40;*g&#41;,
-            &quot;p&quot;: vertcat&#40;self._xp, self._plant.states&#41;
+            &quot;p&quot;: vertcat&#40;self._xp, self._x0&#41;
         &#125;&#41;
         
         p &#61; &#91;*xsp, *x0&#93;
         guess &#61; np.ones&#40;self._horizon&#43;1&#41;
 
-        return solver&#40;x0&#61;guess, p&#61;p, lbx&#61;0, ubx&#61;pmax, lbg&#61;0, ubg&#61;0&#41;</code></pre>
-<pre><code class="language-python">def postprocess&#40;x0, plant, solution&#41;:
-    &quot;&quot;&quot; &quot;&quot;&quot;
-    popt &#61; solution&#91;&quot;x&quot;&#93;.full&#40;&#41;.ravel&#40;&#41;
-    
-    # Minus 1 because popt contains initial command&#33;
-    simsteps &#61; len&#40;popt&#41; - 1
-    
-    xt &#61; np.zeros&#40;&#40;simsteps&#43;1, 3&#41;&#41;
-    xt&#91;0, :&#93; &#61; x0
-    x &#61; xt&#91;0&#93;
+        solution &#61; solver&#40;x0&#61;guess, p&#61;p, lbx&#61;0, ubx&#61;pmax, lbg&#61;0, ubg&#61;0&#41;
+        popt &#61; solution&#91;&quot;x&quot;&#93;.full&#40;&#41;.ravel&#40;&#41;
+        xt &#61; self._sim&#40;x0, popt&#41;.full&#40;&#41;.T
 
-    for ts in range&#40;1, simsteps&#43;1&#41;:
-        x &#61; plant.step_euler&#40;x, popt&#91;ts&#93;&#41;
-        xt&#91;ts&#93; &#61; x.full&#40;&#41;.ravel&#40;&#41;
-
-    return popt, xt</code></pre>
+        return popt, xt, solution</code></pre>
 <h2 id="solution_workflow"><a href="#solution_workflow" class="header-anchor">Solution workflow</a></h2>
 <h3 id="create_dynamics"><a href="#create_dynamics" class="header-anchor">Create dynamics</a></h3>
 <pre><code class="language-python">model &#61; PlantModel&#40;&#41;
@@ -198,7 +193,6 @@ ndot_A_ini &#61; 0.5 * Ndot
 Np &#61; 200
 tau &#61; 10.0
 
-Q &#61; 1.0
 R &#61; 0.1
 S &#61; 100.0
 
@@ -210,10 +204,9 @@ xsp&#91;3*Np//5:&#93; &#61; 0.5</code></pre>
 <h3 id="setup_controller"><a href="#setup_controller" class="header-anchor">Setup controller</a></h3>
 <pre><code class="language-python">plant &#61; InstantiatedPlant&#40;model, k, N, Ndot, tau&#41;
 
-mpc &#61; ControlsMPC&#40;plant, Np, Q, R, S&#41;</code></pre>
+mpc &#61; ControlsMPC&#40;plant, Np, R, S&#41;</code></pre>
 <h3 id="optimize_and_retrieve_results"><a href="#optimize_and_retrieve_results" class="header-anchor">Optimize and retrieve results</a></h3>
-<pre><code class="language-python">solution &#61; mpc.optimize&#40;x0, ndot_A_ini, xsp, ndot_A_max&#41;
-popt, xt &#61; postprocess&#40;x0, plant, solution&#41;</code></pre>
+<pre><code class="language-python">popt, xt, solution &#61; mpc.optimize&#40;x0, ndot_A_ini, xsp, ndot_A_max&#41;</code></pre>
 <h3 id="display_results"><a href="#display_results" class="header-anchor">Display results</a></h3>
 <pre><code class="language-python">xsp_max &#61; np.clip&#40;xsp &#43; 0.05, 0.0, 1.0&#41;
 xsp_min &#61; np.clip&#40;xsp - 0.05, 0.0, 1.0&#41;
