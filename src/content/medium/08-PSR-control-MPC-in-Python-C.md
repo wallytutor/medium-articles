@@ -89,48 +89,55 @@ class InstantiatedPlant:
 ```python
 class ControlsMPC:
     """ A simple MPC for a given plant. """
-    def __init__(self, plant, Np, Q, R, S):
+    def __init__(self, plant, Np, R, S):
         self._plant = plant
         self._horizon = Np
 
         # TODO instead of computing cost directly in _integrate
         # just store the values in arrays and provide these
         # in optimize so that we can play for parametrization.
-        self._Q = Q
         self._R = R
         self._S = S
 
         self._p = SX.sym("p", Np+1)
         self._xp = SX.sym("xp", Np+1)
         
-        self._cost = None
+        self._x0 = SX.sym("x0", 3, 1)
+        self._xt = SX.sym("xt", 3, Np+1)
+        self._xt[:, 0] = self._x0
         
+        J, F = self._integrate()
+        self._cost = J
+        self._sim = F
+
     def _integrate(self):
         print("Initial call to MPC: symbolic integration")
-        
-        J = 0
-        x = self._plant.states
 
+        J = 0
+        x = self._xt[:, 0]
+        
         for ts in range(1, self._horizon+1):
             x = self._plant.step_euler(x, self._p[ts])
-
+            self._xt[:, ts] = x
+            
             # TODO: implement an actual scaling so that both have
             # the same magnitude and Q, R become scale-independent!
             scale_error  = x[2] - self._xp[ts]
             scale_change = self._p[ts] - self._p[ts-1] 
-
-            cost_error = self._Q * pow(scale_error, 2)
+            # scale_error /= (x[2] + 1.0e-15)
+            # scale_change /= (self._p[ts] + 1.0e-15)
+            
+            cost_error = pow(scale_error, 2)
             cost_change = self._R * pow(scale_change, 2)
 
             J += cost_error + cost_change
 
         J += self._S * pow(x[2] - self._xp[-1], 2)
-        self._cost = J
+        F = Function("sim", [self._x0, self._p], [self._xt])
         
-    def optimize(self, x0, p0, xsp, pmax):
-        if self._cost is None:
-            self._integrate()
-            
+        return J, F
+
+    def optimize(self, x0, p0, xsp, pmax):           
         # Constraint *negative time* command to the current value.
         g = [self._p[0] - p0]
         
@@ -143,32 +150,17 @@ class ControlsMPC:
             "f": self._cost,
             "x": self._p, 
             "g": vertcat(*g),
-            "p": vertcat(self._xp, self._plant.states)
+            "p": vertcat(self._xp, self._x0)
         })
         
         p = [*xsp, *x0]
         guess = np.ones(self._horizon+1)
 
-        return solver(x0=guess, p=p, lbx=0, ubx=pmax, lbg=0, ubg=0)
-```
+        solution = solver(x0=guess, p=p, lbx=0, ubx=pmax, lbg=0, ubg=0)
+        popt = solution["x"].full().ravel()
+        xt = self._sim(x0, popt).full().T
 
-```python
-def postprocess(x0, plant, solution):
-    """ """
-    popt = solution["x"].full().ravel()
-    
-    # Minus 1 because popt contains initial command!
-    simsteps = len(popt) - 1
-    
-    xt = np.zeros((simsteps+1, 3))
-    xt[0, :] = x0
-    x = xt[0]
-
-    for ts in range(1, simsteps+1):
-        x = plant.step_euler(x, popt[ts])
-        xt[ts] = x.full().ravel()
-
-    return popt, xt
+        return popt, xt, solution
 ```
 
 ## Solution workflow
@@ -194,7 +186,6 @@ ndot_A_ini = 0.5 * Ndot
 Np = 200
 tau = 10.0
 
-Q = 1.0
 R = 0.1
 S = 100.0
 
@@ -210,14 +201,13 @@ xsp[3*Np//5:] = 0.5
 ```python
 plant = InstantiatedPlant(model, k, N, Ndot, tau)
 
-mpc = ControlsMPC(plant, Np, Q, R, S)
+mpc = ControlsMPC(plant, Np, R, S)
 ```
 
 ### Optimize and retrieve results
 
 ```python
-solution = mpc.optimize(x0, ndot_A_ini, xsp, ndot_A_max)
-popt, xt = postprocess(x0, plant, solution)
+popt, xt, solution = mpc.optimize(x0, ndot_A_ini, xsp, ndot_A_max)
 ```
 
 ### Display results
