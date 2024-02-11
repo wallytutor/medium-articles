@@ -381,9 +381,9 @@ plt.plot(steps, xt_A, lw=2, label="$X_A$")
 plt.plot(steps, xt_B, lw=2, label="$X_B$")
 plt.plot(steps, xt_C, lw=4, label="$X_C$")
 
-plt.step(steps, xs_C_max, "k:", label="_none_", where="post")
-plt.step(steps, xs_C_min, "k:", label="_none_", where="post")
-plt.step(steps, xs_C_num, "m-", lw=4, label="$X_C$ (target)", where="post")
+plt.step(steps, xs_C_max, "m--", lw=2, label="_none_", where="post")
+plt.step(steps, xs_C_min, "m--", lw=2, label="_none_", where="post")
+plt.step(steps, xs_C_num, "m-", lw=1, label="$X_C$ (target)", where="post")
 
 # Add *negative time* with initial flow rate.
 plt.step([-1, *steps], [ndot_A_ini/ ndot_t, *cmd], "r", lw=2, 
@@ -395,7 +395,7 @@ plt.title(f"Expected quality level at {quality:.1f}%")
 plt.ylabel("Mole fractions and relative flow rate of A")
 plt.xlabel("Action step number over prediction horizon")
 plt.legend(loc="upper center", fancybox=True, framealpha=1.0, ncol=6)
-plt.xlim(-1, Np+1)
+plt.xlim(-1, Np)
 plt.ylim(0, 1)
 plt.tight_layout()
 ```
@@ -404,5 +404,6 @@ There are many ways you could propose exercises from this guided study:
 - Implement a higher order time-stepping scheme.
 - Provide simultaneous simulation/optimization with multiple-shooting.
 - Investigate role of total flow rate or reactor size over quality.
+- Increase error out of target value range (shadowed zones in figure).
 - Use the solver in a simulated control loop with random noise in measurements.
 - ...

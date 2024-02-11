@@ -197,9 +197,9 @@ plt.plot(steps, xt[:, 0], label="$X_A$")
 plt.plot(steps, xt[:, 1], label="$X_B$")
 plt.plot(steps, xt[:, 2], lw=4, label="$X_C$")
 
-plt.step(steps, xs2_max, "k:", label="_none_", where="post")
-plt.step(steps, xs2_min, "k:", label="_none_", where="post")
-plt.step(steps, xs2_num, "m-", lw=4, label="$X_C$ (target)", where="post")
+plt.step(steps, xs2_max, "m--", lw=2, label="_none_", where="post")
+plt.step(steps, xs2_min, "m--", lw=2, label="_none_", where="post")
+plt.step(steps, xs2_num, "m-", lw=1, label="$X_C$ (target)", where="post")
 
 # Add *negative time* with initial flow rate.
 plt.step([-1, *steps], [ndot0_ini/ ndot_tot_num, *cmd], "r", lw=2, 
@@ -210,8 +210,12 @@ plt.fill_between(steps, xs2_min, xs2_max, where=good, alpha=0.3)
 plt.title(f"Expected quality level at {quality:.1f}%")
 plt.ylabel("Mole fractions and relative flow rate of A")
 plt.xlabel("Action step number over prediction horizon")
-plt.legend(loc=4, fancybox=True,  framealpha=1.0)
-plt.xlim(-1, Np+1)
+plt.legend(loc="upper center", fancybox=True, framealpha=1.0, ncol=6)
+plt.xlim(-1, Np)
 plt.ylim(0, 1)
 plt.tight_layout()
+```
+
+```python
+
 ```

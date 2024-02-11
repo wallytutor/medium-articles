@@ -10,6 +10,7 @@
 
 ```python
 from casadi import SX
+from casadi import DM
 from casadi import Function
 from casadi import nlpsol
 from casadi import vertcat
@@ -18,71 +19,178 @@ import matplotlib.pyplot as plt
 ```
 
 
+## Create models
+
 ```python
 class PlantModel:
+    """ Minimal implementation of system dynamics. """
     def __init__(self):
-        x = SX.sym("x", 3)
-        k = SX.sym("k", 1)
-        n_tot = SX.sym("n_tot")
-        ndot_tot = SX.sym("ndot_tot")
-
+        x = SX.sym("x", 3) # Concentrations
+        k = SX.sym("k", 1) # Rate constant
+        N = SX.sym("N", 1) # System size
+        
+        # Total flow rate.
+        Ndot = SX.sym("Ndot", 1)
+        
+        # Feed flow rates.
         ndot = SX.sym("ndot", 3)
-        ndot[1] = ndot_tot - ndot[0]
+        ndot[1] = Ndot - ndot[0]
         ndot[2] = 0
 
-        rate = k * x[0]
-        ndot_gen = vertcat(-rate, 0.0, rate)
-        xdot = (ndot - ndot_tot * x + ndot_gen) / n_tot
+        # Production rates of species.
+        vdot = k * x[0] * DM([-1, 0, 1])
         
+        # Symbolic balance equation.
+        xdot = (ndot - Ndot * x + vdot) / N
+        
+        # Functional balance equation.
+        xrhs = Function(
+            "xdot",
+            [x, ndot[0], Ndot, N, k],
+            [xdot],
+            ["x", "ndot_A", "Ndot", "N", "k"],
+            ["xdot"]
+        )
+
         self._states = x
-        self._rate_constant = k
-        self._reactor_moles = n_tot
-        self._total_flow_rate = ndot_tot
-        self._balance_eqns = xdot
+        self._balance_eqns_sym = xdot
+        self._balance_eqns_fun = xrhs
+    
+    @property
+    def states(self):
+        return self._states
+
+    @property
+    def balance_eqns_sym(self):
+        return self._balance_eqns_sym
+    
+    @property
+    def balance_eqns_fun(self):
+        return self._balance_eqns_fun
+```
+
+```python
+class InstantiatedPlant:
+    """ Instantiation of dynamics with fixed parameters. """
+    def __init__(self, model, k, N, Ndot, tau):
+        self._states = model.states
+        self._rhs = model.balance_eqns_fun
+        self._pars = [Ndot, N, k]
+        self._tau = tau
     
     @property
     def states(self):
         return self._states
     
-    @property
-    def rate_constant(self):
-        return self._rate_constant
-    
-    @property
-    def reactor_moles(self):
-        return self._reactor_moles
-    
-    @property
-    def total_flow_rate(self):
-        return self._total_flow_rate
-    
-    @property
-    def balance_eqns(self):
-        return self._balance_eqns
+    def step_euler(self, xn, pn):
+        return xn + self._tau * self._rhs(xn, pn, *self._pars)
 ```
 
 ```python
 class ControlsMPC:
-    pass
+    """ A simple MPC for a given plant. """
+    def __init__(self, plant, Np, Q, R, S):
+        self._plant = plant
+        self._horizon = Np
+
+        # TODO instead of computing cost directly in _integrate
+        # just store the values in arrays and provide these
+        # in optimize so that we can play for parametrization.
+        self._Q = Q
+        self._R = R
+        self._S = S
+
+        self._p = SX.sym("p", Np+1)
+        self._xp = SX.sym("xp", Np+1)
+        
+        self._cost = None
+        
+    def _integrate(self):
+        print("Initial call to MPC: symbolic integration")
+        
+        J = 0
+        x = self._plant.states
+
+        for ts in range(1, self._horizon+1):
+            x = self._plant.step_euler(x, self._p[ts])
+
+            # TODO: implement an actual scaling so that both have
+            # the same magnitude and Q, R become scale-independent!
+            scale_error  = x[2] - self._xp[ts]
+            scale_change = self._p[ts] - self._p[ts-1] 
+
+            cost_error = self._Q * pow(scale_error, 2)
+            cost_change = self._R * pow(scale_change, 2)
+
+            J += cost_error + cost_change
+
+        J += self._S * pow(x[2] - self._xp[-1], 2)
+        self._cost = J
+        
+    def optimize(self, x0, p0, xsp, pmax):
+        if self._cost is None:
+            self._integrate()
+            
+        # Constraint *negative time* command to the current value.
+        g = [self._p[0] - p0]
+        
+        # XXX: abuse of notation! Notice below that the dictionary
+        # *unknowns* "x" are set to `self._p`, while *parameters*
+        # "p" are given the *x's*. This is because we are finding
+        # the optimal controls here and already know the target
+        # profile and initial states for concentrations *x*!
+        solver = nlpsol("solver", "ipopt", {
+            "f": self._cost,
+            "x": self._p, 
+            "g": vertcat(*g),
+            "p": vertcat(self._xp, self._plant.states)
+        })
+        
+        p = [*xsp, *x0]
+        guess = np.ones(self._horizon+1)
+
+        return solver(x0=guess, p=p, lbx=0, ubx=pmax, lbg=0, ubg=0)
 ```
 
 ```python
-def displayresults():
-    pass
+def postprocess(x0, plant, solution):
+    """ """
+    popt = solution["x"].full().ravel()
+    
+    # Minus 1 because popt contains initial command!
+    simsteps = len(popt) - 1
+    
+    xt = np.zeros((simsteps+1, 3))
+    xt[0, :] = x0
+    x = xt[0]
+
+    for ts in range(1, simsteps+1):
+        x = plant.step_euler(x, popt[ts])
+        xt[ts] = x.full().ravel()
+
+    return popt, xt
 ```
 
-## Build system of equations
+## Solution workflow
+
+
+### Create dynamics
 
 ```python
-
+model = PlantModel()
+model.balance_eqns_fun
 ```
-```python
-p = [ndot[0], ndot_tot, n_tot, k]
-F_xdot = Function("F_xdot", [x, *p], [xdot])
-```
-## Provide parameters
+
+### Provide parameters
 
 ```python
+k = 10.0
+N = 500.0
+Ndot = 3.0
+
+ndot_A_max = 0.9 * Ndot
+ndot_A_ini = 0.5 * Ndot
+
 Np = 200
 tau = 10.0
 
@@ -90,137 +198,61 @@ Q = 1.0
 R = 0.1
 S = 100.0
 
-k_num = 10.0
-n_tot_num = 500.0
-ndot_tot_num = 3.0
+x0 = [0.0, 1.0, 0.0]
 
-ndot0_max = 0.9 * ndot_tot_num
-ndot0_ini = 0.5 * ndot_tot_num
-
-pars_fixed = [ndot_tot_num, n_tot_num, k_num]
+xsp = np.zeros(Np+1)
+xsp[:3*Np//5] = 0.2
+xsp[3*Np//5:] = 0.5
 ```
 
-
-## Integrate symbolically
+### Setup controller
 
 ```python
-def step(xn, pn):
-    return F_xdot(xn, pn, *pars_fixed)
+plant = InstantiatedPlant(model, k, N, Ndot, tau)
 
-def integrate(xn, pn):
-    return xn + tau * step(xn, pn)
+mpc = ControlsMPC(plant, Np, Q, R, S)
 ```
 
+### Optimize and retrieve results
+
 ```python
-J = 0.0
-g = []
-
-xs2 = SX.sym("xs2", Np+1)
-
-lbx = []
-ubx = []
-v_ndot0 = []
+solution = mpc.optimize(x0, ndot_A_ini, xsp, ndot_A_max)
+popt, xt = postprocess(x0, plant, solution)
 ```
 
+### Display results
 
 ```python
-xn = x
-    
-for ts in range(Np):
-    v_ndot0_ts = SX.sym(f"v_ndot0_{ts}")
-    v_ndot0.append(v_ndot0_ts)
-    
-    lbx.append(0.0)
-    ubx.append(ndot0_max)
-
-    xn = integrate(xn, v_ndot0_ts)
-
-    v_prev = ndot0_ini if ts == 0 else v_ndot0[ts-1]
-
-    scale_error  = xn[2] - xs2[ts]
-    scale_change = v_prev - v_ndot0_ts
-
-    cost_error = Q * pow(scale_error, 2)
-    cost_change = R * pow(scale_change, 2)
-    
-    J += cost_error + cost_change
-    
-J += S * pow(xn[2] - xs2[-1], 2)
-```
-
-## Optimize controls
-
-```python
-nlp = {
-    "f": J,
-    "x": vertcat(*v_ndot0), 
-    "g": vertcat(*g),
-    "p": vertcat(xs2, x)
-}
-solver = nlpsol("solver", "ipopt", nlp)
-```
-
-```python
-xs2_num = np.zeros(Np+1)
-xs2_num[:3*Np//5] = 0.2
-xs2_num[3*Np//5:] = 0.5
-
-x0_num = [0.0, 1.0, 0.0]
-p = [*xs2_num, *x0_num]
-
-solution = solver(x0=np.ones(Np), p=p, lbx=lbx, ubx=ubx, lbg=0.0, ubg=0.0)
-```
-
-## Post-processing
-
-```python
-ndot0_opt = solution["x"].full().ravel()
-
-xt = np.zeros((Np+1, 3))
-xt[0, :] = x0_num
-
-xn = xt[0]
-    
-for ts in range(1, Np+1):
-    xn = integrate(xn, ndot0_opt[ts-1])
-    xt[ts] = xn.full().ravel()
-```
-
-```python
-xs2_max = np.clip(xs2_num + 0.05, 0.0, 1.0)
-xs2_min = np.clip(xs2_num - 0.05, 0.0, 1.0)
-good = (xt[:, 2] >= xs2_min) & (xt[:, 2] <= xs2_max)
+xsp_max = np.clip(xsp + 0.05, 0.0, 1.0)
+xsp_min = np.clip(xsp - 0.05, 0.0, 1.0)
+good = (xt[:, 2] >= xsp_min) & (xt[:, 2] <= xsp_max)
 
 steps = list(range(Np+1))
 quality = 100 * sum(good.astype("u8")) / len(good)
 
-cmd = list(ndot0_opt / ndot_tot_num)
+cmd = list(popt / Ndot)
 cmd.append(cmd[-1])
 
 plt.style.use("default")
 fig = plt.figure(figsize=(12, 6))
 plt.grid(linestyle=":")
 
-plt.step(steps, xs2_max, "k:", label="_none_", where="post")
-plt.step(steps, xs2_min, "k:", label="_none_", where="post")
-plt.step(steps, xs2_num, "m-", lw=4, label="$X_C$ (target)", where="post")
-
 plt.plot(steps, xt[:, 0], label="$X_A$")
 plt.plot(steps, xt[:, 1], label="$X_B$")
 plt.plot(steps, xt[:, 2], lw=4, label="$X_C$")
 
+plt.step(steps, xsp_max, "m--", lw=2, label="_none_", where="post")
+plt.step(steps, xsp_min, "m--", lw=2, label="_none_", where="post")
+plt.step(steps, xsp, "m-", lw=1, label="$X_C$ (target)", where="post")
+plt.fill_between(steps, xsp_min, xsp_max, where=good, alpha=0.3)
 
-# Add *negative time* with initial flow rate.
-plt.step([-1, *steps], [ndot0_ini/ ndot_tot_num, *cmd], "r", lw=2, 
-         label="$Q_A$ (relative)", where="post")
-
-plt.fill_between(steps, xs2_min, xs2_max, where=good, alpha=0.3)
+plt.step([-1, *steps], cmd, "r", lw=2, label="$Q_A$ (relative)", where="post")
 
 plt.title(f"Expected quality level at {quality:.1f}%")
 plt.ylabel("Mole fractions and relative flow rate of A")
 plt.xlabel("Action step number over prediction horizon")
-plt.legend(loc=4, fancybox=True,  framealpha=1.0)
-plt.xlim(-1, Np+1)
+plt.legend(loc="upper center", fancybox=True, framealpha=1.0, ncol=6)
+plt.xlim(-1, Np)
 plt.ylim(0, 1)
 plt.tight_layout()
 ```
