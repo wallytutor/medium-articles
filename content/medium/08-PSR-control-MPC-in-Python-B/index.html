@@ -163,9 +163,9 @@ plt.plot&#40;steps, xt&#91;:, 0&#93;, label&#61;&quot;&#36;X_A&#36;&quot;&#41;
 plt.plot&#40;steps, xt&#91;:, 1&#93;, label&#61;&quot;&#36;X_B&#36;&quot;&#41;
 plt.plot&#40;steps, xt&#91;:, 2&#93;, lw&#61;4, label&#61;&quot;&#36;X_C&#36;&quot;&#41;
 
-plt.step&#40;steps, xs2_max, &quot;k:&quot;, label&#61;&quot;_none_&quot;, where&#61;&quot;post&quot;&#41;
-plt.step&#40;steps, xs2_min, &quot;k:&quot;, label&#61;&quot;_none_&quot;, where&#61;&quot;post&quot;&#41;
-plt.step&#40;steps, xs2_num, &quot;m-&quot;, lw&#61;4, label&#61;&quot;&#36;X_C&#36; &#40;target&#41;&quot;, where&#61;&quot;post&quot;&#41;
+plt.step&#40;steps, xs2_max, &quot;m--&quot;, lw&#61;2, label&#61;&quot;_none_&quot;, where&#61;&quot;post&quot;&#41;
+plt.step&#40;steps, xs2_min, &quot;m--&quot;, lw&#61;2, label&#61;&quot;_none_&quot;, where&#61;&quot;post&quot;&#41;
+plt.step&#40;steps, xs2_num, &quot;m-&quot;, lw&#61;1, label&#61;&quot;&#36;X_C&#36; &#40;target&#41;&quot;, where&#61;&quot;post&quot;&#41;
 
 # Add *negative time* with initial flow rate.
 plt.step&#40;&#91;-1, *steps&#93;, &#91;ndot0_ini/ ndot_tot_num, *cmd&#93;, &quot;r&quot;, lw&#61;2, 
@@ -176,10 +176,11 @@ plt.fill_between&#40;steps, xs2_min, xs2_max, where&#61;good, alpha&#61;0.3&#41;
 plt.title&#40;f&quot;Expected quality level at &#123;quality:.1f&#125;&#37;&quot;&#41;
 plt.ylabel&#40;&quot;Mole fractions and relative flow rate of A&quot;&#41;
 plt.xlabel&#40;&quot;Action step number over prediction horizon&quot;&#41;
-plt.legend&#40;loc&#61;4, fancybox&#61;True,  framealpha&#61;1.0&#41;
-plt.xlim&#40;-1, Np&#43;1&#41;
+plt.legend&#40;loc&#61;&quot;upper center&quot;, fancybox&#61;True, framealpha&#61;1.0, ncol&#61;6&#41;
+plt.xlim&#40;-1, Np&#41;
 plt.ylim&#40;0, 1&#41;
 plt.tight_layout&#40;&#41;</code></pre>
+
 <div class="page-foot">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
     Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.

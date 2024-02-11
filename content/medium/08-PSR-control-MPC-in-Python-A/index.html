@@ -276,9 +276,9 @@ plt.plot&#40;steps, xt_A, lw&#61;2, label&#61;&quot;&#36;X_A&#36;&quot;&#41;
 plt.plot&#40;steps, xt_B, lw&#61;2, label&#61;&quot;&#36;X_B&#36;&quot;&#41;
 plt.plot&#40;steps, xt_C, lw&#61;4, label&#61;&quot;&#36;X_C&#36;&quot;&#41;
 
-plt.step&#40;steps, xs_C_max, &quot;k:&quot;, label&#61;&quot;_none_&quot;, where&#61;&quot;post&quot;&#41;
-plt.step&#40;steps, xs_C_min, &quot;k:&quot;, label&#61;&quot;_none_&quot;, where&#61;&quot;post&quot;&#41;
-plt.step&#40;steps, xs_C_num, &quot;m-&quot;, lw&#61;4, label&#61;&quot;&#36;X_C&#36; &#40;target&#41;&quot;, where&#61;&quot;post&quot;&#41;
+plt.step&#40;steps, xs_C_max, &quot;m--&quot;, lw&#61;2, label&#61;&quot;_none_&quot;, where&#61;&quot;post&quot;&#41;
+plt.step&#40;steps, xs_C_min, &quot;m--&quot;, lw&#61;2, label&#61;&quot;_none_&quot;, where&#61;&quot;post&quot;&#41;
+plt.step&#40;steps, xs_C_num, &quot;m-&quot;, lw&#61;1, label&#61;&quot;&#36;X_C&#36; &#40;target&#41;&quot;, where&#61;&quot;post&quot;&#41;
 
 # Add *negative time* with initial flow rate.
 plt.step&#40;&#91;-1, *steps&#93;, &#91;ndot_A_ini/ ndot_t, *cmd&#93;, &quot;r&quot;, lw&#61;2, 
@@ -290,7 +290,7 @@ plt.title&#40;f&quot;Expected quality level at &#123;quality:.1f&#125;&#37;&quot
 plt.ylabel&#40;&quot;Mole fractions and relative flow rate of A&quot;&#41;
 plt.xlabel&#40;&quot;Action step number over prediction horizon&quot;&#41;
 plt.legend&#40;loc&#61;&quot;upper center&quot;, fancybox&#61;True, framealpha&#61;1.0, ncol&#61;6&#41;
-plt.xlim&#40;-1, Np&#43;1&#41;
+plt.xlim&#40;-1, Np&#41;
 plt.ylim&#40;0, 1&#41;
 plt.tight_layout&#40;&#41;</code></pre>
 <p>There are many ways you could propose exercises from this guided study:</p>
@@ -300,6 +300,8 @@ plt.tight_layout&#40;&#41;</code></pre>
 <li><p>Provide simultaneous simulation/optimization with multiple-shooting.</p>
 </li>
 <li><p>Investigate role of total flow rate or reactor size over quality.</p>
+</li>
+<li><p>Increase error out of target value range &#40;shadowed zones in figure&#41;.</p>
 </li>
 <li><p>Use the solver in a simulated control loop with random noise in measurements.</p>
 </li>
