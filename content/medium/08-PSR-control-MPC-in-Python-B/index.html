@@ -62,10 +62,10 @@ ndot_gen</code></pre>
 
 xdot &#61; &#40;ndot - ndot_tot * x &#43; ndot_gen&#41; / n_tot
 xdot</code></pre>
-<pre><code class="language-python">p &#61; &#91;ndot&#91;0&#93;, ndot_tot, n_tot, k&#93;
-F_xdot &#61; Function&#40;&quot;F_xdot&quot;, &#91;x, *p&#93;, &#91;xdot&#93;&#41;</code></pre>
+<pre><code class="language-python">F_xdot &#61; Function&#40;&quot;F_xdot&quot;, &#91;x, ndot&#91;0&#93;, ndot_tot, n_tot, k&#93;, &#91;xdot&#93;&#41;</code></pre>
 <pre><code class="language-python">F_xdot</code></pre>
 <pre><code class="language-python">F_xdot&#40;&#91;0.5, 0.5, 0.0&#93;, 10.0, 3.0, 1000.0, 10.0&#41;</code></pre>
+<pre><code class="language-python">F_xdot&#40;x, ndot&#91;0&#93;, ndot_tot, n_tot, k * x&#91;1&#93;&#41;</code></pre>
 <h2 id="provide_parameters"><a href="#provide_parameters" class="header-anchor">Provide parameters</a></h2>
 <pre><code class="language-python">Np &#61; 200
 tau &#61; 10.0
