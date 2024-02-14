@@ -102,7 +102,8 @@ showall = true
   <tr>
     <td>8</td>
     <td>
-      <!-- <a href="" target="_blank">Medium</a> -->
+      <a href="https://medium.com/p/9c1dcc3469ab" target="_blank">Medium (1)</a>
+      <a href="https://medium.com/p/97682d151df3" target="_blank">Medium (2)</a>
     </td>
     <td>
       <a href="08-PSR-control-MPC-in-Python-A" target="_blank">
