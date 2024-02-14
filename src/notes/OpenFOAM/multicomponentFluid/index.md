@@ -25,3 +25,15 @@ In OpenFOAM v11 solver module `multicomponentFluid` provides approaches for sett
 - [verticalChannel](https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannel): water droplet evaporation in a vertical channel.
 - [verticalChannelLTS](https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannelLTS): same as [verticalChannel](https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannel) but with local time-stepping.
 - [verticalChannelSteady](https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannelSteady): same as [verticalChannel](https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannel) but at steady state.
+
+## Cases construction
+
+### aachenBombSteady
+
+- Modify `controlDict` to integer -steps and enable `purgeWrite` to keep case cleaner.
+- Change time-stepping method to `steadyState` in `fvSchemes`.
+- Some dictionaries in `cloudProperties` require steady-state specific commands:
+	- Add `calcFrequency` to `solution`
+	- Add `resetOnStartup` to `solution.sourceTerms`
+	- Injection models must use `massFlowRate`
+- Modified case so that there is an inlet and an outlet for flame development.
