@@ -77,6 +77,23 @@
 <li><p><a href="https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannelSteady">verticalChannelSteady</a>: same as <a href="https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannel">verticalChannel</a> but at steady state.</p>
 </li>
 </ul>
+<h2 id="cases_construction"><a href="#cases_construction" class="header-anchor">Cases construction</a></h2>
+<h3 id="aachenbombsteady"><a href="#aachenbombsteady" class="header-anchor">aachenBombSteady</a></h3>
+<ul>
+<li><p>Modify <code>controlDict</code> to integer -steps and enable <code>purgeWrite</code> to keep case cleaner.</p>
+</li>
+<li><p>Change time-stepping method to <code>steadyState</code> in <code>fvSchemes</code>.</p>
+</li>
+<li><p>Some dictionaries in <code>cloudProperties</code> require steady-state specific commands:</p>
+</li>
+</ul>
+<p>- Add <code>calcFrequency</code> to <code>solution</code>
+- Add <code>resetOnStartup</code> to <code>solution.sourceTerms</code>
+- Injection models must use <code>massFlowRate</code></p>
+<ul>
+<li><p>Modified case so that there is an inlet and an outlet for flame development.</p>
+</li>
+</ul>
 <div class="page-foot">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
     Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
