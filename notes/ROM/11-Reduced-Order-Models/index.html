@@ -16,7 +16,7 @@
 <link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
 
 
-   <title>POD for Partial Differential equations</title>  
+   <title>POD for Partial Differential equations &#40;11.1&#41;</title>  
 </head>
 <body>
   <header>
@@ -34,7 +34,7 @@
 
 
 <!-- Content appended here -->
-<div class="franklin-content"><h2 id="pod_for_partial_differential_equations"><a href="#pod_for_partial_differential_equations" class="header-anchor">POD for Partial Differential equations</a></h2>
+<div class="franklin-content"><h2 id="pod_for_partial_differential_equations_111"><a href="#pod_for_partial_differential_equations_111" class="header-anchor">POD for Partial Differential equations &#40;11.1&#41;</a></h2>
 <p><img src="https://www.youtube.com/watch?v&#61;I8n8a7q8wLk" alt="" /></p>
 <ul>
 <li><p>Proxy models are much faster &#40;lower dimensional&#41;</p>
@@ -64,9 +64,20 @@
 <li><p>Construction similar to spectral methods</p>
 </li>
 </ul>
-<h2 id="optimal_basis_elements"><a href="#optimal_basis_elements" class="header-anchor">Optimal Basis Elements</a></h2>
+<h2 id="optimal_basis_elements_112"><a href="#optimal_basis_elements_112" class="header-anchor">Optimal Basis Elements &#40;11.2&#41;</a></h2>
 <p><img src="https://www.youtube.com/watch?v&#61;IlYDfGXL0nI" alt="" /></p>
-<h2 id="pod_and_soliton_dynamics"><a href="#pod_and_soliton_dynamics" class="header-anchor">POD and Soliton Dynamics</a></h2>
+<ul>
+<li><p>Key idea: simulate the dynamics of the system and save snapshots of time-step solutions to then identify a modal expansion.</p>
+</li>
+<li><p>The \(\tilde{U}\) POD basis \(\psi_k\) found by truncating the SVD matrix \(U\) at rank \(r\) is the optimal in the \(L^2\) sense for the given data.</p>
+</li>
+<li><p>Use energy <em>accumulated</em> in modes as discussed in <a href="01-Singular-Value-Decomposition">Chapter 1</a> to define the optimal &#40;or good enough&#41; value of \(r\).</p>
+</li>
+<li><p>The produced ROM is not assured to be safe outside the subspace to which it was identified, though that is fine for several physics.</p>
+</li>
+<li></li>
+</ul>
+<h2 id="pod_and_soliton_dynamics_113"><a href="#pod_and_soliton_dynamics_113" class="header-anchor">POD and Soliton Dynamics &#40;11.3&#41;</a></h2>
 <p><img src="https://www.youtube.com/watch?v&#61;2GFDVLzFSJU" alt="" /></p>
 <h2 id="continuous_formulation_of_pod"><a href="#continuous_formulation_of_pod" class="header-anchor">Continuous Formulation of POD</a></h2>
 <p><img src="https://www.youtube.com/watch?v&#61;TRtAkiOdIP4&amp;feature&#61;youtu.be" alt="" /></p>

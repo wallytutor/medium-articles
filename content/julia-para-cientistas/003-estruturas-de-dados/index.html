@@ -57,7 +57,7 @@
     languages&#91;2&#93; &#61; &quot;C&#43;&#43;&quot;
 catch err
     println&#40;&quot;Erro: &#36;&#40;err&#41;&quot;&#41;
-end</code></pre><pre><code class="plaintext code-output">Erro: MethodError(setindex!, (("Julia", "Python", "Octave"), "C++", 2), 0x0000000000007b10)
+end</code></pre><pre><code class="plaintext code-output">Erro: MethodError(setindex!, (("Julia", "Python", "Octave"), "C++", 2), 0x0000000000007b16)
 </code></pre>
 <p>Existem certas subtilidades que você precisa saber sobre a imutabilidade. Observe o exemplo abaixo, aonde declaramos duas variáveis que são utilizadas para construir uma <code>Tuple</code> e então modificamos uma das variáveis: a <code>Tuple</code> continua com os valores originais do momento da sua construção.</p>
 <pre><code class="language-julia">let
