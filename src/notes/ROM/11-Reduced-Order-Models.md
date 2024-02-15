@@ -1,4 +1,4 @@
-## POD for Partial Differential equations
+## POD for Partial Differential equations (11.1)
 
 ![](https://www.youtube.com/watch?v=I8n8a7q8wLk)
 
@@ -14,11 +14,18 @@
 - Example: try to approximate a Gaussian with FME
 - Localized structures require more expansion modes
 - Construction similar to spectral methods
-## Optimal Basis Elements
+
+## Optimal Basis Elements (11.2)
 
 ![](https://www.youtube.com/watch?v=IlYDfGXL0nI)
 
-## POD and Soliton Dynamics
+- Key idea: simulate the dynamics of the system and save snapshots of time-step solutions to then identify a modal expansion.
+- The $\tilde{U}$ POD basis $\psi_k$ found by truncating the SVD matrix $U$ at rank $r$ is the optimal in the $L^2$ sense for the given data.
+- Use energy *accumulated* in modes as discussed in [Chapter 1](01-Singular-Value-Decomposition) to define the optimal (or good enough) value of $r$.
+- The produced ROM is not assured to be safe outside the subspace to which it was identified, though that is fine for several physics.
+- 
+
+## POD and Soliton Dynamics (11.3)
 
 ![](https://www.youtube.com/watch?v=2GFDVLzFSJU)
 
