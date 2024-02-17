@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+  <link rel="stylesheet" href="/medium-articles/css/franklin.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
+<link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
+<link rel="stylesheet" href="/medium-articles/css/celeste.min.css">
+<link rel="stylesheet" href="/medium-articles/css/custom.css">
+
+<link rel="icon" type="image/png" sizes="192x192" href="/medium-articles/assets/favicon.png">
+<link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
+
+
+   <title>Common applications</title>  
+</head>
+<body>
+  <header>
+<nav class="nav-main">
+  <ul>
+    <li class="logo"><a class="hvr-ripple-out" href="/medium-articles/">W</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/medium/">Medium Articles</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/transport-phenomena/">Transport Phenomena</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/julia-para-cientistas/">Julia para Cientistas</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/engenharia-de-reatores/">Engenharia de Reatores</a></li>
+    <li class="hvr-underline-reveal"><a href="/medium-articles/content/bookmarks/">Links</a></li>
+  </ul>
+</nav>
+</header>
+
+
+<!-- Content appended here -->
+<div class="franklin-content"><h2 id="common_applications"><a href="#common_applications" class="header-anchor">Common applications</a></h2>
+<ul>
+<li><p>Predictive modeling and simulations</p>
+</li>
+<li><p>Optimization</p>
+</li>
+<li><p>Data-driven insights</p>
+</li>
+<li><p>Data-driven enhancement</p>
+</li>
+<li><p>Monitoring, diagnostic, and health assessment</p>
+</li>
+</ul>
+<h2 id="key_ideas"><a href="#key_ideas" class="header-anchor">Key Ideas</a></h2>
+<ul>
+<li><p><em>Inject</em> the prediction values in the governing equations to compose the loss function, enforcing the NN to <em>obey</em> the underlying physics.</p>
+</li>
+<li><p>There are 2 components in the loss function, the <em>physical loss</em> evaluated from the deviation from training data &#40;as is commonplace in NN training&#41; and the PDE loss, which is further divided into <em>boundary</em> and <em>initial condition</em> losses.</p>
+</li>
+<li><p><strong>Collocation points</strong> is how we call the temporal and spacial coordinates where evaluation of physical properties are computed, corresponding to nodes or cell centers in classical numerical schemes.</p>
+</li>
+</ul>
+<h2 id="references"><a href="#references" class="header-anchor">References</a></h2>
+<ul>
+<li><p><a href="https://towardsdatascience.com/physics-informed-neural-networks-an-application-centric-guide-dc1013526b02">Physics-Informed Neural Networks: An Application-Centric Guide</a></p>
+</li>
+<li><p><a href="https://towardsdatascience.com/unraveling-the-design-pattern-of-physics-informed-neural-networks-series-01-8190df459527">Unraveling the Design Pattern of Physics-Informed Neural Networks: Series 01</a></p>
+</li>
+<li><p><a href="https://towardsdatascience.com/discovering-differential-equations-with-physics-informed-neural-networks-and-symbolic-regression-c28d279c0b4d">Discovering Differential Equations with Physics-Informed Neural Networks and Symbolic Regression</a></p>
+</li>
+</ul>
+<div class="page-foot">
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
+    Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    
+    
+  </body>
+</html>
