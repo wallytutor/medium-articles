@@ -180,6 +180,10 @@ Nonlinear problems basics - article ^ioGzTE15
 
 Root-finding in Python - article ^tXnq49fL
 
+Generalization to include time-dependence ^Up57RpHf
+
+Find optimal carbonitriding cycle for given constrains ^6rcojs0X
+
 %%
 # Drawing
 ```json
@@ -392,8 +396,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 923,
-			"versionNonce": 1512793869,
+			"version": 935,
+			"versionNonce": 1045199181,
 			"isDeleted": false,
 			"id": "8azuco1IFSe1l2e3GwYev",
 			"fillStyle": "solid",
@@ -415,7 +419,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507611,
+			"updated": 1708190195308,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -519,8 +523,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 926,
-			"versionNonce": 920154669,
+			"version": 938,
+			"versionNonce": 188378733,
 			"isDeleted": false,
 			"id": "H-zjQt4soJxO7jQZwB5Zw",
 			"fillStyle": "solid",
@@ -529,12 +533,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 861.7631419768654,
-			"y": -1434.5001881762416,
+			"x": 861.7634780259898,
+			"y": -1434.5035845013153,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 474.80247610223,
-			"height": 77.51798555406845,
+			"width": 474.80202181721256,
+			"height": 77.51507300117873,
 			"seed": 452223053,
 			"groupIds": [],
 			"frameId": null,
@@ -542,7 +546,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187529367,
+			"updated": 1708190195290,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -564,8 +568,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					474.80247610223,
-					-77.51798555406845
+					474.80202181721256,
+					-77.51507300117873
 				]
 			]
 		},
@@ -658,8 +662,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1042,
-			"versionNonce": 1123437805,
+			"version": 1054,
+			"versionNonce": 68777773,
 			"isDeleted": false,
 			"id": "8RDEetvpaJXepZ_TSaO30",
 			"fillStyle": "solid",
@@ -668,12 +672,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -186.42574466085034,
-			"y": -201.83017393589228,
+			"x": -186.425744793612,
+			"y": -201.83017395130832,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 492.907475505713,
-			"height": 1239.96592146605,
+			"width": 492.90747563359537,
+			"height": 1239.9659214513147,
 			"seed": 1342246851,
 			"groupIds": [],
 			"frameId": null,
@@ -681,7 +685,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507605,
+			"updated": 1708190195292,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -703,15 +707,15 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					492.907475505713,
-					-1239.96592146605
+					492.90747563359537,
+					-1239.9659214513147
 				]
 			]
 		},
 		{
 			"type": "ellipse",
-			"version": 671,
-			"versionNonce": 2094670019,
+			"version": 690,
+			"versionNonce": 28112973,
 			"isDeleted": false,
 			"id": "xoejzvjjv0HKayFDMybw1",
 			"fillStyle": "solid",
@@ -720,8 +724,8 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 201.25000000000023,
-			"y": -1790.4609375000002,
+			"x": 174.19117647058852,
+			"y": -1835.1668198529414,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 216,
@@ -742,14 +746,14 @@ Root-finding in Python - article ^tXnq49fL
 					"type": "arrow"
 				}
 			],
-			"updated": 1708187192656,
+			"updated": 1708189845614,
 			"link": null,
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 789,
-			"versionNonce": 703744589,
+			"version": 809,
+			"versionNonce": 1509944461,
 			"isDeleted": false,
 			"id": "n90Bs0Ht",
 			"fillStyle": "solid",
@@ -758,8 +762,8 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 238.04253995851326,
-			"y": -1767.8873443711932,
+			"x": 210.98371642910155,
+			"y": -1812.5932267241342,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 142.6798553466797,
@@ -769,7 +773,7 @@ Root-finding in Python - article ^tXnq49fL
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708187507606,
+			"updated": 1708190195295,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -785,8 +789,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1486,
-			"versionNonce": 1549324269,
+			"version": 1536,
+			"versionNonce": 66959917,
 			"isDeleted": false,
 			"id": "NSwTvZEz60-KBZtY4urrA",
 			"fillStyle": "solid",
@@ -795,12 +799,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 340.0243672009765,
-			"y": -1535.330192317118,
+			"x": 337.2724012477856,
+			"y": -1535.5689064068192,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 26.093884776586435,
-			"height": 117.75051324271226,
+			"width": 45.816607298079134,
+			"height": 162.37525928036803,
 			"seed": 637376333,
 			"groupIds": [],
 			"frameId": null,
@@ -808,7 +812,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507606,
+			"updated": 1708190195293,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -830,8 +834,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					-26.093884776586435,
-					-117.75051324271226
+					-45.816607298079134,
+					-162.37525928036803
 				]
 			]
 		},
@@ -995,8 +999,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 2105,
-			"versionNonce": 326724941,
+			"version": 2117,
+			"versionNonce": 1041289101,
 			"isDeleted": false,
 			"id": "g6FLEn57m0ZqPJb7odBHh",
 			"fillStyle": "solid",
@@ -1005,12 +1009,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -211.24432055764177,
-			"y": 327.65545528168263,
+			"x": -211.24433900338732,
+			"y": 327.65546119897203,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 25.950685293995946,
-			"height": 45.38543394376518,
+			"width": 25.95069072882748,
+			"height": 45.38542802647578,
 			"seed": 665584323,
 			"groupIds": [],
 			"frameId": null,
@@ -1018,7 +1022,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507607,
+			"updated": 1708190195297,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1040,15 +1044,15 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					25.950685293995946,
-					45.38543394376518
+					25.95069072882748,
+					45.38542802647578
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 868,
-			"versionNonce": 492321741,
+			"version": 880,
+			"versionNonce": 895663629,
 			"isDeleted": false,
 			"id": "2sW2xY0PgIKmgs__qHyoF",
 			"fillStyle": "solid",
@@ -1070,7 +1074,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507606,
+			"updated": 1708190195295,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1186,8 +1190,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 460,
-			"versionNonce": 1812872717,
+			"version": 472,
+			"versionNonce": 1499598925,
 			"isDeleted": false,
 			"id": "nAnTjYagnDG0xzA3SQ_Gt",
 			"fillStyle": "solid",
@@ -1196,7 +1200,7 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -145.00743321470821,
+			"x": -145.00743321470816,
 			"y": -137.91128092763847,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
@@ -1209,7 +1213,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507607,
+			"updated": 1708190195298,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1313,8 +1317,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1188,
-			"versionNonce": 127246605,
+			"version": 1200,
+			"versionNonce": 574829389,
 			"isDeleted": false,
 			"id": "ciakmswS4WVKRCvAr5wXY",
 			"fillStyle": "solid",
@@ -1336,7 +1340,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507608,
+			"updated": 1708190195300,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1448,8 +1452,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1403,
-			"versionNonce": 704676301,
+			"version": 1415,
+			"versionNonce": 1000244237,
 			"isDeleted": false,
 			"id": "sJf7XS6VXzm5wn-j8SVgL",
 			"fillStyle": "solid",
@@ -1471,7 +1475,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507609,
+			"updated": 1708190195302,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1579,8 +1583,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 2297,
-			"versionNonce": 1800012813,
+			"version": 2309,
+			"versionNonce": 1838241357,
 			"isDeleted": false,
 			"id": "9OBffI9035bOyDhjhZl0g",
 			"fillStyle": "solid",
@@ -1602,7 +1606,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507609,
+			"updated": 1708190195304,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1710,8 +1714,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 2567,
-			"versionNonce": 455415181,
+			"version": 2579,
+			"versionNonce": 51464141,
 			"isDeleted": false,
 			"id": "CK5EYJT2sK4FU0qFCxgJM",
 			"fillStyle": "solid",
@@ -1733,7 +1737,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507610,
+			"updated": 1708190195306,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1762,8 +1766,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 2110,
-			"versionNonce": 1184683597,
+			"version": 2122,
+			"versionNonce": 508655757,
 			"isDeleted": false,
 			"id": "AAzOKOw9__B0oaQZBI5MQ",
 			"fillStyle": "solid",
@@ -1773,11 +1777,11 @@ Root-finding in Python - article ^tXnq49fL
 			"opacity": 100,
 			"angle": 0,
 			"x": 1199.377513824492,
-			"y": -150.33563588932617,
+			"y": -150.3356358893263,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 169.9179407209624,
-			"height": 13.023302589923503,
+			"height": 13.02330258992339,
 			"seed": 658078307,
 			"groupIds": [],
 			"frameId": null,
@@ -1785,7 +1789,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507610,
+			"updated": 1708190195306,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1808,7 +1812,7 @@ Root-finding in Python - article ^tXnq49fL
 				],
 				[
 					169.9179407209624,
-					-13.023302589923503
+					-13.02330258992339
 				]
 			]
 		},
@@ -1897,8 +1901,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 515,
-			"versionNonce": 1062832877,
+			"version": 527,
+			"versionNonce": 1854818829,
 			"isDeleted": false,
 			"id": "TumQGgeycfAS0GaaA2JPk",
 			"fillStyle": "solid",
@@ -1907,12 +1911,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 259.945660542301,
-			"y": -505.227173250315,
+			"x": 259.8927424670554,
+			"y": -505.24288406250884,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 503.0428569945678,
-			"height": 889.2243553191472,
+			"width": 503.0931960996181,
+			"height": 889.2090140425867,
 			"seed": 385966755,
 			"groupIds": [],
 			"frameId": null,
@@ -1920,7 +1924,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187529367,
+			"updated": 1708190195308,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1942,8 +1946,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					503.0428569945678,
-					-889.2243553191472
+					503.0931960996181,
+					-889.2090140425867
 				]
 			]
 		},
@@ -2032,8 +2036,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 514,
-			"versionNonce": 869792077,
+			"version": 526,
+			"versionNonce": 789994381,
 			"isDeleted": false,
 			"id": "9sRFsd834g3Z6yMip0qqN",
 			"fillStyle": "solid",
@@ -2042,12 +2046,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 293.9384852649217,
-			"y": -471.5515871086189,
+			"x": 293.9384853070192,
+			"y": -471.55158702736753,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 711.7376692396274,
-			"height": 241.5102954225037,
+			"width": 711.7376692049975,
+			"height": 241.51029549776513,
 			"seed": 1198641891,
 			"groupIds": [],
 			"frameId": null,
@@ -2055,7 +2059,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507611,
+			"updated": 1708190195310,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2077,8 +2081,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					711.7376692396274,
-					-241.5102954225037
+					711.7376692049975,
+					-241.51029549776513
 				]
 			]
 		},
@@ -2159,8 +2163,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 824,
-			"versionNonce": 498655725,
+			"version": 836,
+			"versionNonce": 1981910477,
 			"isDeleted": false,
 			"id": "CNatbZEu0h4yy6MkOnz48",
 			"fillStyle": "solid",
@@ -2169,12 +2173,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 1119.6323675497147,
-			"y": -784.6935205474515,
+			"x": 1119.632403301256,
+			"y": -784.6935030503948,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 179.63929129096664,
-			"height": 172.7674169525485,
+			"width": 179.63927106553592,
+			"height": 172.76743444960516,
 			"seed": 1673919405,
 			"groupIds": [],
 			"frameId": null,
@@ -2182,7 +2186,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507612,
+			"updated": 1708190195312,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2204,8 +2208,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					179.63929129096664,
-					-172.7674169525485
+					179.63927106553592,
+					-172.76743444960516
 				]
 			]
 		},
@@ -2381,8 +2385,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 422,
-			"versionNonce": 1170604909,
+			"version": 434,
+			"versionNonce": 2081013581,
 			"isDeleted": false,
 			"id": "0dAZUcPG76ViUgUnE8Bs2",
 			"fillStyle": "solid",
@@ -2404,7 +2408,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507613,
+			"updated": 1708190195315,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2433,8 +2437,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 919,
-			"versionNonce": 1183042605,
+			"version": 931,
+			"versionNonce": 1714556941,
 			"isDeleted": false,
 			"id": "V5fv5kHIwwgHZq-X-fnuh",
 			"fillStyle": "solid",
@@ -2456,7 +2460,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507613,
+			"updated": 1708190195315,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2635,8 +2639,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 720,
-			"versionNonce": 289466349,
+			"version": 732,
+			"versionNonce": 484824013,
 			"isDeleted": false,
 			"id": "MTuPzn1JBD6gpFImzHFR0",
 			"fillStyle": "solid",
@@ -2658,7 +2662,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507614,
+			"updated": 1708190195317,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2687,8 +2691,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 806,
-			"versionNonce": 1257214125,
+			"version": 818,
+			"versionNonce": 1567818893,
 			"isDeleted": false,
 			"id": "LGl4fRk9QdFQIh-xETvFy",
 			"fillStyle": "solid",
@@ -2710,7 +2714,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507615,
+			"updated": 1708190195319,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2814,8 +2818,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 820,
-			"versionNonce": 706414957,
+			"version": 832,
+			"versionNonce": 1937442125,
 			"isDeleted": false,
 			"id": "q3gjqa6yuRTO41zeyY4YO",
 			"fillStyle": "solid",
@@ -2837,7 +2841,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507615,
+			"updated": 1708190195320,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2949,8 +2953,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 579,
-			"versionNonce": 1909412397,
+			"version": 591,
+			"versionNonce": 982111757,
 			"isDeleted": false,
 			"id": "p4aI2BB8E3btPgWsWId8v",
 			"fillStyle": "solid",
@@ -2972,7 +2976,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507615,
+			"updated": 1708190195322,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3076,8 +3080,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 684,
-			"versionNonce": 2107182189,
+			"version": 696,
+			"versionNonce": 207038541,
 			"isDeleted": false,
 			"id": "MNXlp4BxlH1IoXqQuafNj",
 			"fillStyle": "solid",
@@ -3099,7 +3103,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507616,
+			"updated": 1708190195324,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3203,8 +3207,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 563,
-			"versionNonce": 1239979309,
+			"version": 575,
+			"versionNonce": 1861826829,
 			"isDeleted": false,
 			"id": "080dZaUVhbSJws1DX-KAU",
 			"fillStyle": "solid",
@@ -3226,7 +3230,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507616,
+			"updated": 1708190195326,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3255,8 +3259,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "ellipse",
-			"version": 364,
-			"versionNonce": 826291939,
+			"version": 385,
+			"versionNonce": 2030391245,
 			"isDeleted": false,
 			"id": "sflKXBkyjqego0unCM33i",
 			"fillStyle": "solid",
@@ -3265,8 +3269,8 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 470.13235294117646,
-			"y": -1745.7256433823532,
+			"x": 468.9558823529412,
+			"y": -1799.8432904411766,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 231.00000000000003,
@@ -3289,16 +3293,20 @@ Root-finding in Python - article ^tXnq49fL
 				{
 					"id": "x64OGg75NBFtOsIRTbKfz",
 					"type": "arrow"
+				},
+				{
+					"id": "AhE4bxcD53V_SGovesIkI",
+					"type": "arrow"
 				}
 			],
-			"updated": 1708187184295,
+			"updated": 1708190266228,
 			"link": null,
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 366,
-			"versionNonce": 1853710979,
+			"version": 386,
+			"versionNonce": 768224013,
 			"isDeleted": false,
 			"id": "XhzzmGRp",
 			"fillStyle": "solid",
@@ -3307,8 +3315,8 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 509.42160272194275,
-			"y": -1728.2776815827815,
+			"x": 508.2451321337075,
+			"y": -1782.395328641605,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 152.079833984375,
@@ -3318,7 +3326,7 @@ Root-finding in Python - article ^tXnq49fL
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708187184295,
+			"updated": 1708189844289,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -3334,8 +3342,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 979,
-			"versionNonce": 1895624173,
+			"version": 1031,
+			"versionNonce": 257825229,
 			"isDeleted": false,
 			"id": "1yjILKsmjXVsXl9e0uY5D",
 			"fillStyle": "solid",
@@ -3344,12 +3352,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 390.68459047606785,
-			"y": -1523.8169991958894,
+			"x": 385.4718354585562,
+			"y": -1526.950157295751,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 128.10022540602262,
-			"height": 136.88432113622275,
+			"width": 139.31232384819958,
+			"height": 186.11737826910507,
 			"seed": 1783557869,
 			"groupIds": [],
 			"frameId": null,
@@ -3357,7 +3365,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507617,
+			"updated": 1708190195327,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3379,15 +3387,15 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					128.10022540602262,
-					-136.88432113622275
+					139.31232384819958,
+					-186.11737826910507
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 758,
-			"versionNonce": 1333490605,
+			"version": 810,
+			"versionNonce": 1460783757,
 			"isDeleted": false,
 			"id": "x64OGg75NBFtOsIRTbKfz",
 			"fillStyle": "solid",
@@ -3396,12 +3404,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 737.5180721468365,
-			"y": -1477.266789159548,
+			"x": 739.5606796006737,
+			"y": -1478.0250171813188,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 65.61729489703646,
-			"height": 189.34943347312992,
+			"width": 70.76538869230626,
+			"height": 241.95667668880128,
 			"seed": 926620131,
 			"groupIds": [],
 			"frameId": null,
@@ -3409,7 +3417,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187529367,
+			"updated": 1708190195327,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3431,8 +3439,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					-65.61729489703646,
-					-189.34943347312992
+					-70.76538869230626,
+					-241.95667668880128
 				]
 			]
 		},
@@ -3545,8 +3553,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 908,
-			"versionNonce": 1084493677,
+			"version": 920,
+			"versionNonce": 1017137997,
 			"isDeleted": false,
 			"id": "CCI6__6MVxGReFI0ja3p-",
 			"fillStyle": "solid",
@@ -3555,12 +3563,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -822.2944039108365,
-			"y": -754.8011184811131,
+			"x": -822.2944041595476,
+			"y": -754.801118723557,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 1066.7506854756007,
-			"height": 719.7424787366425,
+			"width": 1066.750685717925,
+			"height": 719.742478506208,
 			"seed": 765757155,
 			"groupIds": [],
 			"frameId": null,
@@ -3568,7 +3576,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507617,
+			"updated": 1708190195329,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3590,15 +3598,15 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					1066.7506854756007,
-					-719.7424787366425
+					1066.750685717925,
+					-719.742478506208
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 881,
-			"versionNonce": 1380898861,
+			"version": 893,
+			"versionNonce": 60136461,
 			"isDeleted": false,
 			"id": "JGI5Pc7b7mDyF0Wo038aD",
 			"fillStyle": "solid",
@@ -3620,7 +3628,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507618,
+			"updated": 1708190195329,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3736,8 +3744,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 551,
-			"versionNonce": 14016461,
+			"version": 563,
+			"versionNonce": 305389485,
 			"isDeleted": false,
 			"id": "ct9SSYAylM4MCzZt6ZEF7",
 			"fillStyle": "solid",
@@ -3759,7 +3767,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507620,
+			"updated": 1708190195332,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3938,8 +3946,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 977,
-			"versionNonce": 85137517,
+			"version": 989,
+			"versionNonce": 2013901901,
 			"isDeleted": false,
 			"id": "ZrT8kF2CyD9wtZ7EEwWql",
 			"fillStyle": "solid",
@@ -3961,7 +3969,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507621,
+			"updated": 1708190195334,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3990,8 +3998,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 709,
-			"versionNonce": 1800380717,
+			"version": 721,
+			"versionNonce": 544785677,
 			"isDeleted": false,
 			"id": "_phfSBt9MT9PYiC4w2GkD",
 			"fillStyle": "solid",
@@ -4013,7 +4021,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507621,
+			"updated": 1708190195337,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4141,8 +4149,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1359,
-			"versionNonce": 1427175917,
+			"version": 1371,
+			"versionNonce": 929736141,
 			"isDeleted": false,
 			"id": "y9v18HX6h9RrhfW4SF4ej",
 			"fillStyle": "solid",
@@ -4151,12 +4159,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -237.96257860006506,
-			"y": -124.56873587597943,
+			"x": -237.9625786000529,
+			"y": -124.56873587596945,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 1045.0731537183328,
-			"height": 497.98260547025495,
+			"width": 1045.0731537183442,
+			"height": 497.98260547024574,
 			"seed": 691944099,
 			"groupIds": [],
 			"frameId": null,
@@ -4164,7 +4172,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507621,
+			"updated": 1708190195338,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4186,8 +4194,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					-1045.0731537183328,
-					497.98260547025495
+					-1045.0731537183442,
+					497.98260547024574
 				]
 			]
 		},
@@ -4268,8 +4276,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 282,
-			"versionNonce": 433137453,
+			"version": 294,
+			"versionNonce": 910592781,
 			"isDeleted": false,
 			"id": "wYxPzZvwZmg9BkDh98-yX",
 			"fillStyle": "solid",
@@ -4278,12 +4286,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 1148.0764026174113,
-			"y": -745.1210289378341,
+			"x": 1148.0764027045936,
+			"y": -745.1210277233904,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 423.6735973825887,
-			"height": 92.16960103659324,
+			"width": 423.67359729540635,
+			"height": 92.16960205183193,
 			"seed": 1510649315,
 			"groupIds": [],
 			"frameId": null,
@@ -4291,7 +4299,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507623,
+			"updated": 1708190195341,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4313,8 +4321,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					423.6735973825887,
-					-92.16960103659324
+					423.67359729540635,
+					-92.16960205183193
 				]
 			]
 		},
@@ -4407,8 +4415,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1372,
-			"versionNonce": 157876205,
+			"version": 1384,
+			"versionNonce": 486468557,
 			"isDeleted": false,
 			"id": "4GcksqqZ4HnHFQ7a9z8GT",
 			"fillStyle": "solid",
@@ -4430,7 +4438,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507623,
+			"updated": 1708190195342,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4617,8 +4625,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1681,
-			"versionNonce": 1163732077,
+			"version": 1693,
+			"versionNonce": 445399117,
 			"isDeleted": false,
 			"id": "mpUNVN7vzQe6RY3DgvAsS",
 			"fillStyle": "solid",
@@ -4640,7 +4648,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507626,
+			"updated": 1708190195346,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4752,8 +4760,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 698,
-			"versionNonce": 142085837,
+			"version": 704,
+			"versionNonce": 1159245485,
 			"isDeleted": false,
 			"id": "5qKYvb9JLHuucECzdM-O-",
 			"fillStyle": "solid",
@@ -4775,7 +4783,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507627,
+			"updated": 1708190195347,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4808,8 +4816,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 798,
-			"versionNonce": 1900686445,
+			"version": 804,
+			"versionNonce": 348672269,
 			"isDeleted": false,
 			"id": "DLQMibf1KGqb4HoBGPcig",
 			"fillStyle": "solid",
@@ -4822,7 +4830,7 @@ Root-finding in Python - article ^tXnq49fL
 			"y": -1428.924954404834,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 657.2202350373656,
+			"width": 657.2202350373655,
 			"height": 264.415160304306,
 			"seed": 603481229,
 			"groupIds": [],
@@ -4831,13 +4839,13 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187529367,
+			"updated": 1708190195347,
 			"link": null,
 			"locked": false,
 			"startBinding": {
 				"elementId": "VOieBcFEy0HmMeRgK6eI3",
-				"focus": 0.029561711386797498,
-				"gap": 4.668988950065625
+				"gap": 4.668988950065625,
+				"focus": 0.029561711386797498
 			},
 			"endBinding": {
 				"elementId": "8Njl_b5tp0bx6Ym_S1D7A",
@@ -4857,7 +4865,7 @@ Root-finding in Python - article ^tXnq49fL
 					56.8486322894496
 				],
 				[
-					-657.2202350373656,
+					-657.2202350373655,
 					-207.56652801485643
 				]
 			]
@@ -4947,8 +4955,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 457,
-			"versionNonce": 531902125,
+			"version": 469,
+			"versionNonce": 1888805517,
 			"isDeleted": false,
 			"id": "CsTPdLPDZSmDpWd1K9Jjn",
 			"fillStyle": "solid",
@@ -4957,12 +4965,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -917.4723910909623,
-			"y": -784.2095004356415,
+			"x": -917.4723012095471,
+			"y": -784.2095014105689,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 37.70487357582499,
-			"height": 257.94279705471376,
+			"width": 37.70494443115649,
+			"height": 257.942796169405,
 			"seed": 1578722925,
 			"groupIds": [],
 			"frameId": null,
@@ -4970,7 +4978,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507627,
+			"updated": 1708190195349,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4992,8 +5000,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					-37.70487357582499,
-					-257.94279705471376
+					-37.70494443115649,
+					-257.942796169405
 				]
 			]
 		},
@@ -5082,8 +5090,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 635,
-			"versionNonce": 973103757,
+			"version": 641,
+			"versionNonce": 382514189,
 			"isDeleted": false,
 			"id": "2-UXUNb2kXFbOSfD7vLO6",
 			"fillStyle": "solid",
@@ -5105,7 +5113,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507628,
+			"updated": 1708190195350,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -5375,8 +5383,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 645,
-			"versionNonce": 1905939661,
+			"version": 657,
+			"versionNonce": 2086372941,
 			"isDeleted": false,
 			"id": "JqzTvSCSjjBhdUUY_ITCt",
 			"fillStyle": "solid",
@@ -5385,12 +5393,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -940.7964709465177,
-			"y": -1181.1047658208581,
+			"x": -940.796495710882,
+			"y": -1181.1047690252765,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 55.82269291564489,
-			"height": 227.24078706375712,
+			"width": 55.82271361000005,
+			"height": 227.24078385933876,
 			"seed": 928700141,
 			"groupIds": [],
 			"frameId": null,
@@ -5398,7 +5406,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507629,
+			"updated": 1708190195352,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -5420,15 +5428,15 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					55.82269291564489,
-					-227.24078706375712
+					55.82271361000005,
+					-227.24078385933876
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 712,
-			"versionNonce": 493291085,
+			"version": 724,
+			"versionNonce": 54753229,
 			"isDeleted": false,
 			"id": "cYM4Bjvqkx4OKQ_7uP7KC",
 			"fillStyle": "solid",
@@ -5450,7 +5458,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507629,
+			"updated": 1708190195354,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -5479,8 +5487,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 718,
-			"versionNonce": 1042491533,
+			"version": 730,
+			"versionNonce": 257718797,
 			"isDeleted": false,
 			"id": "alwpik3F9MQ6QWfUgPGEw",
 			"fillStyle": "solid",
@@ -5490,11 +5498,11 @@ Root-finding in Python - article ^tXnq49fL
 			"opacity": 100,
 			"angle": 0,
 			"x": -970.9807692307697,
-			"y": -1562.7573912819548,
+			"y": -1562.7654123292527,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 96.402137196264,
-			"height": 10.005897654558112,
+			"height": 10.000950605184016,
 			"seed": 216021165,
 			"groupIds": [],
 			"frameId": null,
@@ -5502,7 +5510,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507630,
+			"updated": 1708190195356,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -5525,7 +5533,7 @@ Root-finding in Python - article ^tXnq49fL
 				],
 				[
 					-96.402137196264,
-					-10.005897654558112
+					-10.000950605184016
 				]
 			]
 		},
@@ -5768,8 +5776,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 469,
-			"versionNonce": 2037524813,
+			"version": 481,
+			"versionNonce": 1319443149,
 			"isDeleted": false,
 			"id": "N7hJOXFlZjMf8jQ0JyAft",
 			"fillStyle": "solid",
@@ -5791,7 +5799,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507630,
+			"updated": 1708190195357,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -5820,8 +5828,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 596,
-			"versionNonce": 712022733,
+			"version": 608,
+			"versionNonce": 870239309,
 			"isDeleted": false,
 			"id": "Hfj4FQSv3KtYQeyakT6VC",
 			"fillStyle": "solid",
@@ -5843,7 +5851,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507631,
+			"updated": 1708190195359,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -5872,8 +5880,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 593,
-			"versionNonce": 233458765,
+			"version": 605,
+			"versionNonce": 871611853,
 			"isDeleted": false,
 			"id": "0SMRHN4LfwhxzpAXLeFJG",
 			"fillStyle": "solid",
@@ -5895,7 +5903,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507631,
+			"updated": 1708190195361,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6003,8 +6011,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 494,
-			"versionNonce": 1816083917,
+			"version": 506,
+			"versionNonce": 1732505421,
 			"isDeleted": false,
 			"id": "opcNbdz7TOXiBq16xqno3",
 			"fillStyle": "solid",
@@ -6026,7 +6034,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507632,
+			"updated": 1708190195363,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6130,8 +6138,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 793,
-			"versionNonce": 1573875533,
+			"version": 805,
+			"versionNonce": 909074637,
 			"isDeleted": false,
 			"id": "9NQCKPtWHaWOS46HCQsLW",
 			"fillStyle": "solid",
@@ -6153,7 +6161,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507632,
+			"updated": 1708190195365,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6257,8 +6265,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 927,
-			"versionNonce": 1984675853,
+			"version": 939,
+			"versionNonce": 1904038285,
 			"isDeleted": false,
 			"id": "JAvFdmn-GDGI3YdZK6eZ5",
 			"fillStyle": "solid",
@@ -6280,7 +6288,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507632,
+			"updated": 1708190195366,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6396,8 +6404,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 737,
-			"versionNonce": 1257955533,
+			"version": 749,
+			"versionNonce": 1494618701,
 			"isDeleted": false,
 			"id": "C5AhHIHxeXb9I-f602ebR",
 			"fillStyle": "solid",
@@ -6419,7 +6427,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507633,
+			"updated": 1708190195368,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6673,8 +6681,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 658,
-			"versionNonce": 1004582221,
+			"version": 670,
+			"versionNonce": 493725389,
 			"isDeleted": false,
 			"id": "LnUBhhOyShN25d7A9DLSG",
 			"fillStyle": "solid",
@@ -6696,7 +6704,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507634,
+			"updated": 1708190195372,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6725,8 +6733,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 650,
-			"versionNonce": 1235452877,
+			"version": 662,
+			"versionNonce": 206910797,
 			"isDeleted": false,
 			"id": "DLbm-niB46bzXyAlGyPdC",
 			"fillStyle": "solid",
@@ -6748,7 +6756,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507633,
+			"updated": 1708190195370,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6777,8 +6785,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 652,
-			"versionNonce": 1518646413,
+			"version": 664,
+			"versionNonce": 647497229,
 			"isDeleted": false,
 			"id": "yJG5lF1WFtQnF7SUuk5zC",
 			"fillStyle": "solid",
@@ -6800,7 +6808,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507634,
+			"updated": 1708190195371,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6912,8 +6920,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 417,
-			"versionNonce": 155420173,
+			"version": 429,
+			"versionNonce": 1717704589,
 			"isDeleted": false,
 			"id": "0kW-idKElJgY-5x8M3qqU",
 			"fillStyle": "solid",
@@ -6922,12 +6930,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -210.82725724523434,
-			"y": -197.30787809024525,
+			"x": -210.82725710817817,
+			"y": -197.30787811970185,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 31.34476675826764,
-			"height": 682.8254244026535,
+			"width": 31.344766884254625,
+			"height": 682.8254243760903,
 			"seed": 1825824995,
 			"groupIds": [],
 			"frameId": null,
@@ -6935,7 +6943,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507634,
+			"updated": 1708190195374,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6957,15 +6965,15 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					-31.34476675826764,
-					-682.8254244026535
+					-31.344766884254625,
+					-682.8254243760903
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 575,
-			"versionNonce": 1798907597,
+			"version": 587,
+			"versionNonce": 67197005,
 			"isDeleted": false,
 			"id": "Lpqqomb_QnqSnyKEFHs_o",
 			"fillStyle": "solid",
@@ -6974,12 +6982,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -365.23531492976264,
-			"y": -912.5592860319599,
+			"x": -365.2353301308732,
+			"y": -912.5593058610074,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 442.3377988683845,
-			"height": 176.39089358265994,
+			"width": 442.3377847430835,
+			"height": 176.39091002692135,
 			"seed": 1800341869,
 			"groupIds": [],
 			"frameId": null,
@@ -6987,7 +6995,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507634,
+			"updated": 1708190195374,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7009,8 +7017,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					-442.3377988683845,
-					176.39089358265994
+					-442.3377847430835,
+					176.39091002692135
 				]
 			]
 		},
@@ -7103,8 +7111,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 906,
-			"versionNonce": 1714232813,
+			"version": 912,
+			"versionNonce": 1451278189,
 			"isDeleted": false,
 			"id": "BOPkzJfJREQenfg1ORn7j",
 			"fillStyle": "solid",
@@ -7126,7 +7134,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507635,
+			"updated": 1708190195375,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7234,8 +7242,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1416,
-			"versionNonce": 787390701,
+			"version": 1428,
+			"versionNonce": 1080607341,
 			"isDeleted": false,
 			"id": "Uqv9E2sr4fqxWFqion0M_",
 			"fillStyle": "solid",
@@ -7257,7 +7265,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507636,
+			"updated": 1708190195377,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7760,8 +7768,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1231,
-			"versionNonce": 128159661,
+			"version": 1243,
+			"versionNonce": 1722831149,
 			"isDeleted": false,
 			"id": "d5T9d464936HW56vUcvqf",
 			"fillStyle": "solid",
@@ -7783,7 +7791,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507638,
+			"updated": 1708190195382,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7812,8 +7820,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1260,
-			"versionNonce": 1528514669,
+			"version": 1272,
+			"versionNonce": 335915501,
 			"isDeleted": false,
 			"id": "eN0dhKd1N8soHgjM8LZl3",
 			"fillStyle": "solid",
@@ -7835,7 +7843,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507639,
+			"updated": 1708190195384,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7864,8 +7872,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1274,
-			"versionNonce": 554422573,
+			"version": 1286,
+			"versionNonce": 1357632173,
 			"isDeleted": false,
 			"id": "MkNZpJjCIqovrNmY0jn4O",
 			"fillStyle": "solid",
@@ -7887,7 +7895,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507639,
+			"updated": 1708190195385,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7916,8 +7924,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1282,
-			"versionNonce": 226568685,
+			"version": 1294,
+			"versionNonce": 1802423149,
 			"isDeleted": false,
 			"id": "UA8WqIy5FXOU6BaMXhf4C",
 			"fillStyle": "solid",
@@ -7939,7 +7947,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507640,
+			"updated": 1708190195387,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7968,8 +7976,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1206,
-			"versionNonce": 530097901,
+			"version": 1218,
+			"versionNonce": 668977261,
 			"isDeleted": false,
 			"id": "8qfGNhatzZVVuCziapKY_",
 			"fillStyle": "solid",
@@ -7991,7 +7999,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507638,
+			"updated": 1708190195381,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -8336,8 +8344,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1148,
-			"versionNonce": 1583536141,
+			"version": 1160,
+			"versionNonce": 88631693,
 			"isDeleted": false,
 			"id": "c4lkoBTrP0Is_bVQ-VOOm",
 			"fillStyle": "solid",
@@ -8359,7 +8367,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507641,
+			"updated": 1708190195390,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -8388,8 +8396,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1138,
-			"versionNonce": 1630792077,
+			"version": 1150,
+			"versionNonce": 2114239245,
 			"isDeleted": false,
 			"id": "6SLacmtOXdTMGjCUDmwa0",
 			"fillStyle": "solid",
@@ -8411,7 +8419,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507642,
+			"updated": 1708190195393,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -8440,8 +8448,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1153,
-			"versionNonce": 975960269,
+			"version": 1165,
+			"versionNonce": 385559117,
 			"isDeleted": false,
 			"id": "SjL7BTLarJzj_nI4RqyHm",
 			"fillStyle": "solid",
@@ -8463,7 +8471,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507642,
+			"updated": 1708190195392,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -8492,8 +8500,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1210,
-			"versionNonce": 2021043437,
+			"version": 1222,
+			"versionNonce": 1032506989,
 			"isDeleted": false,
 			"id": "T4UCPQhYbAgS5tnOO-vPj",
 			"fillStyle": "solid",
@@ -8515,7 +8523,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507641,
+			"updated": 1708190195388,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -8544,8 +8552,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1408,
-			"versionNonce": 975063853,
+			"version": 1420,
+			"versionNonce": 821120173,
 			"isDeleted": false,
 			"id": "aK0ReYUiB2x1lPX6zt3rn",
 			"fillStyle": "solid",
@@ -8567,7 +8575,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507637,
+			"updated": 1708190195379,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9153,8 +9161,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1569,
-			"versionNonce": 1992725133,
+			"version": 1581,
+			"versionNonce": 519758861,
 			"isDeleted": false,
 			"id": "h-MhJyBuN8gYeh4T3ro5J",
 			"fillStyle": "solid",
@@ -9176,7 +9184,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507645,
+			"updated": 1708190195402,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9205,8 +9213,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1641,
-			"versionNonce": 2076382029,
+			"version": 1653,
+			"versionNonce": 1697711309,
 			"isDeleted": false,
 			"id": "RynL-ipTUalk_28g8ItIK",
 			"fillStyle": "solid",
@@ -9228,7 +9236,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507646,
+			"updated": 1708190195403,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9257,8 +9265,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1596,
-			"versionNonce": 1587962893,
+			"version": 1608,
+			"versionNonce": 2137388429,
 			"isDeleted": false,
 			"id": "PiA3h36ErlrVTYSzplIBL",
 			"fillStyle": "solid",
@@ -9280,7 +9288,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507646,
+			"updated": 1708190195405,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9309,8 +9317,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1387,
-			"versionNonce": 2124764269,
+			"version": 1399,
+			"versionNonce": 1512682989,
 			"isDeleted": false,
 			"id": "T00lcROw-jq5a6lXzsABH",
 			"fillStyle": "solid",
@@ -9332,7 +9340,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507644,
+			"updated": 1708190195398,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9361,8 +9369,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1354,
-			"versionNonce": 740614605,
+			"version": 1366,
+			"versionNonce": 792171341,
 			"isDeleted": false,
 			"id": "BoVYIb3y5qwvxeFEsFkUn",
 			"fillStyle": "solid",
@@ -9384,7 +9392,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507645,
+			"updated": 1708190195400,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9413,8 +9421,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1381,
-			"versionNonce": 1429065037,
+			"version": 1393,
+			"versionNonce": 393133773,
 			"isDeleted": false,
 			"id": "RBlcJQ4q-ah-7523Al7B1",
 			"fillStyle": "solid",
@@ -9436,7 +9444,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507643,
+			"updated": 1708190195397,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9465,8 +9473,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1399,
-			"versionNonce": 62377101,
+			"version": 1411,
+			"versionNonce": 226434573,
 			"isDeleted": false,
 			"id": "VCAugCXylzgIMI3lSBTJF",
 			"fillStyle": "solid",
@@ -9475,12 +9483,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -2677.0384653677793,
-			"y": 1554.2664866614373,
+			"x": -2677.038481634538,
+			"y": 1554.2664941188455,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 104.02776534949135,
-			"height": 142.1564774203507,
+			"width": 104.02775396209108,
+			"height": 142.1564830860707,
 			"seed": 1152257219,
 			"groupIds": [],
 			"frameId": null,
@@ -9488,7 +9496,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507643,
+			"updated": 1708190195396,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9510,15 +9518,15 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					-104.02776534949135,
-					-142.1564774203507
+					-104.02775396209108,
+					-142.1564830860707
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 974,
-			"versionNonce": 1228553933,
+			"version": 980,
+			"versionNonce": 1219915853,
 			"isDeleted": false,
 			"id": "2nSdnYfnP5RvqrHPTsKAg",
 			"fillStyle": "solid",
@@ -9540,7 +9548,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507644,
+			"updated": 1708190195398,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9573,8 +9581,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 685,
-			"versionNonce": 771791789,
+			"version": 691,
+			"versionNonce": 774331693,
 			"isDeleted": false,
 			"id": "50vHGK06-Lf8wZJ2cjwfe",
 			"fillStyle": "solid",
@@ -9596,7 +9604,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507643,
+			"updated": 1708190195397,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9629,8 +9637,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 421,
-			"versionNonce": 541886285,
+			"version": 427,
+			"versionNonce": 1096841421,
 			"isDeleted": false,
 			"id": "zvorPc8CtDuNNSgaWPp4_",
 			"fillStyle": "solid",
@@ -9652,7 +9660,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507641,
+			"updated": 1708190195389,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9685,8 +9693,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "rectangle",
-			"version": 244,
-			"versionNonce": 1691734563,
+			"version": 245,
+			"versionNonce": 2121397539,
 			"isDeleted": false,
 			"id": "AA6SJ9Nj2gaeLuXGwWd4B",
 			"fillStyle": "solid",
@@ -9723,9 +9731,13 @@ Root-finding in Python - article ^tXnq49fL
 				{
 					"id": "PoVLlV__yWWmwW1EM9_pJ",
 					"type": "arrow"
+				},
+				{
+					"id": "qoM76BQZiAaydZ4-TOhD3",
+					"type": "arrow"
 				}
 			],
-			"updated": 1708187210263,
+			"updated": 1708190251682,
 			"link": null,
 			"locked": false
 		},
@@ -9768,8 +9780,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 616,
-			"versionNonce": 1341949133,
+			"version": 628,
+			"versionNonce": 2015737421,
 			"isDeleted": false,
 			"id": "1TLHBWFRLe8ixe0CUvAYp",
 			"fillStyle": "solid",
@@ -9778,12 +9790,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -294.6019520751846,
-			"y": -995.7526113103336,
+			"x": -294.6019532108568,
+			"y": -995.752611187673,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 252.4848932720106,
-			"height": 1331.1314031127417,
+			"width": 252.48489219235296,
+			"height": 1331.1314032354023,
 			"seed": 1108170979,
 			"groupIds": [],
 			"frameId": null,
@@ -9791,7 +9803,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507646,
+			"updated": 1708190195406,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9813,15 +9825,15 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					-252.4848932720106,
-					-1331.1314031127417
+					-252.48489219235296,
+					-1331.1314032354023
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 574,
-			"versionNonce": 1297184141,
+			"version": 586,
+			"versionNonce": 654067469,
 			"isDeleted": false,
 			"id": "7acTW2AwtuPhjYq2Ib6Og",
 			"fillStyle": "solid",
@@ -9830,11 +9842,11 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -933.9128453468375,
+			"x": -933.9125920271345,
 			"y": -2144.80709134615,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 372.8666185968441,
+			"width": 372.8664040908461,
 			"height": 189.76923076923276,
 			"seed": 1949321165,
 			"groupIds": [],
@@ -9843,7 +9855,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507647,
+			"updated": 1708190195407,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9865,7 +9877,7 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					372.8666185968441,
+					372.8664040908461,
 					-189.76923076923276
 				]
 			]
@@ -9959,8 +9971,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 637,
-			"versionNonce": 397337773,
+			"version": 649,
+			"versionNonce": 2020156973,
 			"isDeleted": false,
 			"id": "9zwMtSvuorGh1_0cfUI5D",
 			"fillStyle": "solid",
@@ -9982,7 +9994,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507647,
+			"updated": 1708190195408,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10094,8 +10106,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1120,
-			"versionNonce": 1093511085,
+			"version": 1132,
+			"versionNonce": 2054056237,
 			"isDeleted": false,
 			"id": "1vf6Bx2C9ATrqq9RjD4lQ",
 			"fillStyle": "solid",
@@ -10104,12 +10116,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -983.8182542644873,
-			"y": -685.8215784872764,
+			"x": -983.8182542886476,
+			"y": -685.8215784990651,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 247.03621436884043,
-			"height": 197.1298717565104,
+			"width": 247.03621435374896,
+			"height": 197.12987176829915,
 			"seed": 1238081475,
 			"groupIds": [],
 			"frameId": null,
@@ -10117,7 +10129,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507648,
+			"updated": 1708190195411,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10139,8 +10151,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					-247.03621436884043,
-					197.1298717565104
+					-247.03621435374896,
+					197.12987176829915
 				]
 			]
 		},
@@ -10225,8 +10237,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1531,
-			"versionNonce": 244924909,
+			"version": 1543,
+			"versionNonce": 263906157,
 			"isDeleted": false,
 			"id": "FN2Afo_hPAVpw_fEFQT3k",
 			"fillStyle": "solid",
@@ -10248,7 +10260,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507649,
+			"updated": 1708190195413,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10277,8 +10289,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 1081,
-			"versionNonce": 1031367341,
+			"version": 1093,
+			"versionNonce": 12626989,
 			"isDeleted": false,
 			"id": "BmH2gYa0KCy1lhNeU35l-",
 			"fillStyle": "solid",
@@ -10287,12 +10299,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -1641.486944950792,
-			"y": 62.69316772323677,
+			"x": -1641.4990023567648,
+			"y": 62.69821311327084,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 73.22316698294662,
-			"height": 139.6313458342704,
+			"width": 73.21613136949964,
+			"height": 139.63639122430448,
 			"seed": 2057060835,
 			"groupIds": [],
 			"frameId": null,
@@ -10300,7 +10312,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507650,
+			"updated": 1708190195413,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10322,8 +10334,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					-73.22316698294662,
-					-139.6313458342704
+					-73.21613136949964,
+					-139.63639122430448
 				]
 			]
 		},
@@ -10404,8 +10416,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 575,
-			"versionNonce": 326525805,
+			"version": 587,
+			"versionNonce": 1140540653,
 			"isDeleted": false,
 			"id": "cMKwclcitoRzwEa_99WPY",
 			"fillStyle": "solid",
@@ -10427,7 +10439,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507650,
+			"updated": 1708190195415,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10531,8 +10543,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 556,
-			"versionNonce": 1805397037,
+			"version": 568,
+			"versionNonce": 1316400557,
 			"isDeleted": false,
 			"id": "3dY72s7hTlqiogS2n_PER",
 			"fillStyle": "solid",
@@ -10542,11 +10554,11 @@ Root-finding in Python - article ^tXnq49fL
 			"opacity": 100,
 			"angle": 0,
 			"x": -2539.8700620353034,
-			"y": -857.7239510285767,
+			"y": -857.7239510285766,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 194.3746708014196,
-			"height": 141.5816948472633,
+			"height": 141.58169484726318,
 			"seed": 714509997,
 			"groupIds": [],
 			"frameId": null,
@@ -10554,7 +10566,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507651,
+			"updated": 1708190195416,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10577,7 +10589,7 @@ Root-finding in Python - article ^tXnq49fL
 				],
 				[
 					-194.3746708014196,
-					141.5816948472633
+					141.58169484726318
 				]
 			]
 		},
@@ -10745,8 +10757,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 558,
-			"versionNonce": 297398285,
+			"version": 570,
+			"versionNonce": 1146323341,
 			"isDeleted": false,
 			"id": "rvF0g-ZQfBuqe_x64HU0U",
 			"fillStyle": "solid",
@@ -10768,7 +10780,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507653,
+			"updated": 1708190195419,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10797,8 +10809,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 607,
-			"versionNonce": 614273229,
+			"version": 619,
+			"versionNonce": 807420493,
 			"isDeleted": false,
 			"id": "6IeRp5kvhjKRHYq8OQP3q",
 			"fillStyle": "solid",
@@ -10820,7 +10832,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507653,
+			"updated": 1708190195420,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10849,8 +10861,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 354,
-			"versionNonce": 2114559821,
+			"version": 360,
+			"versionNonce": 1204916429,
 			"isDeleted": false,
 			"id": "PoVLlV__yWWmwW1EM9_pJ",
 			"fillStyle": "solid",
@@ -10872,7 +10884,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507652,
+			"updated": 1708190195418,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10980,8 +10992,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 223,
-			"versionNonce": 187417165,
+			"version": 235,
+			"versionNonce": 13251533,
 			"isDeleted": false,
 			"id": "2Q96SGZaGIYocIGpFUuKr",
 			"fillStyle": "solid",
@@ -10990,12 +11002,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -32.6234001404384,
-			"y": -1722.243265116144,
+			"x": -32.62359159528225,
+			"y": -1722.2432663522573,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 35.81602153343355,
-			"height": 163.39455106072137,
+			"width": 35.81615446550277,
+			"height": 163.39454982460802,
 			"seed": 1788569667,
 			"groupIds": [],
 			"frameId": null,
@@ -11003,7 +11015,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507654,
+			"updated": 1708190195421,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11025,8 +11037,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					35.81602153343355,
-					-163.39455106072137
+					35.81615446550277,
+					-163.39454982460802
 				]
 			]
 		},
@@ -11115,8 +11127,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 264,
-			"versionNonce": 1626297101,
+			"version": 276,
+			"versionNonce": 465527949,
 			"isDeleted": false,
 			"id": "gZJr4BOBTt6PnSHFNhysi",
 			"fillStyle": "solid",
@@ -11138,7 +11150,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507655,
+			"updated": 1708190195423,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11167,8 +11179,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 400,
-			"versionNonce": 405464205,
+			"version": 412,
+			"versionNonce": 1067857421,
 			"isDeleted": false,
 			"id": "1jAdEpDS9OS-RfyX-YyQW",
 			"fillStyle": "solid",
@@ -11177,12 +11189,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -1501.6051482560467,
-			"y": 108.25501625652844,
+			"x": -1501.6051482539883,
+			"y": 108.25501626054925,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 415.3891264997019,
-			"height": 406.17827647993175,
+			"width": 415.3891264985057,
+			"height": 406.17827648380944,
 			"seed": 1121985325,
 			"groupIds": [],
 			"frameId": null,
@@ -11190,7 +11202,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507656,
+			"updated": 1708190195423,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11212,8 +11224,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					415.3891264997019,
-					-406.17827647993175
+					415.3891264985057,
+					-406.17827648380944
 				]
 			]
 		},
@@ -11302,8 +11314,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 456,
-			"versionNonce": 163243341,
+			"version": 468,
+			"versionNonce": 212850381,
 			"isDeleted": false,
 			"id": "ERRLgBUVoMk1vmXdDP1BS",
 			"fillStyle": "solid",
@@ -11325,7 +11337,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507657,
+			"updated": 1708190195425,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11354,8 +11366,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 385,
-			"versionNonce": 1783739917,
+			"version": 397,
+			"versionNonce": 785926029,
 			"isDeleted": false,
 			"id": "__1K6c6dhwoWenvJlNcd-",
 			"fillStyle": "solid",
@@ -11377,7 +11389,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507657,
+			"updated": 1708190195425,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11406,8 +11418,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 423,
-			"versionNonce": 578508493,
+			"version": 435,
+			"versionNonce": 1756072013,
 			"isDeleted": false,
 			"id": "m4O5igczX-sns1SZpsRci",
 			"fillStyle": "solid",
@@ -11416,12 +11428,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -1275.1575069975524,
-			"y": 124.3342160318155,
+			"x": -1275.1575069938833,
+			"y": 124.33421603254152,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 285.43770458338827,
-			"height": 418.66084339749176,
+			"width": 285.43770458028234,
+			"height": 418.66084339821776,
 			"seed": 774390829,
 			"groupIds": [],
 			"frameId": null,
@@ -11429,7 +11441,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507659,
+			"updated": 1708190195426,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11451,8 +11463,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					285.43770458338827,
-					-418.66084339749176
+					285.43770458028234,
+					-418.66084339821776
 				]
 			]
 		},
@@ -11533,8 +11545,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 206,
-			"versionNonce": 1740883853,
+			"version": 218,
+			"versionNonce": 1236637965,
 			"isDeleted": false,
 			"id": "II7vBvwge0dja_6dt7XdR",
 			"fillStyle": "solid",
@@ -11543,11 +11555,11 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -1885.8813397342522,
+			"x": -1885.881339734252,
 			"y": -1194.306670138575,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 50.81085886143023,
+			"width": 50.81085886143046,
 			"height": 173.44653065367743,
 			"seed": 502282349,
 			"groupIds": [],
@@ -11556,7 +11568,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507660,
+			"updated": 1708190195427,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11578,7 +11590,7 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					-50.81085886143023,
+					-50.81085886143046,
 					-173.44653065367743
 				]
 			]
@@ -11668,8 +11680,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 266,
-			"versionNonce": 2092369997,
+			"version": 278,
+			"versionNonce": 1854044621,
 			"isDeleted": false,
 			"id": "7wVZZBQQ7kRWXcZj1Pe_0",
 			"fillStyle": "solid",
@@ -11691,7 +11703,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507660,
+			"updated": 1708190195429,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11720,8 +11732,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 293,
-			"versionNonce": 1893800205,
+			"version": 305,
+			"versionNonce": 1084107405,
 			"isDeleted": false,
 			"id": "ovep5vdkFDc3zfospbnS2",
 			"fillStyle": "solid",
@@ -11743,7 +11755,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507660,
+			"updated": 1708190195429,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11855,8 +11867,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 284,
-			"versionNonce": 906603149,
+			"version": 296,
+			"versionNonce": 334625805,
 			"isDeleted": false,
 			"id": "SGtBBWVcLUHgucRNZUVb3",
 			"fillStyle": "solid",
@@ -11865,12 +11877,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -1648.9090151010823,
-			"y": -631.3309574615139,
+			"x": -1648.90903855344,
+			"y": -631.3309602720141,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 2.823967256704236,
-			"height": 69.21600730751754,
+			"width": 2.823954739047849,
+			"height": 69.2160101180176,
 			"seed": 1493737837,
 			"groupIds": [],
 			"frameId": null,
@@ -11878,7 +11890,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507661,
+			"updated": 1708190195431,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11900,15 +11912,15 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					-2.823967256704236,
-					69.21600730751754
+					-2.823954739047849,
+					69.2160101180176
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 287,
-			"versionNonce": 1730161485,
+			"version": 299,
+			"versionNonce": 692198605,
 			"isDeleted": false,
 			"id": "WiF-6zImoDftn6Orkk1s5",
 			"fillStyle": "solid",
@@ -11918,11 +11930,11 @@ Root-finding in Python - article ^tXnq49fL
 			"opacity": 100,
 			"angle": 0,
 			"x": -1515.47666222666,
-			"y": -465.7324052827147,
+			"y": -465.72615642720336,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 85.81818181818176,
-			"height": 9.527688608331005,
+			"height": 9.525540336289055,
 			"seed": 149920483,
 			"groupIds": [],
 			"frameId": null,
@@ -11930,7 +11942,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507661,
+			"updated": 1708190195431,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11953,7 +11965,7 @@ Root-finding in Python - article ^tXnq49fL
 				],
 				[
 					85.81818181818176,
-					9.527688608331005
+					9.525540336289055
 				]
 			]
 		},
@@ -12034,8 +12046,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 60,
-			"versionNonce": 1812755053,
+			"version": 72,
+			"versionNonce": 1729221613,
 			"isDeleted": false,
 			"id": "x6KkuqQN74oZWvaeYtoCp",
 			"fillStyle": "solid",
@@ -12057,7 +12069,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507661,
+			"updated": 1708190195433,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -12086,8 +12098,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "rectangle",
-			"version": 129,
-			"versionNonce": 1320172291,
+			"version": 189,
+			"versionNonce": 1158358211,
 			"isDeleted": false,
 			"id": "9hA7e56IyDoj3fODABDIo",
 			"fillStyle": "solid",
@@ -12096,8 +12108,8 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -1423.2089552808618,
-			"y": -1148.728430380163,
+			"x": -1549.8756219475283,
+			"y": -1514.2839859357182,
 			"strokeColor": "#1971c2",
 			"backgroundColor": "transparent",
 			"width": 203.296736204838,
@@ -12116,16 +12128,20 @@ Root-finding in Python - article ^tXnq49fL
 				{
 					"id": "ifRuEIwCodcBuTxt5p6cM",
 					"type": "arrow"
+				},
+				{
+					"id": "fzqDd36niVJKcf6kbE63N",
+					"type": "arrow"
 				}
 			],
-			"updated": 1708187226928,
+			"updated": 1708189256695,
 			"link": "https://medium.com/@waltermateriais/solving-nonlinear-problems-from-scratch-in-julia-a-guided-tour-0650db06931c",
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 129,
-			"versionNonce": 1134027427,
+			"version": 188,
+			"versionNonce": 1020200653,
 			"isDeleted": false,
 			"id": "ioGzTE15",
 			"fillStyle": "solid",
@@ -12134,8 +12150,8 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -1408.8504889118412,
-			"y": -1137.6358938800286,
+			"x": -1535.5171555785078,
+			"y": -1503.1914494355838,
 			"strokeColor": "#1971c2",
 			"backgroundColor": "transparent",
 			"width": 174.57980346679688,
@@ -12145,7 +12161,7 @@ Root-finding in Python - article ^tXnq49fL
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708187226928,
+			"updated": 1708189201745,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -12161,8 +12177,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 289,
-			"versionNonce": 322599725,
+			"version": 423,
+			"versionNonce": 2054519981,
 			"isDeleted": false,
 			"id": "ifRuEIwCodcBuTxt5p6cM",
 			"fillStyle": "solid",
@@ -12171,12 +12187,12 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -1430.5950197535708,
-			"y": -1283.6790821153775,
+			"x": -1385.121621850425,
+			"y": -1356.818216812727,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 85.54477403010424,
-			"height": 129.0579927147844,
+			"width": 44.02650537269096,
+			"height": 79.3880371022924,
 			"seed": 1731465517,
 			"groupIds": [],
 			"frameId": null,
@@ -12184,7 +12200,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507662,
+			"updated": 1708190195435,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -12206,8 +12222,8 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					85.54477403010424,
-					129.0579927147844
+					-44.02650537269096,
+					-79.3880371022924
 				]
 			]
 		},
@@ -12288,8 +12304,8 @@ Root-finding in Python - article ^tXnq49fL
 		},
 		{
 			"type": "arrow",
-			"version": 137,
-			"versionNonce": 1334662125,
+			"version": 149,
+			"versionNonce": 687816237,
 			"isDeleted": false,
 			"id": "Kl5QHYHiui4EnDT1p1yGR",
 			"fillStyle": "solid",
@@ -12298,11 +12314,11 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -1455.733213571055,
+			"x": -1455.7358166697918,
 			"y": -1283.6790821153743,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 105.30385581520704,
+			"width": 105.30208934407074,
 			"height": 131.96052138817163,
 			"seed": 1494200931,
 			"groupIds": [],
@@ -12311,7 +12327,7 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187507662,
+			"updated": 1708190195437,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -12333,15 +12349,15 @@ Root-finding in Python - article ^tXnq49fL
 					0
 				],
 				[
-					-105.30385581520704,
+					-105.30208934407074,
 					131.96052138817163
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 263,
-			"versionNonce": 814380557,
+			"version": 269,
+			"versionNonce": 702479149,
 			"isDeleted": false,
 			"id": "DDZ3HjsTyc-oGB2otTFYr",
 			"fillStyle": "solid",
@@ -12350,11 +12366,11 @@ Root-finding in Python - article ^tXnq49fL
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 720.7264198494958,
+			"x": 720.7264198494956,
 			"y": -1404.97099268099,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 2243.3666962397724,
+			"width": 2243.366696239773,
 			"height": 866.4346031844602,
 			"seed": 1925640333,
 			"groupIds": [],
@@ -12363,18 +12379,18 @@ Root-finding in Python - article ^tXnq49fL
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708187529367,
+			"updated": 1708190195431,
 			"link": "https://arxiv.org/pdf/2104.02556.pdf",
 			"locked": false,
 			"startBinding": {
 				"elementId": "VOieBcFEy0HmMeRgK6eI3",
-				"focus": 0.08072604872479539,
-				"gap": 13.44450223160213
+				"gap": 13.44450223160213,
+				"focus": 0.08072604872479539
 			},
 			"endBinding": {
 				"elementId": "_HY_hdQc_hTfGk6ooMXt7",
-				"focus": -0.502537791848732,
-				"gap": 5.563658563655849
+				"gap": 5.563658563655849,
+				"focus": -0.502537791848732
 			},
 			"lastCommittedPoint": null,
 			"startArrowhead": null,
@@ -12389,10 +12405,320 @@ Root-finding in Python - article ^tXnq49fL
 					790.943878291492
 				],
 				[
-					-2243.3666962397724,
+					-2243.366696239773,
 					866.4346031844602
 				]
 			]
+		},
+		{
+			"type": "rectangle",
+			"version": 68,
+			"versionNonce": 1961168899,
+			"isDeleted": false,
+			"id": "_AGNqe5r1knWb5CWmsJ9E",
+			"fillStyle": "solid",
+			"strokeWidth": 2,
+			"strokeStyle": "solid",
+			"roughness": 1,
+			"opacity": 100,
+			"angle": 0,
+			"x": -1570.0277777777867,
+			"y": -1704.939922924294,
+			"strokeColor": "#2f9e44",
+			"backgroundColor": "transparent",
+			"width": 221.11111111111086,
+			"height": 90,
+			"seed": 934459469,
+			"groupIds": [],
+			"frameId": null,
+			"roundness": {
+				"type": 3
+			},
+			"boundElements": [
+				{
+					"type": "text",
+					"id": "Up57RpHf"
+				},
+				{
+					"id": "fzqDd36niVJKcf6kbE63N",
+					"type": "arrow"
+				}
+			],
+			"updated": 1708189256696,
+			"link": "https://wallytutor.github.io/medium-articles/content/medium/02-Part-Radiation-Heating/",
+			"locked": false
+		},
+		{
+			"type": "text",
+			"version": 58,
+			"versionNonce": 1748365507,
+			"isDeleted": false,
+			"id": "Up57RpHf",
+			"fillStyle": "solid",
+			"strokeWidth": 2,
+			"strokeStyle": "solid",
+			"roughness": 1,
+			"opacity": 100,
+			"angle": 0,
+			"x": -1545.3921212090477,
+			"y": -1697.439922924294,
+			"strokeColor": "#2f9e44",
+			"backgroundColor": "transparent",
+			"width": 171.8397979736328,
+			"height": 75,
+			"seed": 1687534531,
+			"groupIds": [],
+			"frameId": null,
+			"roundness": null,
+			"boundElements": [],
+			"updated": 1708189252466,
+			"link": null,
+			"locked": false,
+			"fontSize": 20,
+			"fontFamily": 1,
+			"text": "Generalization to\ninclude time-\ndependence",
+			"rawText": "Generalization to include time-dependence",
+			"textAlign": "center",
+			"verticalAlign": "middle",
+			"containerId": "_AGNqe5r1knWb5CWmsJ9E",
+			"originalText": "Generalization to include time-dependence",
+			"lineHeight": 1.25,
+			"baseline": 68
+		},
+		{
+			"type": "arrow",
+			"version": 41,
+			"versionNonce": 389895917,
+			"isDeleted": false,
+			"id": "fzqDd36niVJKcf6kbE63N",
+			"fillStyle": "solid",
+			"strokeWidth": 2,
+			"strokeStyle": "solid",
+			"roughness": 1,
+			"opacity": 100,
+			"angle": 0,
+			"x": -1440.027777777787,
+			"y": -1523.8288118131832,
+			"strokeColor": "#1e1e1e",
+			"backgroundColor": "transparent",
+			"width": 16.666666666666515,
+			"height": 81.11111111111086,
+			"seed": 619055949,
+			"groupIds": [],
+			"frameId": null,
+			"roundness": {
+				"type": 2
+			},
+			"boundElements": [],
+			"updated": 1708190195438,
+			"link": null,
+			"locked": false,
+			"startBinding": {
+				"elementId": "9hA7e56IyDoj3fODABDIo",
+				"gap": 9.544825877465087,
+				"focus": 0.1611614529018239
+			},
+			"endBinding": {
+				"elementId": "_AGNqe5r1knWb5CWmsJ9E",
+				"gap": 10,
+				"focus": 0.0711472493965211
+			},
+			"lastCommittedPoint": null,
+			"startArrowhead": null,
+			"endArrowhead": "arrow",
+			"points": [
+				[
+					0,
+					0
+				],
+				[
+					-16.666666666666515,
+					-81.11111111111086
+				]
+			]
+		},
+		{
+			"id": "ZQNalURN_pG2R02K-zSaB",
+			"type": "rectangle",
+			"x": -212.1201298701253,
+			"y": -2621.3264782092906,
+			"width": 221.3636363636365,
+			"height": 98.75,
+			"angle": 0,
+			"strokeColor": "#1e1e1e",
+			"backgroundColor": "transparent",
+			"fillStyle": "solid",
+			"strokeWidth": 2,
+			"strokeStyle": "solid",
+			"roughness": 1,
+			"opacity": 100,
+			"groupIds": [],
+			"frameId": null,
+			"roundness": {
+				"type": 3
+			},
+			"seed": 1152250189,
+			"version": 126,
+			"versionNonce": 1766674499,
+			"isDeleted": false,
+			"boundElements": [
+				{
+					"type": "text",
+					"id": "6rcojs0X"
+				},
+				{
+					"id": "qoM76BQZiAaydZ4-TOhD3",
+					"type": "arrow"
+				},
+				{
+					"id": "AhE4bxcD53V_SGovesIkI",
+					"type": "arrow"
+				}
+			],
+			"updated": 1708190584469,
+			"link": null,
+			"locked": false
+		},
+		{
+			"id": "6rcojs0X",
+			"type": "text",
+			"x": -198.27820121467425,
+			"y": -2609.4514782092906,
+			"width": 193.67977905273438,
+			"height": 75,
+			"angle": 0,
+			"strokeColor": "#1e1e1e",
+			"backgroundColor": "transparent",
+			"fillStyle": "solid",
+			"strokeWidth": 2,
+			"strokeStyle": "solid",
+			"roughness": 1,
+			"opacity": 100,
+			"groupIds": [],
+			"frameId": null,
+			"roundness": null,
+			"seed": 66246275,
+			"version": 267,
+			"versionNonce": 1281380323,
+			"isDeleted": false,
+			"boundElements": null,
+			"updated": 1708190584469,
+			"link": null,
+			"locked": false,
+			"text": "Find optimal\ncarbonitriding cycle\nfor given constrains",
+			"rawText": "Find optimal carbonitriding cycle for given constrains",
+			"fontSize": 20,
+			"fontFamily": 1,
+			"textAlign": "center",
+			"verticalAlign": "middle",
+			"baseline": 68,
+			"containerId": "ZQNalURN_pG2R02K-zSaB",
+			"originalText": "Find optimal carbonitriding cycle for given constrains",
+			"lineHeight": 1.25
+		},
+		{
+			"id": "qoM76BQZiAaydZ4-TOhD3",
+			"type": "arrow",
+			"x": -426.4817786380313,
+			"y": -2439.868745692541,
+			"width": 200.38437604063347,
+			"height": 109.45081544239974,
+			"angle": 0,
+			"strokeColor": "#1e1e1e",
+			"backgroundColor": "transparent",
+			"fillStyle": "solid",
+			"strokeWidth": 2,
+			"strokeStyle": "solid",
+			"roughness": 1,
+			"opacity": 100,
+			"groupIds": [],
+			"frameId": null,
+			"roundness": {
+				"type": 2
+			},
+			"seed": 742112493,
+			"version": 130,
+			"versionNonce": 1895953187,
+			"isDeleted": false,
+			"boundElements": null,
+			"updated": 1708190584469,
+			"link": null,
+			"locked": false,
+			"points": [
+				[
+					0,
+					0
+				],
+				[
+					200.38437604063347,
+					-109.45081544239974
+				]
+			],
+			"lastCommittedPoint": null,
+			"startBinding": {
+				"elementId": "AA6SJ9Nj2gaeLuXGwWd4B",
+				"gap": 9.80668290043377,
+				"focus": 0.23648303834498843
+			},
+			"endBinding": {
+				"elementId": "ZQNalURN_pG2R02K-zSaB",
+				"gap": 13.97727272727252,
+				"focus": 0.413889328882545
+			},
+			"startArrowhead": null,
+			"endArrowhead": "arrow"
+		},
+		{
+			"id": "AhE4bxcD53V_SGovesIkI",
+			"type": "arrow",
+			"x": 531.4881844542012,
+			"y": -1806.2697271541317,
+			"width": 516.5781507311717,
+			"height": 702.7871572950592,
+			"angle": 0,
+			"strokeColor": "#1e1e1e",
+			"backgroundColor": "transparent",
+			"fillStyle": "solid",
+			"strokeWidth": 2,
+			"strokeStyle": "solid",
+			"roughness": 1,
+			"opacity": 100,
+			"groupIds": [],
+			"frameId": null,
+			"roundness": {
+				"type": 2
+			},
+			"seed": 1664762883,
+			"version": 175,
+			"versionNonce": 2038679139,
+			"isDeleted": false,
+			"boundElements": null,
+			"updated": 1708190584470,
+			"link": null,
+			"locked": false,
+			"points": [
+				[
+					0,
+					0
+				],
+				[
+					-516.5781507311717,
+					-702.7871572950592
+				]
+			],
+			"lastCommittedPoint": null,
+			"startBinding": {
+				"elementId": "sflKXBkyjqego0unCM33i",
+				"gap": 11.345667534397244,
+				"focus": -0.14144202645477363
+			},
+			"endBinding": {
+				"elementId": "ZQNalURN_pG2R02K-zSaB",
+				"gap": 14.659090909090992,
+				"focus": -0.47707704642607685
+			},
+			"startArrowhead": null,
+			"endArrowhead": "arrow"
 		}
 	],
 	"appState": {
@@ -12402,7 +12728,7 @@ Root-finding in Python - article ^tXnq49fL
 		"currentItemBackgroundColor": "transparent",
 		"currentItemFillStyle": "solid",
 		"currentItemStrokeWidth": 2,
-		"currentItemStrokeStyle": "dashed",
+		"currentItemStrokeStyle": "solid",
 		"currentItemRoughness": 1,
 		"currentItemOpacity": 100,
 		"currentItemFontFamily": 1,
@@ -12410,10 +12736,10 @@ Root-finding in Python - article ^tXnq49fL
 		"currentItemTextAlign": "left",
 		"currentItemStartArrowhead": null,
 		"currentItemEndArrowhead": "arrow",
-		"scrollX": 3819.392857142858,
-		"scrollY": 3451.933722527471,
+		"scrollX": 731.0974025973976,
+		"scrollY": 2849.468642035047,
 		"zoom": {
-			"value": 0.2
+			"value": 0.8000000000000002
 		},
 		"currentItemRoundness": "round",
 		"gridSize": null,
