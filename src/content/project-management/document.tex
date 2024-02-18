@@ -1,0 +1,249 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PROJECT MANAGEMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[aspectratio=169,pdf]{beamer}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{mindmap}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Project construction and management}
+\subtitle[]{Building solid numerical solutions}
+\author{Walter Dal'Maz Silva}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Automatically adds section name to title and use title as subtitle.
+\newenvironment{Frame}[1]{\begin{frame}{\secname}{#1}}{\end{frame}}
+
+% Creates section and automatically add section page.
+\newcommand{\Section}[1]{\section{#1}\frame{\sectionpage}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% BODY
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%- Functional analysis
+%- Life profile
+%- Building
+%- Storing
+%- Transporting
+%- Installing
+%- Usign
+%- Maintaining
+%- Dismantling
+%- Recycling
+%
+%- Functions
+%- Failure modes
+%- Failure consequences
+%- Failure detection
+%- Actions
+%- Probability
+%
+%- Budget and resources
+%- Invention Patents
+
+
+\begin{document}
+
+\frame{\titlepage}
+\frame{\tableofcontents}
+
+%%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+%%
+%%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+{% Governance
+\Section{Governance}
+
+\begin{Frame}{About numerical projects}
+The present document will treat only matters concerning project creation and
+life-cycle, and outcomes on the following domains:
+\vspace{3mm}
+\begin{itemize}
+	\item Numerical simulation (continuum mechanics, process-level, etc)
+	\item Machine learning applied to technical and scientific fields
+\end{itemize}
+
+\vfill%
+
+\begin{tcolorbox}[title=Terminology usage]
+In the context of \emph{machine learning} we will refrain from using \emph{AI}
+or associated megatrend jargon as they are misleading and do not seem perennial.
+\end{tcolorbox}
+\end{Frame}
+
+\begin{Frame}{Project actors}
+A project is built through collaboration between the following actors:
+\vspace{3mm}
+\begin{itemize}
+\item Requestors (researchers, process engineers, plant managers, ...)
+
+\item Management team (N+1, N+2, ..., depending on breadth of scope)
+
+\item Numerical team (simulation or machine learning engineer(s), interns ...)
+
+\item Technical body (field specialist(s), researchers, academic partners, ...)
+
+\item IT (cloud support, infrastructure, security, ...)
+
+\item Others based on subject-specific needs: experimental support (laboratory technicians, plant technicians, ...), field measurements (internal or third-party measurement team), automation (controls expert, deployment technicians, ...), intellectual property, ...
+\end{itemize}
+\vfill%
+\end{Frame}
+
+\begin{Frame}{Supported actions}
+There must be a clear and transparent set of rules to define whether the project is executed internally or by a subcontractor if a decision has been made to pursue the idea goals, with or without modifications
+\vfill%
+
+The minimal set of requirements to perform in-house should include:
+\begin{itemize}
+\item Availability of human and computational resources to respond within deadlines
+\item Existing technical expertise on the subject (numerical team and technical body)
+\item Unless very high stakes are associated with the idea, the solution must be reusable
+\item Innovation comes first when competing with technical support for resources
+\end{itemize}
+\end{Frame}
+
+\begin{Frame}{Classes of projects}
+	\vspace{-1cm}
+	\begin{center}
+		\includegraphics[scale=0.6]{media/project-classes}
+	\end{center}
+\end{Frame}
+}% Governance
+
+%%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+%%
+%%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+{% Project life-cycle
+\Section{Project life-cycle}
+
+\begin{Frame}{Phases of a project}
+\vspace{-1cm}
+\begin{center}
+\includegraphics[scale=0.6]{media/project-phases}
+\end{center}
+\end{Frame}
+
+\begin{Frame}{Idea}
+A project is born from an idea, generally raised by the \emph{need} to solve a problem
+\vfill%
+
+It is up to the \emph{requestor} to elaborate and provide a proper description of the idea
+\vfill%
+
+The \emph{requestor} presents the idea for appreciation of the \emph{management team}
+\vfill%
+
+\begin{itemize}
+\item What is the problem the idea is trying to solve?
+
+\item Is it something new or a modification of the existing?
+
+\item Did you check the solution is not available in the market?
+
+\item Do you have any tracks on how you intend to solve it?
+
+\item Who are the people who \emph{need} to get involved?
+
+\item ...
+\end{itemize}
+\end{Frame}
+
+\begin{Frame}{Evaluation}
+The \emph{management team} evaluates the resources availability and consults with
+the \emph{numerical team} the technical feasibility and capacity of executing the idea
+\vfill%
+
+Together with the \emph{technical body}, the team assesses on whether the project
+must be executed, strictly following a prescribed methodology
+\vfill%
+
+The activities must include at least
+\begin{itemize}
+\item A life-cycle assessment of the system to be simulated / modeled
+
+\item The interaction with other parts and potential effects of solution implementation
+
+\item Identification of alternatives in case of failure to perform numerical activity
+\end{itemize}
+\end{Frame}
+
+\begin{Frame}{Execution}
+Execution is performed by the \emph{numerical team} within the scope defined duing
+the evaluation stage with the other actors
+\vfill%
+
+During this phase, the \emph{numerical team} may request support from \emph{IT} or
+others depending on the scope of the study
+\vfill%
+
+The \emph{requestor} and \emph{technical team} follow-up the progress of the
+developments and make sure they comply with initial goals and assessment
+\vfill%
+
+Upon completion the \emph{numerical team} documents all findings and models for
+restitution to the other actors
+\vfill%
+\end{Frame}
+
+\begin{Frame}{Closure}
+Project closure comprises the transfer of solution from \emph{numerical team} to
+the \emph{requestor}, who will manage the roll-out and next steps
+
+\end{Frame}
+
+\begin{Frame}{Outcomes}
+Outcomes are evaluated by the \emph{requestor} with support of other parts and
+presented to appreciation of \emph{management team}
+\vfill%
+
+The assessment must include potential of new projects, intellectual property,
+transversal deployment or transfer to other plants,...
+\vfill%
+\end{Frame}
+
+\begin{Frame}{Summary}
+\end{Frame}
+
+
+}% Project life-cycle
+
+%%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+%%
+%%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+{% Building a project
+\Section{Building a project}
+
+\begin{Frame}{xxx}
+	content...
+\end{Frame}
+}% Building a project
+
+%%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+%%
+%%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+{% Managing a project
+\Section{Managing a project}
+
+\begin{Frame}{xxx}
+	content...
+\end{Frame}
+}% Managing a project
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% EOF
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
