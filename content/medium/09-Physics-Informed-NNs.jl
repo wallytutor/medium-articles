@@ -4,21 +4,36 @@
 using Markdown
 using InteractiveUtils
 
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
+        el
+    end
+end
+
 # ╔═╡ c6fc3d50-ce27-11ee-199b-3941c932ec44
 begin
-	@info "Importing tools..."
-	
 	using CairoMakie
 	using CUDA
 	using cuDNN
 	using Flux
 	using FluxOptTools
+	using ForwardDiff
+	using GPUArrays
 	using IterTools
 	using Optim
 	using PlutoUI
-	using ProgressMeter
+	using ProgressLogging
 	using Statistics
 	using Zygote
+
+	@info """
+	Importing tools...
+	CUDA functional: $(CUDA.functional())
+	"""
 end
 
 # ╔═╡ e21f91db-fa99-4d5c-beeb-7f82d119fc4a
@@ -30,7 +45,7 @@ $(TableOfContents())
 
 # ╔═╡ 4cba2c80-9025-415a-8e41-c0a82fefde05
 md"""
-## Simple ODE
+## Problem statement
 
 As a first example we will try to solve the following ODE using a PINN:
 
@@ -45,117 +60,203 @@ u(t) =  u(0)\exp\left(kt\right)
 ```
 """
 
-# ╔═╡ f69e3406-b40b-4d14-a27d-e14d2d03c333
-begin
-	n_params = 1
-	n_initial = 1
-	n_outputs = 21
-	
-	n_inputs = n_outputs + n_params + n_initial
-	n_layers = [n_inputs, 20, n_outputs]
-	
-	u0 = 1
-	k = -2
-	t = LinRange(0, 3, n_outputs)
-	
-	tau = (@. t[2:end] - t[1:end-1]) |> gpu
-	
-	IC = 1000
-	
-	x = cat(u0, k, t; dims = 1)
-end;
+# ╔═╡ 9a871ae5-6225-4c8c-843b-545129d76004
+md"""
+This model requires one initial condition and one parameter. Both will be treated as input parameters. Since the system is autonomous (does not explicitly depends on time), we can avoid providing the time array as an input to the model, so that the network is simpler.
 
-# ╔═╡ dd32eec4-9ec0-464b-942b-3f894b2f12c9
-begin
-	layers = []
+With this and a list of `hidden_layers` we can stack the chain compositing the multi-layer perceptron and get the `DecayOdeModel`.
+
+**Note:** `DecayOdeModel` was conceived to allow the inclusion of arbitrary modifications in evaluation (function-object) of its outputs. Currently it does nothing more than evaluating the chain.
+"""
+
+# ╔═╡ 29e4a7f6-8952-4f83-bfbf-ca5326d144e8
+md"""
+## Implementation
+"""
+
+# ╔═╡ 4068d439-5f86-4373-8978-51de64e5cac8
+"Compose a multi-layer perceptron with provided layers."
+function get_chain(; n_inputs, n_outputs, hidden_layers)
+	n_layers = [n_inputs, map(first, hidden_layers)..., n_outputs]
+	activations = [map(last, hidden_layers)..., sigmoid]
 	
+	layers = []
+
 	for (num, (n_in, n_out)) in enumerate(partition(n_layers, 2, 1))
-		activation = (num < length(n_layers)-1) ? relu : sigmoid
-		push!(layers, Dense(n_in, n_out, activation))
+		push!(layers, Dense(n_in, n_out, activations[num]))
 	end
 	
-	model = Chain(layers...) |> gpu
-	
-	# Flux.params(model)
-
-	odesimulation(t; u0, k) = model(cat(u0, k, t; dims = 1) |> gpu)
-	odeanalytical(t; u0, k) = @. u0 * exp(k * t)
+	return Chain(layers...)
 end
 
-# ╔═╡ 7305e241-b141-4d04-91ca-e209308cb625
-function pinnloss(y_hat)
-  # Simple Euler scheme in basic example!
-  y_int = @. y_hat[1:end-1] + tau * k * y_hat[1:end-1]
-  
-  f_res = @. y_hat[2:end] - y_int
-  
-  return sum(f_res.^2) + IC * (y_hat[1] - u0)^2
-end
-
-# ╔═╡ 6f5e78cb-f5dd-4e5e-8108-d0107328d654
+# ╔═╡ 742e1903-0062-495e-b1b2-9a9de5fd5a3e
 begin
-	y_sim = pinnloss(odesimulation(t; u0, k) |> cpu)
-	y_ref = pinnloss(odeanalytical(t; u0, k))
-	y_sim, y_ref
+	@info "Abstract types"
+	
+	abstract type AbstractOdePinnModel end
+
+	simulate(m::AbstractOdePinnModel, x) = m.chain(x)
+end;
+
+# ╔═╡ 9d9bc2ed-6aa7-48b3-a451-5520a63c501e
+begin
+	struct DecayOdeModel <: AbstractOdePinnModel
+		chain::Chain
+	end
+
+	
+	function (this::DecayOdeModel)(x)
+		return this.chain(x)
+	end
+	
+	Flux.@functor DecayOdeModel
+
+	@doc "Trainable model with arbitrary network evaluation."
+	DecayOdeModel
+end
+
+# ╔═╡ c7c668d7-5a4f-4da3-871b-aa9bcf9705e6
+begin
+	# Inputs with/without explicit time-dependence.
+	FULL = false
+	
+	n_params = 1
+	n_initial = 1
+	n_outputs = 50 + n_initial
+
+	# Problem parameter.
+	k = -2.0
+	
+	# Initial condition.
+	u0 = 1.0
+
+	# Relative weight of I.C. loss.
+	Wic = 10.0
+
+	# Select arguments according to global `FULL`.
+	arguments(t, u0, k) = FULL ? vcat(t, u0, k) : vcat(u0, k)
+
+	# Time array and steps.
+	t = LinRange(0, 3, n_outputs)
+	τ  = @. t[2:end] - t[1:end-1]
+
+	# Control number of inputs and their value.
+	n_inputs = n_params + n_initial + (FULL ? n_outputs : 0)
+	params = arguments(t, u0, k)
+	
+	chain = get_chain(; n_inputs, n_outputs, hidden_layers = [
+		(10, sigmoid),
+		# (20, sigmoid),
+		# (10, sigmoid),
+	])
+	
+	model = DecayOdeModel(chain)|> gpu
+	@info model.chain
+end
+
+# ╔═╡ c9463ba5-a14d-4e99-9d4f-248be615d845
+"Implements a loss function enforcing physics."
+function physical_loss(ŷ; method = :RK4)
+	# TODO get this to work in GPU!
+	global τ, u0, k
+
+	# Derivative of function (later use in extended cost).
+	ẏ = k * ŷ[1:end-1]
+
+	# Integration from second to last step.
+	if method == :RK4
+		k1 = @. ẏ
+		k2 = @. k * (ŷ[1:end-1] + τ * k1 / 2)
+		k3 = @. k * (ŷ[1:end-1] + τ * k2 / 2) 
+		k4 = @. k * (ŷ[1:end-1] + τ * k3 / 1)
+		y = @. ŷ[1:end-1] + τ * (k1 + 2k2 + 2k3 + k4) / 6
+	else
+		y =  @. ŷ[1:end-1] + τ * ẏ
+	end
+	
+	# Deviation from integrated values.
+  	ε = @. ŷ[2:end] - y
+
+	# Compose cost function.
+  	return sum(ε.^2) + Wic * (ŷ[1] - u0)^2
+end
+
+# ╔═╡ fe35a1ff-270f-4f47-b4f2-3c67142004ed
+begin
+	odesimulation(t; u0, k) = model(arguments(t, u0, k) |> gpu) |> cpu
+	odeanalytical(t; u0, k) = @. u0 * exp(k * t)
+	
+	y_ref = odeanalytical(t; u0, k)
+	y_sim = odesimulation(t; u0, k)
+	
+	ε_ref = physical_loss(y_ref)
+	ε_sim = physical_loss(y_sim)
+	
+	@info """
+	Reference solution error:.............. $(ε_ref)
+	Network randomly initialized error:.... $(ε_sim)
+	"""
+end
+
+# ╔═╡ 6eb005a3-4150-40d7-9f2d-4e613129be49
+md"""
+## Surrogate modeling
+
+**NOT WORKING (YET)!**
+
+|    |   |
+|----|---|
+ k   | $(@bind k_test PlutoUI.Slider(-6:1:-1, default = k, show_value = true))
+ u₀  | $(@bind u_test PlutoUI.Slider(0.0:0.5:3.0, default = u0, show_value = true))
+"""
+
+# ╔═╡ f82574ba-b601-4ca4-9b77-388af1aa77cb
+"Provides a comparison between ODE solution and simulation."
+function compare_ode_solution(y_ref, y_sim; size = (700, 400))
+    f = Figure(size = size)
+    ax = Axis(f[1, 1])
+    lines!(ax, t, y_ref; label = "Analytical solution")
+    lines!(ax, t, y_sim;   label = "PINN solution")
+    axislegend(ax; position = :rt)
+    return f
 end
 
 # ╔═╡ 27d15745-f76e-4a7f-bec1-0f0ffa8334c7
-begin
-	# method = RMSProp(0.001, 0.9, 1.0e-08)
+let
 	method = Flux.Adam()
-	
 	optim = Flux.setup(method, model)
 	
 	losses = []
+	tolerance =  1.0e-06
 	
-	@showprogress for epoch in 1:5_000
+	@progress for epoch in 1:10000
 	    loss, grads = Flux.withgradient(model) do m
-	        y_hat = m(x |> gpu)
-	        pinnloss(y_hat |> cpu)
+			ŷ = m(params |> gpu)
+			physical_loss(ŷ |> cpu)
 	    end
 	
 	    Flux.update!(optim, model, grads[1])
 	    push!(losses, loss)
-	end
-	
-	u_computed = model(x |> gpu) |> cpu
-end;
 
-# ╔═╡ 9931d4b6-a707-463f-88e5-cf9860efe8a1
-let
+		if loss <= tolerance
+			break
+		end
+	end
+
 	y_ref = odeanalytical(t; u0, k)
 	y_sim = odesimulation(t; u0, k) |> cpu
 	
-	f = Figure(size = (1000, 400))
-	
-	ax1 = Axis(f[1, 1])
-	ax2 = Axis(f[1, 2]; yscale = log10)
-	
-	lines!(ax1, t, y_ref; label = "Analytical solution")
-	lines!(ax1, t, y_sim;   label = "PINN solution")
-	# lines!(ax2, convert.(Float64, losses))
-	
-	axislegend(ax1; position = :rt)
+	f = compare_ode_solution(y_ref, y_sim; size = (700, 600))
+	ax2 = Axis(f[2, 1]; yscale = log10)
+	lines!(ax2, convert.(Float64, losses))
 	f
-end
-
-# ╔═╡ f82574ba-b601-4ca4-9b77-388af1aa77cb
-function comparesolution(y_ref, y_sim)
-    f = Figure(size = (700, 400))
-    ax = Axis(f[1, 1])
-  
-    lines!(ax, t, y_ref; label = "Analytical solution")
-    lines!(ax, t, y_sim;   label = "PINN solution")
-    axislegend(ax; position = :rt)
-  
-    return f
 end
 
 # ╔═╡ f02fdfbc-b888-45bb-9948-56251fb8172a
 let
-	y_ref = odeanalytical(t; u0, k)
-	y_sim = odesimulation(t; u0, k) |> cpu
-	comparesolution(y_ref, y_sim)
+	y_ref = odeanalytical(t; u0 = u_test, k = k_test) |> cpu
+	y_sim = odesimulation(t; u0 = u_test, k = k_test) |> cpu
+	compare_ode_solution(y_ref, y_sim)
 end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -165,10 +266,12 @@ CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
 FluxOptTools = "ca11d760-9bce-11e9-0b7e-4f72fcadb4f9"
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+GPUArrays = "0c68f7d7-f131-5f86-a1c3-88cf8149b2d7"
 IterTools = "c8e1da08-722c-5040-9ed9-7db0dc04731e"
 Optim = "429524aa-4258-5aef-a3af-852621145aeb"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
-ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
+ProgressLogging = "33c8b6b6-d38a-422a-b730-caa89a2f386c"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 cuDNN = "02a925ec-e4fe-4b08-9a7e-0d78e3d38ccd"
@@ -178,10 +281,12 @@ CUDA = "~5.2.0"
 CairoMakie = "~0.11.8"
 Flux = "~0.14.11"
 FluxOptTools = "~0.1.3"
+ForwardDiff = "~0.10.36"
+GPUArrays = "~10.0.2"
 IterTools = "~1.10.0"
 Optim = "~1.9.2"
 PlutoUI = "~0.7.56"
-ProgressMeter = "~1.9.0"
+ProgressLogging = "~0.1.4"
 Zygote = "~0.6.69"
 cuDNN = "~1.3.0"
 """
@@ -192,7 +297,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.10.1"
 manifest_format = "2.0"
-project_hash = "2499b38cf0462ea400ccc279c7ac79f216b00772"
+project_hash = "afe65b5c9431636a2e6cc3ffecbe9cac5b72b9ac"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -2305,13 +2410,17 @@ version = "3.5.0+0"
 # ╟─e21f91db-fa99-4d5c-beeb-7f82d119fc4a
 # ╟─c6fc3d50-ce27-11ee-199b-3941c932ec44
 # ╟─4cba2c80-9025-415a-8e41-c0a82fefde05
-# ╠═f69e3406-b40b-4d14-a27d-e14d2d03c333
-# ╠═dd32eec4-9ec0-464b-942b-3f894b2f12c9
-# ╠═7305e241-b141-4d04-91ca-e209308cb625
-# ╠═6f5e78cb-f5dd-4e5e-8108-d0107328d654
-# ╠═27d15745-f76e-4a7f-bec1-0f0ffa8334c7
-# ╠═9931d4b6-a707-463f-88e5-cf9860efe8a1
-# ╠═f82574ba-b601-4ca4-9b77-388af1aa77cb
-# ╠═f02fdfbc-b888-45bb-9948-56251fb8172a
+# ╟─9a871ae5-6225-4c8c-843b-545129d76004
+# ╟─c7c668d7-5a4f-4da3-871b-aa9bcf9705e6
+# ╟─c9463ba5-a14d-4e99-9d4f-248be615d845
+# ╟─fe35a1ff-270f-4f47-b4f2-3c67142004ed
+# ╟─27d15745-f76e-4a7f-bec1-0f0ffa8334c7
+# ╟─6eb005a3-4150-40d7-9f2d-4e613129be49
+# ╟─f02fdfbc-b888-45bb-9948-56251fb8172a
+# ╟─29e4a7f6-8952-4f83-bfbf-ca5326d144e8
+# ╟─9d9bc2ed-6aa7-48b3-a451-5520a63c501e
+# ╟─4068d439-5f86-4373-8978-51de64e5cac8
+# ╟─f82574ba-b601-4ca4-9b77-388af1aa77cb
+# ╟─742e1903-0062-495e-b1b2-9a9de5fd5a3e
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
