@@ -49,8 +49,7 @@ xdot = (ndot - ndot_tot * x + ndot_gen) / n_tot
 xdot
 ```
 ```python
-p = [ndot[0], ndot_tot, n_tot, k]
-F_xdot = Function("F_xdot", [x, *p], [xdot])
+F_xdot = Function("F_xdot", [x, ndot[0], ndot_tot, n_tot, k], [xdot])
 ```
 
 
@@ -60,6 +59,10 @@ F_xdot
 ```python
 F_xdot([0.5, 0.5, 0.0], 10.0, 3.0, 1000.0, 10.0)
 ```
+```python
+F_xdot(x, ndot[0], ndot_tot, n_tot, k * x[1])
+```
+
 ## Provide parameters
 
 ```python
