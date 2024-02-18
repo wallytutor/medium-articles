@@ -19,11 +19,13 @@ begin
 	using CairoMakie
 	using CUDA
 	using cuDNN
+	using DifferentialEquations
 	using Flux
 	using FluxOptTools
 	using ForwardDiff
 	using GPUArrays
 	using IterTools
+	using Lux
 	using Optim
 	using PlutoUI
 	using ProgressLogging
@@ -45,7 +47,7 @@ $(TableOfContents())
 
 # ╔═╡ 4cba2c80-9025-415a-8e41-c0a82fefde05
 md"""
-## Problem statement
+## A naive approach
 
 As a first example we will try to solve the following ODE using a PINN:
 
@@ -69,41 +71,28 @@ With this and a list of `hidden_layers` we can stack the chain compositing the m
 **Note:** `DecayOdeModel` was conceived to allow the inclusion of arbitrary modifications in evaluation (function-object) of its outputs. Currently it does nothing more than evaluating the chain.
 """
 
+# ╔═╡ 624cf9c8-eda1-419b-9791-f524672ad895
+CUDA.memory_status()
+
+# ╔═╡ 1345892c-041f-478c-bc3a-d9cdb04ec244
+
+
 # ╔═╡ 29e4a7f6-8952-4f83-bfbf-ca5326d144e8
 md"""
 ## Implementation
 """
 
-# ╔═╡ 4068d439-5f86-4373-8978-51de64e5cac8
-"Compose a multi-layer perceptron with provided layers."
-function get_chain(; n_inputs, n_outputs, hidden_layers)
-	n_layers = [n_inputs, map(first, hidden_layers)..., n_outputs]
-	activations = [map(last, hidden_layers)..., sigmoid]
-	
-	layers = []
-
-	for (num, (n_in, n_out)) in enumerate(partition(n_layers, 2, 1))
-		push!(layers, Dense(n_in, n_out, activations[num]))
-	end
-	
-	return Chain(layers...)
-end
-
-# ╔═╡ 742e1903-0062-495e-b1b2-9a9de5fd5a3e
-begin
-	@info "Abstract types"
-	
-	abstract type AbstractOdePinnModel end
-
-	simulate(m::AbstractOdePinnModel, x) = m.chain(x)
-end;
-
 # ╔═╡ 9d9bc2ed-6aa7-48b3-a451-5520a63c501e
 begin
+	abstract type AbstractOdePinnModel end
+	
 	struct DecayOdeModel <: AbstractOdePinnModel
 		chain::Chain
 	end
 
+	function DecayOdeModel(; chain)
+		return DecayOdeModel(chain)
+	end
 	
 	function (this::DecayOdeModel)(x)
 		return this.chain(x)
@@ -115,70 +104,94 @@ begin
 	DecayOdeModel
 end
 
+# ╔═╡ 4068d439-5f86-4373-8978-51de64e5cac8
+"Compose a multi-layer perceptron with provided layers."
+function get_chain(; n_inputs, n_outputs, hidden_layers,
+                     last_activation = sigmoid)
+	n_layers = [n_inputs, map(first, hidden_layers)..., n_outputs]
+	activations = [map(last, hidden_layers)..., last_activation]
+	
+	layers = []
+
+	for (num, (n_in, n_out)) in enumerate(partition(n_layers, 2, 1))
+		push!(layers, Dense(n_in, n_out, activations[num]))
+	end
+	
+	return Chain(layers...)
+end
+
 # ╔═╡ c7c668d7-5a4f-4da3-871b-aa9bcf9705e6
 begin
 	# Inputs with/without explicit time-dependence.
 	FULL = false
 	
-	n_params = 1
-	n_initial = 1
-	n_outputs = 50 + n_initial
-
 	# Problem parameter.
+	n_params = 1
 	k = -2.0
 	
 	# Initial condition.
+	n_initial = 1
 	u0 = 1.0
 
 	# Relative weight of I.C. loss.
 	Wic = 10.0
 
 	# Select arguments according to global `FULL`.
+	n_outputs = 20 + n_initial
 	arguments(t, u0, k) = FULL ? vcat(t, u0, k) : vcat(u0, k)
 
 	# Time array and steps.
 	t = LinRange(0, 3, n_outputs)
-	τ  = @. t[2:end] - t[1:end-1]
+	τ  = t[2] - t[1]
 
 	# Control number of inputs and their value.
 	n_inputs = n_params + n_initial + (FULL ? n_outputs : 0)
 	params = arguments(t, u0, k)
+
+	# Create network.
+	chain = get_chain(; n_inputs, n_outputs, hidden_layers = [(5, elu)],              
+	                    last_activation = identity)
 	
-	chain = get_chain(; n_inputs, n_outputs, hidden_layers = [
-		(10, sigmoid),
-		# (20, sigmoid),
-		# (10, sigmoid),
-	])
+	model = DecayOdeModel(chain) |> gpu
 	
-	model = DecayOdeModel(chain)|> gpu
-	@info model.chain
+	@info """
+	Running on $(CUDA.device(model.chain[1].weight))
+	Model: $(chain)
+	"""
 end
 
-# ╔═╡ c9463ba5-a14d-4e99-9d4f-248be615d845
+# ╔═╡ 6eb005a3-4150-40d7-9f2d-4e613129be49
+md"""
+As you may verify below, surrogate modeling does not work at this stage. In fact this navie approach led to brute-force solution of the ODE. The collocation constraints imposed by the RK4 integration were approximated and we established a numerical solution that does not respond to parameter changes.
+
+In what follows we will advance towards a working solution.
+
+|    |   |
+|----|---|
+ k   | $(@bind k_test PlutoUI.Slider(-6:1:-1, default = k, show_value = true))
+ u₀  | $(@bind u_test PlutoUI.Slider(0.0:0.5:3.0, default = u0, show_value = true))
+"""
+
+# ╔═╡ dcea7ea4-03cf-418b-96f3-2fb21f8fefe4
+"Advance all `y` in time using 4th order Runge-Kutta method."
+function integrate_rk4(y, ẏ, τ)
+	k1 = ẏ
+	k2 = @. k * (y + τ * k1 / 2)
+	k3 = @. k * (y + τ * k2 / 2) 
+	k4 = @. k * (y + τ * k3 / 1)
+	yn = @. y + τ * (k1 + 2k2 + 2k3 + k4) / 6
+	return yn
+end
+
+# ╔═╡ c0077264-a287-443c-be80-acbc7077667f
 "Implements a loss function enforcing physics."
-function physical_loss(ŷ; method = :RK4)
+function physical_loss(ŷ)
 	# TODO get this to work in GPU!
 	global τ, u0, k
-
-	# Derivative of function (later use in extended cost).
-	ẏ = k * ŷ[1:end-1]
-
-	# Integration from second to last step.
-	if method == :RK4
-		k1 = @. ẏ
-		k2 = @. k * (ŷ[1:end-1] + τ * k1 / 2)
-		k3 = @. k * (ŷ[1:end-1] + τ * k2 / 2) 
-		k4 = @. k * (ŷ[1:end-1] + τ * k3 / 1)
-		y = @. ŷ[1:end-1] + τ * (k1 + 2k2 + 2k3 + k4) / 6
-	else
-		y =  @. ŷ[1:end-1] + τ * ẏ
-	end
-	
-	# Deviation from integrated values.
-  	ε = @. ŷ[2:end] - y
-
-	# Compose cost function.
-  	return sum(ε.^2) + Wic * (ŷ[1] - u0)^2
+	y0 = ŷ[1:end-1]
+	ẏ0 = k * y0
+	ε = @. (ŷ[2:end] - integrate_rk4(y0, ẏ0, τ)).^2
+	return sum(ε.^2) + Wic * (ŷ[1]  - u0)^2
 end
 
 # ╔═╡ fe35a1ff-270f-4f47-b4f2-3c67142004ed
@@ -198,18 +211,6 @@ begin
 	"""
 end
 
-# ╔═╡ 6eb005a3-4150-40d7-9f2d-4e613129be49
-md"""
-## Surrogate modeling
-
-**NOT WORKING (YET)!**
-
-|    |   |
-|----|---|
- k   | $(@bind k_test PlutoUI.Slider(-6:1:-1, default = k, show_value = true))
- u₀  | $(@bind u_test PlutoUI.Slider(0.0:0.5:3.0, default = u0, show_value = true))
-"""
-
 # ╔═╡ f82574ba-b601-4ca4-9b77-388af1aa77cb
 "Provides a comparison between ODE solution and simulation."
 function compare_ode_solution(y_ref, y_sim; size = (700, 400))
@@ -221,42 +222,51 @@ function compare_ode_solution(y_ref, y_sim; size = (700, 400))
     return f
 end
 
-# ╔═╡ 27d15745-f76e-4a7f-bec1-0f0ffa8334c7
-let
-	method = Flux.Adam()
-	optim = Flux.setup(method, model)
-	
-	losses = []
-	tolerance =  1.0e-06
-	
-	@progress for epoch in 1:10000
-	    loss, grads = Flux.withgradient(model) do m
-			ŷ = m(params |> gpu)
-			physical_loss(ŷ |> cpu)
-	    end
-	
-	    Flux.update!(optim, model, grads[1])
-	    push!(losses, loss)
-
-		if loss <= tolerance
-			break
-		end
-	end
-
-	y_ref = odeanalytical(t; u0, k)
-	y_sim = odesimulation(t; u0, k) |> cpu
-	
-	f = compare_ode_solution(y_ref, y_sim; size = (700, 600))
-	ax2 = Axis(f[2, 1]; yscale = log10)
-	lines!(ax2, convert.(Float64, losses))
-	f
-end
-
 # ╔═╡ f02fdfbc-b888-45bb-9948-56251fb8172a
 let
 	y_ref = odeanalytical(t; u0 = u_test, k = k_test) |> cpu
 	y_sim = odesimulation(t; u0 = u_test, k = k_test) |> cpu
 	compare_ode_solution(y_ref, y_sim)
+end
+
+# ╔═╡ 83cb15e9-52bd-474f-916a-0dfcd353357e
+"Display plot of results and losses."
+function postprocess_train(y_ref, y_sim, losses)
+	f = compare_ode_solution(y_ref, y_sim; size = (700, 600))
+	ax2 = Axis(f[2, 1]; yscale = log10)
+	lines!(ax2, convert.(Float64, losses))
+	return f
+end
+
+# ╔═╡ 27d15745-f76e-4a7f-bec1-0f0ffa8334c7
+let
+	losses = []
+	tolerance =  1.0e-08
+	epochs = 10_000
+
+	for _ in 1:2
+		method = Flux.Adam()
+		optim = Flux.setup(method, model)
+		
+		@progress for epoch in 1:epochs
+		    loss, grads = Flux.withgradient(model) do m
+				physical_loss(m(params |> gpu) |> cpu)
+		    end
+		
+		    Flux.update!(optim, model, grads[1])
+		    push!(losses, loss)
+	
+			if loss <= tolerance
+				break
+			end
+		end
+	end
+
+	let
+		y_ref = odeanalytical(t; u0, k)
+		y_sim = odesimulation(t; u0, k) |> cpu
+		postprocess_train(y_ref, y_sim, losses)
+	end
 end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -275,20 +285,6 @@ ProgressLogging = "33c8b6b6-d38a-422a-b730-caa89a2f386c"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 cuDNN = "02a925ec-e4fe-4b08-9a7e-0d78e3d38ccd"
-
-[compat]
-CUDA = "~5.2.0"
-CairoMakie = "~0.11.8"
-Flux = "~0.14.11"
-FluxOptTools = "~0.1.3"
-ForwardDiff = "~0.10.36"
-GPUArrays = "~10.0.2"
-IterTools = "~1.10.0"
-Optim = "~1.9.2"
-PlutoUI = "~0.7.56"
-ProgressLogging = "~0.1.4"
-Zygote = "~0.6.69"
-cuDNN = "~1.3.0"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -297,7 +293,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.10.1"
 manifest_format = "2.0"
-project_hash = "afe65b5c9431636a2e6cc3ffecbe9cac5b72b9ac"
+project_hash = "12fe3d62c6cfc0ebc3724f55ba2b7eb1777f8401"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -2412,15 +2408,18 @@ version = "3.5.0+0"
 # ╟─4cba2c80-9025-415a-8e41-c0a82fefde05
 # ╟─9a871ae5-6225-4c8c-843b-545129d76004
 # ╟─c7c668d7-5a4f-4da3-871b-aa9bcf9705e6
-# ╟─c9463ba5-a14d-4e99-9d4f-248be615d845
+# ╟─624cf9c8-eda1-419b-9791-f524672ad895
+# ╟─c0077264-a287-443c-be80-acbc7077667f
 # ╟─fe35a1ff-270f-4f47-b4f2-3c67142004ed
 # ╟─27d15745-f76e-4a7f-bec1-0f0ffa8334c7
 # ╟─6eb005a3-4150-40d7-9f2d-4e613129be49
 # ╟─f02fdfbc-b888-45bb-9948-56251fb8172a
+# ╠═1345892c-041f-478c-bc3a-d9cdb04ec244
 # ╟─29e4a7f6-8952-4f83-bfbf-ca5326d144e8
 # ╟─9d9bc2ed-6aa7-48b3-a451-5520a63c501e
 # ╟─4068d439-5f86-4373-8978-51de64e5cac8
+# ╟─dcea7ea4-03cf-418b-96f3-2fb21f8fefe4
+# ╟─83cb15e9-52bd-474f-916a-0dfcd353357e
 # ╟─f82574ba-b601-4ca4-9b77-388af1aa77cb
-# ╟─742e1903-0062-495e-b1b2-9a9de5fd5a3e
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
