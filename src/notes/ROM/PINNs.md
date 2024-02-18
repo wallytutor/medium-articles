@@ -45,6 +45,6 @@
 
 - [RAMP-Net: A Robust Adaptive MPC for Quadrotors via Physics-informed Neural Network](https://arxiv.org/abs/2209.09025)
 
-- []()
+- [A comprehensive study of non-adaptive and residual-based adaptive sampling for physics-informed neural networks](https://arxiv.org/abs/2207.10289)
 
 - []()
