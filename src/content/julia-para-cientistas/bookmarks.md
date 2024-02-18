@@ -252,5 +252,17 @@ showall = true
       <hr style="padding: 0pt; margin: 5pt"/>
     </td>
   </tr>
+
+  <tr>
+    <td width="64px" height="64px" style="vertical-align: middle;">
+        <img src="https://fluxml.ai/Zygote.jl/stable/assets/logo.png" alt="logo" />
+    </td>
+    <td>
+      <a href="https://fluxml.ai/Zygote.jl/stable/" target="_blank">
+          Zygote.jl
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
+    </td>
+  </tr>
 </table>
 ~~~
