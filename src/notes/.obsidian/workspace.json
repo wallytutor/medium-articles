@@ -4,49 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "09e7de685bd5887f",
-        "type": "split",
+        "id": "33f7944639048ba0",
+        "type": "tabs",
         "children": [
           {
-            "id": "60c7d6075b73d9e5",
-            "type": "tabs",
-            "dimension": 44.09722222222222,
-            "children": [
-              {
-                "id": "fa9d93ce6c4cc02b",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "Reading/@Guo2024a.md",
-                    "mode": "source",
-                    "source": false
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "id": "df2cd191c06fd34d",
-            "type": "tabs",
-            "dimension": 55.90277777777778,
-            "children": [
-              {
-                "id": "819c576f6790ff87",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "ROM/PINNs.md",
-                    "mode": "source",
-                    "source": false
-                  }
-                }
-              }
-            ]
+            "id": "ec4b9f384edd5287",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
           }
-        ],
-        "direction": "horizontal"
+        ]
       }
     ],
     "direction": "vertical"
@@ -96,7 +65,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 402.5
+    "width": 308.5
   },
   "right": {
     "id": "655d9fb1ac29cc1c",
@@ -112,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Reading/@Guo2024a.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -129,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Reading/@Guo2024a.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -151,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "Reading/@Guo2024a.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -173,20 +138,26 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "5e38d4ede217a0cc",
+  "active": "ec4b9f384edd5287",
   "lastOpenFiles": [
-    "ROM/PINNs.md",
+    "Excalidraw/Brain.md",
+    "Excalidraw/Drawing 2024-02-19 13.41.48.excalidraw.md",
+    "Reading/@Haider1989.md",
+    "Reading/@Gidaspow1994.md",
     "Reading/@Guo2024a.md",
+    "Reading/@Plessis1988.md",
+    "Reading/@Liu1993.md",
+    "ROM/PINNs.md",
+    "OpenFOAM/incompressibleDenseParticleFluid/horizontalMixer.md",
+    "Reading/@Eskelinen2016.md",
     "Reading",
     "Transport-Phenomena/Dimensionless-Groups.md",
     "ROM/01-Singular-Value-Decomposition.md",
     "ROM/11-Reduced-Order-Models.md",
     "ROM/index.md",
-    "Excalidraw/Brain.md",
     "Excalidraw",
     "OpenFOAM/incompressibleDenseParticleFluid/sedimentationBox.md",
     "OpenFOAM/incompressibleDenseParticleFluid/index.md",
-    "OpenFOAM/incompressibleDenseParticleFluid/horizontalMixer.md",
     "OpenFOAM/incompressibleDenseParticleFluid/dustCollector.md",
     "DWSIM/index.md",
     "OpenFOAM/multicomponentFluid/index.md",
@@ -199,11 +170,8 @@
     "Excalidraw/Drawing 2024-02-09 07.18.00.excalidraw.md",
     "multicomponentFluid/index.md",
     "Excalidraw/Drawing 2024-02-08 11.49.05.excalidraw.md",
-    "OpenFOAM/Physics.md",
     "multicomponentFluid",
     "OpenFOAM/multicomponentFluid",
-    "OpenFOAM/Particle-Flows.md",
-    "OpenFOAM/README.md",
     "OpenFOAM/incompressibleDenseParticleFluid",
     "Transport-Phenomena"
   ]
