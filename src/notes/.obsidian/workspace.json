@@ -4,22 +4,49 @@
     "type": "split",
     "children": [
       {
-        "id": "ea04b43545b70098",
-        "type": "tabs",
+        "id": "09e7de685bd5887f",
+        "type": "split",
         "children": [
           {
-            "id": "819c576f6790ff87",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "ROM/PINNs.md",
-                "mode": "source",
-                "source": false
+            "id": "60c7d6075b73d9e5",
+            "type": "tabs",
+            "dimension": 44.09722222222222,
+            "children": [
+              {
+                "id": "fa9d93ce6c4cc02b",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "Reading/@Guo2024a.md",
+                    "mode": "source",
+                    "source": false
+                  }
+                }
               }
-            }
+            ]
+          },
+          {
+            "id": "df2cd191c06fd34d",
+            "type": "tabs",
+            "dimension": 55.90277777777778,
+            "children": [
+              {
+                "id": "819c576f6790ff87",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "ROM/PINNs.md",
+                    "mode": "source",
+                    "source": false
+                  }
+                }
+              }
+            ]
           }
-        ]
+        ],
+        "direction": "horizontal"
       }
     ],
     "direction": "vertical"
@@ -85,7 +112,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "ROM/PINNs.md",
+                "file": "Reading/@Guo2024a.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +129,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "ROM/PINNs.md",
+                "file": "Reading/@Guo2024a.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,12 +152,11 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "ROM/PINNs.md"
+                "file": "Reading/@Guo2024a.md"
               }
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "horizontal",
@@ -147,12 +173,15 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "7e7ec2c54abf5b1b",
+  "active": "5e38d4ede217a0cc",
   "lastOpenFiles": [
-    "ROM/index.md",
-    "ROM/11-Reduced-Order-Models.md",
-    "ROM/01-Singular-Value-Decomposition.md",
     "ROM/PINNs.md",
+    "Reading/@Guo2024a.md",
+    "Reading",
+    "Transport-Phenomena/Dimensionless-Groups.md",
+    "ROM/01-Singular-Value-Decomposition.md",
+    "ROM/11-Reduced-Order-Models.md",
+    "ROM/index.md",
     "Excalidraw/Brain.md",
     "Excalidraw",
     "OpenFOAM/incompressibleDenseParticleFluid/sedimentationBox.md",
@@ -176,7 +205,6 @@
     "OpenFOAM/Particle-Flows.md",
     "OpenFOAM/README.md",
     "OpenFOAM/incompressibleDenseParticleFluid",
-    "Transport-Phenomena/Dimensionless-Groups.md",
     "Transport-Phenomena"
   ]
 }

@@ -1,6 +1,8 @@
 
 ## Common applications
 
+ As per [[@Guo2024a]] the following common applications arise from PINNs:
+ 
 - Predictive modeling and simulations
 	- Solution of dynamical systems (even high-dimensional)
 	- Acceleration of multi-physics simulations
@@ -26,8 +28,6 @@
 - **Collocation points** is how we call the temporal and spacial coordinates where evaluation of physical properties are computed, corresponding to nodes or cell centers in classical numerical schemes.
 
 ## Articles
-
-- [Physics-Informed Neural Networks: An Application-Centric Guide](https://towardsdatascience.com/physics-informed-neural-networks-an-application-centric-guide-dc1013526b02)
 
 - [Unraveling the Design Pattern of Physics-Informed Neural Networks: Series 01](https://towardsdatascience.com/unraveling-the-design-pattern-of-physics-informed-neural-networks-series-01-8190df459527)
 
