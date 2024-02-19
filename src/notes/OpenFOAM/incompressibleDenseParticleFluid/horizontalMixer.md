@@ -74,16 +74,16 @@ Solution with different drag models:
 | Model | Results |
 | ---- | ---- |
 | [`sphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1SphereDragForce.html) | ![Case 012](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-012.gif?raw=true) [012](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/012) |
-| [`WenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1WenYuDragForce.html) (used in `injectionChannel`) [implemented](https://cpp.openfoam.org/v11/WenYuDragForce_8C_source.html) from equation (2.12) of Gidaspow (1994). | ![Case 013](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-013.gif?raw=true) [013](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/013)  |
+| [`WenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1WenYuDragForce.html) (used in `injectionChannel`) [implemented](https://cpp.openfoam.org/v11/WenYuDragForce_8C_source.html) from equation (2.12) of  [[@Gidaspow1994]].    | ![Case 013](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-013.gif?raw=true) [013](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/013)  |
 | [`ErgunWenYuDrag`](https://cpp.openfoam.org/v11/classFoam_1_1ErgunWenYuDragForce.html) (used in `Goldschmidt`, `cyclone`, and `column`) [implemented](https://cpp.openfoam.org/v11/ErgunWenYuDragForce_8C_source.html) from equation (5.11) of Gidaspow (1994). | ![Case 014](https://github.com/wallytutor/OpenFOAM/blob/main/run/incompressibleDenseParticleFluid/horizontalMixer/animation-014.gif?raw=true) [014](https://github.com/wallytutor/OpenFOAM/tree/main/run/incompressibleDenseParticleFluid/horizontalMixer/014) |
 
 Other drag models:
 
 | Model | Details |
 | ---- | ---- |
-| [`PlessisMasliyahDrag`](https://cpp.openfoam.org/v11/classFoam_1_1PlessisMasliyahDragForce.html) | Used in GoldschmidtMPPIC. [Implemented](https://cpp.openfoam.org/v11/PlessisMasliyahDragForce_8C_source.html) from Plessis (1988) is adapted for flow through consolidated isotropic porous media. This is outside the scope of the current study but functionality is tested anyways from a computational point of view and to understand its behavior far from its reference application. Calculation diverged, so no results are available. |
-| [`distortedSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1DistortedSphereDragForce.html) | Not used in any tutorial. [Implemented](https://cpp.openfoam.org/v11/DistortedSphereDragForce_8C_source.html) as per Liu (1993) is conceived for the simulation of the effects of drop drag and breakup on fuel sprays. This is far from our scope and is not tested. |
-| [`nonSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1NonSphereDragForce.html) | Not used in any tutorial. [Implemented](https://cpp.openfoam.org/v11/NonSphereDragForce_8C_source.html) as per Haider (1989) is a drag model for non-spherical particles. Its most important parameter is `phi`, the ratio of the surface area of a sphere with the same volume as the particle to the actual surface area of the particle. |
+| [`PlessisMasliyahDrag`](https://cpp.openfoam.org/v11/classFoam_1_1PlessisMasliyahDragForce.html) | Used in GoldschmidtMPPIC. [Implemented](https://cpp.openfoam.org/v11/PlessisMasliyahDragForce_8C_source.html) from [[@Plessis1988]] is adapted for flow through consolidated isotropic porous media. This is outside the scope of the current study but functionality is tested anyways from a computational point of view and to understand its behavior far from its reference application. Calculation diverged, so no results are available. |
+| [`distortedSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1DistortedSphereDragForce.html) | Not used in any tutorial. [Implemented](https://cpp.openfoam.org/v11/DistortedSphereDragForce_8C_source.html) as per [[@Liu1993]] is conceived for the simulation of the effects of drop drag and breakup on fuel sprays. This is far from our scope and is not tested. |
+| [`nonSphereDrag`](https://cpp.openfoam.org/v11/classFoam_1_1NonSphereDragForce.html) | Not used in any tutorial. [Implemented](https://cpp.openfoam.org/v11/NonSphereDragForce_8C_source.html) as per [[@Haider1989]] is a drag model for non-spherical particles. Its most important parameter is `phi`, the ratio of the surface area of a sphere with the same volume as the particle to the actual surface area of the particle. |
 | [`SchillerNaumannDrag`](https://cpp.openfoam.org/v11/classFoam_1_1SchillerNaumannDragForce.html) | Not used in any tutorial. [Implemented](https://cpp.openfoam.org/v11/SchillerNaumannDragForce_8C_source.html) according the classical paper by Schiller (1935) for modeling drag over spheres. |
 
 Solution with different `sizeDistribution`:
@@ -112,12 +112,3 @@ For both  [`DampingModel`](https://cpp.openfoam.org/v11/classFoam_1_1DampingMode
 | [equilibrium](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1equilibrium.html) |  |
 |  [isotropic](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1isotropic.html) |  |
 | [nonEquilibrium](https://cpp.openfoam.org/v11/classFoam_1_1TimeScaleModels_1_1nonEquilibrium.html) |  |
-
-## References
-
-- [Gidaspow (1994)]([https://doi.org/10.1016/C2009-0-21244-X](https://doi.org/10.1016/C2009-0-21244-X))
-- [Plessis (1988)](https://doi.org/10.1007/BF00820342)
-- [Liu (1993)](https://doi.org/10.4271/930072)
-- [Haider (1989)](https://doi.org/10.1016/0032-5910(89)80008-7)
-- Schiller (1935)
-
