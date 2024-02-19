@@ -36,6 +36,7 @@
 <!-- Content appended here -->
 <div class="franklin-content"><p>In OpenFOAM v11 solver module <code>incompressibleDenseParticleFluid</code> provides approaches for setting up a transient flow interacting with particles.</p>
 <p>In this directory we discuss and assembly cases built using this solver to handle incompressible isothermal flows with fluid-particle interactions, including cases with dense packing of particles, such as packed beds or initialization of fluidized beds. </p>
+<p>The most complex file to set is <code>constant/cloudProperties</code>, as described <a href="../Dictionaries/cloudProperties">here</a>.</p>
 <h2 id="tutorial_cases"><a href="#tutorial_cases" class="header-anchor">Tutorial cases</a></h2>
 <ul>
 <li><p>Goldschmidt</p>
@@ -59,75 +60,11 @@
 	inletValue      uniform &#40;0 0 0&#41;;
 	value           uniform &#40;0 0 0&#41;;
 &#125;</code></pre>
-<h2 id="creating_a_cloud"><a href="#creating_a_cloud" class="header-anchor">Creating a cloud</a></h2>
-<p>The most complex file to set is <code>constant/cloudProperties</code>. Most default values in <code>solution</code> dictionary should be fine for typical gas-particle applications, but for phase interaction it is important to configure <code>coupled</code> as <code>true</code> so that drag forces are applied to the particles and conversely, particles disturb the fluid. We must also turn on <code>cellValueSourceCorrection</code>, which will correct cell values using latest transfer information. These elements as given in the following block &#40;you can check the full dictionary in the official OpenFOAM tutorials for other details&#41;.</p>
-<pre><code class="language-C">solution
-&#123;
-	coupled                   true;
-	transient                 yes;
-	cellValueSourceCorrection on;
-	maxCo                     0.7;
-
-	...
-&#125;</code></pre>
-<p>When using <code>collidingCloud</code> we enabled the use of <code>collisionModel pairCollision</code> and material properties can be set in detail in sub-dictionary <code>constantProperties</code>. Notice that this is computationally expensive, we will come back to this topic in specific examples using it. On the other hand, <code>MPPICCloud</code> makes use only of <code>patchInteractionModel localInteraction</code> for interaction with the environment and collisions between particles are not taken into account &#40;that is not completely true if you consider the packing effects that can be enabled as <em>collisions</em>&#41;. Again, it is better to go deeper in the case studies.</p>
-<p>The main models for setting up a particle simulation in <code>constant/cloudProperties</code>  are:</p>
-<ul>
-<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1InjectionModel.html"><code>InjectionModel</code></a></p>
-</li>
-<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html"><code>ParticleForce</code></a></p>
-</li>
-</ul>
-<p>In the case of <code>MPPICCloud</code> focus is given in the following:</p>
-<ul>
-<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1DampingModel.html"><code>DampingModel</code></a></p>
-</li>
-<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html"><code>IsotropyModel</code></a></p>
-</li>
-<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1PackingModel.html"><code>PackingModel</code></a></p>
-</li>
-<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1PatchInteractionModel.html"><code>PatchInteractionModel</code></a></p>
-</li>
-</ul>
-<p>In some particular situations the following models might be required:</p>
-<ul>
-<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1DispersionModel.html"><code>DispersionModel</code></a></p>
-</li>
-<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1HeatTransferModel.html"><code>HeatTransferModel</code></a></p>
-</li>
-<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1StochasticCollisionModel.html"><code>StochasticCollisionModel</code></a></p>
-</li>
-<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1SurfaceFilmModel.html"><code>SurfaceFilmModel</code></a></p>
-</li>
-</ul>
-<p>Notice that when dealing with <code>incompressibleDenseParticleFluid</code> the main <code>ParticleForce</code> models other than <code>gravity</code> are inherited by <a href="https://cpp.openfoam.org/v11/classFoam_1_1DenseDragForce.html"><code>DenseDragForce</code></a>.</p>
-<p>When working with <code>collidingCloud</code> the following is also needed:</p>
-<ul>
-<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1CollisionModel.html"><code>CollisionModel</code></a></p>
-</li>
-</ul>
-<h2 id="tips_and_reminders"><a href="#tips_and_reminders" class="header-anchor">Tips and reminders</a></h2>
-<ul>
-<li><p>It is a good idea to set <code>SOI</code> to a value higher than zero &#40;dimensioned to match the global time-scale of the problem&#41; so that flow is fully developed before particles arrive.</p>
-</li>
-<li><p>If it makes sense to do so, make parameter <code>U0</code> in the entries of <code>injectionModels</code> of <code>cloudProperties</code> identical to the velocity specified for the corresponding path. In most cases this applies, except when modeling a particle jet that originates from another source <em>outside</em> of the computational domain.</p>
-</li>
-<li><p>When working with a 2-D extruded mesh &#40;1-cell in thickness&#41;, the mass flow rate must be scaled by the width of the domain to keep consistency with what would be expected in 3-D.</p>
-</li>
-<li><p>After the start of injection, a <code>patchInteraction</code> is <a href="https://cpp.openfoam.org/v11/classFoam_1_1NoInteraction.html#details">required</a> otherwise the dummy class representing the setting <code>none</code> will generate an error.</p>
-</li>
-</ul>
 <h2 id="problems_found"><a href="#problems_found" class="header-anchor">Problems found</a></h2>
 <ul>
 <li><p>When working with non-constant particle size distribution &#40;tested with <code>tabulatedDensity</code>&#41; and <code>uniformParcelSize nParticle</code>, if <code>nParticle</code> is not <code>1</code> no particle mass inlet was possible. Probably the implementation of how to inject multiple particles per parcel is not implemented in this case &#40;with sampling&#41;. Update: after some investigation and variants it would not work even with one particle per parcel. It seems related to the threshold of particle volume fraction per cell &#40;set by <code>alphaMin</code> - to be confirmed&#41; since for coarser meshes the it stopped injecting particles.</p>
 </li>
 </ul>
-<h2 id="verification"><a href="#verification" class="header-anchor">Verification</a></h2>
-<p>Using the base package provided <a href="https://github.com/wallytutor/OpenFOAM">here</a> we can verify the computation of number of parcels per second of sample case <code>injectionChannel</code>. Notice that the value of <code>mdot</code> has been reversed engineered so that it matches the expected value.</p>
-<pre><code class="language-julia">import OpenFOAM as OF
-
-OF.parcels_per_second&#40;; mdot &#61; 0.2, rhop &#61; 1000.0, diam &#61; 650.0e-06, nParticle &#61; 1&#41;
-# Output: 1390885</code></pre>
 <h2 id="list_of_samples"><a href="#list_of_samples" class="header-anchor">List of samples</a></h2>
 <p>The lists below are provided in a relative order of complexity of model setup &#40;options, post-processing, etc&#41;. That might be not the case with respect to the physics involved.</p>
 <h3 id="gas-particle_flows"><a href="#gas-particle_flows" class="header-anchor">Gas-particle flows</a></h3>
