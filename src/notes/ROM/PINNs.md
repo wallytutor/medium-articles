@@ -35,10 +35,10 @@
 
 Unraveling the design pattern of physics-informed neural networks:
 
-| Post | Subject | References |
+| Post | Subject | Main reference(s) |
 | ---- | ---- | ---- |
 | [[@Guo2023a]] | Resampling of residual points | [[@Wu2022a]] |
-| [[@Guo2023b]] |  |  |
+| [[@Guo2023b]] | Ensemble learning and dynamic solution interval expansion | [[@Haitsiukevich2022a]] |
 | [[@Guo2023c]] |  |  |
 | [[@Guo2023d]] |  |  |
 | [[@Guo2023e]] |  |  |
@@ -51,6 +51,9 @@ Unraveling the design pattern of physics-informed neural networks:
 | ---- | ---- |
 | [[@Antonelo2021a]] |  |
 | [[@Cai2021a]] |  |
-| [[@Wurth2023a]] |  |
+| [[@Haitsiukevich2022a]] |  |
+| [[@Lu2019a]] |  |
 | [[@Lu2021a]] |  |
+| [[@Nabian2021a]] |  |
 | [[@Sanyal2022a]] |  |
+| [[@Wurth2023a]] |  |
