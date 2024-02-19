@@ -27,13 +27,25 @@
 
 - **Collocation points** is how we call the temporal and spacial coordinates where evaluation of physical properties are computed, corresponding to nodes or cell centers in classical numerical schemes.
 
+## Research opportunities
+
+- Following [[@Guo2023a]] citing the work by [[@Wu2022a]], resampling and refinement methods could be improved by better PDF's and the use of active or reinforcement learning to improve sampling.
+
 ## Articles
 
-- [Unraveling the Design Pattern of Physics-Informed Neural Networks: Series 01](https://towardsdatascience.com/unraveling-the-design-pattern-of-physics-informed-neural-networks-series-01-8190df459527)
+Unraveling the design pattern of physics-informed neural networks:
+
+| Post | Subject | References |
+| ---- | ---- | ---- |
+| [[@Guo2023a]] | Resampling of residual points | [[@Wu2022a]] |
+| [[@Guo2023b]] |  |  |
+| [[@Guo2023c]] |  |  |
+| [[@Guo2023d]] |  |  |
+| [[@Guo2023e]] |  |  |
+| [[@Guo2023f]] |  |  |
+| [[@Guo2023g]] |  |  |
 
 - [Discovering Differential Equations with Physics-Informed Neural Networks and Symbolic Regression](https://towardsdatascience.com/discovering-differential-equations-with-physics-informed-neural-networks-and-symbolic-regression-c28d279c0b4d)
-
-## References
 
 - [Physics-Informed Neural Nets for Control of Dynamical Systems](https://arxiv.org/abs/2104.02556)
 
@@ -45,6 +57,4 @@
 
 - [RAMP-Net: A Robust Adaptive MPC for Quadrotors via Physics-informed Neural Network](https://arxiv.org/abs/2209.09025)
 
-- [A comprehensive study of non-adaptive and residual-based adaptive sampling for physics-informed neural networks](https://arxiv.org/abs/2207.10289)
 
-- []()
