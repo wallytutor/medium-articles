@@ -1,4 +1,4 @@
-
+Physics-Informed Neural Networks (PINNs) were first introduced by [[@Raissi2017]] in the context of providing data-driven solutions of nonlinear PDE's. In what follows we review the basic concepts and approaches developed in this field during the past few years. Both mathematical and application aspects will be treated in the review.
 ## Common applications
 
  As per [[@Guo2024a]] the following common applications arise from PINNs:
