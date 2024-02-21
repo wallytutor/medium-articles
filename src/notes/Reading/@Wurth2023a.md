@@ -17,5 +17,7 @@ Drive: https://1drv.ms/b/s!Ar4x-UlrYAiZla5XEQtEiYnlp5ggtA?e=6TW8va
 
 - Solves the [diffusion equation](../Transport-Phenomena/Diffusion-Equation)
 
+- Kamal-Malkin model can be seem as a more general parametrization as JMKA $\rightarrow$ maybe useful in cement hydration modeling?
+
 - Interesting to write a tutorial about!
 
