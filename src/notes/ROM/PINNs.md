@@ -44,6 +44,8 @@ Unraveling the design pattern of physics-informed neural networks:
 | [[@Guo2023e]] |  |  |
 | [[@Guo2023f]] |  |  |
 | [[@Guo2023g]] |  |  |
+|  |  |  |
+
 
 - [Discovering Differential Equations with Physics-Informed Neural Networks and Symbolic Regression](https://towardsdatascience.com/discovering-differential-equations-with-physics-informed-neural-networks-and-symbolic-regression-c28d279c0b4d)
 
