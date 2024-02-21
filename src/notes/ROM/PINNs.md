@@ -53,6 +53,7 @@ Unraveling the design pattern of physics-informed neural networks:
 | ---- | ---- |
 | [[@Antonelo2021a]] |  |
 | [[@Cai2021a]] |  |
+| [[@Cuomo2022a]] |  |
 | [[@Haitsiukevich2022a]] |  |
 | [[@Lu2019a]] |  |
 | [[@Lu2021a]] |  |
