@@ -15,7 +15,7 @@ Drive: https://1drv.ms/b/s!Ar4x-UlrYAiZla5XEQtEiYnlp5ggtA?e=6TW8va
 
 - Implemented in SciANN [[@Haghighat2021sciann]] (wrapper to [[@Tensorflow2015Whitepaper]])
 
-- Solves the [diffusion equation](../Transport-Phenomena/Diffusion-Equation)
+- Solves the [diffusion equation](Transport-Phenomena/Diffusion-Equation.md)
 
 - Kamal-Malkin model can be seem as a more general parametrization as JMKA $\rightarrow$ maybe useful in cement hydration modeling?
 
