@@ -6,6 +6,6 @@
 
 [**Grashof:**](https://en.wikipedia.org/wiki/Grashof_number) Ratio of buoyancy to viscous forces defined as $\mathrm{Gr}=\frac{g\beta(T_s-T_{\infty})L^3}{\nu^2}$ and is analogous to Reynolds number in natural convection. Increasing the value of this number above a given threshold promotes buoyancy driven flow.
 
-[**Rayleigh:**](https://en.wikipedia.org/wiki/Rayleigh_number) Product of Grashof $\mathrm{Gr}$ and Prandtl $\mathrm{Pr}$ numbers. Related to the transition from laminar to turbulent in buoyancy-driven flows. Laminar to turbulent is assumed to take place at $10^9$~\cite{Balaji2014}.
+[**Rayleigh:**](https://en.wikipedia.org/wiki/Rayleigh_number) Product of Grashof $\mathrm{Gr}$ and Prandtl $\mathrm{Pr}$ numbers. Related to the transition from laminar to turbulent in buoyancy-driven flows. Laminar to turbulent is assumed to take place at $10^9$  [[@Balaji2014]].
 
 [**Péclet:**](https://en.wikipedia.org/wiki/Péclet_number) provides the ratio of advective per diffusive transport of a substance. For mass transport this is given by the product of Reynolds and Schmidt numbers $\mathrm{Re}\,\mathrm{Sc}$ while for thermal energy it is the product of Reynolds and Prandtl numbers $\mathrm{Re}\,\mathrm{Pr}$.
