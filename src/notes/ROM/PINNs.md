@@ -35,16 +35,16 @@ Physics-Informed Neural Networks (PINNs) were first introduced by [[@Raissi2017]
 
 Unraveling the design pattern of physics-informed neural networks:
 
-| Post | Subject | Main reference(s) |
-| ---- | ---- | ---- |
-| [[@Guo2023a]] | Resampling of residual points | [[@Wu2022a]] |
+| Post          | Subject                                                   | Main reference(s)       |
+| ------------- | --------------------------------------------------------- | ----------------------- |
+| [[@Guo2023a]] | Resampling of residual points                             | [[@Wu2022a]]            |
 | [[@Guo2023b]] | Ensemble learning and dynamic solution interval expansion | [[@Haitsiukevich2022a]] |
-| [[@Guo2023c]] |  |  |
-| [[@Guo2023d]] |  |  |
-| [[@Guo2023e]] |  |  |
-| [[@Guo2023f]] |  |  |
-| [[@Guo2023g]] |  |  |
-|  |  |  |
+| [[@Guo2023c]] | Improving performance through gradient boosting           | [[@Fang2023a]]          |
+| [[@Guo2023d]] |                                                           |                         |
+| [[@Guo2023e]] |                                                           |                         |
+| [[@Guo2023f]] |                                                           |                         |
+| [[@Guo2023g]] |                                                           |                         |
+|               |                                                           |                         |
 
 
 - [Discovering Differential Equations with Physics-Informed Neural Networks and Symbolic Regression](https://towardsdatascience.com/discovering-differential-equations-with-physics-informed-neural-networks-and-symbolic-regression-c28d279c0b4d)
