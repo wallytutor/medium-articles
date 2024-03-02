@@ -40,10 +40,10 @@ Unraveling the design pattern of physics-informed neural networks:
 | [[@Guo2023a]] | Resampling of residual points                             | [[@Wu2022a]]            |
 | [[@Guo2023b]] | Ensemble learning and dynamic solution interval expansion | [[@Haitsiukevich2022a]] |
 | [[@Guo2023c]] | Improving performance through gradient boosting           | [[@Fang2023a]]          |
-| [[@Guo2023d]] |                                                           |                         |
-| [[@Guo2023e]] |                                                           |                         |
-| [[@Guo2023f]] |                                                           |                         |
-| [[@Guo2023g]] |                                                           |                         |
+| [[@Guo2023d]] |                                                           | [[@Yu2022a]]            |
+| [[@Guo2023e]] |                                                           | [[@Wang2023a]]          |
+| [[@Guo2023f]] |                                                           | [[@Wang2022a]]          |
+| [[@Guo2023g]] |                                                           | [[@Arthurs2021a]]       |
 |               |                                                           |                         |
 
 
