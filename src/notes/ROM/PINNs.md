@@ -44,10 +44,6 @@ Unraveling the design pattern of physics-informed neural networks:
 | [[@Guo2023e]] |                                                           | [[@Wang2023a]]          |
 | [[@Guo2023f]] |                                                           | [[@Wang2022a]]          |
 | [[@Guo2023g]] |                                                           | [[@Arthurs2021a]]       |
-|               |                                                           |                         |
-
-
-- [Discovering Differential Equations with Physics-Informed Neural Networks and Symbolic Regression](https://towardsdatascience.com/discovering-differential-equations-with-physics-informed-neural-networks-and-symbolic-regression-c28d279c0b4d)
 
 | Reference | Subject |
 | ---- | ---- |
@@ -60,3 +56,9 @@ Unraveling the design pattern of physics-informed neural networks:
 | [[@Nabian2021a]] |  |
 | [[@Sanyal2022a]] |  |
 | [[@Wurth2023a]] | Use of PINNs to solve diffusion equation (heat transfer) during the curing of composites. The paper is more focused in the application than in the implementation. Benchmark against FDM/FEM. |
+
+Other current readings:
+
+- [Discovering Differential Equations with Physics-Informed Neural Networks and Symbolic Regression](https://towardsdatascience.com/discovering-differential-equations-with-physics-informed-neural-networks-and-symbolic-regression-c28d279c0b4d)
+
+- [Solving Inverse Problems With Physics-Informed DeepONet: A Practical Guide With Code Implementation](https://towardsdatascience.com/solving-inverse-problems-with-physics-informed-deeponet-a-practical-guide-with-code-implementation-27795eb4f502)
