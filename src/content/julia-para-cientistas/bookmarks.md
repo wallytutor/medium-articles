@@ -283,5 +283,17 @@ showall = true
     </td>
   </tr>
 
+  <tr>
+    <td width="64px" height="64px" style="vertical-align: middle;">
+        <img src="https://cuda.juliagpu.org/stable/assets/logo.png" alt="logo" />
+    </td>
+    <td>
+      <a href="https://github.com/JuliaGPU/Adapt.jl" target="_blank">
+          Adapt.jl
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
+    </td>
+  </tr>
+
 </table>
 ~~~
