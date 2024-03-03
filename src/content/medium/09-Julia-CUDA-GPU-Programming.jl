@@ -59,6 +59,11 @@ $(PlutoUI.TableOfContents())
 *The approach here is minimalist and assumes you already have a CUDA background in other languages. Its main goal is to review the state of functionalities implemented in Julia.* Unless specified otherwise, the contents are reworked from the stable branch [documentation of CUDA.jl](https://cuda.juliagpu.org/stable/).
 """
 
+# ╔═╡ e2132bdd-4f44-4750-8f14-cccbbfcc9208
+md"""
+## Helpers
+"""
+
 # ╔═╡ 5f2db8e8-5ce2-4fa5-8e13-7345782473ea
 "Shortcut to get CUDA attributes for device."
 cuattr(name) = CUDA.attribute(CUDA.device(), name)
@@ -77,6 +82,15 @@ Grid dim. X | $(cuattr(CUDA.DEVICE_ATTRIBUTE_MAX_GRID_DIM_X))
 Grid dim. Y | $(cuattr(CUDA.DEVICE_ATTRIBUTE_MAX_GRID_DIM_Y))
 Grid dim. Z | $(cuattr(CUDA.DEVICE_ATTRIBUTE_MAX_GRID_DIM_Z))
 """
+
+# ╔═╡ 45aed95c-95d0-4ae5-a558-d9ed4cc11998
+"Better memory usage message."
+function gpu_usage()
+	total = CUDA.total_memory()
+	avail = CUDA.available_memory()
+	usage = 100 * (total - avail) / total
+	@info "GPU memory usage $(round(usage; digits = 3))%"
+end
 
 # ╔═╡ 3f47e863-310a-4090-81f0-ba57d1109443
 "Standard workflow for benchmarking `add!` implementations."
@@ -372,14 +386,63 @@ md"""
 - Avoid StepRange, instead it is faster to use a while loop
 """
 
-# ╔═╡ b7785838-bc4b-45a2-b39a-ce155d1b4347
+# ╔═╡ 8b4f7093-bebc-4a6f-8d9f-a4e75629923b
+md"""
+## General use
+
+- With map, reduce or broadcast it is possible to perform kernel-like operations without actually writing your own GPU kernels.
+"""
+
+# ╔═╡ d2e79ccb-1c70-4e1f-bbf2-993650e24a30
+let
+	N = 2^21
+
+	gpu_usage()
+	
+	a = CuArray{Int}(undef, N)
+	gpu_usage()
+		
+	b = copy(a)
+	gpu_usage()
+	
+	fill!(b, 0)
+	@test b == CUDA.zeros(Int, N)
+	
+	# automatic memory management NOT WORKING witout GC.gc(true)
+	a = nothing
+	b = nothing
+	GC.gc(true)
+	gpu_usage()
+end
+
+# ╔═╡ 1e23ae5c-d70a-4b2a-8477-f19277fff656
+let
+	GC.gc(true)
+	gpu_usage()
+
+	elapsed = CUDA.@elapsed begin
+		# code that will be timed using CUDA events
+		a = CUDA.zeros(2^20)
+		b = CUDA.ones(2^20)
+		c = @. a^2 + sin(b)
+	end
+
+	@info "Elapsed $(elapsed)"
+	
+	GC.gc(true)
+	gpu_usage()
+end
+
+# ╔═╡ d16f12a9-ab6d-4396-a3c0-c6856aeaf3c8
 
 
-# ╔═╡ b4124abd-0878-4c42-a3c3-442b07715bbc
+# ╔═╡ f31465d9-3d38-4277-86e4-6184d8c28f5e
 
 
-# ╔═╡ ecf987bd-9b13-48d4-973a-a9d839efd1d0
-
+# ╔═╡ e423323d-c21d-4336-bb25-c12537a3da63
+md"""
+## Differentiable programming
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1199,7 +1262,9 @@ version = "17.4.0+2"
 # ╟─2aca7e21-7480-49f7-8ffc-cd22d458ca4c
 # ╟─54ba12d2-8f81-4108-8552-897c53996a9d
 # ╟─68e5b1b7-dce3-45b7-986f-026519d32eee
+# ╟─e2132bdd-4f44-4750-8f14-cccbbfcc9208
 # ╟─5f2db8e8-5ce2-4fa5-8e13-7345782473ea
+# ╟─45aed95c-95d0-4ae5-a558-d9ed4cc11998
 # ╟─3f47e863-310a-4090-81f0-ba57d1109443
 # ╟─80da024a-4b3f-4037-9eac-0aea27b51cd8
 # ╟─3f9bdd09-eafb-42aa-b933-92429204fce3
@@ -1217,9 +1282,12 @@ version = "17.4.0+2"
 # ╟─04554cdb-6c9e-49fc-b625-b7cd9b92eb6d
 # ╟─065edf25-ba20-4e90-9c0c-313693e0e6a1
 # ╟─23810108-ee34-4759-a062-d33050b3f6ad
+# ╠═8b4f7093-bebc-4a6f-8d9f-a4e75629923b
+# ╠═d2e79ccb-1c70-4e1f-bbf2-993650e24a30
+# ╠═1e23ae5c-d70a-4b2a-8477-f19277fff656
+# ╠═d16f12a9-ab6d-4396-a3c0-c6856aeaf3c8
+# ╠═f31465d9-3d38-4277-86e4-6184d8c28f5e
+# ╟─e423323d-c21d-4336-bb25-c12537a3da63
 # ╠═22ccd410-29e2-4a04-b8d0-c6bae02a83c9
-# ╠═b7785838-bc4b-45a2-b39a-ce155d1b4347
-# ╠═b4124abd-0878-4c42-a3c3-442b07715bbc
-# ╠═ecf987bd-9b13-48d4-973a-a9d839efd1d0
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
