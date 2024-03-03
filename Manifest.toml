@@ -628,9 +628,9 @@ uuid = "21656369-7473-754a-2065-74616d696c43"
 version = "1.0.0"
 
 [[deps.ExproniconLite]]
-git-tree-sha1 = "fbc390c2f896031db5484bc152a7e805ecdfb01f"
+git-tree-sha1 = "5552cf384e4577c5dd2db57d7086a4a41747dbb9"
 uuid = "55351af7-c7e9-48d6-89ff-24e801d99491"
-version = "0.10.5"
+version = "0.10.6"
 
 [[deps.Extents]]
 git-tree-sha1 = "2140cd04483da90b2da7f99b2add0750504fc39c"
