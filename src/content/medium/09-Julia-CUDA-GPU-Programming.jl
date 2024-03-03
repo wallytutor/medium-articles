@@ -6,10 +6,11 @@ using InteractiveUtils
 
 # ╔═╡ 54ba12d2-8f81-4108-8552-897c53996a9d
 begin
+	import Adapt
 	import CUDA
 	import PlutoUI
 	using BenchmarkTools: @btime
-	using CUDA: @cuda
+	using CUDA: @cuda, CuArray
 	using Test: @test
 
 	CUDA.functional() && begin
@@ -19,18 +20,43 @@ begin
 	end
 end
 
+# ╔═╡ 22ccd410-29e2-4a04-b8d0-c6bae02a83c9
+let
+	import Zygote
+	using LinearAlgebra
+	
+	σ(z) = (1 + exp(-z))^(-1)
+
+	function NN(l0, ps)
+		l1 = ps.f1.(ps.M1 * l0 + ps.b1)
+		l2 = ps.f2.(ps.M2 * l1 + ps.b2)
+		return l2
+	end
+	
+	x = CuArray([1; 2; 3; 4; 5; 10; 20])
+
+	params = (
+		M1 = CUDA.rand(10, 7),
+		b1 = CUDA.rand(10),
+		f1 = σ,
+		
+		M2 = CUDA.rand(5, 10),
+		b2 = CUDA.rand(5),
+		f2 = identity
+	)
+	
+	u = NN(x, params)
+
+	Zygote.jacobian(l0->NN(l0, params), x)
+end
+
 # ╔═╡ 2aca7e21-7480-49f7-8ffc-cd22d458ca4c
 md"""
 # Julia CUDA (not for dummies)
 
 $(PlutoUI.TableOfContents())
 
-*The approach here is minimalist and assumes you already have a CUDA background in other languages. Its main goal is to review the state of functionalities implemented in Julia.*
-
-References:
-
-- [Introductory tutorial](https://cuda.juliagpu.org/stable/tutorials/introduction/)
-
+*The approach here is minimalist and assumes you already have a CUDA background in other languages. Its main goal is to review the state of functionalities implemented in Julia.* Unless specified otherwise, the contents are reworked from the stable branch [documentation of CUDA.jl](https://cuda.juliagpu.org/stable/).
 """
 
 # ╔═╡ 5f2db8e8-5ce2-4fa5-8e13-7345782473ea
@@ -205,7 +231,7 @@ Also take a look at this relevant [question](https://discourse.julialang.org/t/c
 
 # ╔═╡ 8ce73927-64c6-4834-be06-d11b0de3d599
 let
-	function add!(y, x)
+	function add1!(y, x)
 		# Because Julia indexing starts at 1!
 		blkid  = CUDA.blockIdx().x - 1
 		index  = blkid * CUDA.blockDim().x + CUDA.threadIdx().x
@@ -217,11 +243,42 @@ let
 	    return nothing
 	end
 
-	N = 2^20
-	x = CUDA.fill(1.0f0, N)
-	y = CUDA.fill(2.0f0, N)
+	function add2!(y, x)
+		# Because Julia indexing starts at 1!
+		blkid  = CUDA.blockIdx().x - Int32(1) # HERE Int32
+		index  = blkid * CUDA.blockDim().x + CUDA.threadIdx().x
+	    stride = CUDA.gridDim().x * CUDA.blockDim().x
+		
+	    for i in index:stride:length(y)
+	        @inbounds y[i] += x[i]
+	    end
+	    return nothing
+	end
 
-	test_it_all(add!, x, y; threads = nothing, blocks = nothing)
+	function add3!(y, x)
+		# Because Julia indexing starts at 1!
+		blkid  = CUDA.blockIdx().x - Int32(1)
+		index  = blkid * CUDA.blockDim().x + CUDA.threadIdx().x
+	    stride = CUDA.gridDim().x * CUDA.blockDim().x
+
+	    while index <= length(y)
+	        @inbounds y[index] += x[index]
+			index += stride
+	    end
+	    return nothing
+	end
+
+	N = 2^20
+
+	get_data(N) = (CUDA.fill(1.0f0, N), CUDA.fill(2.0f0, N))
+
+	test_it_all(add1!, get_data(N)...; threads = nothing, blocks = nothing)
+	test_it_all(add2!, get_data(N)...; threads = nothing, blocks = nothing)
+	test_it_all(add3!, get_data(N)...; threads = nothing, blocks = nothing)
+
+	@info add1! CUDA.registers(@cuda add1!(get_data(N)...))
+	@info add2! CUDA.registers(@cuda add2!(get_data(N)...))
+	@info add3! CUDA.registers(@cuda add3!(get_data(N)...))
 end
 
 # ╔═╡ d4af989c-6ff7-46d4-bca9-715658a9e66c
@@ -252,25 +309,95 @@ let
 end
 
 # ╔═╡ fe8b1c93-e1b5-4df8-8415-641ca0eebcec
+md"""
+## Custom structures
+"""
 
+# ╔═╡ 04554cdb-6c9e-49fc-b625-b7cd9b92eb6d
+md"""
+The structure cannot be called directly. From tutorial: *Why does it throw an error? Our calculation involves a custom type Interpolate{CuArray{Float64, 1}}. At the end of the day all arguments of a CUDA kernel need to be bitstypes. How to fix this? The answer is, that there is a conversion mechanism, which adapts objects into CUDA compatible bitstypes. It is based on the Adapt.jl package and basic types like CuArray already participate in this mechanism.*
+"""
 
 # ╔═╡ 065edf25-ba20-4e90-9c0c-313693e0e6a1
 let
+	struct Interpolate{T}
+	    xs::T
+	    ys::T
+	end
 
+	function (self::Interpolate)(x)
+	    i = searchsortedfirst(self.xs, x)
+	    i = clamp(i, firstindex(self.ys), lastindex(self.ys))
+	    return @inbounds self.ys[i]
+	end
+
+	Adapt.@adapt_structure Interpolate
+
+	# The code below produces the same result as wrapping
+	# `Interpolate` above. The tutorial is not explicit on
+	# why the manual customization may be useful.
+	#
+	# function Adapt.adapt_structure(to, itp::Interpolate)
+	#     xs = Adapt.adapt_structure(to, itp.xs)
+	#     ys = Adapt.adapt_structure(to, itp.ys)
+	#     return Interpolate(xs, ys)
+	# end
+		
+	xs_cpu = [1.0, 2.0, 3.0]
+	ys_cpu = [10.0, 20.0, 30.0]
+	ps_cpu = [1.1, 2.3]
+	
+	itp_cpu = Interpolate(xs_cpu, ys_cpu)
+	@info itp_cpu.(ps_cpu)
+
+	xs_gpu = CuArray(xs_cpu)
+	ys_gpu = CuArray(ys_cpu)
+	ps_gpu = CuArray(ps_cpu)
+	
+	itp_gpu = Interpolate(xs_gpu, ys_gpu)
+	@info itp_gpu.(ps_gpu) |> Array
+	
 end
+
+# ╔═╡ 23810108-ee34-4759-a062-d33050b3f6ad
+md"""
+## Performance tips
+
+- @cuda always_inline=true
+- @cuda max_registers=32
+- @cuda fastmath=true
+- Using @inbounds when indexing into arrays eliminate bounds checking exceptions
+- Use `LLVM.Interop.assume` to get rid of some exceptions
+- Use [32-bit integers](https://cuda.juliagpu.org/stable/tutorials/performance/#bit-Integers) where possible
+- Avoid StepRange, instead it is faster to use a while loop
+"""
+
+# ╔═╡ b7785838-bc4b-45a2-b39a-ce155d1b4347
+
+
+# ╔═╡ b4124abd-0878-4c42-a3c3-442b07715bbc
+
+
+# ╔═╡ ecf987bd-9b13-48d4-973a-a9d839efd1d0
+
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
+Adapt = "79e6a3ab-5dfb-504d-930d-738a2a938a0e"
 BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 
 [compat]
+Adapt = "~4.0.1"
 BenchmarkTools = "~1.4.0"
 CUDA = "~5.2.0"
 PlutoUI = "~0.7.56"
+Zygote = "~0.6.69"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -279,21 +406,18 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.10.1"
 manifest_format = "2.0"
-project_hash = "4e1c64bcab79b4cd9a73a68f49afea609ebb929f"
+project_hash = "0b5a92c2c4f3e5e46c32c1262390d708f11b1933"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
 git-tree-sha1 = "d92ad398961a3ed262d8bf04a1a2b8340f915fef"
 uuid = "621f4979-c628-5d54-868e-fcf4e3e8185c"
 version = "1.5.0"
+weakdeps = ["ChainRulesCore", "Test"]
 
     [deps.AbstractFFTs.extensions]
     AbstractFFTsChainRulesCoreExt = "ChainRulesCore"
     AbstractFFTsTestExt = "Test"
-
-    [deps.AbstractFFTs.weakdeps]
-    ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-    Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -349,14 +473,11 @@ deps = ["AbstractFFTs", "Adapt", "BFloat16s", "CEnum", "CUDA_Driver_jll", "CUDA_
 git-tree-sha1 = "baa8ea7a1ea63316fa3feb454635215773c9c845"
 uuid = "052768ef-5323-5732-b1bb-66c8b64840ba"
 version = "5.2.0"
+weakdeps = ["ChainRulesCore", "SpecialFunctions"]
 
     [deps.CUDA.extensions]
     ChainRulesCoreExt = "ChainRulesCore"
     SpecialFunctionsExt = "SpecialFunctions"
-
-    [deps.CUDA.weakdeps]
-    ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-    SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 
 [[deps.CUDA_Driver_jll]]
 deps = ["Artifacts", "JLLWrappers", "LazyArtifacts", "Libdl", "Pkg"]
@@ -376,6 +497,22 @@ git-tree-sha1 = "8e25c009d2bf16c2c31a70a6e9e8939f7325cc84"
 uuid = "76a88914-d11a-5bdc-97e0-2f5a05c973a2"
 version = "0.11.1+0"
 
+[[deps.ChainRules]]
+deps = ["Adapt", "ChainRulesCore", "Compat", "Distributed", "GPUArraysCore", "IrrationalConstants", "LinearAlgebra", "Random", "RealDot", "SparseArrays", "SparseInverseSubset", "Statistics", "StructArrays", "SuiteSparse"]
+git-tree-sha1 = "4e42872be98fa3343c4f8458cbda8c5c6a6fa97c"
+uuid = "082447d4-558c-5d27-93f4-14fc19e9eca2"
+version = "1.63.0"
+
+[[deps.ChainRulesCore]]
+deps = ["Compat", "LinearAlgebra"]
+git-tree-sha1 = "ad25e7d21ce10e01de973cdc68ad0f850a953c52"
+uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
+version = "1.21.1"
+weakdeps = ["SparseArrays"]
+
+    [deps.ChainRulesCore.extensions]
+    ChainRulesCoreSparseArraysExt = "SparseArrays"
+
 [[deps.ColorTypes]]
 deps = ["FixedPointNumbers", "Random"]
 git-tree-sha1 = "eb7f0f8307f71fac7c606984ea5fb2817275d6e4"
@@ -387,6 +524,12 @@ deps = ["ColorTypes", "FixedPointNumbers", "Reexport"]
 git-tree-sha1 = "fc08e5930ee9a4e03f84bfb5211cb54e7769758a"
 uuid = "5ae59095-9a9b-59fe-a467-6f913c188581"
 version = "0.12.10"
+
+[[deps.CommonSubexpressions]]
+deps = ["MacroTools", "Test"]
+git-tree-sha1 = "7b8a93dba8af7e3b42fecabf646260105ac373f7"
+uuid = "bbf7d656-a473-5ed7-a52c-81e309532950"
+version = "0.3.0"
 
 [[deps.Compat]]
 deps = ["TOML", "UUIDs"]
@@ -402,6 +545,20 @@ weakdeps = ["Dates", "LinearAlgebra"]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
 version = "1.1.0+0"
+
+[[deps.ConstructionBase]]
+deps = ["LinearAlgebra"]
+git-tree-sha1 = "c53fc348ca4d40d7b371e71fd52251839080cbc9"
+uuid = "187b0558-2788-49d3-abe0-74a17ed4e7c9"
+version = "1.5.4"
+
+    [deps.ConstructionBase.extensions]
+    ConstructionBaseIntervalSetsExt = "IntervalSets"
+    ConstructionBaseStaticArraysExt = "StaticArrays"
+
+    [deps.ConstructionBase.weakdeps]
+    IntervalSets = "8197267c-284f-5f27-9208-e0e47529a953"
+    StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
 [[deps.Crayons]]
 git-tree-sha1 = "249fe38abf76d48563e2f4556bebd215aa317e15"
@@ -434,6 +591,28 @@ version = "1.0.0"
 deps = ["Printf"]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 
+[[deps.DiffResults]]
+deps = ["StaticArraysCore"]
+git-tree-sha1 = "782dd5f4561f5d267313f23853baaaa4c52ea621"
+uuid = "163ba53b-c6d8-5494-b064-1a9d43ac40c5"
+version = "1.1.0"
+
+[[deps.DiffRules]]
+deps = ["IrrationalConstants", "LogExpFunctions", "NaNMath", "Random", "SpecialFunctions"]
+git-tree-sha1 = "23163d55f885173722d1e4cf0f6110cdbaf7e272"
+uuid = "b552c78f-8df3-52c6-915a-8e097449b14b"
+version = "1.15.1"
+
+[[deps.Distributed]]
+deps = ["Random", "Serialization", "Sockets"]
+uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
+
+[[deps.DocStringExtensions]]
+deps = ["LibGit2"]
+git-tree-sha1 = "2fb1e02f2b635d0845df5d7c167fec4dd739b00d"
+uuid = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
+version = "0.9.3"
+
 [[deps.Downloads]]
 deps = ["ArgTools", "FileWatching", "LibCURL", "NetworkOptions"]
 uuid = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
@@ -447,11 +626,37 @@ version = "0.1.10"
 [[deps.FileWatching]]
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
 
+[[deps.FillArrays]]
+deps = ["LinearAlgebra", "Random"]
+git-tree-sha1 = "5b93957f6dcd33fc343044af3d48c215be2562f1"
+uuid = "1a297f60-69ca-5386-bcde-b61e274b549b"
+version = "1.9.3"
+
+    [deps.FillArrays.extensions]
+    FillArraysPDMatsExt = "PDMats"
+    FillArraysSparseArraysExt = "SparseArrays"
+    FillArraysStatisticsExt = "Statistics"
+
+    [deps.FillArrays.weakdeps]
+    PDMats = "90014a1f-27ba-587c-ab20-58faa44d9150"
+    SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+    Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+
 [[deps.FixedPointNumbers]]
 deps = ["Statistics"]
 git-tree-sha1 = "335bfdceacc84c5cdf16aadc768aa5ddfc5383cc"
 uuid = "53c48c17-4a7d-5ca2-90c5-79b7896eea93"
 version = "0.8.4"
+
+[[deps.ForwardDiff]]
+deps = ["CommonSubexpressions", "DiffResults", "DiffRules", "LinearAlgebra", "LogExpFunctions", "NaNMath", "Preferences", "Printf", "Random", "SpecialFunctions"]
+git-tree-sha1 = "cf0fe81336da9fb90944683b8c41984b08793dad"
+uuid = "f6369f11-7733-5829-9624-2563aa707210"
+version = "0.10.36"
+weakdeps = ["StaticArrays"]
+
+    [deps.ForwardDiff.extensions]
+    ForwardDiffStaticArraysExt = "StaticArrays"
 
 [[deps.Future]]
 deps = ["Random"]
@@ -493,6 +698,12 @@ git-tree-sha1 = "8b72179abc660bfab5e28472e019392b97d0985c"
 uuid = "b5f81e59-6552-4d32-b1f0-c071b021bf89"
 version = "0.2.4"
 
+[[deps.IRTools]]
+deps = ["InteractiveUtils", "MacroTools", "Test"]
+git-tree-sha1 = "5d8c5713f38f7bc029e26627b687710ba406d0dd"
+uuid = "7869d1d1-7146-5819-86e3-90919afe41df"
+version = "0.4.12"
+
 [[deps.InlineStrings]]
 deps = ["Parsers"]
 git-tree-sha1 = "9cc2baf75c6d09f9da536ddf58eb2f29dedaf461"
@@ -507,6 +718,11 @@ uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 git-tree-sha1 = "0dc7b50b8d436461be01300fd8cd45aa0274b038"
 uuid = "41ab1584-1d38-5bbf-9106-f11c6c58b48f"
 version = "1.3.0"
+
+[[deps.IrrationalConstants]]
+git-tree-sha1 = "630b497eafcc20001bba38a4651b327dcfc491d2"
+uuid = "92d709cd-6900-40b7-9082-c6be49f344b6"
+version = "0.2.2"
 
 [[deps.IteratorInterfaceExtensions]]
 git-tree-sha1 = "a3f24677c21f5bbe9d2a714f95dcd58337fb2856"
@@ -604,6 +820,22 @@ uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 deps = ["Libdl", "OpenBLAS_jll", "libblastrampoline_jll"]
 uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 
+[[deps.LogExpFunctions]]
+deps = ["DocStringExtensions", "IrrationalConstants", "LinearAlgebra"]
+git-tree-sha1 = "18144f3e9cbe9b15b070288eef858f71b291ce37"
+uuid = "2ab3a3ac-af41-5b50-aa03-7779005ae688"
+version = "0.3.27"
+
+    [deps.LogExpFunctions.extensions]
+    LogExpFunctionsChainRulesCoreExt = "ChainRulesCore"
+    LogExpFunctionsChangesOfVariablesExt = "ChangesOfVariables"
+    LogExpFunctionsInverseFunctionsExt = "InverseFunctions"
+
+    [deps.LogExpFunctions.weakdeps]
+    ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
+    ChangesOfVariables = "9e997f8a-9a97-42d5-a9f1-ce6bfc15e2c0"
+    InverseFunctions = "3587e190-3f89-42d0-90ee-14403ec27112"
+
 [[deps.Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
 
@@ -652,6 +884,12 @@ git-tree-sha1 = "ce3269ed42816bf18d500c9f63418d4b0d9f5a3b"
 uuid = "e98f9f5b-d649-5603-91fd-7774390e6439"
 version = "3.1.0+2"
 
+[[deps.NaNMath]]
+deps = ["OpenLibm_jll"]
+git-tree-sha1 = "0877504529a3e5c3343c6f8b4c0381e57e4387e4"
+uuid = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
+version = "1.0.2"
+
 [[deps.NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
 version = "1.2.0"
@@ -660,6 +898,17 @@ version = "1.2.0"
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
 version = "0.3.23+4"
+
+[[deps.OpenLibm_jll]]
+deps = ["Artifacts", "Libdl"]
+uuid = "05823500-19ac-5b8b-9628-191a04bc5112"
+version = "0.8.1+2"
+
+[[deps.OpenSpecFun_jll]]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "13652491f6856acfd2db29360e1bbcd4565d04f1"
+uuid = "efe28fd5-8261-553b-a9e1-b2916fc3738e"
+version = "0.5.5+0"
 
 [[deps.OrderedCollections]]
 git-tree-sha1 = "dfdf5519f235516220579f949664f1bf44e741c5"
@@ -735,6 +984,12 @@ git-tree-sha1 = "043da614cc7e95c703498a491e2c21f58a2b8111"
 uuid = "e6cf234a-135c-5ec9-84dd-332b85af5143"
 version = "1.5.3"
 
+[[deps.RealDot]]
+deps = ["LinearAlgebra"]
+git-tree-sha1 = "9f0a1b71baaf7650f4fa8a1d168c7fb6ee41f0c9"
+uuid = "c1ae055f-0cd5-4b69-90a6-9a35b1a98df9"
+version = "0.1.0"
+
 [[deps.Reexport]]
 git-tree-sha1 = "45e428421666073eab6f2da5c9d310d99bb12f9b"
 uuid = "189a3867-3050-52da-a836-e630ba90ab69"
@@ -779,19 +1034,32 @@ deps = ["Libdl", "LinearAlgebra", "Random", "Serialization", "SuiteSparse_jll"]
 uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 version = "1.10.0"
 
+[[deps.SparseInverseSubset]]
+deps = ["LinearAlgebra", "SparseArrays", "SuiteSparse"]
+git-tree-sha1 = "52962839426b75b3021296f7df242e40ecfc0852"
+uuid = "dc90abb0-5640-4711-901d-7e5b23a2fada"
+version = "0.1.2"
+
+[[deps.SpecialFunctions]]
+deps = ["IrrationalConstants", "LogExpFunctions", "OpenLibm_jll", "OpenSpecFun_jll"]
+git-tree-sha1 = "e2cfc4012a19088254b3950b85c3c1d8882d864d"
+uuid = "276daf66-3868-5448-9aa4-cd146d93841b"
+version = "2.3.1"
+weakdeps = ["ChainRulesCore"]
+
+    [deps.SpecialFunctions.extensions]
+    SpecialFunctionsChainRulesCoreExt = "ChainRulesCore"
+
 [[deps.StaticArrays]]
 deps = ["LinearAlgebra", "PrecompileTools", "Random", "StaticArraysCore"]
 git-tree-sha1 = "7b0e9c14c624e435076d19aea1e5cbdec2b9ca37"
 uuid = "90137ffa-7385-5640-81b9-e52037218182"
 version = "1.9.2"
+weakdeps = ["ChainRulesCore", "Statistics"]
 
     [deps.StaticArrays.extensions]
     StaticArraysChainRulesCoreExt = "ChainRulesCore"
     StaticArraysStatisticsExt = "Statistics"
-
-    [deps.StaticArrays.weakdeps]
-    ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-    Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [[deps.StaticArraysCore]]
 git-tree-sha1 = "36b3d696ce6366023a0ea192b4cd442268995a0d"
@@ -808,6 +1076,16 @@ deps = ["PrecompileTools"]
 git-tree-sha1 = "a04cabe79c5f01f4d723cc6704070ada0b9d46d5"
 uuid = "892a3eda-7b42-436c-8928-eab12a02cf0e"
 version = "0.3.4"
+
+[[deps.StructArrays]]
+deps = ["Adapt", "ConstructionBase", "DataAPI", "GPUArraysCore", "StaticArraysCore", "Tables"]
+git-tree-sha1 = "1b0b1205a56dc288b71b1961d48e351520702e24"
+uuid = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
+version = "0.6.17"
+
+[[deps.SuiteSparse]]
+deps = ["Libdl", "LinearAlgebra", "Serialization", "SparseArrays"]
+uuid = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
 
 [[deps.SuiteSparse_jll]]
 deps = ["Artifacts", "Libdl", "libblastrampoline_jll"]
@@ -879,6 +1157,28 @@ deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
 version = "1.2.13+1"
 
+[[deps.Zygote]]
+deps = ["AbstractFFTs", "ChainRules", "ChainRulesCore", "DiffRules", "Distributed", "FillArrays", "ForwardDiff", "GPUArrays", "GPUArraysCore", "IRTools", "InteractiveUtils", "LinearAlgebra", "LogExpFunctions", "MacroTools", "NaNMath", "PrecompileTools", "Random", "Requires", "SparseArrays", "SpecialFunctions", "Statistics", "ZygoteRules"]
+git-tree-sha1 = "4ddb4470e47b0094c93055a3bcae799165cc68f1"
+uuid = "e88e6eb3-aa80-5325-afca-941959d7151f"
+version = "0.6.69"
+
+    [deps.Zygote.extensions]
+    ZygoteColorsExt = "Colors"
+    ZygoteDistancesExt = "Distances"
+    ZygoteTrackerExt = "Tracker"
+
+    [deps.Zygote.weakdeps]
+    Colors = "5ae59095-9a9b-59fe-a467-6f913c188581"
+    Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
+    Tracker = "9f7883ad-71c0-57eb-9f7f-b5c9e6d3789c"
+
+[[deps.ZygoteRules]]
+deps = ["ChainRulesCore", "MacroTools"]
+git-tree-sha1 = "27798139afc0a2afa7b1824c206d5e87ea587a00"
+uuid = "700de1a5-db45-46bc-99cf-38207098b444"
+version = "0.2.5"
+
 [[deps.libblastrampoline_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
@@ -913,7 +1213,13 @@ version = "17.4.0+2"
 # ╟─8ce73927-64c6-4834-be06-d11b0de3d599
 # ╟─d4af989c-6ff7-46d4-bca9-715658a9e66c
 # ╟─23adf774-0264-479f-8005-25810f650dde
-# ╠═fe8b1c93-e1b5-4df8-8415-641ca0eebcec
-# ╠═065edf25-ba20-4e90-9c0c-313693e0e6a1
+# ╟─fe8b1c93-e1b5-4df8-8415-641ca0eebcec
+# ╟─04554cdb-6c9e-49fc-b625-b7cd9b92eb6d
+# ╟─065edf25-ba20-4e90-9c0c-313693e0e6a1
+# ╟─23810108-ee34-4759-a062-d33050b3f6ad
+# ╠═22ccd410-29e2-4a04-b8d0-c6bae02a83c9
+# ╠═b7785838-bc4b-45a2-b39a-ce155d1b4347
+# ╠═b4124abd-0878-4c42-a3c3-442b07715bbc
+# ╠═ecf987bd-9b13-48d4-973a-a9d839efd1d0
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
