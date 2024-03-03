@@ -184,6 +184,8 @@ Generalization to include time-dependence ^Up57RpHf
 
 Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 
+GPU (CUDA) ^3k44G9rm
+
 %%
 # Drawing
 ```json
@@ -396,8 +398,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 935,
-			"versionNonce": 1045199181,
+			"version": 1085,
+			"versionNonce": 704893897,
 			"isDeleted": false,
 			"id": "8azuco1IFSe1l2e3GwYev",
 			"fillStyle": "solid",
@@ -406,12 +408,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -150.10493496131923,
-			"y": -185.53911522841315,
+			"x": -173.70191947717564,
+			"y": -198.45682926111715,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 335.9616681642491,
-			"height": 229.6549883844835,
+			"width": 270.319738921827,
+			"height": 557.0296108913775,
 			"seed": 748455181,
 			"groupIds": [],
 			"frameId": null,
@@ -419,7 +421,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195308,
+			"updated": 1709490863220,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -441,8 +443,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					335.9616681642491,
-					-229.6549883844835
+					270.319738921827,
+					-557.0296108913775
 				]
 			]
 		},
@@ -523,8 +525,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 938,
-			"versionNonce": 188378733,
+			"version": 942,
+			"versionNonce": 1625891369,
 			"isDeleted": false,
 			"id": "H-zjQt4soJxO7jQZwB5Zw",
 			"fillStyle": "solid",
@@ -546,7 +548,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195290,
+			"updated": 1709490772746,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -575,8 +577,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "ellipse",
-			"version": 407,
-			"versionNonce": 464918819,
+			"version": 423,
+			"versionNonce": 1930781415,
 			"isDeleted": false,
 			"id": "xgAS8hX7ZHuq3aENqn-kA",
 			"fillStyle": "solid",
@@ -585,8 +587,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 252.75,
-			"y": -1527.4609375,
+			"x": 68.3055555555552,
+			"y": -1623.0164930555557,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 147,
@@ -619,14 +621,14 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					"type": "arrow"
 				}
 			],
-			"updated": 1708187195554,
+			"updated": 1709490815691,
 			"link": null,
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 363,
-			"versionNonce": 1283259587,
+			"version": 379,
+			"versionNonce": 1079406087,
 			"isDeleted": false,
 			"id": "r9eGuIr4",
 			"fillStyle": "solid",
@@ -635,8 +637,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 299.14767721755436,
-			"y": -1501.8309951850888,
+			"x": 114.70323277310956,
+			"y": -1597.3865507406445,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 54.25994873046875,
@@ -646,7 +648,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708187195554,
+			"updated": 1709490815691,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -662,8 +664,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1054,
-			"versionNonce": 68777773,
+			"version": 1090,
+			"versionNonce": 874108999,
 			"isDeleted": false,
 			"id": "8RDEetvpaJXepZ_TSaO30",
 			"fillStyle": "solid",
@@ -672,12 +674,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -186.425744793612,
-			"y": -201.83017395130832,
+			"x": -193.38069618579948,
+			"y": -202.3210249647616,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 492.90747563359537,
-			"height": 1239.9659214513147,
+			"width": 322.65164712704495,
+			"height": 1334.2130586327728,
 			"seed": 1342246851,
 			"groupIds": [],
 			"frameId": null,
@@ -685,7 +687,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195292,
+			"updated": 1709490815691,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -707,15 +709,15 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					492.90747563359537,
-					-1239.9659214513147
+					322.65164712704495,
+					-1334.2130586327728
 				]
 			]
 		},
 		{
 			"type": "ellipse",
-			"version": 690,
-			"versionNonce": 28112973,
+			"version": 711,
+			"versionNonce": 1038433095,
 			"isDeleted": false,
 			"id": "xoejzvjjv0HKayFDMybw1",
 			"fillStyle": "solid",
@@ -724,8 +726,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 174.19117647058852,
-			"y": -1835.1668198529414,
+			"x": 23.080065359477203,
+			"y": -1921.8334865196082,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 216,
@@ -746,14 +748,14 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					"type": "arrow"
 				}
 			],
-			"updated": 1708189845614,
+			"updated": 1709490816672,
 			"link": null,
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 809,
-			"versionNonce": 1509944461,
+			"version": 830,
+			"versionNonce": 1749826151,
 			"isDeleted": false,
 			"id": "n90Bs0Ht",
 			"fillStyle": "solid",
@@ -762,8 +764,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 210.98371642910155,
-			"y": -1812.5932267241342,
+			"x": 59.872605317990235,
+			"y": -1899.259893390801,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 142.6798553466797,
@@ -773,7 +775,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708190195295,
+			"updated": 1709490816672,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -789,8 +791,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1536,
-			"versionNonce": 66959917,
+			"version": 1614,
+			"versionNonce": 596642983,
 			"isDeleted": false,
 			"id": "NSwTvZEz60-KBZtY4urrA",
 			"fillStyle": "solid",
@@ -799,12 +801,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 337.2724012477856,
-			"y": -1535.5689064068192,
+			"x": 157.9607179260122,
+			"y": -1630.635149400998,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 45.816607298079134,
-			"height": 162.37525928036803,
+			"width": 26.144004550525267,
+			"height": 153.765513878114,
 			"seed": 637376333,
 			"groupIds": [],
 			"frameId": null,
@@ -812,7 +814,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195293,
+			"updated": 1709490816673,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -834,8 +836,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					-45.816607298079134,
-					-162.37525928036803
+					-26.144004550525267,
+					-153.765513878114
 				]
 			]
 		},
@@ -999,8 +1001,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 2117,
-			"versionNonce": 1041289101,
+			"version": 2121,
+			"versionNonce": 1769601513,
 			"isDeleted": false,
 			"id": "g6FLEn57m0ZqPJb7odBHh",
 			"fillStyle": "solid",
@@ -1009,12 +1011,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -211.24433900338732,
-			"y": 327.65546119897203,
+			"x": -211.24433901318238,
+			"y": 327.6554612021142,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 25.95069072882748,
-			"height": 45.38542802647578,
+			"width": 25.950690731713507,
+			"height": 45.38542802333359,
 			"seed": 665584323,
 			"groupIds": [],
 			"frameId": null,
@@ -1022,7 +1024,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195297,
+			"updated": 1709490772760,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1044,15 +1046,15 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					25.95069072882748,
-					45.38542802647578
+					25.950690731713507,
+					45.38542802333359
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 880,
-			"versionNonce": 895663629,
+			"version": 884,
+			"versionNonce": 1655240297,
 			"isDeleted": false,
 			"id": "2sW2xY0PgIKmgs__qHyoF",
 			"fillStyle": "solid",
@@ -1074,7 +1076,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195295,
+			"updated": 1709490772757,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1190,8 +1192,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 472,
-			"versionNonce": 1499598925,
+			"version": 476,
+			"versionNonce": 64050089,
 			"isDeleted": false,
 			"id": "nAnTjYagnDG0xzA3SQ_Gt",
 			"fillStyle": "solid",
@@ -1200,7 +1202,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -145.00743321470816,
+			"x": -145.00743321470821,
 			"y": -137.91128092763847,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
@@ -1213,7 +1215,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195298,
+			"updated": 1709490772762,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1317,8 +1319,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1200,
-			"versionNonce": 574829389,
+			"version": 1204,
+			"versionNonce": 1559517865,
 			"isDeleted": false,
 			"id": "ciakmswS4WVKRCvAr5wXY",
 			"fillStyle": "solid",
@@ -1340,7 +1342,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195300,
+			"updated": 1709490772766,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1369,8 +1371,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "ellipse",
-			"version": 608,
-			"versionNonce": 1881116397,
+			"version": 642,
+			"versionNonce": 1034269255,
 			"isDeleted": false,
 			"id": "JvfsCGch2O3KlrTlFCs8P",
 			"fillStyle": "solid",
@@ -1379,8 +1381,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 1019.75,
-			"y": -195.4609375,
+			"x": 944.1944444444443,
+			"y": 115.65017361111131,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 174,
@@ -1409,14 +1411,14 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					"type": "arrow"
 				}
 			],
-			"updated": 1708187173034,
+			"updated": 1709490825406,
 			"link": null,
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 600,
-			"versionNonce": 1318511203,
+			"version": 634,
+			"versionNonce": 652595559,
 			"isDeleted": false,
 			"id": "559Ywru9",
 			"fillStyle": "solid",
@@ -1425,8 +1427,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 1062.391759475247,
-			"y": -178.01297570042829,
+			"x": 986.8362039196913,
+			"y": 133.09813541068303,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 88.67990112304688,
@@ -1436,7 +1438,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708187173034,
+			"updated": 1709490825406,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -1452,8 +1454,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1415,
-			"versionNonce": 1000244237,
+			"version": 1487,
+			"versionNonce": 468706215,
 			"isDeleted": false,
 			"id": "sJf7XS6VXzm5wn-j8SVgL",
 			"fillStyle": "solid",
@@ -1462,12 +1464,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -139.38351834433377,
-			"y": -153.33154426509583,
+			"x": -143.26275797557042,
+			"y": -139.7047713116765,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 1148.1836297505388,
-			"height": 12.968447134887583,
+			"width": 1095.5126569936533,
+			"height": 262.82612118517756,
 			"seed": 1088394051,
 			"groupIds": [],
 			"frameId": null,
@@ -1475,7 +1477,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195302,
+			"updated": 1709490825406,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1497,15 +1499,15 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					1148.1836297505388,
-					-12.968447134887583
+					1095.5126569936533,
+					262.82612118517756
 				]
 			]
 		},
 		{
 			"type": "rectangle",
-			"version": 857,
-			"versionNonce": 317890051,
+			"version": 891,
+			"versionNonce": 812847367,
 			"isDeleted": false,
 			"id": "1m-D_bBnhjNB0UwV-wwkx",
 			"fillStyle": "solid",
@@ -1514,8 +1516,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 1206.8409090909095,
-			"y": -356.64275568181824,
+			"x": 1131.2853535353538,
+			"y": -45.53164457070693,
 			"strokeColor": "#1971c2",
 			"backgroundColor": "transparent",
 			"width": 256,
@@ -1540,14 +1542,14 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					"type": "arrow"
 				}
 			],
-			"updated": 1708187173034,
+			"updated": 1709490825406,
 			"link": "https://medium.com/@waltermateriais/quantitative-image-analysis-in-julia-7f1496925d4c",
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 867,
-			"versionNonce": 1099986861,
+			"version": 901,
+			"versionNonce": 2115590183,
 			"isDeleted": false,
 			"id": "rhMvGIOj",
 			"fillStyle": "solid",
@@ -1556,8 +1558,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 1227.3610430630774,
-			"y": -349.14275568181824,
+			"x": 1151.8054875075218,
+			"y": -38.03164457070693,
 			"strokeColor": "#1971c2",
 			"backgroundColor": "transparent",
 			"width": 214.95973205566406,
@@ -1567,7 +1569,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708187173034,
+			"updated": 1709490825406,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -1583,8 +1585,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 2309,
-			"versionNonce": 1838241357,
+			"version": 2417,
+			"versionNonce": 67940713,
 			"isDeleted": false,
 			"id": "9OBffI9035bOyDhjhZl0g",
 			"fillStyle": "solid",
@@ -1593,8 +1595,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 1196.3008134172087,
-			"y": -173.88800582351539,
+			"x": 1120.745257861653,
+			"y": 137.22310528759593,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 98.12533804275745,
@@ -1606,18 +1608,18 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195304,
+			"updated": 1709490825412,
 			"link": null,
 			"locked": false,
 			"startBinding": {
 				"elementId": "JvfsCGch2O3KlrTlFCs8P",
-				"gap": 10.478174752607401,
-				"focus": 0.7403264198175139
+				"focus": 0.7403264198175149,
+				"gap": 10.073836869956452
 			},
 			"endBinding": {
 				"elementId": "1m-D_bBnhjNB0UwV-wwkx",
-				"gap": 10,
-				"focus": 0.010867900957512923
+				"focus": 0.010867900957515404,
+				"gap": 10
 			},
 			"lastCommittedPoint": null,
 			"startArrowhead": null,
@@ -1635,8 +1637,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "rectangle",
-			"version": 755,
-			"versionNonce": 559872525,
+			"version": 789,
+			"versionNonce": 1604619431,
 			"isDeleted": false,
 			"id": "_VvDgZgzPg_FINLgAMZpB",
 			"fillStyle": "solid",
@@ -1645,8 +1647,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 1376.2954545454545,
-			"y": -183.18821022727275,
+			"x": 1300.7398989898988,
+			"y": 127.92290088383857,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 225,
@@ -1671,14 +1673,14 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					"type": "arrow"
 				}
 			],
-			"updated": 1708187173034,
+			"updated": 1709490825406,
 			"link": null,
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 745,
-			"versionNonce": 1672427843,
+			"version": 779,
+			"versionNonce": 752508871,
 			"isDeleted": false,
 			"id": "Aqasmef7",
 			"fillStyle": "solid",
@@ -1687,8 +1689,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 1390.5255799727006,
-			"y": -174.68821022727275,
+			"x": 1314.970024417145,
+			"y": 136.42290088383857,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 196.5397491455078,
@@ -1698,7 +1700,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708187173034,
+			"updated": 1709490825406,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -1714,8 +1716,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 2579,
-			"versionNonce": 51464141,
+			"version": 2687,
+			"versionNonce": 2075929385,
 			"isDeleted": false,
 			"id": "CK5EYJT2sK4FU0qFCxgJM",
 			"fillStyle": "solid",
@@ -1724,8 +1726,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 1378.1840996251963,
-			"y": -285.64275568181824,
+			"x": 1302.6285440696406,
+			"y": 25.46835542929307,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 73.2085712034127,
@@ -1737,18 +1739,18 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195306,
+			"updated": 1709490825413,
 			"link": null,
 			"locked": false,
 			"startBinding": {
 				"elementId": "1m-D_bBnhjNB0UwV-wwkx",
-				"gap": 6,
-				"focus": -0.08131802344007774
+				"focus": -0.08131802344007796,
+				"gap": 6
 			},
 			"endBinding": {
 				"elementId": "_VvDgZgzPg_FINLgAMZpB",
-				"gap": 11,
-				"focus": -0.012783265543289098
+				"focus": -0.012783265543288397,
+				"gap": 11
 			},
 			"lastCommittedPoint": null,
 			"startArrowhead": null,
@@ -1766,8 +1768,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 2122,
-			"versionNonce": 508655757,
+			"version": 2230,
+			"versionNonce": 2041066729,
 			"isDeleted": false,
 			"id": "AAzOKOw9__B0oaQZBI5MQ",
 			"fillStyle": "solid",
@@ -1776,8 +1778,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 1199.377513824492,
-			"y": -150.3356358893263,
+			"x": 1123.8219582689364,
+			"y": 160.775475221785,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 169.9179407209624,
@@ -1789,18 +1791,18 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195306,
+			"updated": 1709490825414,
 			"link": null,
 			"locked": false,
 			"startBinding": {
 				"elementId": "JvfsCGch2O3KlrTlFCs8P",
-				"gap": 5.764845774328634,
-				"focus": 0.22605123882655007
+				"focus": 0.22605123882655026,
+				"gap": 5.757590617315543
 			},
 			"endBinding": {
 				"elementId": "_VvDgZgzPg_FINLgAMZpB",
-				"gap": 7,
-				"focus": 0.5419847328244278
+				"focus": 0.5419847328244276,
+				"gap": 7
 			},
 			"lastCommittedPoint": null,
 			"startArrowhead": null,
@@ -1818,8 +1820,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "ellipse",
-			"version": 235,
-			"versionNonce": 570923725,
+			"version": 305,
+			"versionNonce": 2039074601,
 			"isDeleted": false,
 			"id": "rZ_-tYCZxFen76R8fjUaP",
 			"fillStyle": "solid",
@@ -1828,8 +1830,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 183.75,
-			"y": -496.0994359494621,
+			"x": 68.19444444444434,
+			"y": -853.8772137272399,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 109,
@@ -1856,16 +1858,20 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				{
 					"id": "9sRFsd834g3Z6yMip0qqN",
 					"type": "arrow"
+				},
+				{
+					"id": "NasMBrJ79Gje_AB_OKXMw",
+					"type": "arrow"
 				}
 			],
-			"updated": 1708187173034,
+			"updated": 1709490863220,
 			"link": null,
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 188,
-			"versionNonce": 401474691,
+			"version": 257,
+			"versionNonce": 599261705,
 			"isDeleted": false,
 			"id": "HKk6xNwl",
 			"fillStyle": "solid",
@@ -1874,8 +1880,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 224.5626865288488,
-			"y": -463.27279449344996,
+			"x": 109.00713097329313,
+			"y": -821.0505722712278,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 27.29998779296875,
@@ -1885,7 +1891,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708187173034,
+			"updated": 1709490863220,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -1901,8 +1907,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 527,
-			"versionNonce": 1854818829,
+			"version": 677,
+			"versionNonce": 1297495433,
 			"isDeleted": false,
 			"id": "TumQGgeycfAS0GaaA2JPk",
 			"fillStyle": "solid",
@@ -1911,12 +1917,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 259.8927424670554,
-			"y": -505.24288406250884,
+			"x": 161.7785416360329,
+			"y": -855.2073483614789,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 503.0931960996181,
-			"height": 889.2090140425867,
+			"width": 583.9754111654947,
+			"height": 543.0005447748769,
 			"seed": 385966755,
 			"groupIds": [],
 			"frameId": null,
@@ -1924,7 +1930,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195308,
+			"updated": 1709490863220,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1946,8 +1952,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					503.0931960996181,
-					-889.2090140425867
+					583.9754111654947,
+					-543.0005447748769
 				]
 			]
 		},
@@ -2036,8 +2042,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 526,
-			"versionNonce": 789994381,
+			"version": 676,
+			"versionNonce": 1229662025,
 			"isDeleted": false,
 			"id": "9sRFsd834g3Z6yMip0qqN",
 			"fillStyle": "solid",
@@ -2046,12 +2052,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 293.9384853070192,
-			"y": -471.55158702736753,
+			"x": 183.4758319580376,
+			"y": -805.5047288892897,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 711.7376692049975,
-			"height": 241.51029549776513,
+			"width": 805.7357399461691,
+			"height": 63.61624742730328,
 			"seed": 1198641891,
 			"groupIds": [],
 			"frameId": null,
@@ -2059,7 +2065,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195310,
+			"updated": 1709490863220,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2081,8 +2087,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					711.7376692049975,
-					-241.51029549776513
+					805.7357399461691,
+					63.61624742730328
 				]
 			]
 		},
@@ -2163,8 +2169,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 836,
-			"versionNonce": 1981910477,
+			"version": 840,
+			"versionNonce": 171823913,
 			"isDeleted": false,
 			"id": "CNatbZEu0h4yy6MkOnz48",
 			"fillStyle": "solid",
@@ -2173,12 +2179,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 1119.632403301256,
-			"y": -784.6935030503948,
+			"x": 1119.6324033012572,
+			"y": -784.6935030503942,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 179.63927106553592,
-			"height": 172.76743444960516,
+			"width": 179.63927106553524,
+			"height": 172.76743444960584,
 			"seed": 1673919405,
 			"groupIds": [],
 			"frameId": null,
@@ -2186,7 +2192,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195312,
+			"updated": 1709490772787,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2208,8 +2214,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					179.63927106553592,
-					-172.76743444960516
+					179.63927106553524,
+					-172.76743444960584
 				]
 			]
 		},
@@ -2385,8 +2391,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 434,
-			"versionNonce": 2081013581,
+			"version": 438,
+			"versionNonce": 1884976809,
 			"isDeleted": false,
 			"id": "0dAZUcPG76ViUgUnE8Bs2",
 			"fillStyle": "solid",
@@ -2408,7 +2414,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195315,
+			"updated": 1709490772791,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2437,8 +2443,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 931,
-			"versionNonce": 1714556941,
+			"version": 935,
+			"versionNonce": 80322665,
 			"isDeleted": false,
 			"id": "V5fv5kHIwwgHZq-X-fnuh",
 			"fillStyle": "solid",
@@ -2460,7 +2466,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195315,
+			"updated": 1709490772792,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2639,8 +2645,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 732,
-			"versionNonce": 484824013,
+			"version": 736,
+			"versionNonce": 1260249385,
 			"isDeleted": false,
 			"id": "MTuPzn1JBD6gpFImzHFR0",
 			"fillStyle": "solid",
@@ -2662,7 +2668,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195317,
+			"updated": 1709490772795,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2691,8 +2697,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 818,
-			"versionNonce": 1567818893,
+			"version": 822,
+			"versionNonce": 1486121705,
 			"isDeleted": false,
 			"id": "LGl4fRk9QdFQIh-xETvFy",
 			"fillStyle": "solid",
@@ -2714,7 +2720,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195319,
+			"updated": 1709490772797,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2818,8 +2824,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 832,
-			"versionNonce": 1937442125,
+			"version": 836,
+			"versionNonce": 1371767977,
 			"isDeleted": false,
 			"id": "q3gjqa6yuRTO41zeyY4YO",
 			"fillStyle": "solid",
@@ -2841,7 +2847,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195320,
+			"updated": 1709490772799,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -2953,8 +2959,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 591,
-			"versionNonce": 982111757,
+			"version": 595,
+			"versionNonce": 1841770089,
 			"isDeleted": false,
 			"id": "p4aI2BB8E3btPgWsWId8v",
 			"fillStyle": "solid",
@@ -2976,7 +2982,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195322,
+			"updated": 1709490772801,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3080,8 +3086,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 696,
-			"versionNonce": 207038541,
+			"version": 700,
+			"versionNonce": 1625656233,
 			"isDeleted": false,
 			"id": "MNXlp4BxlH1IoXqQuafNj",
 			"fillStyle": "solid",
@@ -3103,7 +3109,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195324,
+			"updated": 1709490772804,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3207,8 +3213,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 575,
-			"versionNonce": 1861826829,
+			"version": 579,
+			"versionNonce": 592672105,
 			"isDeleted": false,
 			"id": "080dZaUVhbSJws1DX-KAU",
 			"fillStyle": "solid",
@@ -3230,7 +3236,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195326,
+			"updated": 1709490772806,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3259,8 +3265,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "ellipse",
-			"version": 385,
-			"versionNonce": 2030391245,
+			"version": 397,
+			"versionNonce": 1915353255,
 			"isDeleted": false,
 			"id": "sflKXBkyjqego0unCM33i",
 			"fillStyle": "solid",
@@ -3269,8 +3275,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 468.9558823529412,
-			"y": -1799.8432904411766,
+			"x": 291.17810457516384,
+			"y": -1810.9544015522874,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 231.00000000000003,
@@ -3299,14 +3305,14 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					"type": "arrow"
 				}
 			],
-			"updated": 1708190266228,
+			"updated": 1709490818155,
 			"link": null,
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 386,
-			"versionNonce": 768224013,
+			"version": 398,
+			"versionNonce": 600984519,
 			"isDeleted": false,
 			"id": "XhzzmGRp",
 			"fillStyle": "solid",
@@ -3315,8 +3321,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 508.2451321337075,
-			"y": -1782.395328641605,
+			"x": 330.4673543559301,
+			"y": -1793.5064397527158,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 152.079833984375,
@@ -3326,7 +3332,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708189844289,
+			"updated": 1709490818155,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -3342,8 +3348,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1031,
-			"versionNonce": 257825229,
+			"version": 1093,
+			"versionNonce": 1493779975,
 			"isDeleted": false,
 			"id": "1yjILKsmjXVsXl9e0uY5D",
 			"fillStyle": "solid",
@@ -3352,12 +3358,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 385.4718354585562,
-			"y": -1526.950157295751,
+			"x": 210.5172022408191,
+			"y": -1616.3448899894097,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 139.31232384819958,
-			"height": 186.11737826910507,
+			"width": 123.29338535883667,
+			"height": 111.2747374602809,
 			"seed": 1783557869,
 			"groupIds": [],
 			"frameId": null,
@@ -3365,7 +3371,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195327,
+			"updated": 1709490818156,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3387,15 +3393,15 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					139.31232384819958,
-					-186.11737826910507
+					123.29338535883667,
+					-111.2747374602809
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 810,
-			"versionNonce": 1460783757,
+			"version": 840,
+			"versionNonce": 804696135,
 			"isDeleted": false,
 			"id": "x64OGg75NBFtOsIRTbKfz",
 			"fillStyle": "solid",
@@ -3404,12 +3410,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 739.5606796006737,
-			"y": -1478.0250171813188,
+			"x": 723.0685042974193,
+			"y": -1470.2015242889368,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 70.76538869230626,
-			"height": 241.95667668880128,
+			"width": 216.11419380149323,
+			"height": 268.27826238474813,
 			"seed": 926620131,
 			"groupIds": [],
 			"frameId": null,
@@ -3417,7 +3423,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195327,
+			"updated": 1709490818156,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3439,8 +3445,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					-70.76538869230626,
-					-241.95667668880128
+					-216.11419380149323,
+					-268.27826238474813
 				]
 			]
 		},
@@ -3553,8 +3559,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 920,
-			"versionNonce": 1017137997,
+			"version": 956,
+			"versionNonce": 118667015,
 			"isDeleted": false,
 			"id": "CCI6__6MVxGReFI0ja3p-",
 			"fillStyle": "solid",
@@ -3563,12 +3569,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -822.2944041595476,
-			"y": -754.801118723557,
+			"x": -830.0218703190419,
+			"y": -761.3068966696161,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 1066.750685717925,
-			"height": 719.742478506208,
+			"width": 893.9243816946831,
+			"height": 802.838417096303,
 			"seed": 765757155,
 			"groupIds": [],
 			"frameId": null,
@@ -3576,7 +3582,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195329,
+			"updated": 1709490815692,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3598,15 +3604,15 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					1066.750685717925,
-					-719.742478506208
+					893.9243816946831,
+					-802.838417096303
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 893,
-			"versionNonce": 60136461,
+			"version": 897,
+			"versionNonce": 357660201,
 			"isDeleted": false,
 			"id": "JGI5Pc7b7mDyF0Wo038aD",
 			"fillStyle": "solid",
@@ -3628,7 +3634,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195329,
+			"updated": 1709490772811,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3744,8 +3750,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 563,
-			"versionNonce": 305389485,
+			"version": 567,
+			"versionNonce": 1252726089,
 			"isDeleted": false,
 			"id": "ct9SSYAylM4MCzZt6ZEF7",
 			"fillStyle": "solid",
@@ -3767,7 +3773,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195332,
+			"updated": 1709490772815,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3946,8 +3952,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 989,
-			"versionNonce": 2013901901,
+			"version": 993,
+			"versionNonce": 1675530601,
 			"isDeleted": false,
 			"id": "ZrT8kF2CyD9wtZ7EEwWql",
 			"fillStyle": "solid",
@@ -3969,7 +3975,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195334,
+			"updated": 1709490772818,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -3998,8 +4004,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 721,
-			"versionNonce": 544785677,
+			"version": 725,
+			"versionNonce": 949357353,
 			"isDeleted": false,
 			"id": "_phfSBt9MT9PYiC4w2GkD",
 			"fillStyle": "solid",
@@ -4021,7 +4027,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195337,
+			"updated": 1709490772819,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4149,8 +4155,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1371,
-			"versionNonce": 929736141,
+			"version": 1375,
+			"versionNonce": 1904874729,
 			"isDeleted": false,
 			"id": "y9v18HX6h9RrhfW4SF4ej",
 			"fillStyle": "solid",
@@ -4172,7 +4178,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195338,
+			"updated": 1709490772821,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4276,8 +4282,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 294,
-			"versionNonce": 910592781,
+			"version": 298,
+			"versionNonce": 637933865,
 			"isDeleted": false,
 			"id": "wYxPzZvwZmg9BkDh98-yX",
 			"fillStyle": "solid",
@@ -4299,7 +4305,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195341,
+			"updated": 1709490772825,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4415,8 +4421,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1384,
-			"versionNonce": 486468557,
+			"version": 1388,
+			"versionNonce": 1355719401,
 			"isDeleted": false,
 			"id": "4GcksqqZ4HnHFQ7a9z8GT",
 			"fillStyle": "solid",
@@ -4438,7 +4444,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195342,
+			"updated": 1709490772827,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4625,8 +4631,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1693,
-			"versionNonce": 445399117,
+			"version": 1697,
+			"versionNonce": 83471721,
 			"isDeleted": false,
 			"id": "mpUNVN7vzQe6RY3DgvAsS",
 			"fillStyle": "solid",
@@ -4648,7 +4654,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195346,
+			"updated": 1709490772832,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4677,8 +4683,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "ellipse",
-			"version": 356,
-			"versionNonce": 666914019,
+			"version": 365,
+			"versionNonce": 122875367,
 			"isDeleted": false,
 			"id": "8Njl_b5tp0bx6Ym_S1D7A",
 			"fillStyle": "solid",
@@ -4687,8 +4693,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -122.82692307692264,
-			"y": -1713.69170673077,
+			"x": -267.2713675213672,
+			"y": -1764.802817841881,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 178,
@@ -4717,14 +4723,14 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					"type": "arrow"
 				}
 			],
-			"updated": 1708187189593,
+			"updated": 1709490812154,
 			"link": null,
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 334,
-			"versionNonce": 143308931,
+			"version": 343,
+			"versionNonce": 715823367,
 			"isDeleted": false,
 			"id": "egcFwZrB",
 			"fillStyle": "solid",
@@ -4733,8 +4739,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -88.73936129490818,
-			"y": -1696.2437449311983,
+			"x": -233.18380573935275,
+			"y": -1747.3548560423094,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 109.95986938476562,
@@ -4744,7 +4750,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708187189593,
+			"updated": 1709490812154,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -4760,8 +4766,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 704,
-			"versionNonce": 1159245485,
+			"version": 716,
+			"versionNonce": 1478484007,
 			"isDeleted": false,
 			"id": "5qKYvb9JLHuucECzdM-O-",
 			"fillStyle": "solid",
@@ -4774,8 +4780,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"y": -773.8473469872918,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 723.4209143202943,
-			"height": 870.7733480668924,
+			"width": 587.4181921719429,
+			"height": 913.7896109531735,
 			"seed": 839894221,
 			"groupIds": [],
 			"frameId": null,
@@ -4783,7 +4789,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195347,
+			"updated": 1709490812154,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4809,15 +4815,15 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					-409.767436666554
 				],
 				[
-					723.4209143202943,
-					-870.7733480668924
+					587.4181921719429,
+					-913.7896109531735
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 804,
-			"versionNonce": 348672269,
+			"version": 816,
+			"versionNonce": 832521031,
 			"isDeleted": false,
 			"id": "DLQMibf1KGqb4HoBGPcig",
 			"fillStyle": "solid",
@@ -4830,8 +4836,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"y": -1428.924954404834,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 657.2202350373655,
-			"height": 264.415160304306,
+			"width": 795.2514413154472,
+			"height": 321.3036167357559,
 			"seed": 603481229,
 			"groupIds": [],
 			"frameId": null,
@@ -4839,7 +4845,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195347,
+			"updated": 1709490812155,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -4865,8 +4871,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					56.8486322894496
 				],
 				[
-					-657.2202350373655,
-					-207.56652801485643
+					-795.2514413154472,
+					-264.4549844463063
 				]
 			]
 		},
@@ -4955,8 +4961,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 469,
-			"versionNonce": 1888805517,
+			"version": 473,
+			"versionNonce": 1710017193,
 			"isDeleted": false,
 			"id": "CsTPdLPDZSmDpWd1K9Jjn",
 			"fillStyle": "solid",
@@ -4965,11 +4971,11 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -917.4723012095471,
+			"x": -917.4723012095467,
 			"y": -784.2095014105689,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 37.70494443115649,
+			"width": 37.70494443115672,
 			"height": 257.942796169405,
 			"seed": 1578722925,
 			"groupIds": [],
@@ -4978,7 +4984,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195349,
+			"updated": 1709490772837,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -5000,7 +5006,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					-37.70494443115649,
+					-37.70494443115672,
 					-257.942796169405
 				]
 			]
@@ -5090,8 +5096,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 641,
-			"versionNonce": 382514189,
+			"version": 643,
+			"versionNonce": 1460776489,
 			"isDeleted": false,
 			"id": "2-UXUNb2kXFbOSfD7vLO6",
 			"fillStyle": "solid",
@@ -5113,7 +5119,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195350,
+			"updated": 1709490772839,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -5383,8 +5389,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 657,
-			"versionNonce": 2086372941,
+			"version": 661,
+			"versionNonce": 96287593,
 			"isDeleted": false,
 			"id": "JqzTvSCSjjBhdUUY_ITCt",
 			"fillStyle": "solid",
@@ -5393,11 +5399,11 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -940.796495710882,
+			"x": -940.7964957108823,
 			"y": -1181.1047690252765,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 55.82271361000005,
+			"width": 55.822713610000164,
 			"height": 227.24078385933876,
 			"seed": 928700141,
 			"groupIds": [],
@@ -5406,7 +5412,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195352,
+			"updated": 1709490772842,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -5428,15 +5434,15 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					55.82271361000005,
+					55.822713610000164,
 					-227.24078385933876
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 724,
-			"versionNonce": 54753229,
+			"version": 728,
+			"versionNonce": 566476521,
 			"isDeleted": false,
 			"id": "cYM4Bjvqkx4OKQ_7uP7KC",
 			"fillStyle": "solid",
@@ -5458,7 +5464,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195354,
+			"updated": 1709490772844,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -5487,8 +5493,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 730,
-			"versionNonce": 257718797,
+			"version": 734,
+			"versionNonce": 123452457,
 			"isDeleted": false,
 			"id": "alwpik3F9MQ6QWfUgPGEw",
 			"fillStyle": "solid",
@@ -5498,11 +5504,11 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"opacity": 100,
 			"angle": 0,
 			"x": -970.9807692307697,
-			"y": -1562.7654123292527,
+			"y": -1562.7654123737934,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 96.402137196264,
-			"height": 10.000950605184016,
+			"height": 10.000950577713184,
 			"seed": 216021165,
 			"groupIds": [],
 			"frameId": null,
@@ -5510,7 +5516,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195356,
+			"updated": 1709490772848,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -5533,7 +5539,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				],
 				[
 					-96.402137196264,
-					-10.000950605184016
+					-10.000950577713184
 				]
 			]
 		},
@@ -5776,8 +5782,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 481,
-			"versionNonce": 1319443149,
+			"version": 485,
+			"versionNonce": 492275177,
 			"isDeleted": false,
 			"id": "N7hJOXFlZjMf8jQ0JyAft",
 			"fillStyle": "solid",
@@ -5799,7 +5805,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195357,
+			"updated": 1709490772851,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -5828,8 +5834,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 608,
-			"versionNonce": 870239309,
+			"version": 612,
+			"versionNonce": 1185204585,
 			"isDeleted": false,
 			"id": "Hfj4FQSv3KtYQeyakT6VC",
 			"fillStyle": "solid",
@@ -5851,7 +5857,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195359,
+			"updated": 1709490772853,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -5880,8 +5886,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 605,
-			"versionNonce": 871611853,
+			"version": 609,
+			"versionNonce": 57953513,
 			"isDeleted": false,
 			"id": "0SMRHN4LfwhxzpAXLeFJG",
 			"fillStyle": "solid",
@@ -5903,7 +5909,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195361,
+			"updated": 1709490772855,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6011,8 +6017,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 506,
-			"versionNonce": 1732505421,
+			"version": 510,
+			"versionNonce": 1621495913,
 			"isDeleted": false,
 			"id": "opcNbdz7TOXiBq16xqno3",
 			"fillStyle": "solid",
@@ -6034,7 +6040,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195363,
+			"updated": 1709490772858,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6138,8 +6144,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 805,
-			"versionNonce": 909074637,
+			"version": 809,
+			"versionNonce": 2065306601,
 			"isDeleted": false,
 			"id": "9NQCKPtWHaWOS46HCQsLW",
 			"fillStyle": "solid",
@@ -6161,7 +6167,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195365,
+			"updated": 1709490772860,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6265,8 +6271,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 939,
-			"versionNonce": 1904038285,
+			"version": 943,
+			"versionNonce": 1806888361,
 			"isDeleted": false,
 			"id": "JAvFdmn-GDGI3YdZK6eZ5",
 			"fillStyle": "solid",
@@ -6288,7 +6294,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195366,
+			"updated": 1709490772863,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6404,8 +6410,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 749,
-			"versionNonce": 1494618701,
+			"version": 753,
+			"versionNonce": 2142263145,
 			"isDeleted": false,
 			"id": "C5AhHIHxeXb9I-f602ebR",
 			"fillStyle": "solid",
@@ -6427,7 +6433,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195368,
+			"updated": 1709490772864,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6681,8 +6687,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 670,
-			"versionNonce": 493725389,
+			"version": 674,
+			"versionNonce": 989897193,
 			"isDeleted": false,
 			"id": "LnUBhhOyShN25d7A9DLSG",
 			"fillStyle": "solid",
@@ -6704,7 +6710,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195372,
+			"updated": 1709490772871,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6733,8 +6739,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 662,
-			"versionNonce": 206910797,
+			"version": 666,
+			"versionNonce": 1254334057,
 			"isDeleted": false,
 			"id": "DLbm-niB46bzXyAlGyPdC",
 			"fillStyle": "solid",
@@ -6756,7 +6762,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195370,
+			"updated": 1709490772867,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6785,8 +6791,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 664,
-			"versionNonce": 647497229,
+			"version": 668,
+			"versionNonce": 157014057,
 			"isDeleted": false,
 			"id": "yJG5lF1WFtQnF7SUuk5zC",
 			"fillStyle": "solid",
@@ -6808,7 +6814,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195371,
+			"updated": 1709490772869,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6920,8 +6926,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 429,
-			"versionNonce": 1717704589,
+			"version": 433,
+			"versionNonce": 1372453801,
 			"isDeleted": false,
 			"id": "0kW-idKElJgY-5x8M3qqU",
 			"fillStyle": "solid",
@@ -6943,7 +6949,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195374,
+			"updated": 1709490772873,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -6972,8 +6978,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 587,
-			"versionNonce": 67197005,
+			"version": 591,
+			"versionNonce": 1759503721,
 			"isDeleted": false,
 			"id": "Lpqqomb_QnqSnyKEFHs_o",
 			"fillStyle": "solid",
@@ -6995,7 +7001,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195374,
+			"updated": 1709490772873,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7111,8 +7117,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 912,
-			"versionNonce": 1451278189,
+			"version": 914,
+			"versionNonce": 1726910985,
 			"isDeleted": false,
 			"id": "BOPkzJfJREQenfg1ORn7j",
 			"fillStyle": "solid",
@@ -7134,7 +7140,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195375,
+			"updated": 1709490772875,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7242,8 +7248,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1428,
-			"versionNonce": 1080607341,
+			"version": 1432,
+			"versionNonce": 1512388873,
 			"isDeleted": false,
 			"id": "Uqv9E2sr4fqxWFqion0M_",
 			"fillStyle": "solid",
@@ -7265,7 +7271,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195377,
+			"updated": 1709490772878,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7768,8 +7774,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1243,
-			"versionNonce": 1722831149,
+			"version": 1247,
+			"versionNonce": 888936649,
 			"isDeleted": false,
 			"id": "d5T9d464936HW56vUcvqf",
 			"fillStyle": "solid",
@@ -7791,7 +7797,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195382,
+			"updated": 1709490772886,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7820,8 +7826,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1272,
-			"versionNonce": 335915501,
+			"version": 1276,
+			"versionNonce": 1354840713,
 			"isDeleted": false,
 			"id": "eN0dhKd1N8soHgjM8LZl3",
 			"fillStyle": "solid",
@@ -7843,7 +7849,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195384,
+			"updated": 1709490772888,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7872,8 +7878,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1286,
-			"versionNonce": 1357632173,
+			"version": 1290,
+			"versionNonce": 1467542601,
 			"isDeleted": false,
 			"id": "MkNZpJjCIqovrNmY0jn4O",
 			"fillStyle": "solid",
@@ -7895,7 +7901,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195385,
+			"updated": 1709490772890,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7924,8 +7930,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1294,
-			"versionNonce": 1802423149,
+			"version": 1298,
+			"versionNonce": 2042572297,
 			"isDeleted": false,
 			"id": "UA8WqIy5FXOU6BaMXhf4C",
 			"fillStyle": "solid",
@@ -7947,7 +7953,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195387,
+			"updated": 1709490772892,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -7976,8 +7982,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1218,
-			"versionNonce": 668977261,
+			"version": 1222,
+			"versionNonce": 479037193,
 			"isDeleted": false,
 			"id": "8qfGNhatzZVVuCziapKY_",
 			"fillStyle": "solid",
@@ -7999,7 +8005,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195381,
+			"updated": 1709490772884,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -8344,8 +8350,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1160,
-			"versionNonce": 88631693,
+			"version": 1164,
+			"versionNonce": 720840105,
 			"isDeleted": false,
 			"id": "c4lkoBTrP0Is_bVQ-VOOm",
 			"fillStyle": "solid",
@@ -8367,7 +8373,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195390,
+			"updated": 1709490772896,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -8396,8 +8402,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1150,
-			"versionNonce": 2114239245,
+			"version": 1154,
+			"versionNonce": 848726313,
 			"isDeleted": false,
 			"id": "6SLacmtOXdTMGjCUDmwa0",
 			"fillStyle": "solid",
@@ -8419,7 +8425,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195393,
+			"updated": 1709490772901,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -8448,8 +8454,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1165,
-			"versionNonce": 385559117,
+			"version": 1169,
+			"versionNonce": 1967558505,
 			"isDeleted": false,
 			"id": "SjL7BTLarJzj_nI4RqyHm",
 			"fillStyle": "solid",
@@ -8471,7 +8477,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195392,
+			"updated": 1709490772899,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -8500,8 +8506,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1222,
-			"versionNonce": 1032506989,
+			"version": 1226,
+			"versionNonce": 1570362633,
 			"isDeleted": false,
 			"id": "T4UCPQhYbAgS5tnOO-vPj",
 			"fillStyle": "solid",
@@ -8523,7 +8529,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195388,
+			"updated": 1709490772894,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -8552,8 +8558,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1420,
-			"versionNonce": 821120173,
+			"version": 1424,
+			"versionNonce": 539172425,
 			"isDeleted": false,
 			"id": "aK0ReYUiB2x1lPX6zt3rn",
 			"fillStyle": "solid",
@@ -8575,7 +8581,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195379,
+			"updated": 1709490772880,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9161,8 +9167,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1581,
-			"versionNonce": 519758861,
+			"version": 1585,
+			"versionNonce": 1901207081,
 			"isDeleted": false,
 			"id": "h-MhJyBuN8gYeh4T3ro5J",
 			"fillStyle": "solid",
@@ -9184,7 +9190,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195402,
+			"updated": 1709490772911,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9213,8 +9219,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1653,
-			"versionNonce": 1697711309,
+			"version": 1657,
+			"versionNonce": 1654482921,
 			"isDeleted": false,
 			"id": "RynL-ipTUalk_28g8ItIK",
 			"fillStyle": "solid",
@@ -9236,7 +9242,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195403,
+			"updated": 1709490772913,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9265,8 +9271,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1608,
-			"versionNonce": 2137388429,
+			"version": 1612,
+			"versionNonce": 1634812329,
 			"isDeleted": false,
 			"id": "PiA3h36ErlrVTYSzplIBL",
 			"fillStyle": "solid",
@@ -9288,7 +9294,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195405,
+			"updated": 1709490772915,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9317,8 +9323,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1399,
-			"versionNonce": 1512682989,
+			"version": 1403,
+			"versionNonce": 676320905,
 			"isDeleted": false,
 			"id": "T00lcROw-jq5a6lXzsABH",
 			"fillStyle": "solid",
@@ -9340,7 +9346,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195398,
+			"updated": 1709490772908,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9369,8 +9375,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1366,
-			"versionNonce": 792171341,
+			"version": 1370,
+			"versionNonce": 863200361,
 			"isDeleted": false,
 			"id": "BoVYIb3y5qwvxeFEsFkUn",
 			"fillStyle": "solid",
@@ -9392,7 +9398,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195400,
+			"updated": 1709490772909,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9421,8 +9427,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1393,
-			"versionNonce": 393133773,
+			"version": 1397,
+			"versionNonce": 1879235049,
 			"isDeleted": false,
 			"id": "RBlcJQ4q-ah-7523Al7B1",
 			"fillStyle": "solid",
@@ -9444,7 +9450,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195397,
+			"updated": 1709490772906,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9473,8 +9479,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1411,
-			"versionNonce": 226434573,
+			"version": 1415,
+			"versionNonce": 856428585,
 			"isDeleted": false,
 			"id": "VCAugCXylzgIMI3lSBTJF",
 			"fillStyle": "solid",
@@ -9483,12 +9489,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -2677.038481634538,
-			"y": 1554.2664941188455,
+			"x": -2677.038481634542,
+			"y": 1554.2664941188473,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 104.02775396209108,
-			"height": 142.1564830860707,
+			"width": 104.02775396208835,
+			"height": 142.15648308607206,
 			"seed": 1152257219,
 			"groupIds": [],
 			"frameId": null,
@@ -9496,7 +9502,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195396,
+			"updated": 1709490772904,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9518,15 +9524,15 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					-104.02775396209108,
-					-142.1564830860707
+					-104.02775396208835,
+					-142.15648308607206
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 980,
-			"versionNonce": 1219915853,
+			"version": 982,
+			"versionNonce": 1325800809,
 			"isDeleted": false,
 			"id": "2nSdnYfnP5RvqrHPTsKAg",
 			"fillStyle": "solid",
@@ -9548,7 +9554,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195398,
+			"updated": 1709490772908,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9581,8 +9587,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 691,
-			"versionNonce": 774331693,
+			"version": 693,
+			"versionNonce": 1682027721,
 			"isDeleted": false,
 			"id": "50vHGK06-Lf8wZJ2cjwfe",
 			"fillStyle": "solid",
@@ -9604,7 +9610,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195397,
+			"updated": 1709490772906,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9637,8 +9643,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 427,
-			"versionNonce": 1096841421,
+			"version": 429,
+			"versionNonce": 2005683177,
 			"isDeleted": false,
 			"id": "zvorPc8CtDuNNSgaWPp4_",
 			"fillStyle": "solid",
@@ -9660,7 +9666,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195389,
+			"updated": 1709490772895,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9780,8 +9786,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 628,
-			"versionNonce": 2015737421,
+			"version": 632,
+			"versionNonce": 1894361961,
 			"isDeleted": false,
 			"id": "1TLHBWFRLe8ixe0CUvAYp",
 			"fillStyle": "solid",
@@ -9803,7 +9809,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195406,
+			"updated": 1709490772917,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9832,8 +9838,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 586,
-			"versionNonce": 654067469,
+			"version": 590,
+			"versionNonce": 2099422505,
 			"isDeleted": false,
 			"id": "7acTW2AwtuPhjYq2Ib6Og",
 			"fillStyle": "solid",
@@ -9855,7 +9861,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195407,
+			"updated": 1709490772918,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -9971,8 +9977,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 649,
-			"versionNonce": 2020156973,
+			"version": 653,
+			"versionNonce": 145312649,
 			"isDeleted": false,
 			"id": "9zwMtSvuorGh1_0cfUI5D",
 			"fillStyle": "solid",
@@ -9994,7 +10000,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195408,
+			"updated": 1709490772921,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10106,8 +10112,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1132,
-			"versionNonce": 2054056237,
+			"version": 1136,
+			"versionNonce": 1919840905,
 			"isDeleted": false,
 			"id": "1vf6Bx2C9ATrqq9RjD4lQ",
 			"fillStyle": "solid",
@@ -10129,7 +10135,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195411,
+			"updated": 1709490772924,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10237,8 +10243,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1543,
-			"versionNonce": 263906157,
+			"version": 1547,
+			"versionNonce": 1838364617,
 			"isDeleted": false,
 			"id": "FN2Afo_hPAVpw_fEFQT3k",
 			"fillStyle": "solid",
@@ -10260,7 +10266,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195413,
+			"updated": 1709490772928,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10289,8 +10295,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 1093,
-			"versionNonce": 12626989,
+			"version": 1097,
+			"versionNonce": 2002557321,
 			"isDeleted": false,
 			"id": "BmH2gYa0KCy1lhNeU35l-",
 			"fillStyle": "solid",
@@ -10299,12 +10305,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -1641.4990023567648,
-			"y": 62.69821311327084,
+			"x": -1641.499002396171,
+			"y": 62.69821312976299,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 73.21613136949964,
-			"height": 139.63639122430448,
+			"width": 73.21613134650579,
+			"height": 139.63639124079666,
 			"seed": 2057060835,
 			"groupIds": [],
 			"frameId": null,
@@ -10312,7 +10318,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195413,
+			"updated": 1709490772928,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10334,8 +10340,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					-73.21613136949964,
-					-139.63639122430448
+					-73.21613134650579,
+					-139.63639124079666
 				]
 			]
 		},
@@ -10416,8 +10422,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 587,
-			"versionNonce": 1140540653,
+			"version": 591,
+			"versionNonce": 1745390409,
 			"isDeleted": false,
 			"id": "cMKwclcitoRzwEa_99WPY",
 			"fillStyle": "solid",
@@ -10439,7 +10445,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195415,
+			"updated": 1709490772930,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10543,8 +10549,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 568,
-			"versionNonce": 1316400557,
+			"version": 572,
+			"versionNonce": 875760905,
 			"isDeleted": false,
 			"id": "3dY72s7hTlqiogS2n_PER",
 			"fillStyle": "solid",
@@ -10566,7 +10572,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195416,
+			"updated": 1709490772932,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10757,8 +10763,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 570,
-			"versionNonce": 1146323341,
+			"version": 574,
+			"versionNonce": 1830602601,
 			"isDeleted": false,
 			"id": "rvF0g-ZQfBuqe_x64HU0U",
 			"fillStyle": "solid",
@@ -10780,7 +10786,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195419,
+			"updated": 1709490772936,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10809,8 +10815,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 619,
-			"versionNonce": 807420493,
+			"version": 623,
+			"versionNonce": 1681834281,
 			"isDeleted": false,
 			"id": "6IeRp5kvhjKRHYq8OQP3q",
 			"fillStyle": "solid",
@@ -10832,7 +10838,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195420,
+			"updated": 1709490772937,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10861,8 +10867,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 360,
-			"versionNonce": 1204916429,
+			"version": 362,
+			"versionNonce": 2088459689,
 			"isDeleted": false,
 			"id": "PoVLlV__yWWmwW1EM9_pJ",
 			"fillStyle": "solid",
@@ -10884,7 +10890,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195418,
+			"updated": 1709490772935,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -10917,8 +10923,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "rectangle",
-			"version": 157,
-			"versionNonce": 1134258819,
+			"version": 206,
+			"versionNonce": 1115291271,
 			"isDeleted": false,
 			"id": "iFumywAqxNjawW2V-u0aY",
 			"fillStyle": "solid",
@@ -10927,8 +10933,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -114.84451659452589,
-			"y": -2005.6378161768653,
+			"x": -350.40007215008154,
+			"y": -2087.860038399088,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 303.0769230769231,
@@ -10949,14 +10955,14 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					"type": "arrow"
 				}
 			],
-			"updated": 1708187188413,
+			"updated": 1709490814214,
 			"link": null,
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 125,
-			"versionNonce": 1651581475,
+			"version": 174,
+			"versionNonce": 1541838247,
 			"isDeleted": false,
 			"id": "J3CULMnw",
 			"fillStyle": "solid",
@@ -10965,8 +10971,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -90.59590338370106,
-			"y": -1976.0224315614805,
+			"x": -326.1514589392567,
+			"y": -2058.244653783703,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 254.57969665527344,
@@ -10976,7 +10982,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708187188413,
+			"updated": 1709490814214,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -10992,8 +10998,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 235,
-			"versionNonce": 13251533,
+			"version": 363,
+			"versionNonce": 775722983,
 			"isDeleted": false,
 			"id": "2Q96SGZaGIYocIGpFUuKr",
 			"fillStyle": "solid",
@@ -11002,12 +11008,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -32.62359159528225,
-			"y": -1722.2432663522573,
+			"x": -193.60189387865785,
+			"y": -1772.7239106724635,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 35.81615446550277,
-			"height": 163.39454982460802,
+			"width": 17.68100706032368,
+			"height": 195.13612772662464,
 			"seed": 1788569667,
 			"groupIds": [],
 			"frameId": null,
@@ -11015,7 +11021,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195421,
+			"updated": 1709490814215,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11037,8 +11043,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					35.81615446550277,
-					-163.39454982460802
+					-17.68100706032368,
+					-195.13612772662464
 				]
 			]
 		},
@@ -11127,8 +11133,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 276,
-			"versionNonce": 465527949,
+			"version": 280,
+			"versionNonce": 817892969,
 			"isDeleted": false,
 			"id": "gZJr4BOBTt6PnSHFNhysi",
 			"fillStyle": "solid",
@@ -11150,7 +11156,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195423,
+			"updated": 1709490772941,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11179,8 +11185,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 412,
-			"versionNonce": 1067857421,
+			"version": 416,
+			"versionNonce": 1195708905,
 			"isDeleted": false,
 			"id": "1jAdEpDS9OS-RfyX-YyQW",
 			"fillStyle": "solid",
@@ -11202,7 +11208,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195423,
+			"updated": 1709490772941,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11314,8 +11320,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 468,
-			"versionNonce": 212850381,
+			"version": 472,
+			"versionNonce": 196504489,
 			"isDeleted": false,
 			"id": "ERRLgBUVoMk1vmXdDP1BS",
 			"fillStyle": "solid",
@@ -11337,7 +11343,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195425,
+			"updated": 1709490772943,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11366,8 +11372,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 397,
-			"versionNonce": 785926029,
+			"version": 401,
+			"versionNonce": 929846633,
 			"isDeleted": false,
 			"id": "__1K6c6dhwoWenvJlNcd-",
 			"fillStyle": "solid",
@@ -11389,7 +11395,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195425,
+			"updated": 1709490772944,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11418,8 +11424,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 435,
-			"versionNonce": 1756072013,
+			"version": 439,
+			"versionNonce": 243453737,
 			"isDeleted": false,
 			"id": "m4O5igczX-sns1SZpsRci",
 			"fillStyle": "solid",
@@ -11441,7 +11447,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195426,
+			"updated": 1709490772944,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11545,8 +11551,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 218,
-			"versionNonce": 1236637965,
+			"version": 222,
+			"versionNonce": 2115361001,
 			"isDeleted": false,
 			"id": "II7vBvwge0dja_6dt7XdR",
 			"fillStyle": "solid",
@@ -11568,7 +11574,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195427,
+			"updated": 1709490772946,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11680,8 +11686,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 278,
-			"versionNonce": 1854044621,
+			"version": 282,
+			"versionNonce": 1547793065,
 			"isDeleted": false,
 			"id": "7wVZZBQQ7kRWXcZj1Pe_0",
 			"fillStyle": "solid",
@@ -11703,7 +11709,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195429,
+			"updated": 1709490772947,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11732,8 +11738,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 305,
-			"versionNonce": 1084107405,
+			"version": 309,
+			"versionNonce": 673291369,
 			"isDeleted": false,
 			"id": "ovep5vdkFDc3zfospbnS2",
 			"fillStyle": "solid",
@@ -11755,7 +11761,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195429,
+			"updated": 1709490772948,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11867,8 +11873,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 296,
-			"versionNonce": 334625805,
+			"version": 300,
+			"versionNonce": 1383047145,
 			"isDeleted": false,
 			"id": "SGtBBWVcLUHgucRNZUVb3",
 			"fillStyle": "solid",
@@ -11877,12 +11883,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -1648.90903855344,
-			"y": -631.3309602720141,
+			"x": -1648.9090385568165,
+			"y": -631.3309602724187,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 2.823954739047849,
-			"height": 69.2160101180176,
+			"width": 2.823954737245458,
+			"height": 69.21601011842233,
 			"seed": 1493737837,
 			"groupIds": [],
 			"frameId": null,
@@ -11890,7 +11896,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195431,
+			"updated": 1709490772950,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11912,15 +11918,15 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					-2.823954739047849,
-					69.2160101180176
+					-2.823954737245458,
+					69.21601011842233
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 299,
-			"versionNonce": 692198605,
+			"version": 303,
+			"versionNonce": 1008040361,
 			"isDeleted": false,
 			"id": "WiF-6zImoDftn6Orkk1s5",
 			"fillStyle": "solid",
@@ -11930,11 +11936,11 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"opacity": 100,
 			"angle": 0,
 			"x": -1515.47666222666,
-			"y": -465.72615642720336,
+			"y": -465.7261197771986,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 85.81818181818176,
-			"height": 9.525540336289055,
+			"height": 9.525527736512913,
 			"seed": 149920483,
 			"groupIds": [],
 			"frameId": null,
@@ -11942,7 +11948,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195431,
+			"updated": 1709490772950,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -11965,7 +11971,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				],
 				[
 					85.81818181818176,
-					9.525540336289055
+					9.525527736512913
 				]
 			]
 		},
@@ -12046,8 +12052,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 72,
-			"versionNonce": 1729221613,
+			"version": 76,
+			"versionNonce": 1086426697,
 			"isDeleted": false,
 			"id": "x6KkuqQN74oZWvaeYtoCp",
 			"fillStyle": "solid",
@@ -12069,7 +12075,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195433,
+			"updated": 1709490772952,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -12177,8 +12183,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 423,
-			"versionNonce": 2054519981,
+			"version": 427,
+			"versionNonce": 1053249545,
 			"isDeleted": false,
 			"id": "ifRuEIwCodcBuTxt5p6cM",
 			"fillStyle": "solid",
@@ -12187,11 +12193,11 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -1385.121621850425,
+			"x": -1385.121633648653,
 			"y": -1356.818216812727,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 44.02650537269096,
+			"width": 44.026497575551275,
 			"height": 79.3880371022924,
 			"seed": 1731465517,
 			"groupIds": [],
@@ -12200,7 +12206,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195435,
+			"updated": 1709490772954,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -12222,7 +12228,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					-44.02650537269096,
+					-44.026497575551275,
 					-79.3880371022924
 				]
 			]
@@ -12304,8 +12310,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 149,
-			"versionNonce": 687816237,
+			"version": 153,
+			"versionNonce": 1464763273,
 			"isDeleted": false,
 			"id": "Kl5QHYHiui4EnDT1p1yGR",
 			"fillStyle": "solid",
@@ -12314,11 +12320,11 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -1455.7358166697918,
+			"x": -1455.7358166702516,
 			"y": -1283.6790821153743,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 105.30208934407074,
+			"width": 105.30208934375878,
 			"height": 131.96052138817163,
 			"seed": 1494200931,
 			"groupIds": [],
@@ -12327,7 +12333,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195437,
+			"updated": 1709490772957,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -12349,15 +12355,15 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					-105.30208934407074,
+					-105.30208934375878,
 					131.96052138817163
 				]
 			]
 		},
 		{
 			"type": "arrow",
-			"version": 269,
-			"versionNonce": 702479149,
+			"version": 271,
+			"versionNonce": 476732553,
 			"isDeleted": false,
 			"id": "DDZ3HjsTyc-oGB2otTFYr",
 			"fillStyle": "solid",
@@ -12366,11 +12372,11 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 720.7264198494956,
+			"x": 720.7264198494955,
 			"y": -1404.97099268099,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 2243.366696239773,
+			"width": 2243.3666962397724,
 			"height": 866.4346031844602,
 			"seed": 1925640333,
 			"groupIds": [],
@@ -12379,7 +12385,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195431,
+			"updated": 1709490772950,
 			"link": "https://arxiv.org/pdf/2104.02556.pdf",
 			"locked": false,
 			"startBinding": {
@@ -12405,7 +12411,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					790.943878291492
 				],
 				[
-					-2243.366696239773,
+					-2243.3666962397724,
 					866.4346031844602
 				]
 			]
@@ -12487,8 +12493,8 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		},
 		{
 			"type": "arrow",
-			"version": 41,
-			"versionNonce": 389895917,
+			"version": 45,
+			"versionNonce": 1879569737,
 			"isDeleted": false,
 			"id": "fzqDd36niVJKcf6kbE63N",
 			"fillStyle": "solid",
@@ -12510,7 +12516,7 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708190195438,
+			"updated": 1709490772959,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -12538,29 +12544,29 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			]
 		},
 		{
-			"id": "ZQNalURN_pG2R02K-zSaB",
 			"type": "rectangle",
-			"x": -212.1201298701253,
-			"y": -2621.3264782092906,
-			"width": 221.3636363636365,
-			"height": 98.75,
-			"angle": 0,
-			"strokeColor": "#1e1e1e",
-			"backgroundColor": "transparent",
+			"version": 126,
+			"versionNonce": 1766674499,
+			"isDeleted": false,
+			"id": "ZQNalURN_pG2R02K-zSaB",
 			"fillStyle": "solid",
 			"strokeWidth": 2,
 			"strokeStyle": "solid",
 			"roughness": 1,
 			"opacity": 100,
+			"angle": 0,
+			"x": -212.1201298701253,
+			"y": -2621.3264782092906,
+			"strokeColor": "#1e1e1e",
+			"backgroundColor": "transparent",
+			"width": 221.3636363636365,
+			"height": 98.75,
+			"seed": 1152250189,
 			"groupIds": [],
 			"frameId": null,
 			"roundness": {
 				"type": 3
 			},
-			"seed": 1152250189,
-			"version": 126,
-			"versionNonce": 1766674499,
-			"isDeleted": false,
 			"boundElements": [
 				{
 					"type": "text",
@@ -12580,12 +12586,191 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"locked": false
 		},
 		{
-			"id": "6rcojs0X",
 			"type": "text",
+			"version": 267,
+			"versionNonce": 1281380323,
+			"isDeleted": false,
+			"id": "6rcojs0X",
+			"fillStyle": "solid",
+			"strokeWidth": 2,
+			"strokeStyle": "solid",
+			"roughness": 1,
+			"opacity": 100,
+			"angle": 0,
 			"x": -198.27820121467425,
 			"y": -2609.4514782092906,
+			"strokeColor": "#1e1e1e",
+			"backgroundColor": "transparent",
 			"width": 193.67977905273438,
 			"height": 75,
+			"seed": 66246275,
+			"groupIds": [],
+			"frameId": null,
+			"roundness": null,
+			"boundElements": [],
+			"updated": 1708190584469,
+			"link": null,
+			"locked": false,
+			"fontSize": 20,
+			"fontFamily": 1,
+			"text": "Find optimal\ncarbonitriding cycle\nfor given constrains",
+			"rawText": "Find optimal carbonitriding cycle for given constrains",
+			"textAlign": "center",
+			"verticalAlign": "middle",
+			"containerId": "ZQNalURN_pG2R02K-zSaB",
+			"originalText": "Find optimal carbonitriding cycle for given constrains",
+			"lineHeight": 1.25,
+			"baseline": 68
+		},
+		{
+			"type": "arrow",
+			"version": 134,
+			"versionNonce": 1591736073,
+			"isDeleted": false,
+			"id": "qoM76BQZiAaydZ4-TOhD3",
+			"fillStyle": "solid",
+			"strokeWidth": 2,
+			"strokeStyle": "solid",
+			"roughness": 1,
+			"opacity": 100,
+			"angle": 0,
+			"x": -426.4817786380313,
+			"y": -2439.647781916409,
+			"strokeColor": "#1e1e1e",
+			"backgroundColor": "transparent",
+			"width": 200.38437604063347,
+			"height": 109.60938415770988,
+			"seed": 742112493,
+			"groupIds": [],
+			"frameId": null,
+			"roundness": {
+				"type": 2
+			},
+			"boundElements": [],
+			"updated": 1709490772961,
+			"link": null,
+			"locked": false,
+			"startBinding": {
+				"elementId": "AA6SJ9Nj2gaeLuXGwWd4B",
+				"gap": 9.80668290043377,
+				"focus": 0.23648303834498843
+			},
+			"endBinding": {
+				"elementId": "ZQNalURN_pG2R02K-zSaB",
+				"gap": 13.97727272727252,
+				"focus": 0.413889328882545
+			},
+			"lastCommittedPoint": null,
+			"startArrowhead": null,
+			"endArrowhead": "arrow",
+			"points": [
+				[
+					0,
+					0
+				],
+				[
+					200.38437604063347,
+					-109.60938415770988
+				]
+			]
+		},
+		{
+			"type": "arrow",
+			"version": 205,
+			"versionNonce": 566135431,
+			"isDeleted": false,
+			"id": "AhE4bxcD53V_SGovesIkI",
+			"fillStyle": "solid",
+			"strokeWidth": 2,
+			"strokeStyle": "solid",
+			"roughness": 1,
+			"opacity": 100,
+			"angle": 0,
+			"x": 363.21869088255016,
+			"y": -1819.0410796919277,
+			"strokeColor": "#1e1e1e",
+			"backgroundColor": "transparent",
+			"width": 365.39386932425947,
+			"height": 688.8763076082719,
+			"seed": 1664762883,
+			"groupIds": [],
+			"frameId": null,
+			"roundness": {
+				"type": 2
+			},
+			"boundElements": [],
+			"updated": 1709490818156,
+			"link": null,
+			"locked": false,
+			"startBinding": {
+				"elementId": "sflKXBkyjqego0unCM33i",
+				"gap": 11.345667534397244,
+				"focus": -0.14144202645477363
+			},
+			"endBinding": {
+				"elementId": "ZQNalURN_pG2R02K-zSaB",
+				"gap": 14.659090909090992,
+				"focus": -0.47707704642607685
+			},
+			"lastCommittedPoint": null,
+			"startArrowhead": null,
+			"endArrowhead": "arrow",
+			"points": [
+				[
+					0,
+					0
+				],
+				[
+					-365.39386932425947,
+					-688.8763076082719
+				]
+			]
+		},
+		{
+			"id": "usGe7yWZ2LUK7LzzEerKG",
+			"type": "ellipse",
+			"x": 540.6626984127022,
+			"y": -505.2948449120345,
+			"width": 157.77777777777783,
+			"height": 117.7777777777776,
+			"angle": 0,
+			"strokeColor": "#1e1e1e",
+			"backgroundColor": "#ffffff",
+			"fillStyle": "solid",
+			"strokeWidth": 2,
+			"strokeStyle": "solid",
+			"roughness": 1,
+			"opacity": 100,
+			"groupIds": [],
+			"frameId": null,
+			"roundness": {
+				"type": 2
+			},
+			"seed": 2024197447,
+			"version": 74,
+			"versionNonce": 2064096425,
+			"isDeleted": false,
+			"boundElements": [
+				{
+					"type": "text",
+					"id": "3k44G9rm"
+				},
+				{
+					"id": "NasMBrJ79Gje_AB_OKXMw",
+					"type": "arrow"
+				}
+			],
+			"updated": 1709490865807,
+			"link": null,
+			"locked": false
+		},
+		{
+			"id": "3k44G9rm",
+			"type": "text",
+			"x": 584.2987483048607,
+			"y": -471.5466886930201,
+			"width": 70.93994140625,
+			"height": 50,
 			"angle": 0,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
@@ -12597,32 +12782,32 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"groupIds": [],
 			"frameId": null,
 			"roundness": null,
-			"seed": 66246275,
-			"version": 267,
-			"versionNonce": 1281380323,
+			"seed": 966250025,
+			"version": 52,
+			"versionNonce": 522198921,
 			"isDeleted": false,
 			"boundElements": null,
-			"updated": 1708190584469,
+			"updated": 1709490865807,
 			"link": null,
 			"locked": false,
-			"text": "Find optimal\ncarbonitriding cycle\nfor given constrains",
-			"rawText": "Find optimal carbonitriding cycle for given constrains",
+			"text": "GPU\n(CUDA)",
+			"rawText": "GPU (CUDA)",
 			"fontSize": 20,
 			"fontFamily": 1,
 			"textAlign": "center",
 			"verticalAlign": "middle",
-			"baseline": 68,
-			"containerId": "ZQNalURN_pG2R02K-zSaB",
-			"originalText": "Find optimal carbonitriding cycle for given constrains",
+			"baseline": 43,
+			"containerId": "usGe7yWZ2LUK7LzzEerKG",
+			"originalText": "GPU (CUDA)",
 			"lineHeight": 1.25
 		},
 		{
-			"id": "qoM76BQZiAaydZ4-TOhD3",
+			"id": "NasMBrJ79Gje_AB_OKXMw",
 			"type": "arrow",
-			"x": -426.4817786380313,
-			"y": -2439.868745692541,
-			"width": 200.38437604063347,
-			"height": 109.45081544239974,
+			"x": 172.55717207363827,
+			"y": -770.3208713358777,
+			"width": 367.4471984981551,
+			"height": 286.40167526949546,
 			"angle": 0,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
@@ -12636,12 +12821,12 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 			"roundness": {
 				"type": 2
 			},
-			"seed": 742112493,
-			"version": 130,
-			"versionNonce": 1895953187,
+			"seed": 1480489127,
+			"version": 152,
+			"versionNonce": 757240137,
 			"isDeleted": false,
 			"boundElements": null,
-			"updated": 1708190584469,
+			"updated": 1709490865807,
 			"link": null,
 			"locked": false,
 			"points": [
@@ -12650,72 +12835,20 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 					0
 				],
 				[
-					200.38437604063347,
-					-109.45081544239974
+					367.4471984981551,
+					286.40167526949546
 				]
 			],
 			"lastCommittedPoint": null,
 			"startBinding": {
-				"elementId": "AA6SJ9Nj2gaeLuXGwWd4B",
-				"gap": 9.80668290043377,
-				"focus": 0.23648303834498843
+				"elementId": "rZ_-tYCZxFen76R8fjUaP",
+				"focus": -0.017270378677273074,
+				"gap": 12.008335263466215
 			},
 			"endBinding": {
-				"elementId": "ZQNalURN_pG2R02K-zSaB",
-				"gap": 13.97727272727252,
-				"focus": 0.413889328882545
-			},
-			"startArrowhead": null,
-			"endArrowhead": "arrow"
-		},
-		{
-			"id": "AhE4bxcD53V_SGovesIkI",
-			"type": "arrow",
-			"x": 531.4881844542012,
-			"y": -1806.2697271541317,
-			"width": 516.5781507311717,
-			"height": 702.7871572950592,
-			"angle": 0,
-			"strokeColor": "#1e1e1e",
-			"backgroundColor": "transparent",
-			"fillStyle": "solid",
-			"strokeWidth": 2,
-			"strokeStyle": "solid",
-			"roughness": 1,
-			"opacity": 100,
-			"groupIds": [],
-			"frameId": null,
-			"roundness": {
-				"type": 2
-			},
-			"seed": 1664762883,
-			"version": 175,
-			"versionNonce": 2038679139,
-			"isDeleted": false,
-			"boundElements": null,
-			"updated": 1708190584470,
-			"link": null,
-			"locked": false,
-			"points": [
-				[
-					0,
-					0
-				],
-				[
-					-516.5781507311717,
-					-702.7871572950592
-				]
-			],
-			"lastCommittedPoint": null,
-			"startBinding": {
-				"elementId": "sflKXBkyjqego0unCM33i",
-				"gap": 11.345667534397244,
-				"focus": -0.14144202645477363
-			},
-			"endBinding": {
-				"elementId": "ZQNalURN_pG2R02K-zSaB",
-				"gap": 14.659090909090992,
-				"focus": -0.47707704642607685
+				"elementId": "usGe7yWZ2LUK7LzzEerKG",
+				"focus": -0.2876299130855772,
+				"gap": 13.924084522472796
 			},
 			"startArrowhead": null,
 			"endArrowhead": "arrow"
@@ -12736,10 +12869,10 @@ Find optimal carbonitriding cycle for given constrains ^6rcojs0X
 		"currentItemTextAlign": "left",
 		"currentItemStartArrowhead": null,
 		"currentItemEndArrowhead": "arrow",
-		"scrollX": 731.0974025973976,
-		"scrollY": 2849.468642035047,
+		"scrollX": 2039.3373015872978,
+		"scrollY": 2172.1351226898128,
 		"zoom": {
-			"value": 0.8000000000000002
+			"value": 0.44999999999999996
 		},
 		"currentItemRoundness": "round",
 		"gridSize": null,
