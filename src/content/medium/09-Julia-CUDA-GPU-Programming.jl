@@ -24,30 +24,83 @@ end
 let
 	import Zygote
 	using LinearAlgebra
-	
-	σ(z) = (1 + exp(-z))^(-1)
+	using Zygote: gradient
 
-	function NN(l0, ps)
-		l1 = ps.f1.(ps.M1 * l0 + ps.b1)
-		l2 = ps.f2.(ps.M2 * l1 + ps.b2)
+	CUDA.allowscalar(false)
+
+	CuMatrix = CuArray{Float32, 2, CUDA.Mem.DeviceBuffer}
+	CuVector = CuArray{Float32, 1, CUDA.Mem.DeviceBuffer}
+	
+	struct SimpleMLP
+		M1::CuMatrix
+		b1::CuVector
+		f1::Function
+		M2::CuMatrix
+		b2::CuVector
+		f2::Function
+
+		# function SimpleMLP(; M1, b1, f1, M2, b2, f2)
+		# 	return new(M1, b1, f1, M2, b2, f2)
+		# end
+	end
+
+	function (self::SimpleMLP)(x)
+		l1 = self.f1.(self.M1 * x  + self.b1)
+		l2 = self.f2.(self.M2 * l1 + self.b2)
 		return l2
 	end
 	
-	x = CuArray([1; 2; 3; 4; 5; 10; 20])
+	Adapt.@adapt_structure SimpleMLP
 
-	params = (
-		M1 = CUDA.rand(10, 7),
-		b1 = CUDA.rand(10),
-		f1 = σ,
+	function dudt!(unet, udot, x)
+		blkid  = CUDA.blockIdx().x - Int32(1)
+		index  = blkid * CUDA.blockDim().x + CUDA.threadIdx().x
+	    stride = CUDA.gridDim().x * CUDA.blockDim().x
+
+	    while index <= length(udot)
+	        @inbounds udot[index] = gradient(z->unet(z)[index], x)[1][index]
+			index += stride
+	    end
 		
-		M2 = CUDA.rand(5, 10),
-		b2 = CUDA.rand(5),
-		f2 = identity
+	    return nothing
+	end
+
+	x = CuArray([1; 2; 3; 4; 5; 10; 20])
+	
+	udot = CUDA.zeros(5)
+	
+	unet = SimpleMLP(
+		# M1 =
+		CUDA.rand(10, 7),
+		# b1 =
+		CUDA.rand(10),
+		# f1 =
+		(z) -> (1 + exp(-z))^(-1),
+		# M2 =
+		CUDA.rand(5, 10),
+		# b2 =
+		CUDA.rand(5),
+		# f2 =
+		identity
 	)
 	
-	u = NN(x, params)
+	# @info unet(x)
 
-	Zygote.jacobian(l0->NN(l0, params), x)
+	# gradient(x->unet(x)[1], x)[1][1]
+	
+	# map((k, _)->gradient(unet(x)[k], enumerate(x))[1][k])
+	
+	# kernel = @cuda launch=false dudt!(unet, udot, x)
+	# config = CUDA.launch_configuration(kernel.fun)
+	
+	# threads = min(length(udot), config.threads)
+	# blocks  = cld(length(udot), threads)
+	
+	# kernel(udot, x; threads, blocks)
+	
+	# Zygote.jacobian(l0->NN(l0, params), x)[1]
+	# dudtk(z, k) = Zygote.jacobian(x->NN(x, params), z)[1]
+	# dudtk(x, 1)
 end
 
 # ╔═╡ 2aca7e21-7480-49f7-8ffc-cd22d458ca4c
@@ -384,6 +437,7 @@ md"""
 - Use `LLVM.Interop.assume` to get rid of some exceptions
 - Use [32-bit integers](https://cuda.juliagpu.org/stable/tutorials/performance/#bit-Integers) where possible
 - Avoid StepRange, instead it is faster to use a while loop
+- Make sure scalar indexing is off with `CUDA.allowscalar(false)`
 """
 
 # ╔═╡ 8b4f7093-bebc-4a6f-8d9f-a4e75629923b
@@ -1282,9 +1336,9 @@ version = "17.4.0+2"
 # ╟─04554cdb-6c9e-49fc-b625-b7cd9b92eb6d
 # ╟─065edf25-ba20-4e90-9c0c-313693e0e6a1
 # ╟─23810108-ee34-4759-a062-d33050b3f6ad
-# ╠═8b4f7093-bebc-4a6f-8d9f-a4e75629923b
-# ╠═d2e79ccb-1c70-4e1f-bbf2-993650e24a30
-# ╠═1e23ae5c-d70a-4b2a-8477-f19277fff656
+# ╟─8b4f7093-bebc-4a6f-8d9f-a4e75629923b
+# ╟─d2e79ccb-1c70-4e1f-bbf2-993650e24a30
+# ╟─1e23ae5c-d70a-4b2a-8477-f19277fff656
 # ╠═d16f12a9-ab6d-4396-a3c0-c6856aeaf3c8
 # ╠═f31465d9-3d38-4277-86e4-6184d8c28f5e
 # ╟─e423323d-c21d-4336-bb25-c12537a3da63

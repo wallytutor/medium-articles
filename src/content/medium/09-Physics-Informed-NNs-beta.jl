@@ -172,7 +172,7 @@ end
 
 # ╔═╡ 3351c1c6-6675-4ec9-a9fc-13067f54b04a
 begin
-	loss, back = Zygote.pullback(loss_forward, ps)
+	# loss, back = Zygote.pullback(loss_forward, ps)
 	# back()
 end
 
@@ -3045,7 +3045,7 @@ version = "3.5.0+0"
 # ╟─f61ac432-bccf-4637-a42e-7da89d66e8d5
 # ╟─ca3876f0-d877-11ee-212d-9b10264b5884
 # ╟─2cd89f5f-3570-46a4-be0b-89ac129e5533
-# ╟─a01210b7-b248-4fa3-b3bb-082972ce66ed
+# ╠═a01210b7-b248-4fa3-b3bb-082972ce66ed
 # ╠═e8265d63-a3fd-40f2-ae97-7192ccc05e45
 # ╠═a4714237-c2a4-4de4-b1c4-0fd94bf6e8cd
 # ╠═8b2fdd40-8775-42ad-9b30-296fc90a9290
