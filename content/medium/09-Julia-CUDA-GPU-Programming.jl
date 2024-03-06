@@ -444,7 +444,8 @@ md"""
 md"""
 ## General use
 
-- With map, reduce or broadcast it is possible to perform kernel-like operations without actually writing your own GPU kernels.
+- With `map`, `reduce` or `broadcast` it is possible to perform kernel-like operations without actually writing your own GPU kernels.
+- Higher order functions include `(map)reduce(dim)` and `accumulate`. 
 """
 
 # ╔═╡ d2e79ccb-1c70-4e1f-bbf2-993650e24a30
@@ -488,7 +489,14 @@ let
 end
 
 # ╔═╡ d16f12a9-ab6d-4396-a3c0-c6856aeaf3c8
+let
+	a = CuArray([1π, 2π])
+	
+	b = [2.0, 3.0]
+	b = copyto!(b, a)
 
+	map(sin, b)
+end
 
 # ╔═╡ f31465d9-3d38-4277-86e4-6184d8c28f5e
 
