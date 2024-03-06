@@ -120,6 +120,11 @@ function train_model_basic(tstate, vjp, data, epochs)
 	return tstate
 end
 
+# ╔═╡ b5e2ef82-aa3d-4649-b6ad-8d38ffa7af28
+md"""
+https://discourse.julialang.org/t/solving-ode-system-with-pinn/54750
+"""
+
 # ╔═╡ a949e968-54fd-404a-81ba-0340f93e42f8
 begin
 	# CUDA.allowscalar(true)
@@ -3049,6 +3054,7 @@ version = "3.5.0+0"
 # ╠═e8265d63-a3fd-40f2-ae97-7192ccc05e45
 # ╠═a4714237-c2a4-4de4-b1c4-0fd94bf6e8cd
 # ╠═8b2fdd40-8775-42ad-9b30-296fc90a9290
+# ╠═b5e2ef82-aa3d-4649-b6ad-8d38ffa7af28
 # ╠═a949e968-54fd-404a-81ba-0340f93e42f8
 # ╠═3351c1c6-6675-4ec9-a9fc-13067f54b04a
 # ╠═6acb8fc9-f113-4d97-9f00-c201d69f0312
