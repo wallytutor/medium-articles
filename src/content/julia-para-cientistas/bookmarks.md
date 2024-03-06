@@ -33,18 +33,6 @@ showall = true
 
   <tr>
     <td width="64px" height="64px" style="vertical-align: middle;">
-        <img src="https://juliagraphics.github.io/Luxor.jl/stable/assets/logo.svg" alt="logo" />
-    </td>
-    <td>
-      <a href="https://juliagraphics.github.io/Luxor.jl/stable/" target="_blank">
-          Luxor.jl
-      </a>
-      <hr style="padding: 0pt; margin: 5pt"/>
-    </td>
-  </tr>
-
-  <tr>
-    <td width="64px" height="64px" style="vertical-align: middle;">
         <img src="https://julialang.org/assets/infra/logo.svg" alt="logo" />
     </td>
     <td>
@@ -74,6 +62,60 @@ showall = true
     <td>
       <a href="https://timholy.github.io/Revise.jl/stable/" target="_blank">
           Revise.jl
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
+    </td>
+  </tr>
+</table>
+~~~
+
+## Plotting and graphics
+
+~~~
+<table>
+  <tr>
+    <td width="64px" height="64px" style="vertical-align: middle;">
+        <img src="https://docs.makie.org/stable/assets/makie_logo_transparent.svg" alt="logo" />
+    </td>
+    <td>
+      <a href="https://docs.makie.org/stable/" target="_blank">
+          Makie.jl
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
+    </td>
+  </tr>
+
+  <tr>
+    <td width="64px" height="64px" style="vertical-align: middle;">
+        <img src="https://docs.juliaplots.org/stable/assets/logo.png" alt="logo" />
+    </td>
+    <td>
+      <a href="https://docs.juliaplots.org/stable/" target="_blank">
+          Plots.jl
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
+    </td>
+  </tr>
+
+  <tr>
+    <td width="64px" height="64px" style="vertical-align: middle;">
+        <img src="https://julialang.org/assets/infra/logo.svg" alt="logo" />
+    </td>
+    <td>
+      <a href="https://winston.readthedocs.io/en/latest/" target="_blank">
+          Winston.jl
+      </a>
+      <hr style="padding: 0pt; margin: 5pt"/>
+    </td>
+  </tr>
+
+  <tr>
+    <td width="64px" height="64px" style="vertical-align: middle;">
+        <img src="https://juliagraphics.github.io/Luxor.jl/stable/assets/logo.svg" alt="logo" />
+    </td>
+    <td>
+      <a href="https://juliagraphics.github.io/Luxor.jl/stable/" target="_blank">
+          Luxor.jl
       </a>
       <hr style="padding: 0pt; margin: 5pt"/>
     </td>
@@ -294,6 +336,5 @@ showall = true
       <hr style="padding: 0pt; margin: 5pt"/>
     </td>
   </tr>
-
 </table>
 ~~~
