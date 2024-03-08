@@ -35,15 +35,15 @@ Physics-Informed Neural Networks (PINNs) were first introduced by [[@Raissi2017]
 
 Unraveling the design pattern of physics-informed neural networks:
 
-| Post          | Subject                                                   | Main reference(s)       |
-| ------------- | --------------------------------------------------------- | ----------------------- |
-| [[@Guo2023a]] | Resampling of residual points                             | [[@Wu2022a]]            |
-| [[@Guo2023b]] | Ensemble learning and dynamic solution interval expansion | [[@Haitsiukevich2022a]] |
-| [[@Guo2023c]] | Improving performance through gradient boosting           | [[@Fang2023a]]          |
-| [[@Guo2023d]] |                                                           | [[@Yu2022a]]            |
-| [[@Guo2023e]] |                                                           | [[@Wang2023a]]          |
-| [[@Guo2023f]] |                                                           | [[@Wang2022a]]          |
-| [[@Guo2023g]] |                                                           | [[@Arthurs2021a]]       |
+| Post          | Subject                                                                                  | Main reference(s)       |
+| ------------- | ---------------------------------------------------------------------------------------- | ----------------------- |
+| [[@Guo2023a]] | Resampling of residual points                                                            | [[@Wu2022a]]            |
+| [[@Guo2023b]] | Ensemble learning and dynamic solution interval expansion                                | [[@Haitsiukevich2022a]] |
+| [[@Guo2023c]] | Improving performance through gradient boosting                                          | [[@Fang2023a]]          |
+| [[@Guo2023d]] | Incorporate the gradient of residual terms as an additional loss term for stiff problems | [[@Yu2022a]]            |
+| [[@Guo2023e]] |                                                                                          | [[@Wang2023a]]          |
+| [[@Guo2023f]] |                                                                                          | [[@Wang2022a]]          |
+| [[@Guo2023g]] |                                                                                          | [[@Arthurs2021a]]       |
 
 | Reference | Subject |
 | ---- | ---- |
