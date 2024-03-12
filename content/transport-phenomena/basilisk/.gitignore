@@ -1,0 +1,6 @@
+# VIM swap files
+*.swp
+
+# Compiled executables
+*.out
+
