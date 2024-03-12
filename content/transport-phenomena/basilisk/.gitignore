@@ -4,3 +4,7 @@
 # Compiled executables
 *.out
 
+# Results
+*.log
+*.png
+*.ppm
