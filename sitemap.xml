@@ -50,6 +50,12 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/Models/index.html</loc>
+    <lastmod>2024-03-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>https://wallytutor.github.io/medium-articles/content/medium/index.html</loc>
     <lastmod>2024-03-13</lastmod>
     <changefreq>monthly</changefreq>

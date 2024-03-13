@@ -48,8 +48,6 @@
 <p>The default version of the dictionary provided <a href="https://github.com/OpenFOAM/OpenFOAM-11/blob/master/etc/caseDicts/solvers/lagrangian/cloudProperties">here</a> is not yet documented as of OpenFOAM v11 and does not contain any solver specific configurations, so the users must refer to the tutorial cases for setting up their studies.  A post-processing particle tracking function associated to the dictionary is provided <a href="https://github.com/OpenFOAM/OpenFOAM-11/blob/master/etc/caseDicts/postProcessing/solvers/particles">here &#40;untested&#41;</a>.</p>
 <h2 id="cloud_types"><a href="#cloud_types" class="header-anchor">Cloud types</a></h2>
 <table><tr><th align="right">Cloud</th><th align="right">Description</th></tr><tr><td align="right"><a href="">MPPICCloud</a></td><td align="right"></td></tr><tr><td align="right"><a href="">reactingMultiphaseCloud</a></td><td align="right"></td></tr><tr><td align="right"><a href="">sprayCloud</a></td><td align="right"></td></tr><tr><td align="right"></td><td align="right"></td></tr><tr><td align="right"></td><td align="right"></td></tr></table>
-<h2 id="injection_types"><a href="#injection_types" class="header-anchor">Injection types</a></h2>
-<table><tr><th align="right">Type</th><th align="right">Description</th></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1ConeInjection.html">coneInjection</a></td><td align="right">Inject particles in a number of oriented cones. Particles can be generated from a single point or over a disk. Injection can be made at constant velocity, pressure, or with a flow rate and discharge coefficient.</td></tr><tr><td align="right"></td><td align="right"></td></tr></table>
 <h2 id="guidelines"><a href="#guidelines" class="header-anchor">Guidelines</a></h2>
 <blockquote>
 <p><strong>NOTE:</strong> the text that follows was written when creating cases for <code>incompressibleDenseParticleFluid</code>. Care must be taken when following the recommendations below since they are &#40;for now&#41; solver-specific. This will be updated as I take notes while building/testing cases for other solvers using clouds.</p>
@@ -69,7 +67,7 @@
 <p>On the other hand, <code>MPPICCloud</code> makes use only of <code>patchInteractionModel localInteraction</code> for interaction with the environment and collisions between particles are not taken into account &#40;that is not completely true if you consider the packing effects that can be enabled as <em>collisions</em>&#41;. Again, it is better to go deeper in the case studies.</p>
 <p>The main models for setting up a particle simulation in <code>constant/cloudProperties</code>  are:</p>
 <ul>
-<li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1InjectionModel.html"><code>InjectionModel</code></a></p>
+<li><p>&#91;&#91;Models#Injection models|InjectionModel&#93;&#93;</p>
 </li>
 <li><p><a href="https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html"><code>ParticleForce</code></a></p>
 </li>
