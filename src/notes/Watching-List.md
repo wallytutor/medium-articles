@@ -10,4 +10,5 @@
 - [ ] [ Physics-Informed Neural Networks in Julia](https://www.youtube.com/watch?v=Xfb7tqs7gQA)
 
 - [ ] [Introduction to Probability](https://www.youtube.com/playlist?list=PLUl4u3cNGP60hI9ATjSFgLZpbNJ7myAg6)
-	
+
+- [ ] [VIM sheet](https://vimsheet.com/)
