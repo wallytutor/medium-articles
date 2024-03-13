@@ -10,11 +10,18 @@ The default version of the dictionary provided [here](https://github.com/OpenFOA
 
 ## Cloud types
 
-| Cloud | Applications |
+| Cloud | Description |
 | ---- | ---- |
 | [MPPICCloud]() |  |
 | [reactingMultiphaseCloud]() |  |
 | [sprayCloud]() |  |
+|  |  |
+|  |  |
+## Injection types
+
+| Type | Description |
+| ---- | ---- |
+| [coneInjection](https://cpp.openfoam.org/v11/classFoam_1_1ConeInjection.html) | Inject particles in a number of oriented cones. Particles can be generated from a single point or over a disk. Injection can be made at constant velocity, pressure, or with a flow rate and discharge coefficient. |
 |  |  |
 ## Guidelines
 

@@ -42,3 +42,5 @@ In OpenFOAM v11 solver module `multicomponentFluid` provides approaches for sett
 	- Add `calcFrequency` to `solution`
 	- Add `resetOnStartup` to `solution.sourceTerms`
 	- Injection models must use `massFlowRate`
+
+- Combustion is quite sensitive and Seulex alone does not seem able to handle it with an `EDC` approach. First flow was developed further during 100 steps before activating chemistry. For now using a single step `infinitelyFastChemistry` to try to stabilize the behavior before trying back to use the `EDC` model.
