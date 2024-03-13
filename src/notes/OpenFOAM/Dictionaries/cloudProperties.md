@@ -8,6 +8,16 @@ In OpenFOAM, *clouds* designate the injection of a secondary phase, generally so
 
 The default version of the dictionary provided [here](https://github.com/OpenFOAM/OpenFOAM-11/blob/master/etc/caseDicts/solvers/lagrangian/cloudProperties) is not yet documented as of OpenFOAM v11 and does not contain any solver specific configurations, so the users must refer to the tutorial cases for setting up their studies.  A post-processing particle tracking function associated to the dictionary is provided [here (untested)](https://github.com/OpenFOAM/OpenFOAM-11/blob/master/etc/caseDicts/postProcessing/solvers/particles).
 
+## Cloud types
+
+| Cloud | Applications |
+| ---- | ---- |
+| [MPPICCloud]() |  |
+| [reactingMultiphaseCloud]() |  |
+| [sprayCloud]() |  |
+|  |  |
+## Guidelines
+
 > **NOTE:** the text that follows was written when creating cases for `incompressibleDenseParticleFluid`. Care must be taken when following the recommendations below since they are (for now) solver-specific. This will be updated as I take notes while building/testing cases for other solvers using clouds.
 
 Most default values in `solution` dictionary should be fine for typical fluid-particle applications, but for phase interaction it is important to configure `coupled` as `true` so that drag forces are applied to the particles and conversely, particles disturb the fluid. 
