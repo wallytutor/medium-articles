@@ -17,12 +17,6 @@ The default version of the dictionary provided [here](https://github.com/OpenFOA
 | [sprayCloud]() |  |
 |  |  |
 |  |  |
-## Injection types
-
-| Type | Description |
-| ---- | ---- |
-| [coneInjection](https://cpp.openfoam.org/v11/classFoam_1_1ConeInjection.html) | Inject particles in a number of oriented cones. Particles can be generated from a single point or over a disk. Injection can be made at constant velocity, pressure, or with a flow rate and discharge coefficient. |
-|  |  |
 ## Guidelines
 
 > **NOTE:** the text that follows was written when creating cases for `incompressibleDenseParticleFluid`. Care must be taken when following the recommendations below since they are (for now) solver-specific. This will be updated as I take notes while building/testing cases for other solvers using clouds.
@@ -49,7 +43,7 @@ On the other hand, `MPPICCloud` makes use only of `patchInteractionModel localIn
 
 The main models for setting up a particle simulation in `constant/cloudProperties`  are:
 
-- [`InjectionModel`](https://cpp.openfoam.org/v11/classFoam_1_1InjectionModel.html)
+- [[Models#Injection models|InjectionModel]]
 - [`ParticleForce`](https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html)
 
 In the case of `MPPICCloud` focus is given in the following:
