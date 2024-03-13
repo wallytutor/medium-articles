@@ -828,9 +828,9 @@ uuid = "9fa8497b-333b-5362-9e8d-4d0656e87820"
 
 [[deps.FuzzyCompletions]]
 deps = ["REPL"]
-git-tree-sha1 = "c8d37d615586bea181063613dccc555499feb298"
+git-tree-sha1 = "40ec72c57559a4473961bbcd12c96bcd4c2aaab4"
 uuid = "fb4132e2-a121-4a70-b8a1-d5b831dcdcc2"
-version = "0.5.3"
+version = "0.5.4"
 
 [[deps.GPUArraysCore]]
 deps = ["Adapt"]

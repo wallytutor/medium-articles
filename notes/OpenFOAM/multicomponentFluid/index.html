@@ -94,6 +94,10 @@
 <p>- Add <code>calcFrequency</code> to <code>solution</code>
 - Add <code>resetOnStartup</code> to <code>solution.sourceTerms</code>
 - Injection models must use <code>massFlowRate</code></p>
+<ul>
+<li><p>Combustion is quite sensitive and Seulex alone does not seem able to handle it with an <code>EDC</code> approach. First flow was developed further during 100 steps before activating chemistry. For now using a single step <code>infinitelyFastChemistry</code> to try to stabilize the behavior before trying back to use the <code>EDC</code> model.</p>
+</li>
+</ul>
 <div class="page-foot">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
     Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
