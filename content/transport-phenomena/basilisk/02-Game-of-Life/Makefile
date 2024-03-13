@@ -1,4 +1,4 @@
-CODENAME := bump
+CODENAME := game
 QCCOPTS  := -O2 -Wall
 
 
