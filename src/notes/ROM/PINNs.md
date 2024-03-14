@@ -45,17 +45,17 @@ Unraveling the design pattern of physics-informed neural networks:
 | [[@Guo2023f]] |                                                                                          | [[@Wang2022a]]          |
 | [[@Guo2023g]] |                                                                                          | [[@Arthurs2021a]]       |
 
-| Reference | Subject |
-| ---- | ---- |
-| [[@Antonelo2021a]] |  |
-| [[@Cai2021a]] |  |
-| [[@Cuomo2022a]] |  |
-| [[@Haitsiukevich2022a]] |  |
-| [[@Lu2019a]] |  |
-| [[@Lu2021a]] |  |
-| [[@Nabian2021a]] |  |
-| [[@Sanyal2022a]] |  |
-| [[@Wurth2023a]] | Use of PINNs to solve diffusion equation (heat transfer) during the curing of composites. The paper is more focused in the application than in the implementation. Benchmark against FDM/FEM. |
+| Reference               | Subject                                                                                                                                                                                       |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[@Antonelo2021a]]      |                                                                                                                                                                                               |
+| [[@Cai2021a]]           |                                                                                                                                                                                               |
+| [[@Cuomo2022a]]         |                                                                                                                                                                                               |
+| [[@Haitsiukevich2022a]] |                                                                                                                                                                                               |
+| [[@Lu2019a]]            |                                                                                                                                                                                               |
+| [[@Lu2021a]]            |                                                                                                                                                                                               |
+| [[@Nabian2021a]]        |                                                                                                                                                                                               |
+| [[@Sanyal2022a]]        |                                                                                                                                                                                               |
+| [[@Wurth2023a]]         | Use of PINNs to solve diffusion equation (heat transfer) during the curing of composites. The paper is more focused in the application than in the implementation. Benchmark against FDM/FEM. |
 
 Other current readings:
 

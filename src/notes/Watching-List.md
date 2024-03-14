@@ -12,3 +12,7 @@
 - [ ] [Introduction to Probability](https://www.youtube.com/playlist?list=PLUl4u3cNGP60hI9ATjSFgLZpbNJ7myAg6)
 
 - [ ] [VIM sheet](https://vimsheet.com/)
+
+- [ ] [Specification benchmarking](https://spec.org/)
+- [ ] [Slurm](https://www.schedmd.com/)
+- [ ] [Top 500](https://top500.org/)
