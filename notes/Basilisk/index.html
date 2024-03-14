@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+   <link rel="stylesheet" href="/medium-articles/libs/katex/katex.min.css">
+     
   
   <link rel="stylesheet" href="/medium-articles/css/franklin.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
@@ -70,8 +71,9 @@
 - &#91; &#93; Evaporation and combustion in sandbox
 - &#91; &#93; Examples with &#91;granular flows&#93;&#40;http://basilisk.fr/sandbox/M1EMN/README#examples-of-granular-flows&#41; and &#91;silos&#93;&#40;http://basilisk.fr/sandbox/M1EMN/Exemples/granular_sandglass.c&#41;
 - &#91; &#93; Rising bubble with granular flow</p>
+<h2 id="functions_learned"><a href="#functions_learned" class="header-anchor">Functions learned</a></h2>
+<table><tr><th align="right">Function</th><th align="right">Definition</th><th align="right">Uses</th></tr><tr><td align="right"><code>origin</code></td><td align="right"><a href="http://basilisk.fr/src/common.h">common.h</a></td><td align="right">Set the origin coordinate of cartesian system.</td></tr><tr><td align="right"><code>init_grid</code></td><td align="right"><a href="http://basilisk.fr/src/grid/"><code>grid/</code></a> &#40;overloaded&#41;</td><td align="right">Level of refinement &#40;size&#41; of initial grid.</td></tr><tr><td align="right"><code>statsf</code></td><td align="right"><a href="http://basilisk.fr/src/utils.h">utils.h</a></td><td align="right">Retrieve statistics of provided scalar field.</td></tr><tr><td align="right"><code>output_ppm</code></td><td align="right"><a href="http://basilisk.fr/src/output.h">output.h</a></td><td align="right">Generate a <em>Portable PixMap</em> image output.</td></tr><tr><td align="right"><code>adapt_wavelet</code></td><td align="right"><a href="http://basilisk.fr/src/grid/tree-common.h">grid/tree-common.h</a></td><td align="right">Adaptive grid refinement routine.</td></tr><tr><td align="right"><code>run</code></td><td align="right"><a href="http://basilisk.fr/src/run.h">run.h</a> &#40;overloaded&#41;</td><td align="right">Generic time loop for events execution.</td></tr><tr><td align="right"><code>noise</code></td><td align="right"></td><td align="right">Generate random noise in \([-1; 1]\).</td></tr><tr><td align="right"><code>swap</code></td><td align="right"></td><td align="right">Swap values of two inputs of given type.</td></tr></table>
 <h2 id="2023-03-12_introductory_tutorial"><a href="#2023-03-12_introductory_tutorial" class="header-anchor">2023-03-12 Introductory tutorial</a></h2>
-<h3 id="general_notes"><a href="#general_notes" class="header-anchor">General notes</a></h3>
 <ul>
 <li><p>Basilisk is a conceptual solver for investigating problems in a Cartesian domain.</p>
 </li>
@@ -84,14 +86,17 @@
 <li><p>Check the <a href="http://basilisk.fr/src/Tips">tips</a>.</p>
 </li>
 </ul>
-<h3 id="functions_introduced_in_this_tutorial"><a href="#functions_introduced_in_this_tutorial" class="header-anchor">Functions introduced in this tutorial</a></h3>
-<table><tr><th align="right">Function</th><th align="right">Definition</th><th align="right">Uses</th></tr><tr><td align="right"><code>origin</code></td><td align="right"><a href="http://basilisk.fr/src/common.h">common.h</a></td><td align="right">Set the origin coordinate of cartesian system.</td></tr><tr><td align="right"><code>init_grid</code></td><td align="right"><a href="http://basilisk.fr/src/grid/"><code>grid/</code></a> &#40;overloaded&#41;</td><td align="right">Level of refinement &#40;size&#41; of initial grid.</td></tr><tr><td align="right"><code>statsf</code></td><td align="right"><a href="http://basilisk.fr/src/utils.h">utils.h</a></td><td align="right">Retrieve statistics of provided scalar field.</td></tr><tr><td align="right"><code>output_ppm</code></td><td align="right"><a href="http://basilisk.fr/src/output.h">output.h</a></td><td align="right">Generate a <em>Portable PixMap</em> image output.</td></tr><tr><td align="right"><code>adapt_wavelet</code></td><td align="right"><a href="http://basilisk.fr/src/grid/tree-common.h">grid/tree-common.h</a></td><td align="right">Adaptive grid refinement routine.</td></tr><tr><td align="right"><code>run</code></td><td align="right"><a href="http://basilisk.fr/src/run.h">run.h</a> &#40;overloaded&#41;</td><td align="right">Generic time loop for events execution.</td></tr></table>
 <h2 id="2023-03-14"><a href="#2023-03-14" class="header-anchor">2023-03-14</a></h2>
 <div class="page-foot">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
     Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
 </div>
 </div><!-- CONTENT ENDS HERE -->
+    
+        <script src="/medium-articles/libs/katex/katex.min.js"></script>
+<script src="/medium-articles/libs/katex/contrib/auto-render.min.js"></script>
+<script>renderMathInElement(document.body)</script>
+
     
     
   </body>
