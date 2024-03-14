@@ -2517,9 +2517,9 @@ version = "1.5.1"
 
 [[deps.Symbolics]]
 deps = ["ArrayInterface", "Bijections", "ConstructionBase", "DataStructures", "DiffRules", "Distributions", "DocStringExtensions", "DomainSets", "DynamicPolynomials", "ForwardDiff", "IfElse", "LaTeXStrings", "LambertW", "Latexify", "Libdl", "LinearAlgebra", "LogExpFunctions", "MacroTools", "Markdown", "NaNMath", "PrecompileTools", "RecipesBase", "Reexport", "Requires", "RuntimeGeneratedFunctions", "SciMLBase", "Setfield", "SparseArrays", "SpecialFunctions", "StaticArrays", "SymbolicIndexingInterface", "SymbolicUtils"]
-git-tree-sha1 = "bd8948a0f5c4cc0ec090fe090839ad16ac6b861f"
+git-tree-sha1 = "b0f171b10868aa0142bc11ea4412d6e1d73df4f7"
 uuid = "0c5d862f-8b57-4792-8d23-62f2024744c7"
-version = "5.25.0"
+version = "5.25.1"
 
     [deps.Symbolics.extensions]
     SymbolicsGroebnerExt = "Groebner"
