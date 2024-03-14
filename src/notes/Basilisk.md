@@ -53,3 +53,6 @@
 
 - Check the [tips](http://basilisk.fr/src/Tips).
 ## 2023-03-14
+
+- Game of life: outputs can be dumped as GIF.
+
