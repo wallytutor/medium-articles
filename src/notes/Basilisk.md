@@ -28,18 +28,55 @@
 	- [ ] Examples with [granular flows](http://basilisk.fr/sandbox/M1EMN/README#examples-of-granular-flows) and [silos](http://basilisk.fr/sandbox/M1EMN/Exemples/granular_sandglass.c)
 	- [ ] Rising bubble with granular flow
 
-## Functions learned
+## Data types
 
+- `scalar`
+- `vector`
+- `face`
+- [`msgstats`](http://basilisk.fr/src/poisson.h#mgstats) convergence statistics of (multigrid?) solver.
+## Functions
 | Function | Definition | Uses |
 | ---- | ---- | ---- |
-| `origin` | [common.h](http://basilisk.fr/src/common.h) | Set the origin coordinate of cartesian system. |
+| `origin` | [common.h](http://basilisk.fr/src/common.h) | Set the origin of cartesian system. |
 | `init_grid` | [`grid/`](http://basilisk.fr/src/grid/) (overloaded) | Level of refinement (size) of initial grid. |
-| `statsf` | [utils.h](http://basilisk.fr/src/utils.h) | Retrieve statistics of provided scalar field. |
-| `output_ppm` | [output.h](http://basilisk.fr/src/output.h) | Generate a *Portable PixMap* image output. |
+| `size` |  |  |
+| `statsf` | [utils.h](http://basilisk.fr/src/utils.h) | Retrieve statistics of a scalar field. |
+| `output_ppm` | [output.h](http://basilisk.fr/src/output.h) | Generate a image and video output. |
 | `adapt_wavelet` | [grid/tree-common.h](http://basilisk.fr/src/grid/tree-common.h) | Adaptive grid refinement routine. |
 | `run` | [run.h](http://basilisk.fr/src/run.h) (overloaded) | Generic time loop for events execution. |
 | `noise` |  | Generate random noise in $[-1; 1]$. |
-| `swap` |  | Swap values of two inputs of given type. |
+| `swap` |  | Swap values of two scalar arrays. |
+## Project management
+
+Although Basilisk is a very interesting dialect of C, its documentation is still old-fashioned and lack some structuration. Also sample programs are not written to be easily managed and extended for use in variant cases. Here we propose a structure for better creating projects with Basilisk:
+
+- A Basilisk project lives in its own folder: one executable means one directory.
+
+- The main file is called `app.c` and contains a very simple structure as provided in the dummy listing bellow. All the logic of a project, *i.e. the events*, is implemented in separate header files that are included after Basilisk includes.
+
+```c
+// Definitions
+#define LEVEL 7
+#define ...
+
+// Basilisk includes.
+#include "grid/multigrid.h"
+#include "run.h"
+#include ...  
+
+// Project includes.                                                      #include "project-base.h"
+#include "project-init.h"
+#include "project-post.h"
+#include "project-exec.h"
+
+int main() {
+	init_grid(1 << LEVEL);
+	...
+	run();
+}
+```
+
+- A simpler `Makefile` than Basilisk's default one is used for project building.
 
 ## 2023-03-12 Introductory tutorial
 
