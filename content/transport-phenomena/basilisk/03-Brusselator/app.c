@@ -1,18 +1,27 @@
 // Definitions
-#define LEVEL 8
+#define LEVEL 7
+#define MSIZE 64
 
-// Use a cartesian grid and generic loop.
-#include "grid/cartesian.h"
+// Basilisk includes.
+#include "grid/multigrid.h"
 #include "run.h"
+#include "diffusion.h"
 
 // Project includes.
-#include "project-fields.h"
+#include "project-base.h"
 #include "project-init.h"
+#include "project-post.h"
 #include "project-exec.h"
 
 int main() {
-    origin(-0.5, -0.5);
     init_grid(1 << LEVEL);
-    run();
+    size(MSIZE);
+
+    // Is this coming from diffusion.h?
+    TOLERANCE =  1.0e-04;
+
+    mu = 0.04; run();
+    mu = 0.10; run();
+    mu = 0.98; run();
 }
 

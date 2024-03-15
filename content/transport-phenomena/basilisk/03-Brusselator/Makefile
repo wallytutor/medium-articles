@@ -1,4 +1,4 @@
-CODENAME := game
+CODENAME := brusselator
 QCCOPTS  := -O2 -Wall
 
 
@@ -9,5 +9,5 @@ $(CODENAME): app.c
 	qcc $(QCCOPTS) app.c -o $(CODENAME) -lm
 
 clean:
-	rm -rf $(CODENAME) *.gif
+	rm -rf $(CODENAME) *.mp4 *.png
 
