@@ -46,6 +46,14 @@
 | `run` | [run.h](http://basilisk.fr/src/run.h) (overloaded) | Generic time loop for events execution. |
 | `noise` |  | Generate random noise in $[-1; 1]$. |
 | `swap` |  | Swap values of two scalar arrays. |
+| `input_stl` | [distance.h](http://basilisk.fr/src/distance.h#input_stl) | Read an STL file as an array of triplets. |
+| `bounding_box` | [distance.h](http://basilisk.fr/src/distance.h#bounding_box) | Determines the bounding box of inputs (segments or triangles). |
+| `distance` | [distance.h](http://basilisk.fr/src/distance.h#distance) | Distance to coordinate. |
+| `view` | [draw.h](http://basilisk.fr/src/draw.h#view) | Setup of viewing (camera) parameters. |
+| `isosurface` | [draw.h](http://basilisk.fr/src/draw.h#isosurface) | Displays an isosurface of a field. |
+| `draw_vof` | [draw.h](http://basilisk.fr/src/draw.h#draw_vof) | Display VOF reconstructed interfaces. |
+| `clear` | [draw.h](http://basilisk.fr/src/draw.h#clear) | Removes previous objects. |
+| `save` | [view.h](http://basilisk.fr/src/view.h#save) | Dumps image(s) to file. |
 ## Project management
 
 Although Basilisk is a very interesting dialect of C, its documentation is still old-fashioned and lack some structuration. Also sample programs are not written to be easily managed and extended for use in variant cases. Here we propose a structure for better creating projects with Basilisk:
@@ -83,8 +91,10 @@ int main() {
 | 01 | Tutorial basics | Basilisk is a conceptual solver for investigating problems in a Cartesian domain.<br><br>Different steps of the simulations are set by `event`'s, which use a specific syntax do indicate whether they depend on a time or iteration condition. These steps might include setup of initial conditions, storage of intermediate results or solution, grid refinement, etc.<br><br>For iterating over arrays Basilisk provides a `foreach()`loop extending the C-language.<br><br>A standard `Makefile` is provided by Basilisk for managing common workflows.<br><br>Check the [tips](http://basilisk.fr/src/Tips). |
 | 02 | Game of life | A simple implementation of [Conway's game of life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) to get used with syntax. |
 | 03 | Brusselator | Solves the 2D [Brusselator](https://en.wikipedia.org/wiki/Brusselator), a theoretical autocatalytic reaction diffusion system. The set of parameters used in the study for the stable Turin points where the ones proposed by [[@Pena2001a]] **Interesting** material for preparing courses extending this to other oscillating systems can be found [here](https://web.archive.org/web/20170909182522/http://www.idea.wsu.edu/OscilChem/#Brusselator%20Model). |
-| 04 | Ginzburg-Landau | Solves the complex [Ginzburg-Landau equation](https://en.wikipedia.org/wiki/Ginzburg%E2%80%93Landau_equation) describing the nonlinear evolution of disturbances near the transition from a stable to unstable state of a system. Additional materials are provided [here](https://codeinthehole.com/tutorial/index.html). It would be a **good project** to include the term $\alpha$ in the equation and the Laplacian term that goes with it.  |
-| 05 | Distance field | Additional [steps](http://basilisk.fr/src/gl/INSTALL) must be taken for compilation with rendering. |
+| 04 | Ginzburg-Landau | Solves the complex [Ginzburg-Landau equation](https://en.wikipedia.org/wiki/Ginzburg%E2%80%93Landau_equation) describing the nonlinear evolution of disturbances near the transition from a stable to unstable state of a system. Additional materials are provided [here](https://codeinthehole.com/tutorial/index.html). It would be a **good project** to include the term $\alpha$ in the equation and the Laplacian term that goes with it. |
+| 05 | Distance field | This can be seen as a particular case of pre-/post-processing. It can prove useful when initializing domains with scanned surfaces in STL or other compatible format. Additional [steps](http://basilisk.fr/src/gl/INSTALL) must be taken for compilation with rendering (modifications to Makefile). Iteration over dimensions can be done with `foreach_dimension()`. |
+|  |  |  |
+|  |  |  |
 ## Teaching plan
 
 ### Week 1
