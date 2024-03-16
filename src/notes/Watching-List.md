@@ -16,3 +16,6 @@
 - [ ] [Specification benchmarking](https://spec.org/)
 - [ ] [Slurm](https://www.schedmd.com/)
 - [ ] [Top 500](https://top500.org/)
+- [ ] [Matrix Methods for Signal Processing, Data Analysis and Machine Learning, F24, Prof. Jeff Fessler](https://web.eecs.umich.edu/~fessler/course/551/)
+- [ ] [Precompilation tutorial](https://julialang.org/blog/2021/01/precompile_tutorial/)
+- [ ] 

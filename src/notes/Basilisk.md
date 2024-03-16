@@ -90,29 +90,27 @@ int main() {
 ### Week 1
 
 - **In-class:** Fundamentals of scientific computing (history, basics of hardware, number representations, numerical solvers, parallel computing, etc.)
-- Basics of Linux command line and installation of VIM and Basilisk
-- Programming in C tutorial and mini-projects to warm-up.
-
+- **Tutorial:** Basics of Linux command line, VIM text editor, programming in C (with mini-projects), and Basilisk C.
 ### Week 2
 
 - **In-class:** 
-
+- **Tutorial:** 
 ### Week 3
 
 - **In-class:** 
-
+- **Tutorial:** 
 ### Week 4
 
 - **In-class:** 
-
+- **Tutorial:** 
 ### Week 5
 
 - **In-class:** 
-
+- **Tutorial:** 
 ### Week 6
 
 - **In-class:** 
-
+- **Tutorial:** 
 ## Glossary
 
 - **Hopf bifurcation**  is a critical point where, as a parameter changes, a system's stability switches and a periodic solution arises. (see [this](https://en.wikipedia.org/wiki/Hopf_bifurcation)).
