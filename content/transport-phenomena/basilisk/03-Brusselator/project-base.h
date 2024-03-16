@@ -1,5 +1,8 @@
 #pragma once
 
+// Maximum time step in dynamic management.
+const double M_MAX_TIME_STEP = 1.0;
+
 // Species concentrations.
 scalar C1[], C2[];
 

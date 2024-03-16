@@ -1,13 +1,14 @@
 CODENAME := brusselator
 QCCOPTS  := -O2 -Wall
+RESULTS  := *.ppm *.gif *.png *.mp4
 
 
 all: $(CODENAME) 
 	./$(CODENAME)
 
-$(CODENAME): app.c
+$(CODENAME): app.c *.h
 	qcc $(QCCOPTS) app.c -o $(CODENAME) -lm
 
 clean:
-	rm -rf $(CODENAME) *.mp4 *.png
+	rm -rf $(CODENAME) $(RESULTS)
 

@@ -3,7 +3,7 @@
 event integration (i++)
 {
     // Adapt and bound to 1.0 the next time-step.
-    dt = dtnext (1.0);
+    dt = dtnext(M_MAX_TIME_STEP);
 
     // Solve problem in an uncoupled way.
     scalar r[], beta[];
@@ -25,3 +25,4 @@ event integration (i++)
   
     mgd2 = diffusion(C2, dt, c, r, beta);
 }
+

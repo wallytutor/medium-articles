@@ -1,13 +1,14 @@
 CODENAME := game
 QCCOPTS  := -O2 -Wall
+RESULTS  := *.ppm *.gif *.png *.mp4
 
 
-all: $(CODENAME).out 
-	./$(CODENAME).out 
+all: $(CODENAME) 
+	./$(CODENAME) 
 
-$(CODENAME).out: $(CODENAME).c
-	qcc $(QCCOPTS) $(CODENAME).c -o $(CODENAME).out -lm
+$(CODENAME): app.c *.h
+	qcc $(QCCOPTS) app.c -o $(CODENAME) -lm
 
 clean:
-	rm -rf $(CODENAME).out *.gif
+	rm -rf $(CODENAME) $(RESULTS)
 

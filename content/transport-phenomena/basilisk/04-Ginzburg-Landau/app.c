@@ -1,8 +1,10 @@
 // app.c
 #define LEVEL 8
+#define MSIZE 100
 
-#include "grid/cartesian.h"
+#include "grid/multigrid.h"
 #include "run.h"
+#include "diffusion.h"
 
 #include "project-base.h"
 #include "project-init.h"
@@ -10,7 +12,7 @@
 #include "project-exec.h"
 
 int main() {
-    origin(-0.5, -0.5);
+    size(MSIZE);
     init_grid(1 << LEVEL);
     run();
 }

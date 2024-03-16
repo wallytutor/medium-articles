@@ -6,9 +6,10 @@
 #include "run.h"
 
 // Project includes.
-#include "project-fields.h"
+#include "project-base.h"
 #include "project-init.h"
 #include "project-exec.h"
+#include "project-post.h"
 
 int main() {
     origin(-0.5, -0.5);
