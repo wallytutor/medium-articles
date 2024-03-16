@@ -77,19 +77,42 @@ int main() {
 ```
 
 - A simpler `Makefile` than Basilisk's default one is used for project building.
+## Commented examples
+| # | Name | Description |
+| ---- | ---- | ---- |
+| 01 | Tutorial basics | Basilisk is a conceptual solver for investigating problems in a Cartesian domain.<br><br>Different steps of the simulations are set by `event`'s, which use a specific syntax do indicate whether they depend on a time or iteration condition. These steps might include setup of initial conditions, storage of intermediate results or solution, grid refinement, etc.<br><br>For iterating over arrays Basilisk provides a `foreach()`loop extending the C-language.<br><br>A standard `Makefile` is provided by Basilisk for managing common workflows.<br><br>Check the [tips](http://basilisk.fr/src/Tips). |
+| 02 | Game of life | A simple implementation of [Conway's game of life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) to get used with syntax. |
+| 03 | Brusselator | Solves the 2D [Brusselator](https://en.wikipedia.org/wiki/Brusselator), a theoretical autocatalytic reaction diffusion system. The set of parameters used in the study for the stable Turin points where the ones proposed by [[@Pena2001a]] **Interesting** material for preparing courses extending this to other oscillating systems can be found [here](https://web.archive.org/web/20170909182522/http://www.idea.wsu.edu/OscilChem/#Brusselator%20Model). |
+| 04 | Ginzburg-Landau | Solves the complex [Ginzburg-Landau equation](https://en.wikipedia.org/wiki/Ginzburg%E2%80%93Landau_equation) describing the nonlinear evolution of disturbances near the transition from a stable to unstable state of a system. Additional materials are provided [here](https://codeinthehole.com/tutorial/index.html). |
+|  |  |  |
+## Teaching plan
 
-## 2023-03-12 Introductory tutorial
+### Week 1
 
-- Basilisk is a conceptual solver for investigating problems in a Cartesian domain.
+- **In-class:** Fundamentals of scientific computing (history, basics of hardware, number representations, numerical solvers, parallel computing, etc.)
+- Basics of Linux command line and installation of VIM and Basilisk
+- Programming in C tutorial and mini-projects to warm-up.
 
-- Different steps of the simulations are set by `event`'s, which use a specific syntax do indicate whether they depend on a time or iteration condition. These steps might include setup of initial conditions, storage of intermediate results or solution, grid refinement, etc.
+### Week 2
 
-- For iterating over arrays Basilisk provides a `foreach()`loop extending the C-language.
+- **In-class:** 
 
-- A standard `Makefile` is provided by Basilisk for managing common workflows.
+### Week 3
 
-- Check the [tips](http://basilisk.fr/src/Tips).
-## 2023-03-14
+- **In-class:** 
 
-- Game of life: outputs can be dumped as GIF.
+### Week 4
 
+- **In-class:** 
+
+### Week 5
+
+- **In-class:** 
+
+### Week 6
+
+- **In-class:** 
+
+## Glossary
+
+- **Hopf bifurcation**  is a critical point where, as a parameter changes, a system's stability switches and a periodic solution arises. (see [this](https://en.wikipedia.org/wiki/Hopf_bifurcation)).
