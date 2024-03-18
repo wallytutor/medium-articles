@@ -40,6 +40,7 @@
 | `origin` | [common.h](http://basilisk.fr/src/common.h) | Set the origin of cartesian system. |
 | `init_grid` | [`grid/`](http://basilisk.fr/src/grid/) (overloaded) | Level of refinement (size) of initial grid. |
 | `size` |  |  |
+| `periodic` |  | Set periodic boundary conditions. |
 | `statsf` | [utils.h](http://basilisk.fr/src/utils.h) | Retrieve statistics of a scalar field. |
 | `output_ppm` | [output.h](http://basilisk.fr/src/output.h) | Generate a image and video output. |
 | `adapt_wavelet` | [grid/tree-common.h](http://basilisk.fr/src/grid/tree-common.h) | Adaptive grid refinement routine. |
@@ -54,6 +55,11 @@
 | `draw_vof` | [draw.h](http://basilisk.fr/src/draw.h#draw_vof) | Display VOF reconstructed interfaces. |
 | `clear` | [draw.h](http://basilisk.fr/src/draw.h#clear) | Removes previous objects. |
 | `save` | [view.h](http://basilisk.fr/src/view.h#save) | Dumps image(s) to file. |
+| `refine_biquadradic` | [grid/multigrid-common.h](http://basilisk.fr/src/grid/multigrid-common.h#refine_biquadratic) |  |
+| `wavelet` | [grid/multigrid-common.h](http://basilisk.fr/src/grid/multigrid-common.h#wavelet) |  |
+| `inverse_wavelet` | [grid/multigrid-common.h](http://basilisk.fr/src/grid/multigrid-common.h#inverse_wavelet) |  |
+| `boundary_level` |  |  |
+| `unrefine` |  |  |
 ## Project management
 
 Although Basilisk is a very interesting dialect of C, its documentation is still old-fashioned and lack some structuration. Also sample programs are not written to be easily managed and extended for use in variant cases. Here we propose a structure for better creating projects with Basilisk:
@@ -93,8 +99,11 @@ int main() {
 | 03 | Brusselator | Solves the 2D [Brusselator](https://en.wikipedia.org/wiki/Brusselator), a theoretical autocatalytic reaction diffusion system. The set of parameters used in the study for the stable Turin points where the ones proposed by [[@Pena2001a]] **Interesting** material for preparing courses extending this to other oscillating systems can be found [here](https://web.archive.org/web/20170909182522/http://www.idea.wsu.edu/OscilChem/#Brusselator%20Model). |
 | 04 | Ginzburg-Landau | Solves the complex [Ginzburg-Landau equation](https://en.wikipedia.org/wiki/Ginzburg%E2%80%93Landau_equation) describing the nonlinear evolution of disturbances near the transition from a stable to unstable state of a system. Additional materials are provided [here](https://codeinthehole.com/tutorial/index.html). It would be a **good project** to include the term $\alpha$ in the equation and the Laplacian term that goes with it. |
 | 05 | Distance field | This can be seen as a particular case of pre-/post-processing. It can prove useful when initializing domains with scanned surfaces in STL or other compatible format. Additional [steps](http://basilisk.fr/src/gl/INSTALL) must be taken for compilation with rendering (modifications to Makefile). Iteration over dimensions can be done with `foreach_dimension()`. |
-|  |  |  |
-|  |  |  |
+| 06 | Wavelet transform | Provides a tutorial on wavelet transform and associated filters. It is presented as the basis to understand mesh adaptation in Basilisk. Recommended reading of [[@Sweldens1998a]]. |
+| 07 |  |  |
+| 08 |  |  |
+| 09 |  |  |
+| 10 |  |  |
 ## Teaching plan
 
 ### Week 1

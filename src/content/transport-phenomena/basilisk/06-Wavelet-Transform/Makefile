@@ -1,6 +1,6 @@
 CODENAME := wavelet
 QCCOPTS  := -O2 -Wall
-RESULTS  := *.ppm *.gif *.png *.mp4
+RESULTS  := *.ppm *.gif *.png *.mp4 *.csv
 
 
 all: $(CODENAME) 
