@@ -2,6 +2,11 @@ For the past decade I have constantly worked with innovation. That's all I know 
 
 So far, my words might seem harsh and full of anger to the uneager reader. As I scientist I am prompt to expect hateful reactions from the conservatives and religiously aligned corporate people. But as a scientist I shall recur to the reason and argumentation to expose, solely based on observations, my conclusions on the matter. Time to end the vague wording, let's get to the anecdotes.
 ## Installing a compiler, but you no admin
+Early in my PhD days I was told I should model some chemically reacting flows to better understand some processes I was studying. As usual, you start that by a literature review cause you are told so or because you are not dumb enough to think you can reinvent the wheel.
+
+After some reading I realized there was *nothing* to add to that field under my research scope and it was time to use the *numbers* that were already available in the literature. *Yay, time to code!* Well, not so fun... In fact, that *nothing-moment* is when PhD students realize how humble they have to be in face of existing knowledge. It is also often the point where the *cracks* appear in the system, the small spots where they can make a small contribution.
+
+My lab was a standard *Windows-only* environment, although later on I discovered that there were more exceptions than rules in the system. I was actually in the *wrong side of the building*, most students in the other wing had everything I dreamt of. Since the libraries I was aiming to use at the time were not portable from *Nix*, I had to start my crusade to show IT I was not *the standard user* and that I was *worth Baloo048* (Baloo048 was the name of my workstation once I got authorized a *CentOS 5* system)!
 
 ## Security above obscurity (and overall)
 Here I am not making a reference to [security through obscurity](https://en.wikipedia.org/wiki/Security_through_obscurity) and I will actually cite several unrelated events that I have seen so far.
