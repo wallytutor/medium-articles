@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  
+   <link rel="stylesheet" href="/medium-articles/libs/highlight/styles/github.min.css">
+   
   <link rel="stylesheet" href="/medium-articles/css/franklin.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
 <link rel="stylesheet" href="/medium-articles/css/font-awesome.min.css">
@@ -15,7 +16,7 @@
 <link rel="shortcut icon" href="/medium-articles/assets/favicon.ico">
 
 
-   <title></title>  
+   <title>Verification</title>  
 </head>
 <body>
   <header>
@@ -33,12 +34,22 @@
 
 
 <!-- Content appended here -->
-<div class="franklin-content"><div class="page-foot">
+<div class="franklin-content"><h2 id="verification"><a href="#verification" class="header-anchor">Verification</a></h2>
+<p>Using the base package provided <a href="https://github.com/wallytutor/OpenFOAM">here</a> we can verify the computation of number of parcels per second of sample case <code>injectionChannel</code>. Notice that the value of <code>mdot</code> has been reversed engineered so that it matches the expected value.</p>
+<pre><code class="language-julia">import OpenFOAM as OF
+
+OF.parcels_per_second&#40;; mdot &#61; 0.2, rhop &#61; 1000.0, diam &#61; 650.0e-06, nParticle &#61; 1&#41;
+# Output: 1390885</code></pre>
+<div class="page-foot">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
     Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
 </div>
 </div><!-- CONTENT ENDS HERE -->
     
+    
+        <script src="/medium-articles/libs/highlight/highlight.min.js"></script>
+<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
+
     
   </body>
 </html>

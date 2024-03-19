@@ -74,12 +74,6 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/Models/index.html</loc>
-    <lastmod>2024-03-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
     <loc>https://wallytutor.github.io/medium-articles/content/medium/index.html</loc>
     <lastmod>2024-03-19</lastmod>
     <changefreq>monthly</changefreq>
@@ -158,13 +152,19 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM11/index.html</loc>
+    <lastmod>2024-03-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>https://wallytutor.github.io/medium-articles/notes/Basilisk/index.html</loc>
     <lastmod>2024-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/multicomponentFluid/index.html</loc>
+    <loc>https://wallytutor.github.io/medium-articles/notes/Excalidraw/OpenFOAM-Cases/index.html</loc>
     <lastmod>2024-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -272,6 +272,12 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>https://wallytutor.github.io/medium-articles/notes/Transport/index.html</loc>
+    <lastmod>2024-03-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>https://wallytutor.github.io/medium-articles/notes/Reading/%40ORourke2010/index.html</loc>
     <lastmod>2024-03-19</lastmod>
     <changefreq>monthly</changefreq>
@@ -368,12 +374,6 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/index.html</loc>
-    <lastmod>2024-03-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
     <loc>https://wallytutor.github.io/medium-articles/content/medium/08-PSR-control-MPC-in-Python-A/index.html</loc>
     <lastmod>2024-03-19</lastmod>
     <changefreq>monthly</changefreq>
@@ -392,19 +392,7 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/notes/DWSIM/index.html</loc>
-    <lastmod>2024-03-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
     <loc>https://wallytutor.github.io/medium-articles/content/medium/03-Function-Approximation/index.html</loc>
-    <lastmod>2024-03-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://wallytutor.github.io/medium-articles/notes/Transport-Phenomena/Diffusion-Equation/index.html</loc>
     <lastmod>2024-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -416,25 +404,7 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/notes/Transport-Phenomena/Dimensionless-Groups/index.html</loc>
-    <lastmod>2024-03-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
     <loc>https://wallytutor.github.io/medium-articles/content/medium/08-PSR-control-MPC-in-Python-B/index.html</loc>
-    <lastmod>2024-03-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/Concepts/index.html</loc>
-    <lastmod>2024-03-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/Cases/index.html</loc>
     <lastmod>2024-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -458,6 +428,12 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/multicomponentFluid/aachenBombSteady/index.html</loc>
+    <lastmod>2024-03-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>https://wallytutor.github.io/medium-articles/notes/Reading/%40Guo2023d/index.html</loc>
     <lastmod>2024-03-19</lastmod>
     <changefreq>monthly</changefreq>
@@ -470,25 +446,19 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/Dictionaries/cloudProperties/index.html</loc>
-    <lastmod>2024-03-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
     <loc>https://wallytutor.github.io/medium-articles/notes/Reading/%40Haghighat2021sciann/index.html</loc>
     <lastmod>2024-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/content/transport-phenomena/index.html</loc>
+    <loc>https://wallytutor.github.io/medium-articles/notes/DWSIM/index.html</loc>
     <lastmod>2024-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/notes/OpenFOAM/incompressibleDenseParticleFluid/index.html</loc>
+    <loc>https://wallytutor.github.io/medium-articles/content/transport-phenomena/index.html</loc>
     <lastmod>2024-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
