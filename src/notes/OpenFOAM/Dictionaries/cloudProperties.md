@@ -7,16 +7,6 @@ In OpenFOAM, *clouds* designate the injection of a secondary phase, generally so
 4. `multiRegion`
 
 The default version of the dictionary provided [here](https://github.com/OpenFOAM/OpenFOAM-11/blob/master/etc/caseDicts/solvers/lagrangian/cloudProperties) is not yet documented as of OpenFOAM v11 and does not contain any solver specific configurations, so the users must refer to the tutorial cases for setting up their studies.  A post-processing particle tracking function associated to the dictionary is provided [here (untested)](https://github.com/OpenFOAM/OpenFOAM-11/blob/master/etc/caseDicts/postProcessing/solvers/particles).
-
-## Cloud types
-
-| Cloud | Description |
-| ---- | ---- |
-| [MPPICCloud]() |  |
-| [reactingMultiphaseCloud]() |  |
-| [sprayCloud]() |  |
-|  |  |
-|  |  |
 ## Guidelines
 
 > **NOTE:** the text that follows was written when creating cases for `incompressibleDenseParticleFluid`. Care must be taken when following the recommendations below since they are (for now) solver-specific. This will be updated as I take notes while building/testing cases for other solvers using clouds.
@@ -37,35 +27,9 @@ solution
 }
 ```
 
-When using `collidingCloud` we enabled the use of `collisionModel pairCollision` and material properties can be set in detail in sub-dictionary `constantProperties`. Notice that this is computationally expensive, we will come back to this topic in specific examples using it.
+Being a momentum cloud, `MPPICCloud` makes use only of `patchInteractionModel localInteraction` for interaction with the environment and collisions between particles are not taken into account (that is not completely true if you consider the packing effects that can be enabled as *collisions*). Again, it is better to go deeper in the case studies.
 
-On the other hand, `MPPICCloud` makes use only of `patchInteractionModel localInteraction` for interaction with the environment and collisions between particles are not taken into account (that is not completely true if you consider the packing effects that can be enabled as *collisions*). Again, it is better to go deeper in the case studies.
-
-The main models for setting up a particle simulation in `constant/cloudProperties`  are:
-
-- [[Models#Injection models|InjectionModel]]
-- [`ParticleForce`](https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html)
-
-In the case of `MPPICCloud` focus is given in the following:
-
-- [`DampingModel`](https://cpp.openfoam.org/v11/classFoam_1_1DampingModel.html)
-- [`IsotropyModel`](https://cpp.openfoam.org/v11/classFoam_1_1IsotropyModel.html)
-- [`PackingModel`](https://cpp.openfoam.org/v11/classFoam_1_1PackingModel.html)
-- [`PatchInteractionModel`](https://cpp.openfoam.org/v11/classFoam_1_1PatchInteractionModel.html)
-
-In some particular situations the following models might be required:
-
-- [`DispersionModel`](https://cpp.openfoam.org/v11/classFoam_1_1DispersionModel.html)
-- [`HeatTransferModel`](https://cpp.openfoam.org/v11/classFoam_1_1HeatTransferModel.html)
-- [`StochasticCollisionModel`](https://cpp.openfoam.org/v11/classFoam_1_1StochasticCollisionModel.html)
-- [`SurfaceFilmModel`](https://cpp.openfoam.org/v11/classFoam_1_1SurfaceFilmModel.html)
-
-Notice that when dealing with `incompressibleDenseParticleFluid` the main `ParticleForce` models other than `gravity` are inherited by [`DenseDragForce`](https://cpp.openfoam.org/v11/classFoam_1_1DenseDragForce.html).
-
-When working with `collidingCloud` the following is also needed:
-
--  [`CollisionModel`](https://cpp.openfoam.org/v11/classFoam_1_1CollisionModel.html)
-
+The main models for setting up a particle simulation in `constant/cloudProperties`  are the [[Models#Injection models|InjectionModel]] and the [`ParticleForce`](https://cpp.openfoam.org/v11/classFoam_1_1ParticleForce.html) to be used. Notice that when dealing with `incompressibleDenseParticleFluid` the main `ParticleForce` models other than `gravity` are inherited by [`DenseDragForce`](https://cpp.openfoam.org/v11/classFoam_1_1DenseDragForce.html).
 ## Tips and reminders
 
 - It is a good idea to set `SOI` to a value higher than zero (dimensioned to match the global time-scale of the problem) so that flow is fully developed before particles arrive.
