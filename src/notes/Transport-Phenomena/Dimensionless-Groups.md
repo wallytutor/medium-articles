@@ -4,6 +4,8 @@
 
 [**Nusselt:**](https://en.wikipedia.org/wiki/Nusselt_number) Ratio of convective to conductive heat transfer at a boundary in a fluid, defined as $\mathrm{Nu}=\frac{hL}{k}$. Often in buoyancy-driven flow analysis it is correlated as $\mathrm{Nu}=a\mathrm{Ra}^b$. A Nusselt number of value one represents heat transfer by pure conduction. Increasing this number implies a laminar conductive-dominant flow and then a convective dominant turbulent flow.
 
+[**Sherwood**](https://en.wikipedia.org/wiki/Sherwood_number):  Also called the **mass transfer [Nusselt number](https://en.wikipedia.org/wiki/Nusselt_number "Nusselt number")**) is a dimensionless number used in mass-transfer operation. It represents the ratio of the total mass transfer rate (convection + diffusion) to the rate of diffusive mass transport, and is named in honor of [Thomas Kilgore Sherwood](https://en.wikipedia.org/wiki/Thomas_Kilgore_Sherwood "Thomas Kilgore Sherwood").
+
 [**Grashof:**](https://en.wikipedia.org/wiki/Grashof_number) Ratio of buoyancy to viscous forces defined as $\mathrm{Gr}=\frac{g\beta(T_s-T_{\infty})L^3}{\nu^2}$ and is analogous to Reynolds number in natural convection. Increasing the value of this number above a given threshold promotes buoyancy driven flow.
 
 [**Rayleigh:**](https://en.wikipedia.org/wiki/Rayleigh_number) Product of Grashof $\mathrm{Gr}$ and Prandtl $\mathrm{Pr}$ numbers. Related to the transition from laminar to turbulent in buoyancy-driven flows. Laminar to turbulent is assumed to take place at $10^9$  [[@Balaji2014]].
