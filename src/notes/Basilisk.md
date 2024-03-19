@@ -100,18 +100,63 @@ int main() {
 
 - A simpler `Makefile` than Basilisk's default one is used for project building.
 ## Commented examples
-| # | Name | Description |
-| ---- | ---- | ---- |
-| 01 | Tutorial basics | Basilisk is a conceptual solver for investigating problems in a Cartesian domain.<br><br>Different steps of the simulations are set by `event`'s, which use a specific syntax do indicate whether they depend on a time or iteration condition. These steps might include setup of initial conditions, storage of intermediate results or solution, grid refinement, etc.<br><br>For iterating over arrays Basilisk provides a `foreach()`loop extending the C-language.<br><br>A standard `Makefile` is provided by Basilisk for managing common workflows.<br><br>Check the [tips](http://basilisk.fr/src/Tips). |
-| 02 | Game of life | A simple implementation of [Conway's game of life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) to get used with syntax. |
-| 03 | Brusselator | Solves the 2D [Brusselator](https://en.wikipedia.org/wiki/Brusselator), a theoretical autocatalytic reaction diffusion system. The set of parameters used in the study for the stable Turin points where the ones proposed by [[@Pena2001a]] **Interesting** material for preparing courses extending this to other oscillating systems can be found [here](https://web.archive.org/web/20170909182522/http://www.idea.wsu.edu/OscilChem/#Brusselator%20Model). |
-| 04 | Ginzburg-Landau | Solves the complex [Ginzburg-Landau equation](https://en.wikipedia.org/wiki/Ginzburg%E2%80%93Landau_equation) describing the nonlinear evolution of disturbances near the transition from a stable to unstable state of a system. Additional materials are provided [here](https://codeinthehole.com/tutorial/index.html). It would be a **good project** to include the term $\alpha$ in the equation and the Laplacian term that goes with it. |
-| 05 | Distance field | This can be seen as a particular case of pre-/post-processing. It can prove useful when initializing domains with scanned surfaces in STL or other compatible format. Additional [steps](http://basilisk.fr/src/gl/INSTALL) must be taken for compilation with rendering (modifications to Makefile). Iteration over dimensions can be done with `foreach_dimension()`. |
-| 06 | Wavelet transform | Provides a tutorial on wavelet transform and associated filters. It is presented as the basis to understand mesh adaptation in Basilisk. Recommended reading of [[@Sweldens1998a]]. |
-| 07 |  |  |
-| 08 |  |  |
-| 09 |  |  |
-| 10 |  |  |
+
+### Tutorial basics
+| Reference | [Tutorial](http://basilisk.fr/Tutorial) |
+| ---- | ---- |
+| Code | 01-Tutorial-Basics |
+| Notes | Basilisk is a conceptual solver for investigating problems in a Cartesian domain.<br><br>Different steps of the simulations are set by `event`'s, which use a specific syntax do indicate whether they depend on a time or iteration condition. These steps might include setup of initial conditions, storage of intermediate results or solution, grid refinement, etc.<br><br>For iterating over arrays Basilisk provides a `foreach()`loop extending the C-language.<br><br>A standard `Makefile` is provided by Basilisk for managing common workflows.<br><br>Check the [tips](http://basilisk.fr/src/Tips). |
+### Game of life
+| Reference | [Conway’s game of life](http://basilisk.fr/src/examples/life.c) |
+| ---- | ---- |
+| Code | 02-Game-of-life |
+| Notes | A simple implementation of [Conway's game of life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) to get used with syntax. |
+### Brusselator
+| Reference | [Coupled reaction-diffusion equations](http://basilisk.fr/src/examples/brusselator.c) |
+| ---- | ---- |
+| Code |  |
+| Notes | Solves the 2D [Brusselator](https://en.wikipedia.org/wiki/Brusselator), a theoretical autocatalytic reaction diffusion system. The set of parameters used in the study for the stable Turin points where the ones proposed by [[@Pena2001a]] **Interesting** material for preparing courses extending this to other oscillating systems can be found [here](https://web.archive.org/web/20170909182522/http://www.idea.wsu.edu/OscilChem/#Brusselator%20Model). |
+### Ginzburg-Landau
+| Reference | [The complex Ginzburg-Landau equation](http://basilisk.fr/src/examples/ginzburg-landau.c) |
+| ---- | ---- |
+| Code |  |
+| Notes | Solves the complex [Ginzburg-Landau equation](https://en.wikipedia.org/wiki/Ginzburg%E2%80%93Landau_equation) describing the nonlinear evolution of disturbances near the transition from a stable to unstable state of a system. Additional materials are provided [here](https://codeinthehole.com/tutorial/index.html). It would be a **good project** to include the term $\alpha$ in the equation and the Laplacian term that goes with it. |
+### Distance field
+| Reference | [Distance field computation from a 3D model](http://basilisk.fr/src/examples/distance.c) |
+| ---- | ---- |
+| Code |  |
+| Notes | This can be seen as a particular case of pre-/post-processing. It can prove useful when initializing domains with scanned surfaces in STL or other compatible format. Additional [steps](http://basilisk.fr/src/gl/INSTALL) must be taken for compilation with rendering (modifications to Makefile). Iteration over dimensions can be done with `foreach_dimension()`. |
+### Wavelet transform
+| Reference | [Wavelet transforms and filtering](http://basilisk.fr/src/examples/wavelet.c) |
+| ---- | ---- |
+| Code |  |
+| Notes | Provides a tutorial on wavelet transform and associated filters. It is presented as the basis to understand mesh adaptation in Basilisk. Recommended reading of [[@Sweldens1998a]]. |
+### Decaying turbulence
+| Reference | [Decaying two-dimensional turbulence](http://basilisk.fr/src/examples/turbulence.c) |
+| ---- | ---- |
+| Code |  |
+| Notes |  |
+### x
+| Reference | [Bénard–von Kármán Vortex Street for flow around a cylinder](http://basilisk.fr/src/examples/karman.c) |
+| ---- | ---- |
+| Code |  |
+| Notes |  |
+### x
+| Reference | [Vortex shedding behind a sphere](http://basilisk.fr/src/examples/sphere.c) |
+| ---- | ---- |
+| Code |  |
+| Notes |  |
+### x
+| Reference | [Stokes flow through a complex 3D porous medium](http://basilisk.fr/src/examples/porous3D.c) |
+| ---- | ---- |
+| Code |  |
+| Notes |  |
+### x
+| Reference | [Forced isotropic turbulence in a triply-periodic box](http://basilisk.fr/src/examples/isotropic.c) |
+| ---- | ---- |
+| Code |  |
+| Notes |  |
+
 ## Teaching plan
 
 ### Week 1

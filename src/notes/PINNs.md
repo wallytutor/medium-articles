@@ -61,8 +61,20 @@ Unraveling the design pattern of physics-informed neural networks:
 
 Other current readings:
 
-- [Discovering Differential Equations with Physics-Informed Neural Networks and Symbolic Regression](https://towardsdatascience.com/discovering-differential-equations-with-physics-informed-neural-networks-and-symbolic-regression-c28d279c0b4d)
+- [ ] [Discovering Differential Equations with Physics-Informed Neural Networks and Symbolic Regression](https://towardsdatascience.com/discovering-differential-equations-with-physics-informed-neural-networks-and-symbolic-regression-c28d279c0b4d)
 
-- [Solving Inverse Problems With Physics-Informed DeepONet: A Practical Guide With Code Implementation](https://towardsdatascience.com/solving-inverse-problems-with-physics-informed-deeponet-a-practical-guide-with-code-implementation-27795eb4f502)
+- [ ] [Solving Inverse Problems With Physics-Informed DeepONet: A Practical Guide With Code Implementation](https://towardsdatascience.com/solving-inverse-problems-with-physics-informed-deeponet-a-practical-guide-with-code-implementation-27795eb4f502)
 
-- [Introduction to Physics-informed Neural Networks](https://towardsdatascience.com/solving-differential-equations-with-neural-networks-afdcf7b8bcc4)
+- [ ] [Introduction to Physics-informed Neural Networks](https://towardsdatascience.com/solving-differential-equations-with-neural-networks-afdcf7b8bcc4)
+
+- [ ] [Solving ODE system with PINN](https://discourse.julialang.org/t/solving-ode-system-with-pinn/54750)
+
+- [ ] [Mathematics for Machine Learning and Simulation](https://github.com/Ceyron/machine-learning-and-simulation)
+
+- [ ] [Physics-Informed Neural Networks (PINNs) - An Introduction - Ben Moseley | The Science Circle](https://www.youtube.com/watch?v=G_hIppUWcsc)
+
+- [ ] [Teaching Neural Network to Solve Navier-Stokes Equations](https://www.youtube.com/watch?v=ISp-hq6AH3Q)
+
+- [ ] [Physics-Informed Neural Networks in Julia](https://www.youtube.com/watch?v=Xfb7tqs7gQA)
+
+- [ ] [Scientific AI: Domain Models With Integrated Machine Learning | Chris Rackauckas | JuliaCon 2019](https://www.youtube.com/watch?v=FGfx8CQHdQA&t=925s)

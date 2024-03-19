@@ -58,3 +58,7 @@ debugInConsole: false # Print debug info in Obsidian console
 
 ![](https://www.youtube.com/watch?v=Zl3GjE_C7Vk)
 ## Interpolation for Parametric ROMs
+
+## Additional materials
+
+![Professor Nick Trefethen, University of Oxford, Linear Algebra Optimization](https://www.youtube.com/watch?v=JngdaWe3-gg)
