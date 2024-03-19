@@ -14,8 +14,13 @@
 - [ ] [VIM sheet](https://vimsheet.com/)
 
 - [ ] [Specification benchmarking](https://spec.org/)
+
 - [ ] [Slurm](https://www.schedmd.com/)
+
 - [ ] [Top 500](https://top500.org/)
+
 - [ ] [Matrix Methods for Signal Processing, Data Analysis and Machine Learning, F24, Prof. Jeff Fessler](https://web.eecs.umich.edu/~fessler/course/551/)
+
 - [ ] [Precompilation tutorial](https://julialang.org/blog/2021/01/precompile_tutorial/)
-- [ ] 
+
+- [ ] [Professor Nick Trefethen, University of Oxford, Linear Algebra Optimization](https://www.youtube.com/watch?v=JngdaWe3-gg)

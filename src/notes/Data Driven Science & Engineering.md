@@ -1,4 +1,27 @@
-## POD for Partial Differential equations (11.1)
+
+Notes based on *Data-Driven Science and Engineering* by Steven L. Brunton and J. Nathan Kurz. Their proposed teaching materials for the book can be found [here](https://www.databookuw.com/page-6/page-14/). Supplementary notes that might be useful for understanding the concepts are provided in course [AMATH301](https://www.youtube.com/@amath3019/videos). The set of open source materials proposed by Kurz's team is found [here](https://faculty.washington.edu/kutz/page5/page23/).
+
+```table-of-contents
+title: 
+style: nestedList # TOC style (nestedList|inlineFirstLevel)
+minLevel: 0 # Include headings from the specified level
+maxLevel: 0 # Include headings up to the specified level
+includeLinks: true # Make headings clickable
+debugInConsole: false # Print debug info in Obsidian console
+```
+
+## Singular Value Decomposition
+## Fourier and Wavelet Transforms
+## Sparsity and Compressed Sensing
+## Regression and Model Selection
+## Clustering and Classification
+## Neural Networks and Deep Learning
+## Data-Driven Dynamical Systems
+## Linear Control Theory
+## Balanced Models for Control
+## Data-Driven Control
+## Reduced Order Models (ROMs)
+### POD for Partial Differential equations (11.1)
 
 ![](https://www.youtube.com/watch?v=I8n8a7q8wLk)
 
@@ -15,7 +38,7 @@
 - Localized structures require more expansion modes
 - Construction similar to spectral methods
 
-## Optimal Basis Elements (11.2)
+### Optimal Basis Elements (11.2)
 
 ![](https://www.youtube.com/watch?v=IlYDfGXL0nI)
 
@@ -25,14 +48,13 @@
 - The produced ROM is not assured to be safe outside the subspace to which it was identified, though that is fine for several physics.
 - 
 
-## POD and Soliton Dynamics (11.3)
+### POD and Soliton Dynamics (11.3)
 
 ![](https://www.youtube.com/watch?v=2GFDVLzFSJU)
-
-## Continuous Formulation of POD
+### Continuous Formulation of POD
 
 ![](https://www.youtube.com/watch?v=TRtAkiOdIP4&feature=youtu.be)
-
-## POD with Symmetries
+### POD with Symmetries
 
 ![](https://www.youtube.com/watch?v=Zl3GjE_C7Vk)
+## Interpolation for Parametric ROMs
