@@ -159,82 +159,80 @@ int main() {
 | Code | 11-Periodic-Box |
 | Notes |  |
 ### Pulsed atomization
-| Reference |  |
+| Reference | [Atomisation of a pulsed liquid jet](http://basilisk.fr/src/examples/atomisation.c) |
 | ---- | ---- |
 | Code | 12-Pulsed-Atomisation |
 | Notes |  |
 ### Bubble rising
-| Reference |  |
+| Reference | [Bubble rising in a large tank](http://basilisk.fr/src/examples/bubble.c) |
 | ---- | ---- |
 | Code | 13-Bubble-Rising |
 | Notes |  |
 ### Rotating cylinder
-| Reference |  |
+| Reference | [Flow in a rotating bottom-driven cylindrical container](http://basilisk.fr/src/examples/yang.c) |
 | ---- | ---- |
 | Code | 14-Rotating-Cylinder |
 | Notes |  |
 ### Moving Tangaroa
-| Reference |  |
+| Reference | [Two-phase flow around RV Tangaroa](http://basilisk.fr/src/examples/tangaroa.c) |
 | ---- | ---- |
 | Code | 15-Moving-Tangaroa |
 | Notes |  |
-### x
+### Indian Tsunami
 | Reference | [The 2004 Indian Ocean tsunami](http://basilisk.fr/src/examples/tsunami.c) |
 | ---- | ---- |
-| Code |  |
+| Code | 16-Indian-Tsunami |
 | Notes |  |
-### x
+### Tohoku Tsunami
 | Reference | [The 2011 Tohoku tsunami](http://basilisk.fr/src/examples/tohoku.c) |
 | ---- | ---- |
-| Code |  |
+| Code | 17-Tohoku-Tsunami |
 | Notes |  |
-### x
+### Train of Solitons
 | Reference | [Breakup of a rectangular perturbation into a train of solitons](http://basilisk.fr/src/examples/madsen.c) |
 | ---- | ---- |
-| Code |  |
+| Code | 18-Train-of-Solitons |
 | Notes |  |
-### x
+### Lee Waves
 | Reference | [Tidally-induced internal lee waves](http://basilisk.fr/src/examples/lee.c) |
 | ---- | ---- |
-| Code |  |
+| Code | 19-Lee-Waves |
 | Notes |  |
-### x
+### Ellipsoidal Shoal
 | Reference | [Periodic wave propagation over an ellipsoidal shoal](http://basilisk.fr/src/examples/shoal.c) |
 | ---- | ---- |
-| Code |  |
+| Code | 20-Ellipsoidal-Shoal |
 | Notes |  |
-### x
+### Ellipsoidal Shoal Multilayer
 | Reference | [Periodic wave propagation over an ellipsoidal shoal (multilayer)](http://basilisk.fr/src/examples/shoal-ml.c) |
 | ---- | ---- |
-| Code |  |
-| Notes |  |
-### x
+| Code | 21-Ellipsoidal-Shoal-Multilayer |
+| Notes | Check for source code in current version. |
+### Stokes Wave
 | Reference | [3D breaking Stokes wave (multilayer solver)](http://basilisk.fr/src/examples/breaking.c) |
 | ---- | ---- |
-| Code |  |
+| Code | 22-Stokes-Wave |
 | Notes |  |
-### x
+### Transcritical Flow
 | Reference | [Transcritical flow over a bump](http://basilisk.fr/src/examples/gaussian-ns.c) |
 | ---- | ---- |
-| Code |  |
+| Code | 23-Transcritical-Flow |
 | Notes |  |
-### x
+### Shock Instability
 | Reference | [A Shallow Water Analogue for the Standing Accretion Shock Instability](http://basilisk.fr/src/examples/swasi.c) |
 | ---- | ---- |
-| Code |  |
+| Code | 24-Shock-Instability |
 | Notes |  |
-### x
+### Python Interface
 | Reference | [Python interface](http://basilisk.fr/src/examples/example.py) |
 | ---- | ---- |
-| Code |  |
+| Code | 25-Python-Interface |
 | Notes |  |
-
-### x
+### Python Poisson
 | Reference | [Poisson problem with Python](http://basilisk.fr/src/examples/poisson.py) |
 | ---- | ---- |
-| Code |  |
+| Code | 26-Python-Poisson |
 | Notes |  |
-
 ## Teaching plan
 
 ### Week 1
