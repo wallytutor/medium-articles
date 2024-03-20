@@ -8,3 +8,6 @@
 *.ppm
 *.gif
 *.mp4
+
+# Original examples
+examples/

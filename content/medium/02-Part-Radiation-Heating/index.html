@@ -208,7 +208,7 @@ maxiter &#61; 80
 rtol &#61; 1.0e-12
 β &#61; 0.99
 
-@time solution &#61; integrate&#40;t, T, K, B; maxiter, rtol, β&#41;;</code></pre><pre><code class="plaintext code-output">  0.558330 seconds (2.80 M allocations: 237.646 MiB, 7.11% gc time, 59.85% compilation time)
+@time solution &#61; integrate&#40;t, T, K, B; maxiter, rtol, β&#41;;</code></pre><pre><code class="plaintext code-output">  0.529458 seconds (2.80 M allocations: 237.647 MiB, 8.24% gc time, 62.10% compilation time)
 </code></pre>
 <p>Below we can inspect the solution and the residuals at the end of each time-step. For the solution to make sense it is important that every single step must converge during time advancement. Note the leap in gas temperature during the first time steps resulting from the problem stiffness. As a matter of fact, a smaller time-step should have been used for properly resolving its dynamics in the early stages or even better, an adaptative time-stepping approach should have been adopted.</p>
 
