@@ -37,7 +37,7 @@
 <!-- Content appended here -->
 <div class="franklin-content"><h2 id="breakdown_into_sub-models"><a href="#breakdown_into_sub-models" class="header-anchor">Breakdown into sub-models</a></h2>
 <ul>
-<li><p>&#91; &#93; Incompressible flow only for mesh and conditions check with <code>incompressibleFluid</code>:</p>
+<li><p>&#91;x&#93; Incompressible flow only for mesh and conditions check with <code>incompressibleFluid</code>:</p>
 </li>
 </ul>
 <p>- After a first run with a system length of 1 m it was decided to increase the domain to 2 m in order to ensure a better development of flow profile &#40;at least 10 times the cross section size&#41; and double the number of cells in transversal directions.
@@ -47,7 +47,7 @@
 - All residuals are going down adequately, allowing us to move to the next step. 
 - Calculation took approximately 10 seconds with 1 core.</p>
 <ul>
-<li><p>&#91; &#93; Previous case is copied and support to RAS \(k-\varepsilon\) &#40;&#91;&#91;@Launder1974&#93;&#93;&#41; is implemented:</p>
+<li><p>&#91;x&#93; Previous case is copied and support to RAS \(k-\varepsilon\) &#40;&#91;&#91;@Launder1974&#93;&#93;&#41; is implemented:</p>
 </li>
 </ul>
 <p>- With inclusion of turbulence the actual outlet velocity matches the expected value &#40;that was unphysical in the previous simulation&#41;, validating the approach.
@@ -56,7 +56,7 @@
 - Other previous observations are still valid, allowing us to move to the next step.
 - Calculation took approximately 11 seconds with 1 core to perform 100 iterations. After 100 iterations the step convergence becomes slow because of the already low residuals.</p>
 <ul>
-<li><p>&#91; &#93; Adding compressible flow with <code>multicomponentFluid</code> to the above:</p>
+<li><p>&#91;x&#93; Adding compressible flow with <code>multicomponentFluid</code> to the above:</p>
 </li>
 </ul>
 <p>- The temperature field is added prior to handling any combustion aspects in this step to avoid having interaction between these elements in convergence checks. 
@@ -69,7 +69,8 @@
 </li>
 </ul>
 <p>- The simples way of doing so is adding the required chemical and associated initial file without adding any combustion or reaction parameters. It was chosen to use the actual species name instead of simply *fuel* to keep created files compatible with next steps. Simulation was checked before adding the cloud, which exponentially complexifies the setup.
--</p>
+- A <code>patchPostProcessing</code> cloud function was tested at first to check if conditions were leading to complete fuel evaporation. It is kept commented-out for future debug if required.
+- As expected, convergence is less good. **TODO**</p>
 <ul>
 <li><p>&#91; &#93; Add the following to the parameters file for full turbulence model controls:</p>
 </li>
