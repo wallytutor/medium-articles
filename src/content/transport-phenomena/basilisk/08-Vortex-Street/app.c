@@ -1,8 +1,8 @@
 // app.c
-#define LEVEL 8
 
-#include "grid/cartesian.h"
-#include "run.h"
+#include "embed.h"
+#include "navier-stokes/centered.h"
+#include "tracer.h"
 
 #include "project-base.h"
 #include "project-init.h"
@@ -10,8 +10,16 @@
 #include "project-exec.h"
 
 int main() {
-    origin(-0.5, -0.5);
-    init_grid(1 << LEVEL);
+    L0 = 8.0 [1];
+
+    origin(-0.5, -L0/2);
+
+    N = 512;
+    mu = muv;
+
+    display_control(Reynolds, 10, 1000);
+    display_control(maxlevel, 6, 12);
+
     run();
 }
 
