@@ -137,7 +137,7 @@ int main() {
 | Reference | [Decaying two-dimensional turbulence](http://basilisk.fr/src/examples/turbulence.c) |
 | ---- | ---- |
 | Code | 07-Decaying-Turbulence |
-| Notes |  |
+| Notes | For solving Euler equation with vorticity-stream formulation one uses header file `navier-stokes/stream.h`. The examples makes a first usage of dimensional quantities for vorticity initialization. |
 ### Vortex street
 | Reference | [Bénard–von Kármán Vortex Street for flow around a cylinder](http://basilisk.fr/src/examples/karman.c) |
 | ---- | ---- |
