@@ -1,6 +1,6 @@
 ## Breakdown into sub-models
 
-- [ ] Incompressible flow only for mesh and conditions check with `incompressibleFluid`:
+- [x] Incompressible flow only for mesh and conditions check with `incompressibleFluid`:
 	- After a first run with a system length of 1 m it was decided to increase the domain to 2 m in order to ensure a better development of flow profile (at least 10 times the cross section size) and double the number of cells in transversal directions.
 	- It was confirmed that the inlet mean velocity profile respects the expected value from the imposed mass flow rate evaluated during parameters setup.
 	- Mass conservation was monitored and confirmed through field `phi`.
@@ -8,14 +8,14 @@
 	- All residuals are going down adequately, allowing us to move to the next step. 
 	- Calculation took approximately 10 seconds with 1 core.
 
-- [ ] Previous case is copied and support to RAS $k-\varepsilon$ ([[@Launder1974]]) is implemented:
+- [x] Previous case is copied and support to RAS $k-\varepsilon$ ([[@Launder1974]]) is implemented:
 	- With inclusion of turbulence the actual outlet velocity matches the expected value (that was unphysical in the previous simulation), validating the approach.
 	- Entry length is verified through velocity and turbulent viscosity, confirming the need to extend the domain for a proper development.
 	- The number of iterations was increase to 200 to ensure that everything has properly converged, reaching an extremely low residuals level for all variables.
 	- Other previous observations are still valid, allowing us to move to the next step.
 	- Calculation took approximately 11 seconds with 1 core to perform 100 iterations. After 100 iterations the step convergence becomes slow because of the already low residuals.
 
-- [ ] Adding compressible flow with `multicomponentFluid` to the above:
+- [x] Adding compressible flow with `multicomponentFluid` to the above:
 	- The temperature field is added prior to handling any combustion aspects in this step to avoid having interaction between these elements in convergence checks. 
 	- Nonetheless, gravity was already added here after a first run without it for a basic check. A vertical pressure profile is observed in the cross-section, showing the expected buoyancy effects.
 	- Other Impacted files include physical properties, which now incorporate more detailed thermodynamics, `alphat` and, at least, the main chemical component file with boundary and initial conditions. 
@@ -24,7 +24,8 @@
 
 - [ ] The next logical step is to include evaporation of fuel in the gas, without enabling reactions:
 	- The simples way of doing so is adding the required chemical and associated initial file without adding any combustion or reaction parameters. It was chosen to use the actual species name instead of simply *fuel* to keep created files compatible with next steps. Simulation was checked before adding the cloud, which exponentially complexifies the setup.
-	- 
+	- A `patchPostProcessing` cloud function was tested at first to check if conditions were leading to complete fuel evaporation. It is kept commented-out for future debug if required.
+	- As expected, convergence is less good. **TODO**
 
 - [ ] Add the following to the parameters file for full turbulence model controls:
 ```C
