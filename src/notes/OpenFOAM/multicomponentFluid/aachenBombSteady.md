@@ -23,6 +23,8 @@
 	- Calculation took approximately 13 seconds with 1 core to perform 100 iterations.
 
 - [ ] The next logical step is to include evaporation of fuel in the gas, without enabling reactions:
+	- The simples way of doing so is adding the required chemical and associated initial file without adding any combustion or reaction parameters. It was chosen to use the actual species name instead of simply *fuel* to keep created files compatible with next steps. Simulation was checked before adding the cloud, which exponentially complexifies the setup.
+	- 
 
 - [ ] Add the following to the parameters file for full turbulence model controls:
 ```C
