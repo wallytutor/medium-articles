@@ -2,30 +2,33 @@
 
 - [x] Incompressible flow only for mesh and conditions check with `incompressibleFluid`:
 	- After a first run with a system length of 1 m it was decided to increase the domain to 2 m in order to ensure a better development of flow profile (at least 10 times the cross section size) and double the number of cells in transversal directions.
-	- It was confirmed that the inlet mean velocity profile respects the expected value from the imposed mass flow rate evaluated during parameters setup.
+	- It was confirmed that the inlet mean velocity profile respects the expected value from the imposed mass flow rate evaluated during parameters setup, but outlet is controversial. This is probably because the case should be run as turbulent or grid is too coarse.
 	- Mass conservation was monitored and confirmed through field `phi`.
-	- It must be emphasized that boundary layer resolution is not accurate since no grading is applied and mesh is very coarse, but since the goal is flare development this is acceptable at this stage.
+	- It must be emphasized that boundary layer resolution is not accurate since no grading is applied and mesh is very coarse, but since the goal is flare development far from the walls this is acceptable at this stage and will be dealt with at a later stage.
 	- All residuals are going down adequately, allowing us to move to the next step. 
 	- Calculation took approximately 10 seconds with 1 core.
 
 - [x] Previous case is copied and support to RAS $k-\varepsilon$ ([[@Launder1974]]) is implemented:
 	- With inclusion of turbulence the actual outlet velocity matches the expected value (that was unphysical in the previous simulation), validating the approach.
 	- Entry length is verified through velocity and turbulent viscosity, confirming the need to extend the domain for a proper development.
-	- The number of iterations was increase to 200 to ensure that everything has properly converged, reaching an extremely low residuals level for all variables.
+	- The number of iterations was increased to 200 to ensure that everything has properly converged, reaching an extremely low residuals level for all variables.
 	- Other previous observations are still valid, allowing us to move to the next step.
-	- Calculation took approximately 11 seconds with 1 core to perform 100 iterations. After 100 iterations the step convergence becomes slow because of the already low residuals.
+	- Calculation took approximately 11 seconds with 1 core to perform 100 iterations. After 100 iterations the step convergence becomes slow because of the already low residuals, leading to a calculation time of 38 seconds.
 
 - [x] Adding compressible flow with `multicomponentFluid` to the above:
 	- The temperature field is added prior to handling any combustion aspects in this step to avoid having interaction between these elements in convergence checks. 
 	- Nonetheless, gravity was already added here after a first run without it for a basic check. A vertical pressure profile is observed in the cross-section, showing the expected buoyancy effects.
 	- Other Impacted files include physical properties, which now incorporate more detailed thermodynamics, `alphat` and, at least, the main chemical component file with boundary and initial conditions. 
 	- The mean value of `phi` in the outlet can now be compared to the imposed mass flow rate, validating the boundary condition setup.
-	- Calculation took approximately 13 seconds with 1 core to perform 100 iterations.
+	- Calculation took approximately 13 seconds with 1 core to perform 100 iterations. Again an important slow down is observed leading to 125 seconds to perform 300 iterations.
 
 - [ ] The next logical step is to include evaporation of fuel in the gas, without enabling reactions:
 	- The simples way of doing so is adding the required chemical and associated initial file without adding any combustion or reaction parameters. It was chosen to use the actual species name instead of simply *fuel* to keep created files compatible with next steps. Simulation was checked before adding the cloud, which exponentially complexifies the setup.
-	- A `patchPostProcessing` cloud function was tested at first to check if conditions were leading to complete fuel evaporation. It is kept commented-out for future debug if required.
-	- As expected, convergence is less good. **TODO**
+	- A `patchPostProcessing` cloud function was tested at first to check if conditions were leading to complete fuel evaporation. It is kept commented-out for future debug if required. To make results easier to interpret, a fixed size PSD was adopted at this stage.
+	- As expected, convergence is bad and the only strategy that seems to work is mesh refinement. Otherwise pressure coupling becomes difficult and trying to change numerical parameters (solver correctors, linear solver, divergence and Laplacian schemes, relaxation level) do not improve anything. Tried to use `SOI` at a later iteration to let flow converge before injection, but apparently the steady solver ignores this. Even with `localEuler` pseudo-time stepping (requires to add residuals for `rho` in `fvSolution`) it does not seem to take `SOI` into account.  Also tried deactivating clouds and converging before reactivating it (what would be equivalent to the later `SOI` approach) and that does not work either, confirming it is a physical coupling problem.
+	- Because of mesh refinement, now parallelization becomes a requirement unless we work with mesh grading, what is out of the present scope (to be done only in production scenario).
+
+## Future improvements
 
 - [ ] Add the following to the parameters file for full turbulence model controls:
 ```C
@@ -36,6 +39,10 @@ C3              0;
 sigmak          1;
 sigmaEps        1.3;
 ```
+
+- [ ] Add convergence criteria `PIMPLE: No convergence criteria found`.
+
+- [ ] Consider a possible adaptive mesh refinement at case setup (not runtime!).
 ## Reminders
 
 - Because of `potentialFlow` initialization, a dictionary corresponding to this must be present in `fvSolution` as well as a solver for `Phi` (copy defaults for pressure). Because this solver does not have information about temperature or composition of fluid, a field `rhoInlet` is required in inlets.
