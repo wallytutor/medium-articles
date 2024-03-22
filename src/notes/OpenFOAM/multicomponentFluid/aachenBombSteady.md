@@ -22,12 +22,26 @@
 	- The mean value of `phi` in the outlet can now be compared to the imposed mass flow rate, validating the boundary condition setup.
 	- Calculation took approximately 13 seconds with 1 core to perform 100 iterations. Again an important slow down is observed leading to 125 seconds to perform 300 iterations.
 
-- [ ] The next logical step is to include evaporation of fuel in the gas, without enabling reactions:
+- [x] The next logical step is to include evaporation of fuel in the gas, without enabling reactions:
 	- The simples way of doing so is adding the required chemical and associated initial file without adding any combustion or reaction parameters. It was chosen to use the actual species name instead of simply *fuel* to keep created files compatible with next steps. Simulation was checked before adding the cloud, which exponentially complexifies the setup.
 	- A `patchPostProcessing` cloud function was tested at first to check if conditions were leading to complete fuel evaporation. It is kept commented-out for future debug if required. To make results easier to interpret, a fixed size PSD was adopted at this stage.
 	- As expected, convergence is bad and the only strategy that seems to work is mesh refinement. Otherwise pressure coupling becomes difficult and trying to change numerical parameters (solver correctors, linear solver, divergence and Laplacian schemes, relaxation level) do not improve anything. Tried to use `SOI` at a later iteration to let flow converge before injection, but apparently the steady solver ignores this. Even with `localEuler` pseudo-time stepping (requires to add residuals for `rho` in `fvSolution`) it does not seem to take `SOI` into account.  Also tried deactivating clouds and converging before reactivating it (what would be equivalent to the later `SOI` approach) and that does not work either, confirming it is a physical coupling problem.
-	- Because of mesh refinement, now parallelization becomes a requirement unless we work with mesh grading, what is out of the present scope (to be done only in production scenario).
+	- Because of mesh refinement, now parallelization becomes a requirement unless we work with mesh grading, what is out of the present scope (to be done only in production scenario). Nonetheless, parallelization does not seem to be of great advantage.
 
+- [ ] Activation of global chemistry and combustion modeling:
+	- From now on the level of physics start becoming too complex and pre-computation of fields should be done whenever compatible. That means that prior to chemistry activation it seems a good idea to let evaporation of droplets converge (testing 1000 iterations).
+	- To keep things general, instead of setting up the case with a fixed database of species thermodynamics, it is better to convert Chemkin files.
+	- 
+
+After modification the cases were run again getting the following performances, from which it becomes clear that for the present grid size the parallelization saturates quickly.
+
+| Step | 1 processor | 32 processors |
+| ---- | ----------- | ------------- |
+| 0    | 77          | 14            |
+| 1    |             | 35            |
+| 2    |             | 80            |
+| 3    |             |               |
+| 4    |             |               |
 ## Future improvements
 
 - [ ] Add the following to the parameters file for full turbulence model controls:
