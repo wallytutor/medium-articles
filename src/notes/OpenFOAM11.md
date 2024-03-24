@@ -6,21 +6,20 @@ maxLevel: 0 # Include headings up to the specified level
 includeLinks: true # Make headings clickable
 debugInConsole: false # Print debug info in Obsidian console
 ```
-
 ## Combustion models
 
-Models inheriting from [`combustionModel`](https://cpp.openfoam.org/v11/classFoam_1_1combustionModel.html) base class.
+Models inheriting from [`combustionModel`](https://cpp.openfoam.org/v11/classFoam_1_1combustionModel.html) base class. If you are reading this section you might also be interested in building the case and testing the combustion with [OpenSmoke++](OpenSmoke++) or [Cantera](Cantera).
 
-| Type                                                                            | Group       | Description                                                                                                                                       |
-| ------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [EDC](https://cpp.openfoam.org/v11/classFoam_1_1combustionModels_1_1EDC.html) | Turbulent   | Eddy Dissipation Concept turbulent combustion model. Probably the most popular approach for simulation of gas combustion in industrial processes. |
-| `laminar`                                                                       | Laminar     |                                                                                                                                                   |
-| `PaSR`                                                                          | Laminar     |                                                                                                                                                   |
-| `FDS`                                                                           | Single-step |                                                                                                                                                   |
-| `infinitelyFastChemistry`                                                       | Single-step |                                                                                                                                                   |
-| `diffusion`                                                                     | Single-step |                                                                                                                                                   |
-| `zoneCombustion`                                                                | Filter      | Enable the reactions within the specified list of cell-zones and set to zero elsewhere.                                                           |
-| `noCombustion`                                                                  | Dummy       | Dummy combustion model for 'no combustion'.                                                                                                       |
+| Type | Group | Description |
+| ---- | ---- | ---- |
+| [EDC](https://cpp.openfoam.org/v11/classFoam_1_1combustionModels_1_1EDC.html) | Turbulent | Eddy Dissipation Concept turbulent combustion model. Probably the most popular approach for simulation of gas combustion in industrial processes. |
+| `laminar` | Laminar |  |
+| `PaSR` | Laminar |  |
+| `FDS` | Single-step |  |
+| `infinitelyFastChemistry` | Single-step |  |
+| `diffusion` | Single-step |  |
+| `zoneCombustion` | Filter | Enable the reactions within the specified list of cell-zones and set to zero elsewhere. |
+| `noCombustion` | Dummy | Dummy combustion model for 'no combustion'. |
 
 ## Cloud models
 
@@ -149,6 +148,9 @@ In OpenFOAM v11 solver module `multicomponentFluid` provides approaches for sett
 - [verticalChannelLTS](https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannelLTS): same as [verticalChannel](https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannel) but with local time-stepping.
 - [verticalChannelSteady](https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannelSteady): same as [verticalChannel](https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannel) but at steady state.
 
+#### Built cases
+
+- [aachenBombSteady](OpenFOAM/aachenBombSteady): this case was created as a tentative to simulate a steady spray combustion starting from *aachenBomb* tutorial but after several failures it became a case of its own. The case we have today was built bottom-up, from a simple flow in a box to the level of combustion, including several intermediate steps used to understand how the different options and models interacted. For now its name will remain like this in reference to where it started, but in the future I might come up with a better one.
 ### `incompressibleDenseParticleFluid`
 
 In OpenFOAM v11 solver module `incompressibleDenseParticleFluid` provides approaches for setting up a transient flow interacting with particles. It handles incompressible isothermal flows with fluid-particle interactions, including cases with dense packing of particles, such as packed beds or initialization of fluidized beds for solution with other approaches.
