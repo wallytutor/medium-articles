@@ -41,7 +41,7 @@ maxLevel: 0 # Include headings up to the specified level
 includeLinks: true # Make headings clickable
 debugInConsole: false # Print debug info in Obsidian console</code></pre>
 <h2 id="combustion_models"><a href="#combustion_models" class="header-anchor">Combustion models</a></h2>
-<p>Models inheriting from <a href="https://cpp.openfoam.org/v11/classFoam_1_1combustionModel.html"><code>combustionModel</code></a> base class.</p>
+<p>Models inheriting from <a href="https://cpp.openfoam.org/v11/classFoam_1_1combustionModel.html"><code>combustionModel</code></a> base class. If you are reading this section you might also be interested in building the case and testing the combustion with <a href="OpenSmoke&#43;&#43;">OpenSmoke&#43;&#43;</a> or <a href="Cantera">Cantera</a>.</p>
 <table><tr><th align="right">Type</th><th align="right">Group</th><th align="right">Description</th></tr><tr><td align="right"><a href="https://cpp.openfoam.org/v11/classFoam_1_1combustionModels_1_1EDC.html">EDC</a></td><td align="right">Turbulent</td><td align="right">Eddy Dissipation Concept turbulent combustion model. Probably the most popular approach for simulation of gas combustion in industrial processes.</td></tr><tr><td align="right"><code>laminar</code></td><td align="right">Laminar</td><td align="right"></td></tr><tr><td align="right"><code>PaSR</code></td><td align="right">Laminar</td><td align="right"></td></tr><tr><td align="right"><code>FDS</code></td><td align="right">Single-step</td><td align="right"></td></tr><tr><td align="right"><code>infinitelyFastChemistry</code></td><td align="right">Single-step</td><td align="right"></td></tr><tr><td align="right"><code>diffusion</code></td><td align="right">Single-step</td><td align="right"></td></tr><tr><td align="right"><code>zoneCombustion</code></td><td align="right">Filter</td><td align="right">Enable the reactions within the specified list of cell-zones and set to zero elsewhere.</td></tr><tr><td align="right"><code>noCombustion</code></td><td align="right">Dummy</td><td align="right">Dummy combustion model for &#39;no combustion&#39;.</td></tr></table>
 <h2 id="cloud_models"><a href="#cloud_models" class="header-anchor">Cloud models</a></h2>
 <p>In OpenFOAM, a <em>cloud</em> designate the injection of a secondary phase, generally solid particles or droplets, in a primary continuous carrier phase. The dictionary <code>cloudProperties</code> is identified in tutorials related to the following solver modules:</p>
@@ -135,6 +135,11 @@ debugInConsole: false # Print debug info in Obsidian console</code></pre>
 <li><p><a href="https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannelLTS">verticalChannelLTS</a>: same as <a href="https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannel">verticalChannel</a> but with local time-stepping.</p>
 </li>
 <li><p><a href="https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannelSteady">verticalChannelSteady</a>: same as <a href="https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/verticalChannel">verticalChannel</a> but at steady state.</p>
+</li>
+</ul>
+<h4 id="built_cases"><a href="#built_cases" class="header-anchor">Built cases</a></h4>
+<ul>
+<li><p><a href="OpenFOAM/aachenBombSteady">aachenBombSteady</a>: this case was created as a tentative to simulate a steady spray combustion starting from <em>aachenBomb</em> tutorial but after several failures it became a case of its own. The case we have today was built bottom-up, from a simple flow in a box to the level of combustion, including several intermediate steps used to understand how the different options and models interacted. For now its name will remain like this in reference to where it started, but in the future I might come up with a better one.</p>
 </li>
 </ul>
 <h3 id="incompressibledenseparticlefluid"><a href="#incompressibledenseparticlefluid" class="header-anchor"><code>incompressibleDenseParticleFluid</code></a></h3>
