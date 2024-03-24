@@ -66,6 +66,16 @@ debugInConsole: false # Print debug info in Obsidian console</code></pre>
 <li><p><a href="https://web.stanford.edu/group/haiwanglab/HyChem/">HyChem</a> is an approach for modeling combustion of real liquid fuels by decomposing the problem into a lumped parameter model of evaporation/devolatilization and a detailed or simplified chemical kinetics approach applied to the gas phase. It is available for high-end fuels such as jet fuel and gasoline.</p>
 </li>
 </ul>
+<h3 id="condensate_fuel_combustion"><a href="#condensate_fuel_combustion" class="header-anchor">Condensate fuel combustion</a></h3>
+<p>This matter enters a intrinsically multiphysics domain and problem formulation needs to take into account at what level the model is required to act. For liquids, that might include spray droplets formation, evaporation, devolatilization, mass transfer to gas phase, and finally, oxidation kinetics of gas products. In the case of solids, due to high uncertainty and variability in material properties, and complex mass transfer phenomena, one must expect qualitative or semi-quantitative agreement of models and measurements. Furthermore, lumped-parameter modeling is a requirement in the field, making it difficult to be generalized to a physical level as of today.</p>
+<p>&#91;&#91;@Saario2005a&#93;&#93; used Ansys Fluent to simulate HFO &#40;heavy-fuel oil&#41; combustion using the standard mixture fraction approach coupled to a Lagrangian particle tracking for evaporating droplets and \(k-\epsilon\) turbulence modeling. This is a highly standard industrial application of global combustion simulation from an energy standpoint but lacks the generality of considering a detailed chemistry of gas phase &#40;for instance, for coupling with solid calcination reactions, if that is the case&#41;.</p>
+<p>&#91;&#91;@Garaniya2012a&#93;&#93; used StarCD to simulate HFO in the context of ship engines. From the same authors &#40;&#91;&#91;@Garaniya2012b&#93;&#93;&#41;, we also have the the thermodynamic formulation of the problem.</p>
+<p>&#91;&#91;@Nowruzi2014&#93;&#93; successfully simulated a spray jet of HFO with OpenFOAM without accounting for chemistry and combustion. In the absence of a proper PSD &#40;particle size-distribution&#41; this step is required to initialize a simulation, but can hardly be integrated in a reacting flow simulation, which would become overly complex. </p>
+<p>&#91;&#91;@Sanchez2023a&#93;&#93; studied the combustion of biomass with help of OpenFOAM with some semi-quantitative results within 13&#37; from the measurements, what is already considered a very good agreement in the field.</p>
+<ul>
+<li><p>&#91; &#93; Continue the research <a href="https://www.jstage.jst.go.jp/result/journal/-char/en?cdjournal&#61;jime&amp;globalSearchKey&#61;heavy&#43;fuel&#43;oil">here</a>.</p>
+</li>
+</ul>
 <div class="page-foot">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Walter Dal'Maz Silva -
     Built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
