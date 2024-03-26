@@ -10,9 +10,9 @@ tags: [excalidraw]
 # Text Elements
 HFO mass fractions ^U2lkpGqs
 
-Equilibrate equation for CO2 and H2O ^LO9riC3H
+Equilibrate equation for CO/CO2 and H2O ^LO9riC3H
 
-Primary air flow rate ^GOGl6XLt
+Combustion air flow rate ^GOGl6XLt
 
 Combustion products and temperature ^bk40aJQg
 
@@ -78,8 +78,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 		},
 		{
 			"type": "text",
-			"version": 162,
-			"versionNonce": 990958654,
+			"version": 164,
+			"versionNonce": 1714726974,
 			"isDeleted": false,
 			"id": "U2lkpGqs",
 			"fillStyle": "solid",
@@ -88,11 +88,11 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -668.6151651224696,
+			"x": -671.536887534579,
 			"y": -530.3175072036453,
 			"strokeColor": "#e03131",
 			"backgroundColor": "transparent",
-			"width": 88.896484375,
+			"width": 94.73992919921875,
 			"height": 50,
 			"seed": 200986958,
 			"groupIds": [
@@ -101,7 +101,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1711354048075,
+			"updated": 1711443279489,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -113,7 +113,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"containerId": "7HF7H_Ro_9CPNMgzktK99",
 			"originalText": "HFO mass fractions",
 			"lineHeight": 1.25,
-			"baseline": 46
+			"baseline": 43
 		},
 		{
 			"type": "rectangle",
@@ -161,8 +161,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 		},
 		{
 			"type": "text",
-			"version": 214,
-			"versionNonce": 2059257150,
+			"version": 217,
+			"versionNonce": 547300578,
 			"isDeleted": false,
 			"id": "LO9riC3H",
 			"fillStyle": "solid",
@@ -171,11 +171,11 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -479.0661027971996,
+			"x": -486.8161180559887,
 			"y": -525.4572919018694,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 196.7798309326172,
+			"width": 212.2798614501953,
 			"height": 50,
 			"seed": 171798546,
 			"groupIds": [
@@ -184,24 +184,24 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1711354048077,
+			"updated": 1711443354135,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
 			"fontFamily": 1,
-			"text": "Equilibrate equation\nfor CO2 and H2O",
-			"rawText": "Equilibrate equation for CO2 and H2O",
+			"text": "Equilibrate equation\nfor CO/CO2 and H2O",
+			"rawText": "Equilibrate equation for CO/CO2 and H2O",
 			"textAlign": "center",
 			"verticalAlign": "middle",
 			"containerId": "wa4UyBEnFmRyCpTBPe259",
-			"originalText": "Equilibrate equation for CO2 and H2O",
+			"originalText": "Equilibrate equation for CO/CO2 and H2O",
 			"lineHeight": 1.25,
 			"baseline": 43
 		},
 		{
 			"type": "arrow",
-			"version": 242,
-			"versionNonce": 146496702,
+			"version": 248,
+			"versionNonce": 1833695266,
 			"isDeleted": false,
 			"id": "O5u-ojcRQv796zpTZk57L",
 			"fillStyle": "solid",
@@ -225,7 +225,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1711354048076,
+			"updated": 1711443493210,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -254,8 +254,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 		},
 		{
 			"type": "ellipse",
-			"version": 165,
-			"versionNonce": 739331278,
+			"version": 220,
+			"versionNonce": 2096391166,
 			"isDeleted": false,
 			"id": "lJKc3rTJRdl_66HcC2S-x",
 			"fillStyle": "solid",
@@ -264,12 +264,12 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -715.7150143408471,
-			"y": -427.48794896031995,
+			"x": -728.5698763165477,
+			"y": -430.05892135546014,
 			"strokeColor": "#e03131",
 			"backgroundColor": "transparent",
-			"width": 184.5476115611892,
-			"height": 95.39365179184153,
+			"width": 197.4024735368898,
+			"height": 97.71823924211878,
 			"seed": 1236518994,
 			"groupIds": [
 				"vWXeZqC_7g-aj6YinzeGN"
@@ -288,14 +288,14 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 					"type": "arrow"
 				}
 			],
-			"updated": 1711271490292,
+			"updated": 1711443555377,
 			"link": null,
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 170,
-			"versionNonce": 1474967102,
+			"version": 258,
+			"versionNonce": 261471422,
 			"isDeleted": false,
 			"id": "GOGl6XLt",
 			"fillStyle": "solid",
@@ -304,11 +304,11 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -671.3302439161014,
-			"y": -405.01787209647887,
+			"x": -694.0309027193895,
+			"y": -406.2484165412566,
 			"strokeColor": "#e03131",
 			"backgroundColor": "transparent",
-			"width": 95.283203125,
+			"width": 128.73989868164062,
 			"height": 50,
 			"seed": 1321862610,
 			"groupIds": [
@@ -317,19 +317,19 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1711354048078,
+			"updated": 1711443555378,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
 			"fontFamily": 1,
-			"text": "Primary air\nflow rate",
-			"rawText": "Primary air flow rate",
+			"text": "Combustion\nair flow rate",
+			"rawText": "Combustion air flow rate",
 			"textAlign": "center",
 			"verticalAlign": "middle",
 			"containerId": "lJKc3rTJRdl_66HcC2S-x",
-			"originalText": "Primary air flow rate",
+			"originalText": "Combustion air flow rate",
 			"lineHeight": 1.25,
-			"baseline": 46
+			"baseline": 43
 		},
 		{
 			"type": "diamond",
@@ -381,8 +381,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 		},
 		{
 			"type": "arrow",
-			"version": 325,
-			"versionNonce": 619517182,
+			"version": 327,
+			"versionNonce": 1125950434,
 			"isDeleted": false,
 			"id": "otQyxFeyiz7iB_QbT-LYI",
 			"fillStyle": "solid",
@@ -406,7 +406,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1711354048076,
+			"updated": 1711443493211,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -439,8 +439,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 		},
 		{
 			"type": "arrow",
-			"version": 209,
-			"versionNonce": 77598142,
+			"version": 321,
+			"versionNonce": 1464728702,
 			"isDeleted": false,
 			"id": "5R4jQ3Gqyce9DAM1bkIIw",
 			"fillStyle": "solid",
@@ -449,12 +449,12 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -521.7590537604358,
-			"y": -379.74895681058797,
+			"x": -521.7615831225089,
+			"y": -380.79904671924385,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 251.0870865862928,
-			"height": 2.15932741997608,
+			"width": 251.08038414077203,
+			"height": 1.2500159220460318,
 			"seed": 1673530254,
 			"groupIds": [
 				"vWXeZqC_7g-aj6YinzeGN"
@@ -464,7 +464,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1711354048078,
+			"updated": 1711443555378,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -486,8 +486,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 					0
 				],
 				[
-					251.0870865862928,
-					-2.15932741997608
+					251.08038414077203,
+					-1.2500159220460318
 				]
 			]
 		},
@@ -537,8 +537,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 		},
 		{
 			"type": "text",
-			"version": 558,
-			"versionNonce": 709529470,
+			"version": 560,
+			"versionNonce": 559676222,
 			"isDeleted": false,
 			"id": "bk40aJQg",
 			"fillStyle": "solid",
@@ -547,11 +547,11 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -130.01842297761198,
+			"x": -136.03153027741666,
 			"y": -532.2658661099629,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 116.513671875,
+			"width": 128.53988647460938,
 			"height": 75,
 			"seed": 1961723150,
 			"groupIds": [
@@ -560,7 +560,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1711354048079,
+			"updated": 1711443279491,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -572,12 +572,12 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"containerId": "HVIlIU8NgkZ8v5ekLF_UC",
 			"originalText": "Combustion products and temperature",
 			"lineHeight": 1.25,
-			"baseline": 71
+			"baseline": 68
 		},
 		{
 			"type": "arrow",
-			"version": 954,
-			"versionNonce": 738508414,
+			"version": 955,
+			"versionNonce": 49941054,
 			"isDeleted": false,
 			"id": "K9H87k_y_dKGR0vy0_O1Z",
 			"fillStyle": "solid",
@@ -601,7 +601,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1711354048079,
+			"updated": 1711443279490,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -674,8 +674,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 		},
 		{
 			"type": "text",
-			"version": 256,
-			"versionNonce": 1539414078,
+			"version": 258,
+			"versionNonce": 2106956798,
 			"isDeleted": false,
 			"id": "vvC0MzXz",
 			"fillStyle": "solid",
@@ -684,11 +684,11 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -456.99719905570623,
+			"x": -464.56642055228826,
 			"y": -347.2253955733929,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 79.521484375,
+			"width": 94.65992736816406,
 			"height": 50,
 			"seed": 16564306,
 			"groupIds": [
@@ -697,7 +697,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1711354048080,
+			"updated": 1711443279491,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -709,12 +709,12 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"containerId": "CVJ5zme9SlulD0EzkpdQj",
 			"originalText": "Species database",
 			"lineHeight": 1.25,
-			"baseline": 46
+			"baseline": 43
 		},
 		{
 			"type": "arrow",
-			"version": 581,
-			"versionNonce": 461893566,
+			"version": 582,
+			"versionNonce": 1291182974,
 			"isDeleted": false,
 			"id": "spNSfAKgnS56NYgeEloKq",
 			"fillStyle": "solid",
@@ -738,7 +738,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1711354048080,
+			"updated": 1711443279491,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -771,8 +771,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 		},
 		{
 			"type": "ellipse",
-			"version": 940,
-			"versionNonce": 583777166,
+			"version": 951,
+			"versionNonce": 889589566,
 			"isDeleted": false,
 			"id": "-iLKN1XtcHgwVPTgMDl-z",
 			"fillStyle": "solid",
@@ -781,8 +781,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -717.7524704681183,
-			"y": -302.2773040234896,
+			"x": -725.4653876535386,
+			"y": -306.5622580153899,
 			"strokeColor": "#e03131",
 			"backgroundColor": "transparent",
 			"width": 187.24770584487013,
@@ -805,14 +805,14 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 					"type": "arrow"
 				}
 			],
-			"updated": 1711271490292,
+			"updated": 1711443557529,
 			"link": null,
 			"locked": false
 		},
 		{
 			"type": "text",
-			"version": 992,
-			"versionNonce": 1151621374,
+			"version": 1003,
+			"versionNonce": 171800446,
 			"isDeleted": false,
 			"id": "RZHz5yzg",
 			"fillStyle": "solid",
@@ -821,8 +821,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -665.0606440379099,
-			"y": -277.02049034896504,
+			"x": -672.7735612233303,
+			"y": -281.30544434086534,
 			"strokeColor": "#e03131",
 			"backgroundColor": "transparent",
 			"width": 81.45993041992188,
@@ -834,7 +834,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1711354048081,
+			"updated": 1711443557529,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -977,8 +977,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 		},
 		{
 			"type": "text",
-			"version": 362,
-			"versionNonce": 483505086,
+			"version": 364,
+			"versionNonce": 1285902078,
 			"isDeleted": false,
 			"id": "OeMmhqt1",
 			"fillStyle": "solid",
@@ -987,11 +987,11 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -136.9676823903327,
+			"x": -143.57930806171942,
 			"y": -297.9404372094298,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 118.056640625,
+			"width": 131.27989196777344,
 			"height": 75,
 			"seed": 1553953934,
 			"groupIds": [
@@ -1000,7 +1000,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1711354048083,
+			"updated": 1711443279493,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -1012,12 +1012,12 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"containerId": "Djs-Px0dMc5UFrd4eVOM2",
 			"originalText": "Compute secondary air flow",
 			"lineHeight": 1.25,
-			"baseline": 71
+			"baseline": 68
 		},
 		{
 			"type": "arrow",
-			"version": 666,
-			"versionNonce": 1754724926,
+			"version": 670,
+			"versionNonce": 878445950,
 			"isDeleted": false,
 			"id": "31zPIxzHWNogzrnJmMuKG",
 			"fillStyle": "solid",
@@ -1041,7 +1041,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1711354048083,
+			"updated": 1711443279493,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1070,8 +1070,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 		},
 		{
 			"type": "arrow",
-			"version": 972,
-			"versionNonce": 2070938302,
+			"version": 998,
+			"versionNonce": 1426599934,
 			"isDeleted": false,
 			"id": "PdL1AOZycuHjwSz0qd8lV",
 			"fillStyle": "solid",
@@ -1080,12 +1080,12 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -513.58236630579,
-			"y": -251.96436383628748,
+			"x": -521.3034950306255,
+			"y": -255.35602045904858,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 344.02760015850436,
-			"height": 2.9326786203888844,
+			"width": 351.74872888333994,
+			"height": 0.30862045049340736,
 			"seed": 1135219730,
 			"groupIds": [
 				"vWXeZqC_7g-aj6YinzeGN"
@@ -1095,7 +1095,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1711354048083,
+			"updated": 1711443557530,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1117,8 +1117,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 					0
 				],
 				[
-					344.02760015850436,
-					-2.9326786203888844
+					351.74872888333994,
+					-0.30862045049340736
 				]
 			]
 		},
@@ -1168,8 +1168,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 		},
 		{
 			"type": "text",
-			"version": 120,
-			"versionNonce": 1125338430,
+			"version": 122,
+			"versionNonce": 1053390974,
 			"isDeleted": false,
 			"id": "bOxoue3C",
 			"fillStyle": "solid",
@@ -1178,11 +1178,11 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": -142.94754498348732,
+			"x": -146.01696484432716,
 			"y": -151.83119559339895,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 132.041015625,
+			"width": 138.1798553466797,
 			"height": 50,
 			"seed": 579941390,
 			"groupIds": [
@@ -1191,7 +1191,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1711354048084,
+			"updated": 1711443279494,
 			"link": null,
 			"locked": false,
 			"fontSize": 20,
@@ -1203,12 +1203,12 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"containerId": "ESXFg72fyDULAvG7VqG0x",
 			"originalText": "Finished fumes initialization",
 			"lineHeight": 1.25,
-			"baseline": 46
+			"baseline": 43
 		},
 		{
 			"type": "arrow",
-			"version": 183,
-			"versionNonce": 543841342,
+			"version": 187,
+			"versionNonce": 436217726,
 			"isDeleted": false,
 			"id": "Iitq77LJrXtsoCCo-rswr",
 			"fillStyle": "solid",
@@ -1232,7 +1232,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1711354048084,
+			"updated": 1711443279493,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1261,8 +1261,8 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 		},
 		{
 			"type": "arrow",
-			"version": 160,
-			"versionNonce": 2069030078,
+			"version": 164,
+			"versionNonce": 2011095038,
 			"isDeleted": false,
 			"id": "UtODuomydyQ2_M-DlWW9V",
 			"fillStyle": "solid",
@@ -1286,7 +1286,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1711354048084,
+			"updated": 1711443279494,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1360,7 +1360,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"y": -604.4830732759351,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
-			"width": 537.36328125,
+			"width": 582.6394653320312,
 			"height": 25,
 			"seed": 1513297746,
 			"groupIds": [],
@@ -1379,7 +1379,7 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 			"containerId": null,
 			"originalText": "Heavy fuel oil modeling approach without detailed chemistry",
 			"lineHeight": 1.25,
-			"baseline": 21
+			"baseline": 18
 		}
 	],
 	"appState": {
@@ -1397,10 +1397,10 @@ Heavy fuel oil modeling approach without detailed chemistry ^9tx1cg3c
 		"currentItemTextAlign": "left",
 		"currentItemStartArrowhead": null,
 		"currentItemEndArrowhead": "arrow",
-		"scrollX": 775.4245492396143,
-		"scrollY": 805.4562647910917,
+		"scrollX": 1027.4062776782264,
+		"scrollY": 732.0706253550823,
 		"zoom": {
-			"value": 1
+			"value": 1.166873672261451
 		},
 		"currentItemRoundness": "round",
 		"gridSize": null,
