@@ -3,7 +3,7 @@
 const double D = 0.125;
 const double U0 = 1.0;
 
-double Reynolds = 160.;
+double Reynolds = 160.0;
 int maxlevel = 9;
 
 scalar f[];
