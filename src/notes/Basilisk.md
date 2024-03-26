@@ -101,6 +101,7 @@ int main() {
 | `inverse_wavelet` | [grid/multigrid-common.h](http://basilisk.fr/src/grid/multigrid-common.h#inverse_wavelet) |  |
 | `boundary_level` |  |  |
 | `unrefine` |  |  |
+| `vorticity` | [utils.h](http://basilisk.fr/src/utils.h#vorticity) | Computes the vorticity from a velocity field. |
 
 ### Built-in solvers
 
@@ -176,7 +177,7 @@ Other equations:
 | Reference | [Bénard–von Kármán Vortex Street for flow around a cylinder](http://basilisk.fr/src/examples/karman.c) |
 | ---- | ---- |
 | Code | 08-Vortex-Street |
-| Notes | Solves the flow around a solid object using the [navier-stokes/centered.h](http://basilisk.fr/src/navier-stokes/centered.h) solver and introduced the use of passive scalars (tracer). Notice we modify `L0`, which among many other *magic* variables is defined in [common.h](http://basilisk.fr/src/common.h). |
+| Notes | Solves the flow around a solid object using the [navier-stokes/centered.h](http://basilisk.fr/src/navier-stokes/centered.h) solver and introduced the use of passive scalars (tracer). Notice we modify `L0`, which among many other *magic* variables is defined in [common.h](http://basilisk.fr/src/common.h). Illustrates the use of `solid` and `intersection` to accomplish complex domains.  |
 ### Vortex shedding
 | Reference | [Vortex shedding behind a sphere](http://basilisk.fr/src/examples/sphere.c) |
 | ---- | ---- |
