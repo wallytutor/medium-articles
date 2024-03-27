@@ -79,6 +79,12 @@
 <p>- From now on the level of physics start becoming too complex and pre-computation of fields should be done whenever compatible. That means that prior to chemistry activation it seems a good idea to let evaporation of droplets converge &#40;testing 1000 iterations&#41;.
 - To keep things general, instead of setting up the case with a fixed database of species thermodynamics, it is better to convert Chemkin files.
 -</p>
+<ul>
+<li><p>&#91; &#93; Add radiation modeling</p>
+</li>
+<li><p>&#91; &#93; Add arbitrary empirical fuel modeling</p>
+</li>
+</ul>
 <p>After modification the cases were run again getting the following performances, from which it becomes clear that for the present grid size the parallelization saturates quickly.</p>
 <table><tr><th align="right">Step</th><th align="right">1 processor</th><th align="right">32 processors</th></tr><tr><td align="right">0</td><td align="right">77</td><td align="right">14</td></tr><tr><td align="right">1</td><td align="right"></td><td align="right">35</td></tr><tr><td align="right">2</td><td align="right"></td><td align="right">80</td></tr><tr><td align="right">3</td><td align="right"></td><td align="right"></td></tr><tr><td align="right">4</td><td align="right"></td><td align="right"></td></tr></table>
 <h2 id="future_improvements"><a href="#future_improvements" class="header-anchor">Future improvements</a></h2>
