@@ -33,6 +33,9 @@
 	- To keep things general, instead of setting up the case with a fixed database of species thermodynamics, it is better to convert Chemkin files.
 	- 
 
+- [ ] Add radiation modeling
+- [ ] Add arbitrary empirical fuel modeling
+
 After modification the cases were run again getting the following performances, from which it becomes clear that for the present grid size the parallelization saturates quickly.
 
 | Step | 1 processor | 32 processors |
