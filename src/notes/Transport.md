@@ -29,7 +29,9 @@ debugInConsole: false # Print debug info in Obsidian console
 ## Technological
 
 - **Siwek chamber** is a reactor often used to determine the dispersion of solid fuels for combustion. Validation of simulations can be done through [this](https://www.sciencedirect.com/science/article/abs/pii/S0950423009000801) and [this](https://www.sciencedirect.com/science/article/abs/pii/S0950423014002332) paper. Other than the OpenFOAM [case](https://github.com/OpenFOAM/OpenFOAM-11/tree/master/tutorials/multicomponentFluid/simplifiedSiwek) there is also [this](https://fetchcfd.com/view-project/763-Simplified-Siwek) setup available on Fetch CFD.
+## Mathematical
 
+- **Hopf bifurcation**  is a critical point where, as a parameter changes, a system's stability switches and a periodic solution arises. (see [this](https://en.wikipedia.org/wiki/Hopf_bifurcation)).
 ## Combustion
 
 - [HyChem](https://web.stanford.edu/group/haiwanglab/HyChem/) is an approach for modeling combustion of real liquid fuels by decomposing the problem into a lumped parameter model of evaporation/devolatilization and a detailed or simplified chemical kinetics approach applied to the gas phase. It is available for high-end fuels such as jet fuel and gasoline.
