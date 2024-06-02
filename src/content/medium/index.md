@@ -14,7 +14,7 @@ showall = true
       <a href="https://medium.com/@waltermateriais/solving-nonlinear-problems-from-scratch-in-julia-a-guided-tour-0650db06931c" target="_blank">Medium</a>
     </td>
     <td>
-      <a href="01-Composite-Conduction" target="_blank">
+      <a href="https://wallytutor.github.io/WallyToolbox.jl/dev/Notebooks/01-Composite-Conduction/" target="_blank">
           Composite plate heat conduction
       </a>
       <hr style="padding: 0pt; margin: 5pt"/>
@@ -27,7 +27,7 @@ showall = true
       <!-- <a href="" target="_blank">Medium</a> -->
     </td>
     <td>
-      <a href="02-Part-Radiation-Heating" target="_blank">
+      <a href="https://wallytutor.github.io/WallyToolbox.jl/dev/Notebooks/02-Part-Radiation-Heating/" target="_blank">
         Transient heat transfer model
       </a>
       <hr style="padding: 0pt; margin: 5pt"/>
