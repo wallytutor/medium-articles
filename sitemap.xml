@@ -26,18 +26,6 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/content/julia-para-cientistas/003-estruturas-de-dados/index.html</loc>
-    <lastmod>2024-06-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://wallytutor.github.io/medium-articles/content/julia-para-cientistas/004-estruturas-de-dados/index.html</loc>
-    <lastmod>2024-06-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
     <loc>https://wallytutor.github.io/medium-articles/content/medium/08-PSR-control-MPC-in-Python-B/index.html</loc>
     <lastmod>2024-06-02</lastmod>
     <changefreq>monthly</changefreq>
@@ -50,37 +38,13 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/content/julia-para-cientistas/001-primeiros-passos/index.html</loc>
-    <lastmod>2024-06-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
     <loc>https://wallytutor.github.io/medium-articles/content/medium/08-PSR-control-MPC-in-Python-C/index.html</loc>
     <lastmod>2024-06-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://wallytutor.github.io/medium-articles/content/julia-para-cientistas/index.html</loc>
-    <lastmod>2024-06-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
     <loc>https://wallytutor.github.io/medium-articles/content/medium/06-Calling-Fortran-from-C-C%2B%2B/index.html</loc>
-    <lastmod>2024-06-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://wallytutor.github.io/medium-articles/content/julia-para-cientistas/002-manipulacao-textual/index.html</loc>
-    <lastmod>2024-06-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://wallytutor.github.io/medium-articles/content/julia-para-cientistas/creating-content/index.html</loc>
     <lastmod>2024-06-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -99,12 +63,6 @@
 </url>
 <url>
     <loc>https://wallytutor.github.io/medium-articles/content/bookmarks/index.html</loc>
-    <lastmod>2024-06-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://wallytutor.github.io/medium-articles/content/julia-para-cientistas/bookmarks/index.html</loc>
     <lastmod>2024-06-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
